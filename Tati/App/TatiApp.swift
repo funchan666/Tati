@@ -49,9 +49,8 @@ struct CommunityRoot: View {
                             }.frame(maxWidth: .infinity, minHeight: 58)
                         }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
                     }
-                }.padding(.top, 6).background(Color.tatiPink).clipShape(UnevenRoundedRectangle(topLeadingRadius: 26, topTrailingRadius: 26))
+                }.padding(.top, 6).background { Color.tatiPink.ignoresSafeArea(edges: .bottom) }
             }.background { TatiBackground() }.toolbar(.hidden, for: .navigationBar)
-                .safeAreaInset(edge: .bottom, spacing: 0) { Color.tatiPink.frame(height: 0) }
         }
     }
 }
@@ -70,7 +69,8 @@ struct WelcomeView: View {
                             .font(.system(size: 12)).foregroundStyle(Color.tatiInk).multilineTextAlignment(.center)
                         HStack(alignment: .center, spacing: 8) {
                             Button { consent.toggle() } label: {
-                                Art(name: consent ? "check-pink" : "toggle-on", width: 24, height: 24).opacity(consent ? 1 : 0.45)
+                                if consent { Art(name: "check-pink", width: 24, height: 24) }
+                                else { SupplementIcon(icon: .toggleOff, size: 28) }
                             }.buttonStyle(.plain).frame(width: 44, height: 44).accessibilityLabel(consent ? "Agreement accepted" : "Accept agreement").accessibilityAddTraits(consent ? .isSelected : [])
                             VStack(alignment: .leading, spacing: 3) {
                                 Text("I agree to the").font(.caption)

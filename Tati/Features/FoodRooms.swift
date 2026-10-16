@@ -15,6 +15,7 @@ struct RoomView: View {
     @StateObject private var music = LocalRoomAudio()
     private var host: FoodPerson { FoodCatalog.person(room.hostID) ?? FoodCatalog.people[0] }
     private var background: String { store.account.roomBackgrounds[room.id] ?? room.background }
+    private var videoSlots: Int { layout == "Spotlight + voices" ? 1 : layout == "Duo video + voices" ? 2 : layout == "Three video + voices" ? 3 : 0 }
     private var layout: String { store.account.roomLayouts[room.id] ?? "10-seat voice room" }
     var body: some View {
         VStack(spacing: 16) {
@@ -38,8 +39,15 @@ struct RoomView: View {
                         ZStack { Art(name: "host-frame", width: 114, height: 114); Avatar(size: 76) }.padding(.top, 10)
                         Text(host.name).font(.headline)
                         Text(layout).font(.caption).opacity(0.85)
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 22) {
-                            ForEach(0..<8) { index in
+                        if videoSlots > 0 {
+                            HStack(spacing: 10) {
+                                ForEach(0..<videoSlots, id: \.self) { slot in
+                                    MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 170 : 125)
+                                }
+                            }.padding(.horizontal, 18)
+                        }
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 22) {
+                            ForEach(0..<(9 - videoSlots), id: \.self) { index in
                                 Button { panel = .microphone } label: {
                                     VStack(spacing: 8) { Art(name: "tool-mic", width: 48, height: 48); Text("\(index + 2)").font(.caption) }
                                 }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
@@ -190,13 +198,16 @@ struct MicrophonePanel: View {
         }
     }
 }
-@MainActor final class LocalRoomAudio: ObservableObject {
+@MainActor final class LocalRoomAudio: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published var playing = false
     @Published var title = "No audio selected"
     private var player: AVAudioPlayer?
     func load(_ url: URL) throws {
         stop()
-        player = try AVAudioPlayer(contentsOf: url)
+        let bytes = try Data(contentsOf: url, options: .mappedIfSafe)
+        guard bytes.count <= 50 * 1024 * 1024 else { throw CocoaError(.fileReadTooLarge) }
+        player = try AVAudioPlayer(data: bytes)
+        player?.delegate = self
         title = url.deletingPathExtension().lastPathComponent
     }
     func toggle() throws {
@@ -206,6 +217,9 @@ struct MicrophonePanel: View {
             try AVAudioSession.sharedInstance().setActive(true)
             playing = player.play()
         }
+    }
+    nonisolated func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        Task { @MainActor [weak self] in self?.stop() }
     }
     func stop() { player?.pause(); playing = false; try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) }
 }
@@ -225,7 +239,7 @@ struct RoomMusicPanel: View {
         }.fileImporter(isPresented: $importing, allowedContentTypes: [.audio]) { result in
             do {
                 let url = try result.get(); let granted = url.startAccessingSecurityScopedResource(); defer { if granted { url.stopAccessingSecurityScopedResource() } }
-                // AVAudioPlayer consumes the file contents while opening; no access token is retained.
+                // Copy audio bytes while the security-scoped file is accessible.
                 try player.load(url)
             } catch { store.tell("Audio not selected", "No playable audio was loaded. You can try another file.") }
         }

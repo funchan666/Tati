@@ -62,14 +62,14 @@ struct ClipDetailView: View {
                 } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
             }.padding(.horizontal, 12)
             ZStack(alignment: .bottomTrailing) {
-                if let player = playback.player, playback.activeID == clip.id {
+                if let player = playback.player, playback.activeID == clip.id, playback.failure == nil {
                     ClipSurface(player: player).background(Color.black)
                     Button { playback.toggle() } label: { SupplementIcon(icon: playback.playing ? .pause : .play, size: 38).padding(14).background(Color.tatiCream).clipShape(Circle()) }.buttonStyle(.plain).accessibilityLabel(playback.playing ? "Pause video" : "Play video").frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     VStack(spacing: 16) {
                         Art(name: "media-placeholder", width: 78)
-                        Text(failure ?? "Video media hasn't been added yet.").font(.headline).multilineTextAlignment(.center)
-                        Text("This is a sample preview, not a playing video.").font(.caption).multilineTextAlignment(.center)
+                        Text(playback.failure ?? failure ?? "Video media hasn't been added yet.").font(.headline).multilineTextAlignment(.center)
+                        Text(clip.isSample ? "This is a sample preview, not a playing video." : "Your imported video is unavailable.").font(.caption).multilineTextAlignment(.center)
                     }.padding(25).frame(maxWidth: .infinity, maxHeight: .infinity).background(Color.tatiCream)
                 }
                 VStack(spacing: 14) {
@@ -175,6 +175,7 @@ struct PublishVideoView: View {
 struct GoLiveView: View {
     @EnvironmentObject private var store: VisitorStore
     @StateObject private var camera = CameraPreviewController()
+    @Environment(\.scenePhase) private var scenePhase
     @State private var title = ""
     @State private var topic = "Home cooking"
     @State private var cover: PhotosPickerItem?
@@ -192,7 +193,7 @@ struct GoLiveView: View {
             ChoiceGrid(items: Array(FoodCatalog.topics.dropFirst()), selected: $topic)
             if camera.ready { CameraSurface(session: camera.session).frame(height: 260).clipShape(RoundedRectangle(cornerRadius: 20)) }
             Note(text: camera.status)
-            TatiButton(title: camera.ready ? "Stop camera preview" : "Preview my camera", secondary: true) {
+            TatiButton(title: camera.starting ? "Starting camera…" : camera.ready ? "Stop camera preview" : "Preview my camera", secondary: true, enabled: !camera.starting) {
                 if camera.ready { previewTask?.cancel(); camera.stop() }
                 else { previewTask?.cancel(); previewTask = Task { await camera.start() } }
             }
@@ -204,5 +205,6 @@ struct GoLiveView: View {
             do { coverData = try await cover.loadTransferable(type: Data.self) }
             catch { store.tell("Couldn't load cover", "Please choose another image.") }
         }.onDisappear { previewTask?.cancel(); camera.stop() }
+        .onChange(of: scenePhase) { _, phase in if phase != .active { previewTask?.cancel(); camera.stop() } }
     }
 }

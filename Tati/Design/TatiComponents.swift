@@ -153,13 +153,14 @@ struct MediaPlaceholder: View {
 struct Avatar: View {
     var file: String? = nil
     var size: CGFloat = 46
+    var isCurrent = false
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
         Group {
             if let file, let ui = UIImage(contentsOfFile: store.mediaURL(file).path) {
                 Image(uiImage: ui).resizable().scaledToFill()
             } else { Image("media-placeholder").resizable().scaledToFit().padding(size * 0.15).background(Color.tatiCream) }
-        }.frame(width: size, height: size).clipShape(Circle()).accessibilityHidden(true)
+        }.frame(width: size, height: size).clipShape(Circle()).overlay { if isCurrent && store.account.equippedFrame { Art(name: "host-frame", width: size * 1.3, height: size * 1.3) } }.accessibilityHidden(true)
     }
 }
 struct InputField: View {

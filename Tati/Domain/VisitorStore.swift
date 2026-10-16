@@ -44,7 +44,8 @@ final class VisitorStore: ObservableObject {
             account = durable
             return true
         } catch {
-            tell("Couldn't save", "Your change wasn't saved. Your previous data is still available. Free some device storage and try again.")
+            storageFailure = "Local storage could not be verified. Further changes are paused to protect your data. Reopen Tati after checking device storage."
+            tell("Couldn't verify save", storageFailure!)
             return false
         }
     }
@@ -62,7 +63,11 @@ final class VisitorStore: ObservableObject {
         confirm("Delete local profile?", "This removes this guest profile, local photos, videos, drafts and rewards from this device. There is no server account to delete.", button: "Delete", destructive: true) {
             let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName)
             guard self.change({ $0 = LocalAccount() }) else { return }
-            for file in files { try? FileManager.default.removeItem(at: self.mediaURL(file)) }
+            var cleanupFailed = false
+            for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {
+                do { try FileManager.default.removeItem(at: self.mediaURL(file)) } catch { cleanupFailed = true }
+            }
+            if cleanupFailed { self.tell("Profile deleted", "Some imported media files could not be removed from app storage. Remove Tati from this device to erase its remaining local storage.") }
         }
     }
     func toggleFollow(_ id: String) {

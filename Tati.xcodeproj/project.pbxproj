@@ -1,0 +1,372 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6962CD61D5BD68192E78A4 /* TatiApp.swift */; };
+		25FDB4D20A8C0B7BD7F6B82C /* PeopleAndChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8F65D76E631E9062101D56 /* PeopleAndChat.swift */; };
+		5FE59795E70502D8E3AB5730 /* TatiPurchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E4091CA0791585A0EFCEC /* TatiPurchases.swift */; };
+		604F1E3D08BA2A7A2552A079 /* LocalMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2682D758CA0DB0EAE418E855 /* LocalMedia.swift */; };
+		611364A24538107C43689678 /* FoodCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C657C50FCAFC9E023320CE /* FoodCommunity.swift */; };
+		9FB10048135D865A9422CC32 /* FoodRooms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0B5E526278857BE870D6A9 /* FoodRooms.swift */; };
+		AF9986D6EA370246DB773F13 /* Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A395AE1A0E27E113998A1F3 /* Discovery.swift */; };
+		B160EE19C259595B08B169B6 /* VisitorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4255B8D2F331D7C47427520 /* VisitorStore.swift */; };
+		C7884F25FCDBB440A8594C21 /* FoodVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808B83B9035E868AB6BD469B /* FoodVideos.swift */; };
+		CA1C2DC84CA7DAED03C7ECBB /* TatiComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD31A6A1F3F5144A5EA5192 /* TatiComponents.swift */; };
+		DBB2D71B1C93346958AD65F6 /* AccountPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B30D0321C5AB735FFFAB55 /* AccountPages.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		046E4091CA0791585A0EFCEC /* TatiPurchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiPurchases.swift; sourceTree = "<group>"; };
+		2682D758CA0DB0EAE418E855 /* LocalMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMedia.swift; sourceTree = "<group>"; };
+		2B0B5E526278857BE870D6A9 /* FoodRooms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRooms.swift; sourceTree = "<group>"; };
+		5F6962CD61D5BD68192E78A4 /* TatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiApp.swift; sourceTree = "<group>"; };
+		70C657C50FCAFC9E023320CE /* FoodCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCommunity.swift; sourceTree = "<group>"; };
+		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A395AE1A0E27E113998A1F3 /* Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discovery.swift; sourceTree = "<group>"; };
+		808B83B9035E868AB6BD469B /* FoodVideos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodVideos.swift; sourceTree = "<group>"; };
+		B4255B8D2F331D7C47427520 /* VisitorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorStore.swift; sourceTree = "<group>"; };
+		D7F7AB18617A4185851313EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DB8F65D76E631E9062101D56 /* PeopleAndChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleAndChat.swift; sourceTree = "<group>"; };
+		E8B30D0321C5AB735FFFAB55 /* AccountPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPages.swift; sourceTree = "<group>"; };
+		FFD31A6A1F3F5144A5EA5192 /* TatiComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiComponents.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		08E0E257DF9BC7C62200B989 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2682D758CA0DB0EAE418E855 /* LocalMedia.swift */,
+				046E4091CA0791585A0EFCEC /* TatiPurchases.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2A647D5D57D90E7E08DCD9D1 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				E8B30D0321C5AB735FFFAB55 /* AccountPages.swift */,
+				7A395AE1A0E27E113998A1F3 /* Discovery.swift */,
+				2B0B5E526278857BE870D6A9 /* FoodRooms.swift */,
+				808B83B9035E868AB6BD469B /* FoodVideos.swift */,
+				DB8F65D76E631E9062101D56 /* PeopleAndChat.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		4ACABA5AA138650F32D4B1A7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				710E5BB98E81D2FD71B71E7D /* Tati.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		744757A75182A747F0CBDF8C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				70C657C50FCAFC9E023320CE /* FoodCommunity.swift */,
+				B4255B8D2F331D7C47427520 /* VisitorStore.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		7859F341E0A00C9EFF6E9F21 /* Tati */ = {
+			isa = PBXGroup;
+			children = (
+				D7F7AB18617A4185851313EC /* Info.plist */,
+				A286A82D4F4D3EBDE9E61858 /* App */,
+				83267AA535BD8A6168C44939 /* Design */,
+				744757A75182A747F0CBDF8C /* Domain */,
+				2A647D5D57D90E7E08DCD9D1 /* Features */,
+				08E0E257DF9BC7C62200B989 /* Services */,
+			);
+			path = Tati;
+			sourceTree = "<group>";
+		};
+		83267AA535BD8A6168C44939 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				FFD31A6A1F3F5144A5EA5192 /* TatiComponents.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		9768900894F0AEDBEA9A3D66 = {
+			isa = PBXGroup;
+			children = (
+				7859F341E0A00C9EFF6E9F21 /* Tati */,
+				4ACABA5AA138650F32D4B1A7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A286A82D4F4D3EBDE9E61858 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				5F6962CD61D5BD68192E78A4 /* TatiApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA7331724C5EDBBFEEA38872 /* Tati */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 503F45A09908E87369C494EB /* Build configuration list for PBXNativeTarget "Tati" */;
+			buildPhases = (
+				FD6F054E545E2A6ED93A6259 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tati;
+			packageProductDependencies = (
+			);
+			productName = Tati;
+			productReference = 710E5BB98E81D2FD71B71E7D /* Tati.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B378602AACD4E42EAC5ADB8D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 97314D64732023B452953708 /* Build configuration list for PBXProject "Tati" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9768900894F0AEDBEA9A3D66;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA7331724C5EDBBFEEA38872 /* Tati */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FD6F054E545E2A6ED93A6259 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBB2D71B1C93346958AD65F6 /* AccountPages.swift in Sources */,
+				AF9986D6EA370246DB773F13 /* Discovery.swift in Sources */,
+				611364A24538107C43689678 /* FoodCommunity.swift in Sources */,
+				9FB10048135D865A9422CC32 /* FoodRooms.swift in Sources */,
+				C7884F25FCDBB440A8594C21 /* FoodVideos.swift in Sources */,
+				604F1E3D08BA2A7A2552A079 /* LocalMedia.swift in Sources */,
+				25FDB4D20A8C0B7BD7F6B82C /* PeopleAndChat.swift in Sources */,
+				03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */,
+				CA1C2DC84CA7DAED03C7ECBB /* TatiComponents.swift in Sources */,
+				5FE59795E70502D8E3AB5730 /* TatiPurchases.swift in Sources */,
+				B160EE19C259595B08B169B6 /* VisitorStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		19895AF69B587154515EC78D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		281C7D7BF3820177F2E6DB71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Tati/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		287D99BECC7FD76A1785484C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BF660E6D4FAD6CE0D600520D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Tati/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		503F45A09908E87369C494EB /* Build configuration list for PBXNativeTarget "Tati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF660E6D4FAD6CE0D600520D /* Debug */,
+				281C7D7BF3820177F2E6DB71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		97314D64732023B452953708 /* Build configuration list for PBXProject "Tati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				287D99BECC7FD76A1785484C /* Debug */,
+				19895AF69B587154515EC78D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B378602AACD4E42EAC5ADB8D /* Project object */;
+}

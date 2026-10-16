@@ -17,24 +17,40 @@ struct ImportedMovie: Transferable {
     @Published private(set) var player: AVPlayer?
     @Published private(set) var activeID: String?
     @Published private(set) var playing = false
+    @Published private(set) var failure: String?
+    private var statusObserver: NSKeyValueObservation?
+    private var failedObserver: NSObjectProtocol?
     private var endedObserver: NSObjectProtocol?
     func load(id: String, url: URL) throws {
         stop()
         guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
         let item = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: item); activeID = id
+        statusObserver = item.observe(\.status, options: [.initial, .new]) { [weak self] item, _ in
+            guard item.status == .failed else { return }
+            Task { @MainActor in
+                guard self?.activeID == id else { return }
+                self?.player?.pause(); self?.playing = false
+                self?.failure = "This video cannot be played. Please import another supported file."
+            }
+        }
+        failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
+            Task { @MainActor in guard self?.activeID == id else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
+        }
         endedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main) { [weak self] _ in
             Task { @MainActor in self?.playing = false; self?.player?.seek(to: .zero) }
         }
     }
     func toggle() {
-        guard let player else { return }
+        guard let player, failure == nil else { return }
         if playing { player.pause(); playing = false } else { player.play(); playing = true }
     }
     func stop() {
         player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; playing = false
         if let endedObserver { NotificationCenter.default.removeObserver(endedObserver) }
         endedObserver = nil
+        if let failedObserver { NotificationCenter.default.removeObserver(failedObserver) }
+        failedObserver = nil; statusObserver = nil; failure = nil
     }
 }
 final class ClipLayerView: UIView {
@@ -51,9 +67,12 @@ struct ClipSurface: UIViewRepresentable {
     let session = AVCaptureSession()
     @Published var status = "Camera is off"
     @Published var ready = false
+    @Published private(set) var starting = false
     private let queue = DispatchQueue(label: "tati.camera.preview")
     private var generation = UUID()
     func start() async {
+        guard !starting else { return }
+        starting = true; defer { starting = false }
         let requestID = UUID(); generation = requestID
         let authorized = await AVCaptureDevice.requestAccess(for: .video)
         guard generation == requestID, !Task.isCancelled else { return }
@@ -72,7 +91,7 @@ struct ClipSurface: UIViewRepresentable {
         guard generation == requestID, !Task.isCancelled else { stop(); return }
         ready = configured; status = configured ? "Local camera preview · not broadcasting" : "The camera couldn't be started. Try again."
     }
-    func stop() { generation = UUID(); ready = false; let capture = session; queue.async { capture.stopRunning() } }
+    func stop() { generation = UUID(); ready = false; status = "Camera is off"; let capture = session; queue.async { capture.stopRunning() } }
 }
 final class CameraLayerView: UIView {
     override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
