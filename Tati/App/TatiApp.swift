@@ -46,11 +46,8 @@ struct CommunityRoot: View {
                         Button {
                             playback.stop(); selected = tab
                         } label: {
-                            VStack(spacing: 4) {
-                                Art(name: "\(tab.assetPrefix)-\(tab == selected ? "on" : "off")", width: 27, height: 27)
-                                Text(tab.rawValue).font(.system(size: 10, weight: .semibold))
-                                    .foregroundStyle(tab == selected ? Color.tatiLime : Color.tatiInk.opacity(0.62))
-                            }.frame(maxWidth: .infinity, minHeight: 58)
+                            Art(name: "\(tab.assetPrefix)-\(tab == selected ? "on" : "off")", width: 27, height: 27)
+                                .frame(maxWidth: .infinity, minHeight: 58)
                         }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
                     }
                 }.padding(.top, 6).background { Color.tatiPink.ignoresSafeArea(edges: .bottom) }

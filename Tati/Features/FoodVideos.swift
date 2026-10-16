@@ -54,6 +54,7 @@ struct ClipDetailView: View {
     @State private var showReport = false
     @State private var failure: String?
     @State private var playbackOwner = UUID().uuidString
+    @State private var isVisible = false
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -87,20 +88,28 @@ struct ClipDetailView: View {
                 Note(text: clip.isSample ? "Sample content · video pending" : "Saved on this device · not uploaded")
             }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
-        .task {
-            roomSession.audio.stop()
-            if let file = clip.fileName { do { try playback.load(id: clip.id, url: store.mediaURL(file), owner: playbackOwner) } catch { failure = "This video file is missing. Reimport it from your library." } }
+        .onAppear { isVisible = true; preparePlayback() }
+        .onDisappear { isVisible = false; if playback.ownerID == playbackOwner { playback.stop() } }
+        .onChange(of: scenePhase) { _, value in
+            if value != .active { if playback.ownerID == playbackOwner { playback.stop() } }
+            else if isVisible { preparePlayback() }
         }
-        .onDisappear { if playback.ownerID == playbackOwner { playback.stop() } }
-        .onChange(of: scenePhase) { _, value in if value != .active { playback.stop() } else if let file = clip.fileName { try? playback.load(id: clip.id, url: store.mediaURL(file), owner: playbackOwner) } }
         .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() } }
         .sheet(isPresented: $showReport) { NavigationStack { VideoOptionsView(clip: clip) }.overlay { NoticeLayer() } }
+    }
+    private func preparePlayback() {
+        failure = nil
+        roomSession.audio.stop()
+        if let file = clip.fileName {
+            do { try playback.load(id: clip.id, url: store.mediaURL(file), owner: playbackOwner) }
+            catch { failure = "This video file is missing. Reimport it from your library." }
+        }
     }
     private func delete() {
         store.confirm("Delete local video?", "This removes the imported copy from Tati. The original in Photos is unchanged.", button: "Delete", destructive: true) {
             playback.stop()
             if store.change({ $0.clips.removeAll { $0.id == clip.id }; $0.likes.remove(clip.id) }) {
-                if let file = clip.fileName { try? FileManager.default.removeItem(at: store.mediaURL(file)) }
+                if let file = clip.fileName { store.removeUnusedMedia(file) }
                 dismiss()
             }
         }
@@ -169,11 +178,11 @@ struct PublishVideoView: View {
                 guard !Task.isCancelled, owner == store.account.profile.id else { return }
                 let name = UUID().uuidString + "." + movie.url.pathExtension
                 try FileManager.default.copyItem(at: movie.url, to: store.mediaURL(name))
-                if let old = localFile { try? FileManager.default.removeItem(at: store.mediaURL(old)) }
+                if let old = localFile { store.removeUnusedMedia(old) }
                 localFile = name
             } catch { if !Task.isCancelled { store.tell("Couldn't import video", "Choose a supported video from your library and try again. Your caption is still here.") } }
         }
-        .onDisappear { if !committed, let localFile { try? FileManager.default.removeItem(at: store.mediaURL(localFile)) } }
+        .onDisappear { if !committed, let localFile { store.removeUnusedMedia(localFile) } }
     }
 }
 struct GoLiveView: View {

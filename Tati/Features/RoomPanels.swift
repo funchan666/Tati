@@ -9,7 +9,7 @@ struct RoomLayoutPanel: View {
         TatiPanel(title: "Room Layout") {
             TopicStrip(items: ["Voice", "Video + Voice"], selected: $mode)
             if mode == "Voice" { layout("10-seat voice room", "10 voice seats") }
-            else { ForEach(videoLayouts, id: \.0) { layout($0.0, $0.1) } }
+            else { ForEach(videoLayouts.indices, id: \.self) { index in layout(videoLayouts[index].0, videoLayouts[index].1) } }
             Note(text: "Choose a layout for this local preview. Remote seats remain empty until the live service is connected.")
         }.onAppear { mode = current == "10-seat voice room" ? "Voice" : "Video + Voice" }
     }

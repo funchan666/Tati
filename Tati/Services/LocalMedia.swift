@@ -22,24 +22,26 @@ struct ImportedMovie: Transferable {
     private var statusObserver: NSKeyValueObservation?
     private var failedObserver: NSObjectProtocol?
     private var endedObserver: NSObjectProtocol?
+    private var generation = UUID()
     func load(id: String, url: URL, owner: String) throws {
         stop()
         guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
+        let request = generation
         let item = AVPlayerItem(url: url)
         player = AVPlayer(playerItem: item); activeID = id; ownerID = owner
         statusObserver = item.observe(\.status, options: [.initial, .new]) { [weak self] item, _ in
             guard item.status == .failed else { return }
             Task { @MainActor in
-                guard self?.activeID == id, self?.ownerID == owner else { return }
+                guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }
                 self?.player?.pause(); self?.playing = false
                 self?.failure = "This video cannot be played. Please import another supported file."
             }
         }
         failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
+            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
         }
         endedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.player?.seek(to: .zero) }
+            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.player?.seek(to: .zero) }
         }
     }
     func toggle() {
@@ -47,6 +49,7 @@ struct ImportedMovie: Transferable {
         if playing { player.pause(); playing = false } else { player.play(); playing = true }
     }
     func stop() {
+        generation = UUID()
         player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; ownerID = nil; playing = false
         if let endedObserver { NotificationCenter.default.removeObserver(endedObserver) }
         endedObserver = nil

@@ -153,7 +153,8 @@ struct SearchView: View {
             InputField(title: "People, rooms or food", text: $query)
             Text("Popular searches").font(.system(size: 21, weight: .bold, design: .serif))
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
-                ForEach(FoodCatalog.popularTopics, id: \.0) { topic in
+                ForEach(FoodCatalog.popularTopics.indices, id: \.self) { index in
+                    let topic = FoodCatalog.popularTopics[index]
                     Button { query = topic.0; category = "People" } label: { Art(name: topic.1, height: 30).frame(minHeight: 44) }
                         .buttonStyle(.plain).accessibilityLabel("Search " + topic.0)
                 }

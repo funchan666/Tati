@@ -120,7 +120,7 @@ struct LanguagePreferenceView: View {
                         .background { Image("outlined-card").resizable() }
                 }.buttonStyle(.plain)
             }
-            Note(text: "Interface language: English. This choice saves a preference, not an installed translation. Duplicate Español entries in the design are combined.")
+            Note(text: "Interface language: English. This choice saves a preference, not an installed translation.")
         }
     }
 }

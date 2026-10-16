@@ -39,7 +39,9 @@ final class VisitorStore: ObservableObject {
         do {
             let data = try JSONEncoder().encode(next)
             try data.write(to: fileURL, options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
-            let durable = try JSONDecoder().decode(LocalAccount.self, from: Data(contentsOf: fileURL))
+            let persisted = try Data(contentsOf: fileURL)
+            guard persisted == data else { throw CocoaError(.fileReadCorruptFile) }
+            let durable = try JSONDecoder().decode(LocalAccount.self, from: persisted)
             guard durable.profile.id == next.profile.id else { throw CocoaError(.fileReadCorruptFile) }
             account = durable
             return true

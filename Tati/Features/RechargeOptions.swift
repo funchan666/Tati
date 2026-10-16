@@ -5,7 +5,7 @@ struct CoinPackage: Identifiable {
     let coins: Int
     let bonus: Int
     var total: Int { coins + bonus }
-    static let grid = [99, 299, 599, 999, 1999, 3999, 6999, 9999, 19999].enumerated().map { CoinPackage(id: $0.offset, coins: $0.element, bonus: 0) }
+    static let grid = Array(repeating: 99, count: 9).enumerated().map { CoinPackage(id: $0.offset, coins: $0.element, bonus: 0) }
     static let room = [CoinPackage(id: 0, coins: 2405, bonus: 0), CoinPackage(id: 1, coins: 4955, bonus: 1650), CoinPackage(id: 2, coins: 9600, bonus: 4200)]
 }
 struct RechargeOptions: View {
@@ -17,7 +17,7 @@ struct RechargeOptions: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Art(name: "recharge-banner")
-            Note(text: "Package layout preview · Products and prices are not configured. Amounts below are proposed tiers, not purchasable offers.")
+            Note(text: "Package layout preview · Products and prices are not configured. Amounts below are design samples, not purchasable offers.")
             if compact {
                 ForEach(packages) { package in
                     Button { selected = package.id } label: {

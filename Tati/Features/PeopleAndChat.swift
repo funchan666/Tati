@@ -181,11 +181,11 @@ struct EditProfileView: View {
             if let coverData { let file = try store.importImage(coverData); newFiles.append(file); profile.coverFile = file }
             if store.change({ $0.profile = profile }) {
                 let retained = [profile.avatarFile, profile.coverFile].compactMap { $0 }
-                for file in old where !retained.contains(file) { try? FileManager.default.removeItem(at: store.mediaURL(file)) }
+                for file in old where !retained.contains(file) { store.removeUnusedMedia(file) }
                 dismiss()
-            } else { for file in newFiles { try? FileManager.default.removeItem(at: store.mediaURL(file)) } }
+            } else { for file in newFiles { store.removeUnusedMedia(file) } }
         } catch {
-            for file in newFiles { try? FileManager.default.removeItem(at: store.mediaURL(file)) }
+            for file in newFiles { store.removeUnusedMedia(file) }
             store.tell("Couldn't save photo", "Use a supported image smaller than 25 MB. Your edits have been kept on this screen.")
         }
     }
