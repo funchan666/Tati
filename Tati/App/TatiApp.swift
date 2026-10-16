@@ -1,0 +1,92 @@
+import SwiftUI
+
+@main
+struct TatiApp: App {
+    @StateObject private var store = VisitorStore()
+    @StateObject private var playback = ClipPlayback()
+    @StateObject private var purchases = TatiPurchases()
+    var body: some Scene {
+        WindowGroup {
+            ZStack {
+                if store.account.signedIn { CommunityRoot().id(store.account.profile.id) }
+                else { WelcomeView() }
+                NoticeLayer()
+            }
+            .environmentObject(store).environmentObject(playback).environmentObject(purchases)
+            .tint(.tatiPink).preferredColorScheme(.light)
+            .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { playback.stop() } }
+        }
+    }
+}
+enum CommunityTab: String, CaseIterable {
+    case home = "Home", room = "Room", video = "Video", ai = "AI", me = "Me"
+    var assetPrefix: String { rawValue.lowercased() }
+}
+struct CommunityRoot: View {
+    @EnvironmentObject private var playback: ClipPlayback
+    @State private var selected = CommunityTab.home
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                Group {
+                    switch selected {
+                    case .home: DiscoverView(voice: false)
+                    case .room: DiscoverView(voice: true)
+                    case .video: VideoFeedView()
+                    case .ai: FoodExpertView()
+                    case .me: MyProfileView()
+                    }
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                HStack(spacing: 0) {
+                    ForEach(CommunityTab.allCases, id: \.self) { tab in
+                        Button {
+                            playback.stop(); selected = tab
+                        } label: {
+                            VStack(spacing: 4) {
+                                Art(name: "\(tab.assetPrefix)-\(tab == selected ? "on" : "off")", width: 27, height: 27)
+                                Text(tab.rawValue).font(.system(size: 10, weight: .semibold))
+                                    .foregroundStyle(tab == selected ? Color.tatiLime : Color.tatiInk.opacity(0.62))
+                            }.frame(maxWidth: .infinity, minHeight: 58)
+                        }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
+                    }
+                }.padding(.top, 6).background(Color.tatiPink).clipShape(UnevenRoundedRectangle(topLeadingRadius: 26, topTrailingRadius: 26))
+            }.background { TatiBackground() }.toolbar(.hidden, for: .navigationBar)
+                .safeAreaInset(edge: .bottom, spacing: 0) { Color.tatiPink.frame(height: 0) }
+        }
+    }
+}
+struct WelcomeView: View {
+    @EnvironmentObject private var store: VisitorStore
+    @State private var consent = false
+    var body: some View {
+        NavigationStack {
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    Spacer(minLength: 0)
+                    VStack(spacing: 14) {
+                        if let error = store.storageFailure { Text(error).font(.footnote).foregroundStyle(Color.tatiInk) }
+                        TatiButton(title: "Enter Tati", enabled: consent && store.storageFailure == nil) { store.signIn() }
+                        Text("Continue as a local guest. Your profile and activity stay on this device.")
+                            .font(.system(size: 12)).foregroundStyle(Color.tatiInk).multilineTextAlignment(.center)
+                        HStack(alignment: .center, spacing: 8) {
+                            Button { consent.toggle() } label: {
+                                Art(name: consent ? "check-pink" : "toggle-on", width: 24, height: 24).opacity(consent ? 1 : 0.45)
+                            }.buttonStyle(.plain).frame(width: 44, height: 44).accessibilityLabel(consent ? "Agreement accepted" : "Accept agreement").accessibilityAddTraits(consent ? .isSelected : [])
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("I agree to the").font(.caption)
+                                HStack(spacing: 6) {
+                                    NavigationLink("Terms", destination: PolicyView(kind: .terms))
+                                    Text("and")
+                                    NavigationLink("Privacy Policy", destination: PolicyView(kind: .privacy))
+                                }.font(.caption).foregroundStyle(Color.tatiOlive)
+                            }
+                        }.foregroundStyle(Color.tatiInk)
+                    }.padding(.horizontal, 26).padding(.bottom, 12)
+                }.frame(width: geo.size.width, height: geo.size.height)
+                    .background {
+                        Image("welcome").resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height + geo.safeAreaInsets.top + geo.safeAreaInsets.bottom).clipped().ignoresSafeArea()
+                    }
+            }.toolbar(.hidden, for: .navigationBar)
+        }
+    }
+}
