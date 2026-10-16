@@ -1,0 +1,48 @@
+name: Tati
+options:
+  bundleIdPrefix: com.tati
+  deploymentTarget:
+    iOS: '17.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    TARGETED_DEVICE_FAMILY: '1'
+    SUPPORTS_MACCATALYST: NO
+    SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+targets:
+  Tati:
+    type: application
+    platform: iOS
+    sources:
+      - path: Tati
+        excludes:
+          - Resources
+    resources:
+      - path: Tati/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tati.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+    info:
+      path: Tati/Info.plist
+      properties:
+        CFBundleDisplayName: Tati
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIUserInterfaceStyle: Light
+        UIApplicationSupportsIndirectInputEvents: true
+        NSCameraUsageDescription: Tati uses the camera when you choose to preview your own live session.
+        NSMicrophoneUsageDescription: Tati uses the microphone only when you choose to join a voice session.
+        NSPhotoLibraryUsageDescription: Choose your own profile photos and food videos for Tati.
+schemes:
+  Tati:
+    build:
+      targets:
+        Tati: all
+    run:
+      config: Debug
+    archive:
+      config: Release

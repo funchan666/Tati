@@ -1,0 +1,146 @@
+﻿index,file,purpose,width,height,alpha,contains_text,status,note
+1,Ellipse_75@2x.png,AI 美食师小头像,88,88,True,False,available,仅用于小头像；主插画使用 Mask_group@2x(1).png
+2,Frame@2x(13).png,奖杯小图标,36,36,True,False,available,按原稿使用；原文件保持不变
+3,Frame@2x(18).png,深绿更多按钮,48,48,True,False,available,按原稿使用；原文件保持不变
+4,Frame@2x(19).png,深绿关闭按钮,48,48,True,False,available,按原稿使用；原文件保持不变
+5,Frame@2x(22).png,深绿添加按钮,52,52,True,False,available,按原稿使用；原文件保持不变
+6,Frame@2x(29).png,绿向右箭头,28,28,True,False,available,按原稿使用；原文件保持不变
+7,Frame@2x(32).png,下拉三角,28,28,True,False,available,按原稿使用；原文件保持不变
+8,Frame@2x(35).png,粉色勾选,32,32,True,False,available,按原稿使用；原文件保持不变
+9,Frame@2x(36).png,粉色爪印,32,32,True,False,available,按原稿使用；原文件保持不变
+10,Frame@2x(37).png,粉色开启开关,64,64,True,False,available,仅包含开启态；关闭态未提供独立切图
+11,Frame@2x(38).png,红色移除按钮,40,40,True,False,available,按原稿使用；原文件保持不变
+12,Frame@2x(39).png,绿加号,40,40,True,False,available,按原稿使用；原文件保持不变
+13,Frame@2x(40).png,添加封面/图片,80,80,True,False,available,按原稿使用；原文件保持不变
+14,Frame@2x(41).png,添加视频,80,80,True,False,available,按原稿使用；原文件保持不变
+15,Frame@2x(45).png,音乐播放状态,48,48,True,False,available,按原稿使用；原文件保持不变
+16,Frame@2x(48).png,黄色添加按钮,80,80,True,False,available,按原稿使用；原文件保持不变
+17,Frame@2x(53).png,返回按钮,52,52,False,False,available,返回箭头带不透明方形底，不应当作透明白色箭头使用
+18,Frame@2x(55).png,白色关闭按钮,48,48,True,False,available,按原稿使用；原文件保持不变
+19,Frame@2x(56).png,邮件入口,48,48,True,False,available,按原稿使用；原文件保持不变
+20,Frame@2x(57).png,视频喜欢按钮,80,80,True,False,available,按原稿使用；原文件保持不变
+21,Frame@2x(6).png,房型座椅,64,64,True,False,available,按原稿使用；原文件保持不变
+22,Frame@2x(61).png,关注加号,40,40,True,False,available,按原稿使用；原文件保持不变
+23,Frame@2x(62).png,已选勾选,40,40,True,False,available,按原稿使用；原文件保持不变
+24,Frame@2x(65).png,粉色爱心,40,40,True,False,available,按原稿使用；原文件保持不变
+25,Frame@2x(66).png,设置入口,48,48,True,False,available,按原稿使用；原文件保持不变
+26,Frame@2x(67).png,语言/地区,48,48,True,False,available,按原稿使用；原文件保持不变
+27,Frame@2x(68).png,资料介绍标识,40,40,True,False,available,按原稿使用；原文件保持不变
+28,Frame@2x(69).png,资料兴趣标签,40,40,True,False,available,按原稿使用；原文件保持不变
+29,Frame@2x(70).png,黑名单入口,48,48,True,False,available,按原稿使用；原文件保持不变
+30,Frame@2x(71).png,白色右箭头,28,28,True,False,available,按原稿使用；原文件保持不变
+31,Frame@2x(72).png,等级入口,48,48,True,False,available,按原稿使用；原文件保持不变
+32,Frame@2x(73).png,客服入口,48,48,True,False,available,按原稿使用；原文件保持不变
+33,Frame@2x(74).png,邀请码入口,48,48,True,False,available,按原稿使用；原文件保持不变
+34,Frame@2x(75).png,反馈入口,48,48,True,False,available,按原稿使用；原文件保持不变
+35,Frame@2x(76).png,背包入口,48,48,True,False,available,按原稿使用；原文件保持不变
+36,Frame@2x(77).png,小型播放箭头,28,28,True,False,available,按原稿使用；原文件保持不变
+37,Group_1040@2x.png,紫粉选中标记,24,24,True,False,available,按原稿使用；原文件保持不变
+38,Group_1062@2x.png,Profile 文字按钮,140,56,True,True,available,图片自带文字，不重复覆盖相同文字
+39,Group_1086@2x.png,筛选入口,62,42,True,False,available,按原稿使用；原文件保持不变
+40,Group_1094@2x.png,Invite 文字按钮,100,40,True,True,available,图片自带文字，不重复覆盖相同文字
+41,Group_1095@2x.png,Change video 文字按钮,260,60,True,True,available,图片自带文字，不重复覆盖相同文字
+42,Group_1136@2x(1).png,Live 状态粉紫,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+43,Group_1136@2x(2).png,Live 状态蓝,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+44,Group_1136@2x(3).png,Live 状态浅粉,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+45,Group_1136@2x(4).png,Live 状态珊瑚红,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+46,Group_1136@2x(5).png,Live 状态绿,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+47,Group_1136@2x.png,Live 状态紫,80,38,True,True,available,图片自带文字，不重复覆盖相同文字
+48,Group_1138@2x.png,男性标签,28,28,True,False,available,按原稿使用；原文件保持不变
+49,Group_1141@2x.png,女性标签,28,28,True,False,available,按原稿使用；原文件保持不变
+50,Group_1152@2x.png,Italian food 分类标签,180,52,True,True,available,图片自带文字，不重复覆盖相同文字
+51,Group_1153@2x.png,Sushi 分类标签,140,52,True,True,available,图片自带文字，不重复覆盖相同文字
+52,Group_1154@2x.png,Street food 分类标签,180,52,True,True,available,图片自带文字，不重复覆盖相同文字
+53,Group_1155@2x.png,Dessert 分类标签,180,52,True,True,available,图片自带文字，不重复覆盖相同文字
+54,Group_1156@2x.png,Healthy food 分类标签,200,52,True,True,available,图片自带文字，不重复覆盖相同文字
+55,Group_1157@2x.png,BBQ 分类标签,140,52,True,True,available,图片自带文字，不重复覆盖相同文字
+56,Group_1172@2x.png,房间麦克风工具,120,120,True,False,available,按原稿使用；原文件保持不变
+57,Group_1182@2x.png,通用浅黄绿整屏背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+58,Group_1210@2x.png,欢迎整屏插画（含 Foodie World）,780,1688,False,True,text-adaptation-needed,含 Foodie World；保留插画，品牌文案需适配 Tati
+59,Group_1211@2x.png,Foodie 品牌标题,370,104,True,True,text-adaptation-needed,含 Foodie；仅品牌文字需适配 Tati
+60,Group_1212@2x.png,首页排行榜入口,122,84,True,False,available,按原稿使用；原文件保持不变
+61,Group_1213@2x.png,充值提示横幅,728,180,True,True,available,图片自带文字，不重复覆盖相同文字
+62,Group_1214@2x.png,Chat 装饰标题,298,124,True,True,available,图片自带文字，不重复覆盖相同文字
+63,Group_1215@2x.png,Hot Topic 横幅,734,146,True,True,available,图片自带文字，不重复覆盖相同文字
+64,Group_1216@2x.png,Hot room 标签,200,68,True,True,available,图片自带文字，不重复覆盖相同文字
+65,Group_1217@2x.png,Go Live 发布入口,340,160,True,True,available,图片自带文字，不重复覆盖相同文字
+66,Group_1218@2x.png,Video 装饰标题,312,124,True,True,available,图片自带文字，不重复覆盖相同文字
+67,Group_1219@2x.png,Check-in 入口卡,360,278,True,True,available,图片自带文字，不重复覆盖相同文字
+68,Group_1221@2x.png,My wallet 入口卡,362,278,True,True,available,图片自带文字，不重复覆盖相同文字
+69,Group_1222@2x.png,签到头图（含 Review preview 文案）,780,600,False,True,text-adaptation-needed,含 Review preview - no reward is granted；最终签到语义确定后局部适配
+70,Group_1223@2x.png,等级信息装饰底板,712,386,True,False,available,按原稿使用；原文件保持不变
+71,Group_1224@2x.png,客服支持横幅,726,216,True,True,available,图片自带文字，不重复覆盖相同文字
+72,Group_1235@2x.png,Meet 品牌标题,308,124,True,True,text-adaptation-needed,含 Meet；品牌文字需适配 Tati
+73,Group_135@2x.png,Report 图片按钮,180,160,True,True,available,图片自带文字，不重复覆盖相同文字
+74,Group_136@2x.png,Block 图片按钮,180,160,True,True,available,图片自带文字，不重复覆盖相同文字
+75,Group_146@2x(1).png,Home Tab 选中,60,60,True,False,available,按原稿使用；原文件保持不变
+76,Group_146@2x.png,Home Tab 未选中,60,60,True,False,available,按原稿使用；原文件保持不变
+77,Group_151@2x(1).png,Room Tab 选中,60,60,True,False,available,按原稿使用；原文件保持不变
+78,Group_151@2x.png,Room Tab 未选中,60,60,True,False,available,按原稿使用；原文件保持不变
+79,Group_152@2x(1).png,Me Tab 选中,60,60,True,False,available,按原稿使用；原文件保持不变
+80,Group_152@2x.png,Me Tab 未选中,60,60,True,False,available,按原稿使用；原文件保持不变
+81,Group_153@2x(1).png,Video Tab 选中,60,60,True,False,available,按原稿使用；原文件保持不变
+82,Group_153@2x.png,Video Tab 未选中,60,60,True,False,available,按原稿使用；原文件保持不变
+83,Group_154@2x.png,AI Tab 选中,60,60,True,False,available,按原稿使用；原文件保持不变
+84,Group_155@2x.png,AI Tab 未选中,60,60,True,False,available,按原稿使用；原文件保持不变
+85,Group_50@2x.png,房型切换工具,120,120,True,False,available,按原稿使用；原文件保持不变
+86,Group_559@2x.png,Follow 图片按钮,332,100,True,True,available,图片自带文字，不重复覆盖相同文字
+87,Group_560@2x.png,Chatting 图片按钮,332,100,True,True,available,图片自带文字，不重复覆盖相同文字
+88,Group_561@2x.png,Followed 图片按钮,332,100,True,True,available,图片自带文字，不重复覆盖相同文字
+89,Group_672@2x.png,客服小头像,100,100,True,False,available,按原稿使用；原文件保持不变
+90,Group_673@2x.png,气球推车礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+91,Group_674@2x.png,音乐工具,120,120,True,False,available,按原稿使用；原文件保持不变
+92,Group_782@2x(2).png,直播礼物入口,88,88,True,False,available,按原稿使用；原文件保持不变
+93,Group_782@2x(3).png,聊天礼物入口,88,88,True,False,available,按原稿使用；原文件保持不变
+94,Group_782@2x.png,Gift 文字按钮,140,72,True,True,available,图片自带文字，不重复覆盖相同文字
+95,Group_840@2x(1).png,小麦克风开启,28,28,True,False,available,按原稿使用；原文件保持不变
+96,Group_842@2x(3).png,小麦克风静音,28,28,True,False,available,按原稿使用；原文件保持不变
+97,Group_849@2x.png,离开房间工具,120,120,True,False,available,按原稿使用；原文件保持不变
+98,Group_850@2x.png,邀请朋友工具,120,120,True,False,available,按原稿使用；原文件保持不变
+99,Group_851@2x.png,房间背景工具,120,120,True,False,available,按原稿使用；原文件保持不变
+100,Group_904@2x(2).png,聊天语音入口,88,88,True,False,available,按原稿使用；原文件保持不变
+101,Group_905@2x(2).png,聊天图片入口,88,88,True,False,available,按原稿使用；原文件保持不变
+102,Group_906@2x.png,聊天扬声器入口,88,88,True,False,available,按原稿使用；原文件保持不变
+103,Group_910@2x.png,Post Video 发布入口,340,160,True,True,available,图片自带文字，不重复覆盖相同文字
+104,Group_924@2x.png,钱包余额底板,712,200,True,False,available,按原稿使用；原文件保持不变
+105,Login@2x.png,Profile 装饰标题,300,104,True,True,available,图片自带文字，不重复覆盖相同文字
+106,Mask_group@2x(1).png,AI 美食师主插画,260,290,True,True,available,帽子含 YIMENG；角色名与品牌名区分，不自动改成 Tati
+107,Mask_group@2x(2).png,客服主插画,280,280,True,False,available,按原稿使用；原文件保持不变
+108,Mask_group@2x.png,排行榜整屏背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+109,Rectangle_1106@2x.png,香水瓶礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+110,Rectangle_1107@2x.png,饮料杯礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+111,Rectangle_1108@2x.png,蛋糕礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+112,Rectangle_1113@2x.png,礼盒礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+113,Rectangle_1114@2x.png,耳机礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+114,Rectangle_1115@2x.png,汽车礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+115,Rectangle_1116@2x.png,皇冠礼物,140,140,True,False,available,按原稿使用；原文件保持不变
+116,Rectangle_1276@2x.png,黄色标签底板,72,28,True,False,available,按原稿使用；原文件保持不变
+117,Rectangle_1284@2x(1).png,蓝色舞台缩略图,220,260,True,False,available,仅作背景选择缩略图；进入房间使用对应 780x1688 原图
+118,Rectangle_1284@2x.png,签到选中卡底板,168,200,True,False,available,按原稿使用；原文件保持不变
+119,Rectangle_1286@2x.png,礼物舞台缩略图,220,260,True,False,available,仅作背景选择缩略图；进入房间使用对应 780x1688 原图
+120,Rectangle_1288@2x.png,紫色舞台缩略图,220,260,True,False,available,仅作背景选择缩略图；进入房间使用对应 780x1688 原图
+121,Rectangle_1346@2x.png,橄榄绿标签底板,86,40,True,False,available,按原稿使用；原文件保持不变
+122,Rectangle_1351@2x.png,签到默认卡底板,168,200,True,False,available,按原稿使用；原文件保持不变
+123,Rectangle_1352@2x.png,灰色标签底板,86,40,True,False,available,按原稿使用；原文件保持不变
+124,Rectangle_1418@2x.png,鲜黄绿整屏背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+125,Rectangle_1513@2x.png,蓝色舞台全尺寸背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+126,Rectangle_1514@2x.png,礼物舞台全尺寸背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+127,Rectangle_1515@2x.png,紫色舞台全尺寸背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+128,Rectangle_1549@2x.png,黄色标签短底板,72,22,True,False,available,按原稿使用；原文件保持不变
+129,Rectangle_1564@2x.png,紫色飘带语音房背景,780,1688,False,False,available,按原稿使用；原文件保持不变
+130,Rectangle_469@2x.png,橄榄绿胶囊底板,132,52,True,False,available,按原稿使用；原文件保持不变
+131,Rectangle_748@2x.png,充值档位浅绿底板,200,240,True,False,available,按原稿使用；原文件保持不变
+132,Vector_77@2x.png,渐变描边信息底板,734,204,True,False,available,按原稿使用；原文件保持不变
+133,image_194@2x.png,资料图片占位图,120,120,True,False,available,按原稿使用；原文件保持不变
+134,image_375@2x.png,美食火焰插画,52,52,True,False,available,按原稿使用；原文件保持不变
+135,image_756@2x.png,充值礼物主插画,200,200,True,False,available,按原稿使用；原文件保持不变
+136,image_811@2x.png,搜索放大镜,72,80,True,False,available,按原稿使用；原文件保持不变
+137,image_817@2x.png,VS 对战标识,240,230,True,False,available,按原稿使用；原文件保持不变
+138,image_821@2x.png,金币小图,44,44,True,False,available,按原稿使用；原文件保持不变
+139,image_834@2x.png,金币大图,64,64,True,False,available,按原稿使用；原文件保持不变
+140,image_835@2x.png,火焰横幅无字版,200,68,True,False,available,按原稿使用；原文件保持不变
+141,image_845@2x.png,通用确认弹窗底板,640,462,True,False,available,按原稿使用；原文件保持不变
+142,image_850@2x.png,钱包金币礼物堆,300,178,True,False,available,按原稿使用；原文件保持不变
+143,image_853@2x.png,房主装饰头像框,200,200,True,False,available,按原稿使用；原文件保持不变
+144,image_859@2x.png,Meet 小图标,200,200,True,True,text-adaptation-needed,含 Meet；App Icon 品牌需适配 Tati
+145,美食直播logo@2x.png,Meet 2048 品牌原图,2048,2048,False,True,text-adaptation-needed,含 Meet；保留角色原画，仅品牌文字适配 Tati

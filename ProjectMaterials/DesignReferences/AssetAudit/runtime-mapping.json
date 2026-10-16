@@ -1,0 +1,578 @@
+[
+  {
+    "name": "chef-avatar",
+    "source": "ProjectMaterials/UIAssets/Ellipse_75@2x.png"
+  },
+  {
+    "name": "trophy",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(13).png"
+  },
+  {
+    "name": "more",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(18).png"
+  },
+  {
+    "name": "close",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(19).png"
+  },
+  {
+    "name": "add-circle",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(22).png"
+  },
+  {
+    "name": "chevron",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(29).png"
+  },
+  {
+    "name": "dropdown",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(32).png"
+  },
+  {
+    "name": "check-pink",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(35).png"
+  },
+  {
+    "name": "paw",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(36).png"
+  },
+  {
+    "name": "toggle-on",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(37).png"
+  },
+  {
+    "name": "remove",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(38).png"
+  },
+  {
+    "name": "add",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(39).png"
+  },
+  {
+    "name": "add-photo",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(40).png"
+  },
+  {
+    "name": "add-video",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(41).png"
+  },
+  {
+    "name": "music-disc",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(45).png"
+  },
+  {
+    "name": "publish",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(48).png"
+  },
+  {
+    "name": "back",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(53).png"
+  },
+  {
+    "name": "close-light",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(55).png"
+  },
+  {
+    "name": "email",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(56).png"
+  },
+  {
+    "name": "like-video",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(57).png"
+  },
+  {
+    "name": "layout-seat",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(6).png"
+  },
+  {
+    "name": "follow-small",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(61).png"
+  },
+  {
+    "name": "check",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(62).png"
+  },
+  {
+    "name": "heart",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(65).png"
+  },
+  {
+    "name": "settings",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(66).png"
+  },
+  {
+    "name": "globe",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(67).png"
+  },
+  {
+    "name": "bio",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(68).png"
+  },
+  {
+    "name": "tag",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(69).png"
+  },
+  {
+    "name": "blacklist",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(70).png"
+  },
+  {
+    "name": "chevron-light",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(71).png"
+  },
+  {
+    "name": "level",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(72).png"
+  },
+  {
+    "name": "support",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(73).png"
+  },
+  {
+    "name": "invite",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(74).png"
+  },
+  {
+    "name": "feedback",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(75).png"
+  },
+  {
+    "name": "backpack",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(76).png"
+  },
+  {
+    "name": "play-small",
+    "source": "ProjectMaterials/UIAssets/Frame@2x(77).png"
+  },
+  {
+    "name": "selected",
+    "source": "ProjectMaterials/UIAssets/Group_1040@2x.png"
+  },
+  {
+    "name": "profile-button",
+    "source": "ProjectMaterials/UIAssets/Group_1062@2x.png"
+  },
+  {
+    "name": "filter",
+    "source": "ProjectMaterials/UIAssets/Group_1086@2x.png"
+  },
+  {
+    "name": "invite-button",
+    "source": "ProjectMaterials/UIAssets/Group_1094@2x.png"
+  },
+  {
+    "name": "change-video",
+    "source": "ProjectMaterials/UIAssets/Group_1095@2x.png"
+  },
+  {
+    "name": "live-pink",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x(1).png"
+  },
+  {
+    "name": "live-blue",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x(2).png"
+  },
+  {
+    "name": "live-light-pink",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x(3).png"
+  },
+  {
+    "name": "live-coral",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x(4).png"
+  },
+  {
+    "name": "live-green",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x(5).png"
+  },
+  {
+    "name": "live-purple",
+    "source": "ProjectMaterials/UIAssets/Group_1136@2x.png"
+  },
+  {
+    "name": "male",
+    "source": "ProjectMaterials/UIAssets/Group_1138@2x.png"
+  },
+  {
+    "name": "female",
+    "source": "ProjectMaterials/UIAssets/Group_1141@2x.png"
+  },
+  {
+    "name": "category-italian",
+    "source": "ProjectMaterials/UIAssets/Group_1152@2x.png"
+  },
+  {
+    "name": "category-sushi",
+    "source": "ProjectMaterials/UIAssets/Group_1153@2x.png"
+  },
+  {
+    "name": "category-street",
+    "source": "ProjectMaterials/UIAssets/Group_1154@2x.png"
+  },
+  {
+    "name": "category-dessert",
+    "source": "ProjectMaterials/UIAssets/Group_1155@2x.png"
+  },
+  {
+    "name": "category-healthy",
+    "source": "ProjectMaterials/UIAssets/Group_1156@2x.png"
+  },
+  {
+    "name": "category-bbq",
+    "source": "ProjectMaterials/UIAssets/Group_1157@2x.png"
+  },
+  {
+    "name": "tool-mic",
+    "source": "ProjectMaterials/UIAssets/Group_1172@2x.png"
+  },
+  {
+    "name": "page-background",
+    "source": "ProjectMaterials/UIAssets/Group_1182@2x.png"
+  },
+  {
+    "name": "rank-entry",
+    "source": "ProjectMaterials/UIAssets/Group_1212@2x.png"
+  },
+  {
+    "name": "recharge-banner",
+    "source": "ProjectMaterials/UIAssets/Group_1213@2x.png"
+  },
+  {
+    "name": "chat-heading",
+    "source": "ProjectMaterials/UIAssets/Group_1214@2x.png"
+  },
+  {
+    "name": "topic-banner",
+    "source": "ProjectMaterials/UIAssets/Group_1215@2x.png"
+  },
+  {
+    "name": "hot-room",
+    "source": "ProjectMaterials/UIAssets/Group_1216@2x.png"
+  },
+  {
+    "name": "go-live",
+    "source": "ProjectMaterials/UIAssets/Group_1217@2x.png"
+  },
+  {
+    "name": "video-heading",
+    "source": "ProjectMaterials/UIAssets/Group_1218@2x.png"
+  },
+  {
+    "name": "checkin-entry",
+    "source": "ProjectMaterials/UIAssets/Group_1219@2x.png"
+  },
+  {
+    "name": "wallet-entry",
+    "source": "ProjectMaterials/UIAssets/Group_1221@2x.png"
+  },
+  {
+    "name": "level-card",
+    "source": "ProjectMaterials/UIAssets/Group_1223@2x.png"
+  },
+  {
+    "name": "support-banner",
+    "source": "ProjectMaterials/UIAssets/Group_1224@2x.png"
+  },
+  {
+    "name": "report-button",
+    "source": "ProjectMaterials/UIAssets/Group_135@2x.png"
+  },
+  {
+    "name": "block-button",
+    "source": "ProjectMaterials/UIAssets/Group_136@2x.png"
+  },
+  {
+    "name": "home-on",
+    "source": "ProjectMaterials/UIAssets/Group_146@2x(1).png"
+  },
+  {
+    "name": "home-off",
+    "source": "ProjectMaterials/UIAssets/Group_146@2x.png"
+  },
+  {
+    "name": "room-on",
+    "source": "ProjectMaterials/UIAssets/Group_151@2x(1).png"
+  },
+  {
+    "name": "room-off",
+    "source": "ProjectMaterials/UIAssets/Group_151@2x.png"
+  },
+  {
+    "name": "me-on",
+    "source": "ProjectMaterials/UIAssets/Group_152@2x(1).png"
+  },
+  {
+    "name": "me-off",
+    "source": "ProjectMaterials/UIAssets/Group_152@2x.png"
+  },
+  {
+    "name": "video-on",
+    "source": "ProjectMaterials/UIAssets/Group_153@2x(1).png"
+  },
+  {
+    "name": "video-off",
+    "source": "ProjectMaterials/UIAssets/Group_153@2x.png"
+  },
+  {
+    "name": "ai-on",
+    "source": "ProjectMaterials/UIAssets/Group_154@2x.png"
+  },
+  {
+    "name": "ai-off",
+    "source": "ProjectMaterials/UIAssets/Group_155@2x.png"
+  },
+  {
+    "name": "tool-layout",
+    "source": "ProjectMaterials/UIAssets/Group_50@2x.png"
+  },
+  {
+    "name": "follow-button",
+    "source": "ProjectMaterials/UIAssets/Group_559@2x.png"
+  },
+  {
+    "name": "chat-button",
+    "source": "ProjectMaterials/UIAssets/Group_560@2x.png"
+  },
+  {
+    "name": "followed-button",
+    "source": "ProjectMaterials/UIAssets/Group_561@2x.png"
+  },
+  {
+    "name": "support-avatar",
+    "source": "ProjectMaterials/UIAssets/Group_672@2x.png"
+  },
+  {
+    "name": "gift-balloons",
+    "source": "ProjectMaterials/UIAssets/Group_673@2x.png"
+  },
+  {
+    "name": "tool-music",
+    "source": "ProjectMaterials/UIAssets/Group_674@2x.png"
+  },
+  {
+    "name": "gift-live",
+    "source": "ProjectMaterials/UIAssets/Group_782@2x(2).png"
+  },
+  {
+    "name": "gift-chat",
+    "source": "ProjectMaterials/UIAssets/Group_782@2x(3).png"
+  },
+  {
+    "name": "gift-button",
+    "source": "ProjectMaterials/UIAssets/Group_782@2x.png"
+  },
+  {
+    "name": "mic-small",
+    "source": "ProjectMaterials/UIAssets/Group_840@2x(1).png"
+  },
+  {
+    "name": "mic-muted",
+    "source": "ProjectMaterials/UIAssets/Group_842@2x(3).png"
+  },
+  {
+    "name": "tool-leave",
+    "source": "ProjectMaterials/UIAssets/Group_849@2x.png"
+  },
+  {
+    "name": "tool-invite",
+    "source": "ProjectMaterials/UIAssets/Group_850@2x.png"
+  },
+  {
+    "name": "tool-background",
+    "source": "ProjectMaterials/UIAssets/Group_851@2x.png"
+  },
+  {
+    "name": "chat-mic",
+    "source": "ProjectMaterials/UIAssets/Group_904@2x(2).png"
+  },
+  {
+    "name": "chat-photo",
+    "source": "ProjectMaterials/UIAssets/Group_905@2x(2).png"
+  },
+  {
+    "name": "chat-speaker",
+    "source": "ProjectMaterials/UIAssets/Group_906@2x.png"
+  },
+  {
+    "name": "post-video",
+    "source": "ProjectMaterials/UIAssets/Group_910@2x.png"
+  },
+  {
+    "name": "wallet-card",
+    "source": "ProjectMaterials/UIAssets/Group_924@2x.png"
+  },
+  {
+    "name": "profile-heading",
+    "source": "ProjectMaterials/UIAssets/Login@2x.png"
+  },
+  {
+    "name": "chef",
+    "source": "ProjectMaterials/UIAssets/Mask_group@2x(1).png"
+  },
+  {
+    "name": "support-mascot",
+    "source": "ProjectMaterials/UIAssets/Mask_group@2x(2).png"
+  },
+  {
+    "name": "rank-background",
+    "source": "ProjectMaterials/UIAssets/Mask_group@2x.png"
+  },
+  {
+    "name": "gift-peach",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1106@2x.png"
+  },
+  {
+    "name": "gift-drink",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1107@2x.png"
+  },
+  {
+    "name": "gift-cake",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1108@2x.png"
+  },
+  {
+    "name": "gift-box",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1113@2x.png"
+  },
+  {
+    "name": "gift-headphones",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1114@2x.png"
+  },
+  {
+    "name": "gift-car",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1115@2x.png"
+  },
+  {
+    "name": "gift-crown",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1116@2x.png"
+  },
+  {
+    "name": "label-yellow",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1276@2x.png"
+  },
+  {
+    "name": "stage-blue-thumb",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1284@2x(1).png"
+  },
+  {
+    "name": "day-selected",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1284@2x.png"
+  },
+  {
+    "name": "stage-gifts-thumb",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1286@2x.png"
+  },
+  {
+    "name": "stage-purple-thumb",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1288@2x.png"
+  },
+  {
+    "name": "label-olive",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1346@2x.png"
+  },
+  {
+    "name": "day-default",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1351@2x.png"
+  },
+  {
+    "name": "label-gray",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1352@2x.png"
+  },
+  {
+    "name": "bright-background",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1418@2x.png"
+  },
+  {
+    "name": "stage-blue",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1513@2x.png"
+  },
+  {
+    "name": "stage-gifts",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1514@2x.png"
+  },
+  {
+    "name": "stage-purple",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1515@2x.png"
+  },
+  {
+    "name": "small-pill",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1549@2x.png"
+  },
+  {
+    "name": "stage-confetti",
+    "source": "ProjectMaterials/UIAssets/Rectangle_1564@2x.png"
+  },
+  {
+    "name": "price-pill",
+    "source": "ProjectMaterials/UIAssets/Rectangle_469@2x.png"
+  },
+  {
+    "name": "coin-pack-card",
+    "source": "ProjectMaterials/UIAssets/Rectangle_748@2x.png"
+  },
+  {
+    "name": "outlined-card",
+    "source": "ProjectMaterials/UIAssets/Vector_77@2x.png"
+  },
+  {
+    "name": "media-placeholder",
+    "source": "ProjectMaterials/UIAssets/image_194@2x.png"
+  },
+  {
+    "name": "food-flame",
+    "source": "ProjectMaterials/UIAssets/image_375@2x.png"
+  },
+  {
+    "name": "gift-hero",
+    "source": "ProjectMaterials/UIAssets/image_756@2x.png"
+  },
+  {
+    "name": "search",
+    "source": "ProjectMaterials/UIAssets/image_811@2x.png"
+  },
+  {
+    "name": "versus",
+    "source": "ProjectMaterials/UIAssets/image_817@2x.png"
+  },
+  {
+    "name": "coin-small",
+    "source": "ProjectMaterials/UIAssets/image_821@2x.png"
+  },
+  {
+    "name": "coin",
+    "source": "ProjectMaterials/UIAssets/image_834@2x.png"
+  },
+  {
+    "name": "hot-room-blank",
+    "source": "ProjectMaterials/UIAssets/image_835@2x.png"
+  },
+  {
+    "name": "dialog-card",
+    "source": "ProjectMaterials/UIAssets/image_845@2x.png"
+  },
+  {
+    "name": "coin-pile",
+    "source": "ProjectMaterials/UIAssets/image_850@2x.png"
+  },
+  {
+    "name": "host-frame",
+    "source": "ProjectMaterials/UIAssets/image_853@2x.png"
+  },
+  {
+    "name": "brand-heading",
+    "source": "ProjectMaterials/GeneratedUI/brand-heading.png"
+  },
+  {
+    "name": "welcome",
+    "source": "ProjectMaterials/GeneratedUI/welcome.png"
+  },
+  {
+    "name": "checkin",
+    "source": "ProjectMaterials/GeneratedUI/checkin.png"
+  },
+  {
+    "name": "brand-icon",
+    "source": "ProjectMaterials/GeneratedUI/brand-icon.png"
+  },
+  {
+    "name": "missing-icons",
+    "source": "ProjectMaterials/GeneratedUI/missing-icons.png"
+  }
+]

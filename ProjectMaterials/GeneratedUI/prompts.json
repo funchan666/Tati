@@ -1,0 +1,31 @@
+{
+  "mode": "Host-Native imagegen",
+  "edits": [
+    [
+      "brand-icon",
+      "美食直播logo@2x.png",
+      "Edit only the word Meet to exactly Tati (capital T, lower case ati), keeping its original glossy inflated cream lettering style, olive extruded shadows, position, tilt and scale. Preserve the supplied cute cream mascot face, lime yellow background, stars, all other art and composition. Square full bleed iOS App Icon. No new artwork. Output opaque.",
+      false
+    ],
+    [
+      "welcome",
+      "Group_1210@2x.png",
+      "Make a very precise local text edit: replace Foodie World with Tati in exactly the same dark heavy serif style and original title position. Keep the subtitle Live streams for food lovers. Keep every breakfast illustration, placement, background, color and empty space unchanged. Preserve portrait aspect ratio. Output opaque.",
+      false
+    ],
+    [
+      "brand-heading",
+      "Group_1211@2x.png",
+      "Edit only the word Foodie to exactly Tati, preserving its chunky yellow serif lettering, dark olive outline and dimensional shadow, and keep the tiny orange chef mascot at its right. Transparent background. No other words. Preserve wide banner composition and existing art.",
+      true
+    ],
+    [
+      "checkin",
+      "Group_1222@2x.png",
+      "Precise text-only edit: replace Review preview - no reward is granted with exactly Local rewards for your daily visit. Keep Check in daily title unchanged. Preserve every other pixel appearance: lime yellow sunburst background, calendar, gift, coins, decorations and original landscape layout. No additional objects.",
+      false
+    ]
+  ],
+  "missingIcons": "Generate a single production icon atlas for the Tati iOS food social app. Transparent PNG, exactly 3 columns by 2 rows, rectangular landscape 3:2, SIX evenly spaced equal SQUARE cells, absolutely NO labels, NO text, NO cell borders. Each icon fits within central 60 percent of its cell. White bold simple silhouettes with gently rounded corners, custom drawn to match a playful lime green/hot pink app, flat original art not stock icon font. Row 1: paper plane send pointing upper right; two pause bars; rounded speech bubble with tiny tail. Row 2: eye outline with solid pupil; OFF toggle (muted olive grey pill with white circular knob on LEFT); white right-pointing play triangle inside a translucent pale circular button. White icons must retain real alpha, no black fill or checkerboard background. Consistent crisp thickness. Exact cell centers at x=1/6, 1/2, 5/6 of width and y=1/4, 3/4 of height.",
+  "notes": "Final atlas iteration uses dark olive flat icons, same six-cell arrangement. Original files are unchanged."
+}
