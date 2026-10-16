@@ -19,8 +19,8 @@ targets:
       - path: Tati
         excludes:
           - Resources
-    resources:
       - path: Tati/Resources
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tati.app
@@ -30,12 +30,16 @@ targets:
       path: Tati/Info.plist
       properties:
         CFBundleDisplayName: Tati
-        UILaunchScreen: {}
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UILaunchStoryboardName: LaunchScreen
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIUserInterfaceStyle: Light
         UIApplicationSupportsIndirectInputEvents: true
         NSCameraUsageDescription: Tati uses the camera when you choose to preview your own live session.
-        NSMicrophoneUsageDescription: Tati uses the microphone only when you choose to join a voice session.
+        NSMicrophoneUsageDescription: Tati checks microphone permission only when you choose the microphone permission control.
         NSPhotoLibraryUsageDescription: Choose your own profile photos and food videos for Tati.
 schemes:
   Tati:

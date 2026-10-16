@@ -1,0 +1,92 @@
+{
+  "status": "pending-user-media",
+  "people": [
+    {
+      "id": "creator-luna",
+      "avatar": "ContentImages/creator-luna-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-luna-profile.jpg"
+    },
+    {
+      "id": "creator-chloe",
+      "avatar": "ContentImages/creator-chloe-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-chloe-profile.jpg"
+    },
+    {
+      "id": "creator-maria",
+      "avatar": "ContentImages/creator-maria-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-maria-profile.jpg"
+    },
+    {
+      "id": "creator-elowen",
+      "avatar": "ContentImages/creator-elowen-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-elowen-profile.jpg"
+    },
+    {
+      "id": "creator-seraphina",
+      "avatar": "ContentImages/creator-seraphina-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-seraphina-profile.jpg"
+    },
+    {
+      "id": "creator-andre",
+      "avatar": "ContentImages/creator-andre-avatar.jpg",
+      "profilePhoto": "ContentImages/creator-andre-profile.jpg"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "pasta-table",
+      "cover": "ContentImages/pasta-table-cover.jpg"
+    },
+    {
+      "id": "street-bites",
+      "cover": "ContentImages/street-bites-cover.jpg"
+    },
+    {
+      "id": "kitchen-stories",
+      "cover": "ContentImages/kitchen-stories-cover.jpg"
+    },
+    {
+      "id": "sweet-evening",
+      "cover": "ContentImages/sweet-evening-cover.jpg"
+    },
+    {
+      "id": "dinner-conversation",
+      "cover": "ContentImages/dinner-conversation-cover.jpg"
+    },
+    {
+      "id": "dessert-club",
+      "cover": "ContentImages/dessert-club-cover.jpg"
+    },
+    {
+      "id": "market-table",
+      "cover": "ContentImages/market-table-cover.jpg"
+    },
+    {
+      "id": "weekend-bbq",
+      "cover": "ContentImages/weekend-bbq-cover.jpg"
+    }
+  ],
+  "videos": [
+    {
+      "id": "sample-clip-0",
+      "file": "ContentVideos/sample-clip-0.mp4",
+      "cover": "ContentImages/sample-clip-0-cover.jpg"
+    },
+    {
+      "id": "sample-clip-1",
+      "file": "ContentVideos/sample-clip-1.mp4",
+      "cover": "ContentImages/sample-clip-1-cover.jpg"
+    },
+    {
+      "id": "sample-clip-2",
+      "file": "ContentVideos/sample-clip-2.mp4",
+      "cover": "ContentImages/sample-clip-2-cover.jpg"
+    },
+    {
+      "id": "sample-clip-3",
+      "file": "ContentVideos/sample-clip-3.mp4",
+      "cover": "ContentImages/sample-clip-3-cover.jpg"
+    }
+  ],
+  "note": "Recommended file names only. No media is included or synthesized. Map and import supplied files explicitly before runtime use."
+}

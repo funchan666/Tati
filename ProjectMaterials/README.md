@@ -10,3 +10,9 @@
 
 素材可以分批补充。未提供的人物图片和视频不从网络随机下载；内容占位统一管理。
 
+
+## 已实施
+
+Tati 原生工程已建立。UI 副本由 Scripts/import_assets.py 按 runtime-mapping.json 导入。GeneratedUI 保存 Tati 品牌文字局部适配和缺失图标补充；不修改 UIAssets 原图。
+
+人物和视频的建议命名及归属见 content-slots.json。仍可使用你原来的文件名，只需补充与角色/房间的对应关系。放入原始素材目录后还需要显式导入，不会将目录整体打包。

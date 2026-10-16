@@ -61,7 +61,7 @@ final class VisitorStore: ObservableObject {
     }
     func deleteVisitor() {
         confirm("Delete local profile?", "This removes this guest profile, local photos, videos, drafts and rewards from this device. There is no server account to delete.", button: "Delete", destructive: true) {
-            let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName)
+            let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName) + self.account.reports.compactMap(\.imageFile) + Array((self.account.draftImages ?? [:]).values)
             guard self.change({ $0 = LocalAccount() }) else { return }
             var cleanupFailed = false
             for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {
@@ -89,12 +89,13 @@ final class VisitorStore: ObservableObject {
         formatter.dateFormat = "yyyy-MM-dd"; return formatter.string(from: Date())
     }
     var checkedIn: Bool { account.claimedDays.contains(dayKey) }
+    var nextCheckInReward: Int { (account.claimedDays.count % 8 + 1) * 10 }
     func checkIn() {
         let day = dayKey
         guard !account.claimedDays.contains(day) else { return }
-        let reward = 50
+        let reward = nextCheckInReward
         if change({ $0.claimedDays.insert(day); $0.demoCoins += reward }) {
-            tell("A delicious little reward", "50 demo coins saved on this device. They can be used to preview gifts. They have no cash value.")
+            tell("A delicious little reward", "\(reward) demo coins saved on this device. They can be used to preview gifts. They have no cash value.")
         }
     }
     func previewGift(_ gift: FoodGift, quantity: Int, recipient: String) -> Bool {
@@ -113,8 +114,36 @@ final class VisitorStore: ObservableObject {
         if account.blocked.contains(recipient) { tell("Profile blocked", "Unblock this profile before messaging."); return }
         tell("Not sent", "Messaging requires a connected service and mutual follows. Sample profiles cannot receive messages. Your text is saved as a local draft.")
     }
-    func saveReport(subject: String, reason: String, details: String) -> Bool {
-        change { $0.reports.append(ReportDraft(subjectID: subject, reason: reason, details: details)) }
+    func saveReport(subject: String, reason: String, details: String, imageFile: String? = nil) -> Bool {
+        change { $0.reports.append(ReportDraft(subjectID: subject, reason: reason, details: details, imageFile: imageFile)) }
+    }
+    func removeReport(_ report: ReportDraft) {
+        if change({ $0.reports.removeAll { $0.id == report.id } }), let file = report.imageFile { removeUnusedMedia(file) }
+    }
+    func removeUnusedMedia(_ file: String) {
+        guard storageFailure == nil else { return }
+        let referenced = [account.profile.avatarFile, account.profile.coverFile].compactMap { $0 }
+            + account.clips.compactMap(\.fileName) + account.reports.compactMap(\.imageFile)
+            + Array((account.draftImages ?? [:]).values)
+        guard !referenced.contains(file) else { return }
+        if FileManager.default.fileExists(atPath: mediaURL(file).path) {
+            do { try FileManager.default.removeItem(at: mediaURL(file)) }
+            catch { tell("Media cleanup incomplete", "The record was removed, but its unused file could not be erased from device storage.") }
+        }
+    }
+    func saveDraftImage(_ data: Data?, key: String) -> Bool {
+        let old = account.draftImages?[key]
+        var imported: String?
+        do {
+            if let data { imported = try importImage(data) }
+            guard change({ value in
+                var images = value.draftImages ?? [:]
+                images[key] = imported
+                value.draftImages = images
+            }) else { if let imported { removeUnusedMedia(imported) }; return false }
+            if let old { removeUnusedMedia(old) }
+            return true
+        } catch { tell("Photo unavailable", "Choose a supported photo smaller than 25 MB. Your draft has been kept."); return false }
     }
     func mediaURL(_ file: String) -> URL { mediaDirectory.appendingPathComponent(URL(fileURLWithPath: file).lastPathComponent) }
     func importImage(_ data: Data) throws -> String {

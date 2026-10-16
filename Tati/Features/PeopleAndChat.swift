@@ -131,6 +131,8 @@ struct EditProfileView: View {
     @State private var coverItem: PhotosPickerItem?
     @State private var avatarData: Data?
     @State private var coverData: Data?
+    @State private var removeAvatar = false
+    @State private var removeCover = false
     @State private var loadingAvatar = false
     @State private var loadingCover = false
     private var loading: Bool { loadingAvatar || loadingCover }
@@ -138,25 +140,29 @@ struct EditProfileView: View {
         TatiPage(title: "Edit profile") {
             PhotosPicker(selection: $coverItem, matching: .images) {
                 Group {
-                    if let image = preview(coverData, store.account.profile.coverFile) { Image(uiImage: image).resizable().scaledToFill().frame(height: 190).clipped() }
+                    if let image = preview(coverData, removeCover ? nil : store.account.profile.coverFile) { Image(uiImage: image).resizable().scaledToFill().frame(height: 190).clipped() }
                     else { MediaPlaceholder(title: "Change the background image", height: 190) }
                 }.clipShape(RoundedRectangle(cornerRadius: 20))
             }.buttonStyle(.plain)
             PhotosPicker(selection: $avatarItem, matching: .images) {
                 HStack {
-                    if let image = preview(avatarData, store.account.profile.avatarFile) { Image(uiImage: image).resizable().scaledToFill().frame(width: 66, height: 66).clipShape(Circle()) }
+                    if let image = preview(avatarData, removeAvatar ? nil : store.account.profile.avatarFile) { Image(uiImage: image).resizable().scaledToFill().frame(width: 66, height: 66).clipShape(Circle()) }
                     else { Avatar(size: 66) }
                     Text("Change avatar").font(.headline)
                 }
             }.buttonStyle(.plain)
+            HStack {
+                if avatarData != nil || (!removeAvatar && store.account.profile.avatarFile != nil) { TatiButton(title: "Remove avatar", secondary: true) { avatarData = nil; avatarItem = nil; removeAvatar = true } }
+                if coverData != nil || (!removeCover && store.account.profile.coverFile != nil) { TatiButton(title: "Remove cover", secondary: true) { coverData = nil; coverItem = nil; removeCover = true } }
+            }
             InputField(title: "Name", text: $name).onChange(of: name) { _, value in name = String(value.prefix(32)) }
             InputField(title: "About you", text: $bio, multiline: true).onChange(of: bio) { _, value in bio = String(value.prefix(200)) }
             InputField(title: "Country / region (optional)", text: $country)
             ChoiceGrid(items: Array(FoodCatalog.topics.dropFirst()), selected: $interest)
             TatiButton(title: loading ? "Loading photo…" : "Save", enabled: !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !loading) { save() }
         }.onAppear { name = store.account.profile.name; bio = store.account.profile.bio; country = store.account.profile.country; interest = store.account.profile.interest }
-        .task(id: avatarItem) { guard let avatarItem else { return }; loadingAvatar = true; defer { loadingAvatar = false }; do { let data = try await avatarItem.loadTransferable(type: Data.self); guard !Task.isCancelled else { return }; avatarData = data } catch { store.tell("Photo unavailable", "Please choose another photo. Your other edits are still here.") } }
-        .task(id: coverItem) { guard let coverItem else { return }; loadingCover = true; defer { loadingCover = false }; do { let data = try await coverItem.loadTransferable(type: Data.self); guard !Task.isCancelled else { return }; coverData = data } catch { store.tell("Photo unavailable", "Please choose another cover. Your other edits are still here.") } }
+        .task(id: avatarItem) { guard let avatarItem else { return }; loadingAvatar = true; defer { loadingAvatar = false }; do { let data = try await avatarItem.loadTransferable(type: Data.self); guard !Task.isCancelled else { return }; avatarData = data; removeAvatar = false } catch { store.tell("Photo unavailable", "Please choose another photo. Your other edits are still here.") } }
+        .task(id: coverItem) { guard let coverItem else { return }; loadingCover = true; defer { loadingCover = false }; do { let data = try await coverItem.loadTransferable(type: Data.self); guard !Task.isCancelled else { return }; coverData = data; removeCover = false } catch { store.tell("Photo unavailable", "Please choose another cover. Your other edits are still here.") } }
     }
     private func preview(_ data: Data?, _ file: String?) -> UIImage? {
         if let data { return UIImage(data: data) }
@@ -169,6 +175,8 @@ struct EditProfileView: View {
             var profile = store.account.profile
             let old = [profile.avatarFile, profile.coverFile].compactMap { $0 }
             profile.name = name.trimmingCharacters(in: .whitespacesAndNewlines); profile.bio = bio; profile.interest = interest; profile.country = country
+            if removeAvatar { profile.avatarFile = nil }
+            if removeCover { profile.coverFile = nil }
             if let avatarData { let file = try store.importImage(avatarData); newFiles.append(file); profile.avatarFile = file }
             if let coverData { let file = try store.importImage(coverData); newFiles.append(file); profile.coverFile = file }
             if store.change({ $0.profile = profile }) {
@@ -202,13 +210,14 @@ struct ConversationView: View {
                 }.padding(20)
             }
             VStack(spacing: 12) {
+                DraftPhotoAttachment(draftKey: person.id)
                 HStack {
                     TextField("Say hi…", text: $text, axis: .vertical).lineLimit(1...5).padding(14).background(Color.tatiPink.opacity(0.22)).clipShape(RoundedRectangle(cornerRadius: 22))
                     Button { store.attemptMessage(to: person.id, text: text) } label: { SupplementIcon(icon: .send).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Send message")
                 }
                 HStack {
                     ArtButton(asset: "chat-mic", label: "Voice message", size: 35) { store.tell("Voice messaging unavailable", "A connected messaging service and mutual follows are required. No recording was started.") }
-                    ArtButton(asset: "chat-photo", label: "Photo message", size: 35) { store.tell("Photo messaging unavailable", "A connected messaging service and mutual follows are required. Your photos have not been accessed or sent.") }
+                    ArtButton(asset: "chat-speaker", label: "Voice call", size: 35) { store.tell("Voice call unavailable", "Voice calls require mutual follows and a connected calling service. No call has been placed.") }
                     ArtButton(asset: "add-video", label: "Video call", size: 35) { store.tell("Video call unavailable", "Video calls require mutual follows and a connected calling service. No call has been placed.") }
                     Spacer()
                     ArtButton(asset: "gift-chat", label: "Gifts", size: 35) { gifts = true }
@@ -235,6 +244,13 @@ struct FoodExpertView: View {
                     Button { question = prompt } label: { HStack { Text(prompt).font(.subheadline).multilineTextAlignment(.leading); Spacer(); Art(name: "food-flame", width: 22) }.padding(14).background(Color.tatiLime.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 14)) }.buttonStyle(.plain)
                 }
                 Note(text: "The AI service isn't connected yet. Suggested questions are prompts, not generated answers.")
+                if let saved = store.account.drafts["food-expert"], !saved.isEmpty {
+                    HStack(alignment: .top) {
+                        Spacer(minLength: 20)
+                        VStack(alignment: .leading, spacing: 8) { Text(saved).font(.subheadline); Text("Saved question · not sent").font(.caption2.bold()) }.padding(16).background(Color.tatiOlive).foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 18))
+                        Avatar(file: store.account.profile.avatarFile, size: 34, isCurrent: true)
+                    }
+                }
                 InputField(title: "Ask about food", text: $question, multiline: true)
                 TatiButton(title: "Ask Tati", enabled: !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                     if store.saveDraft("food-expert", text: question) { store.tell("Question saved", "AI is not connected yet. Your question has been saved as a local draft; no answer was generated.") }

@@ -16,29 +16,30 @@ struct ImportedMovie: Transferable {
 @MainActor final class ClipPlayback: ObservableObject {
     @Published private(set) var player: AVPlayer?
     @Published private(set) var activeID: String?
+    @Published private(set) var ownerID: String?
     @Published private(set) var playing = false
     @Published private(set) var failure: String?
     private var statusObserver: NSKeyValueObservation?
     private var failedObserver: NSObjectProtocol?
     private var endedObserver: NSObjectProtocol?
-    func load(id: String, url: URL) throws {
+    func load(id: String, url: URL, owner: String) throws {
         stop()
         guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
         let item = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: item); activeID = id
+        player = AVPlayer(playerItem: item); activeID = id; ownerID = owner
         statusObserver = item.observe(\.status, options: [.initial, .new]) { [weak self] item, _ in
             guard item.status == .failed else { return }
             Task { @MainActor in
-                guard self?.activeID == id else { return }
+                guard self?.activeID == id, self?.ownerID == owner else { return }
                 self?.player?.pause(); self?.playing = false
                 self?.failure = "This video cannot be played. Please import another supported file."
             }
         }
         failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.activeID == id else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
+            Task { @MainActor in guard self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
         }
         endedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in self?.playing = false; self?.player?.seek(to: .zero) }
+            Task { @MainActor in guard self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.player?.seek(to: .zero) }
         }
     }
     func toggle() {
@@ -46,7 +47,7 @@ struct ImportedMovie: Transferable {
         if playing { player.pause(); playing = false } else { player.play(); playing = true }
     }
     func stop() {
-        player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; playing = false
+        player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; ownerID = nil; playing = false
         if let endedObserver { NotificationCenter.default.removeObserver(endedObserver) }
         endedObserver = nil
         if let failedObserver { NotificationCenter.default.removeObserver(failedObserver) }
@@ -102,4 +103,26 @@ struct CameraSurface: UIViewRepresentable {
     func makeUIView(context: Context) -> CameraLayerView { let view = CameraLayerView(); view.cameraLayer.videoGravity = .resizeAspectFill; view.cameraLayer.session = session; return view }
     func updateUIView(_ view: CameraLayerView, context: Context) {}
     static func dismantleUIView(_ view: CameraLayerView, coordinator: ()) { view.cameraLayer.session = nil }
+}
+
+struct LocalVideoPoster: View {
+    let url: URL
+    var height: CGFloat = 210
+    @State private var image: UIImage?
+    var body: some View {
+        Group {
+            if let image { Image(uiImage: image).resizable().scaledToFill().frame(height: height).clipped() }
+            else { MediaPlaceholder(title: "Local video", height: height) }
+        }.task(id: url) {
+            image = nil
+            let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))
+            generator.appliesPreferredTrackTransform = true
+            generator.maximumSize = CGSize(width: 800, height: 800)
+            do {
+                let (frame, _) = try await generator.image(at: .zero)
+                guard !Task.isCancelled else { return }
+                image = UIImage(cgImage: frame)
+            } catch { /* Keep the explicit local-media fallback; do not invent a cover. */ }
+        }
+    }
 }

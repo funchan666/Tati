@@ -13,7 +13,7 @@ struct VideoFeedView: View {
                     NavigationLink(destination: PublishVideoView()) { Art(name: "publish", width: 32).frame(width: 44, height: 44) }.accessibilityLabel("Add a video")
                 }
                 Note(text: "Sample videos await media. Your imported videos stay on this device.")
-                ForEach(store.visibleClips) { clip in NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain) }
+                ForEach(store.visibleClips) { clip in FeedVideoCard(clip: clip) }
                 if store.visibleClips.isEmpty { EmptyContent(title: "A little taste of your world", detail: "Add a food video to your local collection.") }
             }.padding(20)
         }
@@ -25,7 +25,7 @@ struct VideoCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             ZStack(alignment: .bottomLeading) {
-                MediaPlaceholder(title: clip.fileName == nil ? "Video to come" : "Local video ready", height: 210)
+                if let file = clip.fileName { LocalVideoPoster(url: store.mediaURL(file)) } else { MediaPlaceholder(title: "Video to come", height: 210) }
                 HStack {
                     Text(clip.isSample ? "Sample" : "On this device").font(.caption.bold()).padding(8).background(Color.tatiLime).clipShape(Capsule())
                     Spacer()
@@ -47,11 +47,13 @@ struct ClipDetailView: View {
     var clip: FoodClip
     @EnvironmentObject private var store: VisitorStore
     @EnvironmentObject private var playback: ClipPlayback
+    @EnvironmentObject private var roomSession: RoomPreviewSession
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     @State private var showComments = false
     @State private var showReport = false
     @State private var failure: String?
+    @State private var playbackOwner = UUID().uuidString
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -62,7 +64,7 @@ struct ClipDetailView: View {
                 } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
             }.padding(.horizontal, 12)
             ZStack(alignment: .bottomTrailing) {
-                if let player = playback.player, playback.activeID == clip.id, playback.failure == nil {
+                if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
                     ClipSurface(player: player).background(Color.black)
                     Button { playback.toggle() } label: { SupplementIcon(icon: playback.playing ? .pause : .play, size: 38).padding(14).background(Color.tatiCream).clipShape(Circle()) }.buttonStyle(.plain).accessibilityLabel(playback.playing ? "Pause video" : "Play video").frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
@@ -86,12 +88,13 @@ struct ClipDetailView: View {
             }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
         .task {
-            if let file = clip.fileName { do { try playback.load(id: clip.id, url: store.mediaURL(file)) } catch { failure = "This video file is missing. Reimport it from your library." } }
+            roomSession.audio.stop()
+            if let file = clip.fileName { do { try playback.load(id: clip.id, url: store.mediaURL(file), owner: playbackOwner) } catch { failure = "This video file is missing. Reimport it from your library." } }
         }
-        .onDisappear { playback.stop() }
-        .onChange(of: scenePhase) { _, value in if value != .active { playback.stop() } else if let file = clip.fileName { try? playback.load(id: clip.id, url: store.mediaURL(file)) } }
+        .onDisappear { if playback.ownerID == playbackOwner { playback.stop() } }
+        .onChange(of: scenePhase) { _, value in if value != .active { playback.stop() } else if let file = clip.fileName { try? playback.load(id: clip.id, url: store.mediaURL(file), owner: playbackOwner) } }
         .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() } }
-        .sheet(isPresented: $showReport) { NavigationStack { ReportView(subjectID: "video:" + clip.id) }.overlay { NoticeLayer() } }
+        .sheet(isPresented: $showReport) { NavigationStack { VideoOptionsView(clip: clip) }.overlay { NoticeLayer() } }
     }
     private func delete() {
         store.confirm("Delete local video?", "This removes the imported copy from Tati. The original in Photos is unchanged.", button: "Delete", destructive: true) {
@@ -108,7 +111,7 @@ struct CommentDraftView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var text = ""
     var body: some View {
-        TatiPage(title: "Discuss") {
+        TatiPanel(title: "Discuss") {
             EmptyContent(title: "No connected comments", detail: "Comments will appear when the community service is connected.", artwork: "chat-heading")
             InputField(title: "Tell me your opinion…", text: $text, multiline: true)
             TatiButton(title: "Save comment draft", enabled: !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
@@ -119,9 +122,9 @@ struct CommentDraftView: View {
 }
 struct PublishChooser: View {
     var body: some View {
-        TatiPage(title: "Share something delicious") {
-            NavigationLink(destination: GoLiveView()) { Art(name: "go-live", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Go live")
-            NavigationLink(destination: PublishVideoView()) { Art(name: "post-video", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Post video")
+        TatiPanel(title: "Create") {
+            HStack(spacing: 14) { NavigationLink(destination: GoLiveView()) { Art(name: "go-live", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Go live")
+            NavigationLink(destination: PublishVideoView()) { Art(name: "post-video", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Post video") }
         }
     }
 }
@@ -137,18 +140,19 @@ struct PublishVideoView: View {
         TatiPage(title: "Post") {
             PhotosPicker(selection: $selection, matching: .videos) {
                 VStack(spacing: 16) {
-                    Art(name: localFile == nil ? "add-video" : "media-placeholder", height: 80)
+                    if let localFile { LocalVideoPoster(url: store.mediaURL(localFile), height: 170); Art(name: "change-video", height: 30) }
+                    else { Art(name: "add-video", height: 80) }
                     Text(importing ? "Importing your video…" : localFile == nil ? "Select your food video" : "Video selected · Tap to change").font(.subheadline)
                 }.frame(maxWidth: .infinity).frame(height: 250).background(Color.tatiLime.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 24))
             }.buttonStyle(.plain).disabled(importing)
             InputField(title: "Capture a tasty moment", text: $caption, multiline: true)
-                .onChange(of: caption) { _, value in if value.count > 300 { caption = String(value.prefix(300)) } }
-            Text("\(caption.count)/300").font(.caption).frame(maxWidth: .infinity, alignment: .trailing)
+                .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
+            Text("\(caption.count)/50").font(.caption).frame(maxWidth: .infinity, alignment: .trailing)
             Note(text: "Saved as a local video. Upload and moderation are not connected. No coins will be charged.")
-            TatiButton(title: "Save local video", enabled: localFile != nil && !importing && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiButton(title: "Save local video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }
                 let clip = FoodClip(id: UUID().uuidString, authorID: store.account.profile.id, caption: caption.trimmingCharacters(in: .whitespacesAndNewlines), fileName: localFile, createdAt: Date(), isSample: false)
-                if store.change({ $0.clips.insert(clip, at: 0) }) { committed = true; dismiss() }
+                if store.change({ $0.clips.insert(clip, at: 0) }) { committed = true; dismiss(); store.tell("Video saved", "Your video is saved locally. It has not been uploaded or submitted for review. No coins were charged.") }
             }
         }
         .task(id: selection) {
@@ -189,7 +193,7 @@ struct GoLiveView: View {
                     else { VStack { Art(name: "add-photo", height: 60); Text("Add a cover").font(.caption) }.frame(maxWidth: .infinity).frame(height: 200).background(Color.tatiLime.opacity(0.4)) }
                 }.clipShape(RoundedRectangle(cornerRadius: 22))
             }.buttonStyle(.plain)
-            InputField(title: "What's your room about?", text: $title)
+            InputField(title: "What's your room about?", text: $title).onChange(of: title) { _, value in title = String(value.prefix(80)) }
             ChoiceGrid(items: Array(FoodCatalog.topics.dropFirst()), selected: $topic)
             if camera.ready { CameraSurface(session: camera.session).frame(height: 260).clipShape(RoundedRectangle(cornerRadius: 20)) }
             Note(text: camera.status)
@@ -205,6 +209,6 @@ struct GoLiveView: View {
             do { coverData = try await cover.loadTransferable(type: Data.self) }
             catch { store.tell("Couldn't load cover", "Please choose another image.") }
         }.onDisappear { previewTask?.cancel(); camera.stop() }
-        .onChange(of: scenePhase) { _, phase in if phase != .active { previewTask?.cancel(); camera.stop() } }
+        .onChange(of: scenePhase) { _, phase in if phase == .background { previewTask?.cancel(); camera.stop() } }
     }
 }

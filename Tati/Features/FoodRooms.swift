@@ -3,24 +3,28 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 enum RoomPanel: String, Identifiable {
-    case gifts, tools, members, layout, background, microphone, music, invite, host, report, pk
+    case gifts, tools, members, layout, background, microphone, music, invite, host, report, pk, leave
     var id: String { rawValue }
 }
 struct RoomView: View {
     let room: FoodRoom
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
     @State private var panel: RoomPanel?
     @State private var message = ""
-    @StateObject private var music = LocalRoomAudio()
+    @EnvironmentObject private var roomSession: RoomPreviewSession
+    @State private var showPK = false
+    private var music: LocalRoomAudio { roomSession.audio }
     private var host: FoodPerson { FoodCatalog.person(room.hostID) ?? FoodCatalog.people[0] }
     private var background: String { store.account.roomBackgrounds[room.id] ?? room.background }
     private var videoSlots: Int { layout == "Spotlight + voices" ? 1 : layout == "Duo video + voices" ? 2 : layout == "Three video + voices" ? 3 : 0 }
+    private var voiceSeats: Int { videoSlots == 0 ? 9 : videoSlots == 1 ? 8 : 6 }
     private var layout: String { store.account.roomLayouts[room.id] ?? "10-seat voice room" }
     var body: some View {
         VStack(spacing: 16) {
             HStack(spacing: 8) {
-                NavigationLink(destination: PersonProfileView(person: host)) {
+                Button { panel = .host } label: {
                     HStack(spacing: 8) { Avatar(size: 40); VStack(alignment: .leading) { Text(host.name).font(.headline); Text("Sample host").font(.caption2) } }
                 }.buttonStyle(.plain)
                 ArtButton(asset: store.account.following.contains(host.id) ? "check" : "follow-small", label: "Follow host", size: 22) { store.toggleFollow(host.id) }
@@ -36,7 +40,7 @@ struct RoomView: View {
             if room.isVoice {
                 ScrollView {
                     VStack(spacing: 20) {
-                        ZStack { Art(name: "host-frame", width: 114, height: 114); Avatar(size: 76) }.padding(.top, 10)
+                        Button { panel = .host } label: { ZStack { Art(name: "host-frame", width: 114, height: 114); Avatar(size: 76) } }.buttonStyle(.plain).accessibilityLabel("Host details").padding(.top, 10)
                         Text(host.name).font(.headline)
                         Text(layout).font(.caption).opacity(0.85)
                         if videoSlots > 0 {
@@ -47,7 +51,7 @@ struct RoomView: View {
                             }.padding(.horizontal, 18)
                         }
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 22) {
-                            ForEach(0..<(9 - videoSlots), id: \.self) { index in
+                            ForEach(0..<voiceSeats, id: \.self) { index in
                                 Button { panel = .microphone } label: {
                                     VStack(spacing: 8) { Art(name: "tool-mic", width: 48, height: 48); Text("\(index + 2)").font(.caption) }
                                 }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
@@ -58,8 +62,13 @@ struct RoomView: View {
             } else {
                 Spacer(minLength: 8)
                 VStack(spacing: 16) {
-                    Art(name: "media-placeholder", width: 76, height: 76)
-                    Text("Host video to come").font(.headline)
+                    if showPK {
+                        HStack(spacing: 12) { MediaPlaceholder(title: "Host camera", height: 170); MediaPlaceholder(title: "Guest camera", height: 170) }
+                        Text("PK layout preview · no scores or live match").font(.caption)
+                    } else {
+                        Art(name: "media-placeholder", width: 76, height: 76)
+                        Text("Host video to come").font(.headline)
+                    }
                     Text("No live stream is connected.").font(.subheadline)
                     Button { panel = .pk } label: { Art(name: "versus", width: 62, height: 70) }.buttonStyle(.plain).accessibilityLabel("PK preview")
                 }.frame(maxWidth: .infinity).padding(24).background(Color.black.opacity(0.22)).clipShape(RoundedRectangle(cornerRadius: 24)).padding(.horizontal, 22)
@@ -70,51 +79,62 @@ struct RoomView: View {
                 Text("Explore the layout and gifts. Nobody is connected and no messages are being broadcast.").font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
             }.padding(13).frame(maxWidth: .infinity, alignment: .leading).background(Color.black.opacity(0.30)).clipShape(RoundedRectangle(cornerRadius: 15)).padding(.horizontal, 18)
             HStack(spacing: 8) {
+                if room.isVoice { ArtButton(asset: "chat-mic", label: "Join microphone", size: 30) { panel = .microphone } }
                 TextField("Tell me your opinion…", text: $message).textFieldStyle(.plain).foregroundStyle(Color.tatiInk).padding(13).background(Color.tatiCream).clipShape(Capsule())
                 Button {
                     guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
                     if store.saveDraft("room-" + room.id, text: message) { store.tell("Not broadcast", "Live chat is not connected. Your room message is saved as a local draft.") }
                 } label: { SupplementIcon(icon: .send).frame(width: 44, height: 44).background(Color.tatiCream).clipShape(Circle()) }.buttonStyle(.plain).accessibilityLabel("Send room message")
+                if room.isVoice { RoomSoundButton(player: music) }
                 ArtButton(asset: "gift-live", label: "Gifts", size: 39) { panel = .gifts }
             }.padding(.horizontal, 16).padding(.bottom, 10)
         }
         .padding(.top, 8).foregroundStyle(.white)
         .background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() }
         .toolbar(.hidden, for: .navigationBar)
-        .onAppear { message = store.account.drafts["room-" + room.id] ?? "" }
-        .onDisappear { music.stop() }
+        .onAppear { roomSession.enter(room); message = store.account.drafts["room-" + room.id] ?? "" }
+        .onDisappear { if !roomSession.minimized { roomSession.leave(room.id) } }
+        .onChange(of: scenePhase) { _, phase in if phase != .active { music.stop() } }
         .sheet(item: $panel) { selected in
             NavigationStack {
                 Group {
                     switch selected {
                     case .gifts: GiftShopView(recipient: host)
                     case .tools: toolsPanel
-                    case .members: TatiPage(title: "Room members") { EmptyContent(title: "No connected members", detail: "This is a room preview. The host is a sample profile."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View sample host", asset: "profile-heading") } }
+                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No connected members", detail: "This is a room preview. The host is a sample profile."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View sample host", asset: "profile-heading") } }
                     case .layout: layoutPanel
                     case .background: backgroundPanel
                     case .microphone: MicrophonePanel()
                     case .music: RoomMusicPanel(player: music)
-                    case .invite: TatiPage(title: "Invite friends") { EmptyContent(title: "Invitations aren't connected", detail: "A real room link will be available after the live service is configured.", artwork: "tool-invite") }
-                    case .host: PersonProfileView(person: host)
+                    case .invite: RoomInvitePanel(room: room)
+                    case .host: RoomPersonPanel(person: host)
                     case .report: ReportView(subjectID: "room:" + room.id)
-                    case .pk: TatiPage(title: "PK") { Art(name: "versus", height: 110).frame(maxWidth: .infinity); EmptyContent(title: "No match in progress", detail: "PK requires two connected hosts. The preview doesn't simulate opponents, scores or a winner.") }
+                    case .pk: TatiPanel(title: "PK") {
+                        Art(name: "versus", height: 85).frame(maxWidth: .infinity)
+                        Note(text: "PK requires two connected hosts. This only changes the local camera layout; no opponent, timer or scores are simulated.")
+                        TatiButton(title: showPK ? "Return to single camera" : "Preview split camera layout") { showPK.toggle(); panel = nil }
+                    }
+                    case .leave: TatiPanel(title: "Leave the room?") {
+                        if room.isVoice { TatiButton(title: "Keep listening · Minimize") { roomSession.minimize(); panel = nil; dismiss() } }
+                        TatiButton(title: "Leave room", secondary: true) { roomSession.leave(room.id); panel = nil; dismiss() }
+                        TatiButton(title: "Stay here", secondary: true) { panel = nil }
+                        Note(text: "Only selected local music can keep playing while browsing Tati. There is no live audio stream.")
+                    }
                     }
                 }
-            }.overlay { NoticeLayer() }.presentationDragIndicator(.hidden)
+            }.overlay { NoticeLayer() }.presentationDetents([.height(460), .large]).presentationDragIndicator(.hidden)
         }
     }
-    private func leave() {
-        store.confirm("Leave this room?", "Your local room appearance is saved. Any local music playback will stop.", button: "Leave") { music.stop(); dismiss() }
-    }
+    private func leave() { panel = .leave }
     private var toolsPanel: some View {
-        TatiPage(title: "Room tools") {
+        TatiPanel(title: "Room tools") {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 22) {
-                tool("tool-layout", "Room layout", .layout)
+                if room.isVoice { tool("tool-layout", "Room layout", .layout) }
                 tool("tool-mic", "Mic queue", .microphone)
                 tool("tool-music", "Music", .music)
                 tool("tool-background", "Background", .background)
                 tool("tool-invite", "Invite", .invite)
-                Button { panel = nil; leave() } label: { VStack { Art(name: "tool-leave", width: 54, height: 54); Text("Leave").font(.caption) } }.buttonStyle(.plain)
+                Button { panel = .leave } label: { VStack { Art(name: "tool-leave", width: 54, height: 54); Text("Leave").font(.caption) } }.buttonStyle(.plain)
             }
             Note(text: "Changes here affect only your local room preview.")
             NavigationLink(destination: ReportView(subjectID: "room:" + room.id)) { SettingRow(title: "Report room", asset: "feedback") }
@@ -124,19 +144,12 @@ struct RoomView: View {
         Button { panel = next } label: { VStack(spacing: 8) { Art(name: art, width: 54, height: 54); Text(title).font(.caption) } }.buttonStyle(.plain)
     }
     private var layoutPanel: some View {
-        TatiPage(title: "Room layout") {
-            ForEach(["10-seat voice room", "Spotlight + voices", "Duo video + voices", "Three video + voices"], id: \.self) { name in
-                Button {
-                    if store.change({ $0.roomLayouts[room.id] = name }) { panel = nil }
-                } label: {
-                    HStack { Art(name: "layout-seat", width: 30); Text(name).font(.headline); Spacer(); if layout == name { Art(name: "check", width: 24) } }.padding(16).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 18))
-                }.buttonStyle(.plain)
-            }
-            Note(text: "Video layouts reserve empty camera slots until a service is connected.")
+        RoomLayoutPanel(current: layout) { chosen in
+            if store.change({ $0.roomLayouts[room.id] = chosen }) { panel = nil }
         }
     }
     private var backgroundPanel: some View {
-        TatiPage(title: "Room background") {
+        TatiPanel(title: "Room atmosphere") {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
                 ForEach(["stage-blue", "stage-gifts", "stage-purple", "stage-confetti"], id: \.self) { name in
                     Button { if store.change({ $0.roomBackgrounds[room.id] = name }) { panel = nil } } label: {
@@ -153,7 +166,7 @@ struct GiftShopView: View {
     @State private var selected = FoodCatalog.gifts[0]
     @State private var quantity = 1
     var body: some View {
-        TatiPage(title: "Gifts for \(recipient.name)") {
+        TatiPanel(title: "Gifts for \(recipient.name)") {
             Note(text: "LOCAL PREVIEW · Uses demo coins only. Nothing is sent to the sample profile.")
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 14) {
                 ForEach(FoodCatalog.gifts) { gift in
@@ -167,14 +180,15 @@ struct GiftShopView: View {
                 }
             }
             HStack {
-                Art(name: "coin", width: 27)
-                VStack(alignment: .leading) { Text("\(store.account.demoCoins)").font(.headline); Text("Demo coins").font(.caption) }
+                NavigationLink(destination: RechargePanel()) {
+                    HStack { Art(name: "coin", width: 27); VStack(alignment: .leading) { Text("\(store.account.demoCoins)").font(.headline); Text("Demo coins").font(.caption) } }
+                }.buttonStyle(.plain).accessibilityLabel("Balance and recharge")
                 Spacer()
-                Button("−") { quantity = max(1, quantity - 1) }.buttonStyle(.plain).frame(width: 44, height: 44).background(Color.tatiLime).clipShape(Circle()).accessibilityLabel("Decrease quantity")
+                ArtButton(asset: "remove", label: "Decrease quantity", size: 26) { quantity = max(1, quantity - 1) }
                 Text("\(quantity)").monospacedDigit().frame(minWidth: 28)
-                Button("+") { quantity = min(99, quantity + 1) }.buttonStyle(.plain).frame(width: 44, height: 44).background(Color.tatiLime).clipShape(Circle()).accessibilityLabel("Increase quantity")
+                ArtButton(asset: "add", label: "Increase quantity", size: 26) { quantity = min(99, quantity + 1) }
             }
-            TatiButton(title: "Preview gift · \(selected.cost * quantity) demo coins") {
+            TatiButton(title: "Preview gift · \(selected.cost * quantity) demo coins", enabled: !store.account.blocked.contains(recipient.id)) {
                 if store.previewGift(selected, quantity: quantity, recipient: recipient.id) { store.tell("Gift preview saved", "Your local demo balance was updated. This gift has not been delivered to anyone.") }
             }
             NavigationLink(destination: CheckInView()) { SettingRow(title: "Collect demo coins", asset: "coin") }
@@ -184,14 +198,16 @@ struct GiftShopView: View {
 }
 struct MicrophonePanel: View {
     @State private var status = "Microphone access has not been requested."
+    @State private var requesting = false
     var body: some View {
-        TatiPage(title: "Join the microphone") {
+        TatiPanel(title: "Join the conversation") {
             Art(name: "tool-mic", height: 80).frame(maxWidth: .infinity)
             Text("No connected voice session").font(.title3.bold())
             Note(text: status)
-            TatiButton(title: "Check microphone permission") {
+            TatiButton(title: requesting ? "Waiting for permission…" : "Check microphone permission", enabled: !requesting) {
+                requesting = true
                 AVAudioApplication.requestRecordPermission { granted in
-                    Task { @MainActor in status = granted ? "Permission granted. You are not broadcasting; the voice service is not connected." : "Microphone access was denied. You can allow it in iOS Settings." }
+                    Task { @MainActor in requesting = false; status = granted ? "Permission granted. You are not broadcasting; the voice service is not connected." : "Microphone access was denied. You can allow it in iOS Settings." }
                 }
             }
             Note(text: "No recording starts when you grant permission.")
@@ -200,6 +216,7 @@ struct MicrophonePanel: View {
 }
 @MainActor final class LocalRoomAudio: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published var playing = false
+    @Published private(set) var muted = false
     @Published var title = "No audio selected"
     private var player: AVAudioPlayer?
     func load(_ url: URL) throws {
@@ -208,8 +225,11 @@ struct MicrophonePanel: View {
         guard bytes.count <= 50 * 1024 * 1024 else { throw CocoaError(.fileReadTooLarge) }
         player = try AVAudioPlayer(data: bytes)
         player?.delegate = self
+        player?.volume = muted ? 0 : 1
         title = url.deletingPathExtension().lastPathComponent
     }
+    func reset() { stop(); player = nil; title = "No audio selected"; muted = false }
+    func toggleMuted() { muted.toggle(); player?.volume = muted ? 0 : 1 }
     func toggle() throws {
         guard let player else { return }
         if playing { stop() } else {
@@ -219,7 +239,7 @@ struct MicrophonePanel: View {
         }
     }
     nonisolated func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        Task { @MainActor [weak self] in self?.stop() }
+        Task { @MainActor [weak self] in guard self?.player === player else { return }; self?.stop() }
     }
     func stop() { player?.pause(); playing = false; try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) }
 }
@@ -228,8 +248,11 @@ struct RoomMusicPanel: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var importing = false
     var body: some View {
-        TatiPage(title: "Music") {
-            Art(name: "tool-music", height: 80).frame(maxWidth: .infinity)
+        TatiPanel(title: "Room music") {
+            ForEach(["Midnight mood", "Warm conversations", "Slow afternoon"], id: \.self) { title in
+                HStack { Art(name: "music-disc", width: 26); Text(title).font(.subheadline); Spacer(); Text("Audio pending").font(.caption2) }
+                    .padding(14).background(Color.tatiOlive.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 14))
+            }
             Text(player.title).font(.headline)
             Note(text: "Playback is only on this device. It is not broadcast to a room.")
             TatiButton(title: "Choose audio") { importing = true }

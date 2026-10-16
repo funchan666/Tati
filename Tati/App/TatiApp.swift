@@ -5,6 +5,8 @@ struct TatiApp: App {
     @StateObject private var store = VisitorStore()
     @StateObject private var playback = ClipPlayback()
     @StateObject private var purchases = TatiPurchases()
+    @StateObject private var roomSession = RoomPreviewSession()
+    @Environment(\.scenePhase) private var scenePhase
     var body: some Scene {
         WindowGroup {
             ZStack {
@@ -12,9 +14,10 @@ struct TatiApp: App {
                 else { WelcomeView() }
                 NoticeLayer()
             }
-            .environmentObject(store).environmentObject(playback).environmentObject(purchases)
+            .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .tint(.tatiPink).preferredColorScheme(.light)
-            .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { playback.stop() } }
+            .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
+            .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { playback.stop(); roomSession.leave() } }
         }
     }
 }
@@ -37,6 +40,7 @@ struct CommunityRoot: View {
                     case .me: MyProfileView()
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                MinimizedRoomBar()
                 HStack(spacing: 0) {
                     ForEach(CommunityTab.allCases, id: \.self) { tab in
                         Button {

@@ -9,13 +9,17 @@ struct DiscoverView: View {
     @State private var language = "All"
     @State private var showFilter = false
     @State private var showPublish = false
+    @State private var showTopic = false
+    private var sections: [String] { voice ? ["Party", "Food", "Follow"] : ["Hot", "Discover", "Follow"] }
+    private var currentSection: String { sections.contains(selected) ? selected : sections[0] }
     var rooms: [FoodRoom] {
         FoodCatalog.rooms.filter { room in
             let host = FoodCatalog.person(room.hostID)
             return room.isVoice == voice && !store.account.blocked.contains(room.hostID)
-                && (selected != "Follow" || store.account.following.contains(room.hostID))
+                && (currentSection != "Follow" || store.account.following.contains(room.hostID))
+                && (currentSection != "Food" || room.foodFocused)
                 && (topic == "All" || room.topic == topic)
-                && (country == "All" || host?.country == country)
+                && (country == "All" || host?.city == country)
                 && (language == "All" || host?.language == language)
         }.sorted { selected == "Discover" ? $0.title < $1.title : $0.id < $1.id }
     }
@@ -29,12 +33,12 @@ struct DiscoverView: View {
                     NavigationLink(destination: RankingView()) { Art(name: "rank-entry", width: 47, height: 40).frame(minHeight: 44) }.accessibilityLabel("Rankings")
                 }
                 HStack {
-                    ForEach(["Hot", "Discover", "Follow"], id: \.self) { value in
+                    ForEach(sections, id: \.self) { value in
                         Button { selected = value } label: {
-                            Text(value).font(.system(size: 16, weight: selected == value ? .bold : .medium))
-                                .foregroundStyle(selected == value ? Color.tatiInk : Color.tatiOlive.opacity(0.6))
+                            Text(value).font(.system(size: 16, weight: currentSection == value ? .bold : .medium))
+                                .foregroundStyle(currentSection == value ? Color.tatiInk : Color.tatiOlive.opacity(0.6))
                                 .padding(.vertical, 8)
-                                .background(alignment: .bottom) { if selected == value { Color.tatiLime.frame(height: 3) } }
+                                .background(alignment: .bottom) { if currentSection == value { Color.tatiLime.frame(height: 3) } }
                         }.buttonStyle(.plain)
                     }
                     Spacer()
@@ -42,7 +46,7 @@ struct DiscoverView: View {
                 }
                 if voice {
                     HStack {
-                        ImageAction(asset: "topic-banner", label: "Browse food topics", height: 64) { showFilter = true }
+                        ImageAction(asset: "topic-banner", label: "Browse food topics", height: 64) { showTopic = true }
                         ArtButton(asset: "publish", label: "Create a room", size: 34) { showPublish = true }
                     }
                 }
@@ -61,6 +65,8 @@ struct DiscoverView: View {
                 }
             }.padding(.horizontal, 18).padding(.top, 8).padding(.bottom, 22)
         }
+        .onChange(of: voice) { _, _ in selected = voice ? "Party" : "Hot" }
+        .sheet(isPresented: $showTopic) { NavigationStack { HotTopicView() }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
         .sheet(isPresented: $showFilter) {
             NavigationStack { FilterView(topic: $topic, country: $country, language: $language) }
                 .presentationDetents([.large]).presentationDragIndicator(.hidden)
@@ -111,19 +117,22 @@ struct FilterView: View {
     @Binding var country: String
     @Binding var language: String
     @Environment(\.dismiss) private var dismiss
+    @State private var draftTopic = "All"
+    @State private var draftCity = "All"
+    @State private var draftLanguage = "All"
     var body: some View {
-        TatiPage(title: "Find your people") {
-            Text("Food").font(.headline)
-            ChoiceGrid(items: FoodCatalog.topics, selected: $topic)
-            Text("Country").font(.headline)
-            ChoiceGrid(items: ["All", "France", "Italy", "Singapore", "USA"], selected: $country)
+        TatiPanel(title: "Find your people") {
+            Text("City").font(.headline)
+            ChoiceGrid(items: FoodCatalog.cities, selected: $draftCity)
             Text("Language").font(.headline)
-            ChoiceGrid(items: ["All", "English", "French", "Italian"], selected: $language)
+            ChoiceGrid(items: FoodCatalog.languages, selected: $draftLanguage)
+            Text("Food").font(.headline)
+            ChoiceGrid(items: FoodCatalog.topics, selected: $draftTopic)
             HStack {
-                TatiButton(title: "Reset", secondary: true) { topic = "All"; country = "All"; language = "All" }
-                TatiButton(title: "Show rooms") { dismiss() }
+                TatiButton(title: "Reset", secondary: true) { draftTopic = "All"; draftCity = "All"; draftLanguage = "All" }
+                TatiButton(title: "Apply") { topic = draftTopic; country = draftCity; language = draftLanguage; dismiss() }
             }
-        }
+        }.onAppear { draftTopic = topic; draftCity = country; draftLanguage = language }
     }
 }
 struct ChoiceGrid: View {
@@ -142,6 +151,13 @@ struct SearchView: View {
     var body: some View {
         TatiPage(title: "Search") {
             InputField(title: "People, rooms or food", text: $query)
+            Text("Popular searches").font(.system(size: 21, weight: .bold, design: .serif))
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
+                ForEach(FoodCatalog.popularTopics, id: \.0) { topic in
+                    Button { query = topic.0; category = "People" } label: { Art(name: topic.1, height: 30).frame(minHeight: 44) }
+                        .buttonStyle(.plain).accessibilityLabel("Search " + topic.0)
+                }
+            }
             TopicStrip(items: ["People", "Rooms", "Videos"], selected: $category)
             if category == "People" {
                 let matches = FoodCatalog.people.filter { !store.account.blocked.contains($0.id) && (query.isEmpty || ($0.name + $0.interest).localizedCaseInsensitiveContains(query)) }
@@ -185,11 +201,25 @@ struct RankingView: View {
     @State private var category = "Activity"
     @State private var period = "Daily"
     var body: some View {
-        TatiPage(title: "Rankings") {
+        TatiPage(title: "Rankings", background: "rank-background") {
             TopicStrip(items: ["Activity", "Creators", "Rooms"], selected: $category)
             TopicStrip(items: ["Daily", "Weekly"], selected: $period)
             Art(name: "rank-entry", height: 100).frame(maxWidth: .infinity).padding(.top, 45)
             EmptyContent(title: "No ranking data yet", detail: "\(period) \(category.lowercased()) rankings will appear when the community service is connected.", artwork: "trophy")
+        }
+    }
+}
+
+struct HotTopicView: View {
+    @EnvironmentObject private var store: VisitorStore
+    var body: some View {
+        TatiPanel(title: "Hot topic") {
+            Art(name: "topic-banner")
+            Text("Late-night snack: sweet or savoury?").font(.title3.bold())
+            Note(text: "Explore sample food rooms. These are previews, not connected broadcasts.")
+            ForEach(FoodCatalog.rooms.filter { $0.isVoice && $0.foodFocused && !store.account.blocked.contains($0.hostID) }) { room in
+                NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain)
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ struct FoodPerson: Identifiable, Hashable {
     let language: String
     let interest: String
     let bio: String
+    var city: String { ["creator-luna": "Paris", "creator-chloe": "Singapore", "creator-maria": "Toronto", "creator-elowen": "Los Angeles", "creator-seraphina": "Bangkok", "creator-andre": "Kuala Lumpur"][id] ?? country }
 }
 struct FoodRoom: Identifiable, Hashable {
     let id: String
@@ -15,6 +16,7 @@ struct FoodRoom: Identifiable, Hashable {
     let topic: String
     let isVoice: Bool
     let background: String
+    var foodFocused: Bool { topic != "Home cooking" }
 }
 struct FoodClip: Identifiable, Codable, Hashable {
     var id: String
@@ -51,6 +53,7 @@ struct ReportDraft: Identifiable, Codable {
     var subjectID: String
     var reason: String
     var details: String
+    var imageFile: String? = nil
     var date = Date()
 }
 struct LocalProfile: Codable {
@@ -78,6 +81,8 @@ struct LocalAccount: Codable {
     var reports: [ReportDraft] = []
     var clips: [FoodClip] = []
     var notifications = false
+    var preferredLanguage: String? = nil
+    var draftImages: [String: String]? = nil
     var roomBackgrounds: [String: String] = [:]
     var roomLayouts: [String: String] = [:]
     var processedTransactions: Set<String> = []
@@ -114,6 +119,9 @@ enum FoodCatalog {
         FoodGift(id: "car", name: "Food trip", artwork: "gift-car", cost: 100),
         FoodGift(id: "crown", name: "Kitchen crown", artwork: "gift-crown", cost: 100)
     ]
+    static let cities = ["All", "Singapore", "Toronto", "Bangkok", "Paris", "Los Angeles", "Kuala Lumpur"]
+    static let languages = ["All", "English", "Hindi", "Español", "Türkçe", "Português", "French", "Italian"]
+    static let popularTopics = [("Italian food", "category-italian"), ("Sushi", "category-sushi"), ("Street food", "category-street"), ("Dessert", "category-dessert"), ("Healthy food", "category-healthy"), ("BBQ", "category-bbq")]
     static let topics = ["All", "Home cooking", "Italian food", "Street food", "Dessert", "Healthy food", "BBQ"]
     static let sampleClips: [FoodClip] = people.prefix(4).enumerated().map {
         FoodClip(id: "sample-clip-\($0.offset)", authorID: $0.element.id,

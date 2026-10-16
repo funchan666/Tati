@@ -90,6 +90,7 @@ struct TatiHeader: View {
 struct TatiPage<Content: View>: View {
     var title: String
     var scrolling = true
+    var background: String? = nil
     @ViewBuilder var content: () -> Content
     var body: some View {
         VStack(spacing: 0) {
@@ -97,7 +98,7 @@ struct TatiPage<Content: View>: View {
             if scrolling {
                 ScrollView { VStack(alignment: .leading, spacing: 20) { content() }.padding(20).frame(maxWidth: 600) }
             } else { content() }
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
     }
 }
 struct Chip: View {
@@ -130,7 +131,7 @@ struct Note: View {
 struct EmptyContent: View {
     var title: String
     var detail: String
-    var artwork = "media-placeholder"
+    var artwork = "support-mascot"
     var body: some View {
         VStack(spacing: 14) {
             Art(name: artwork, width: 72, height: 72)
@@ -209,9 +210,28 @@ struct NoticeLayer: View {
                             notice.action?()
                         }
                     }
-                }.padding(28).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 28))
+                }.padding(.horizontal, 32).padding(.vertical, 42).background { Image("dialog-card").resizable() }
                     .padding(26).frame(maxWidth: 440).foregroundStyle(Color.tatiInk)
             }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)
         }
+    }
+}
+
+/// Shared bright bottom panel used by the Lanhu room and filter artboards.
+struct TatiPanel<Content: View>: View {
+    var title: String
+    @ViewBuilder var content: () -> Content
+    @Environment(\.dismiss) private var dismiss
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(title).font(.system(size: 22, weight: .bold, design: .serif))
+                Spacer()
+                ArtButton(asset: "close-light", label: "Close") { dismiss() }
+            }.padding(.horizontal, 18).padding(.top, 12)
+            ScrollView { VStack(alignment: .leading, spacing: 18) { content() }.padding(18).frame(maxWidth: 600) }
+        }.background(Color.tatiLime).foregroundStyle(Color.tatiInk)
+            .presentationBackground(Color.tatiLime).presentationDragIndicator(.hidden)
+            .toolbar(.hidden, for: .navigationBar)
     }
 }
