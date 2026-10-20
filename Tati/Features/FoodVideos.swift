@@ -46,50 +46,58 @@ struct ClipDetailView: View {
     @State private var failure: String?
     @State private var playbackOwner = UUID().uuidString
     @State private var isVisible = false
+    private var showsVideo: Bool {
+        playback.activeID == clip.id && playback.ownerID == playbackOwner && playback.failure == nil
+    }
     var body: some View {
         MediaViewport {
-            ZStack {
-                VStack {
-                    HStack {
-                        ArtButton(asset: "back", label: "Back") { dismiss() }
-                        Spacer()
-                        if clip.authorID == store.account.profile.id {
-                            ArtButton(asset: "remove", label: "Delete video") { delete() }
-                        } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
-                    }
-                    Spacer()
-                    HStack(alignment: .bottom, spacing: 16) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            if let person = FoodCatalog.person(clip.authorID) {
-                                NavigationLink(destination: PersonProfileView(person: person)) {
-                                    HStack { Avatar(asset: person.portraitArtwork, size: 36); Text(person.name).font(.headline) }
-                                }.buttonStyle(.plain)
-                            } else { Text(store.authorName(for: clip)).font(.headline) }
-                            Text(clip.caption).font(.subheadline)
-                        }.frame(maxWidth: .infinity, alignment: .leading)
-                        VStack(spacing: 12) {
-                            ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 33) { store.toggleLike(clip.id) }
-                            Button { showComments = true } label: { SupplementIcon(icon: .comment, size: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Comments")
+            GeometryReader { geometry in
+                ZStack {
+                    VStack {
+                        HStack {
+                            ArtButton(asset: "back", label: "Back") { dismiss() }
+                            Spacer()
+                            if clip.authorID == store.account.profile.id {
+                                ArtButton(asset: "remove", label: "Delete video") { delete() }
+                            } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
                         }
-                    }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
-                }.padding(.horizontal, 14).foregroundStyle(.white)
-            }
-            .overlay {
-                if playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
-                    VStack(spacing: 8) {
-                        Button { playback.toggle() } label: {
-                            SupplementIcon(icon: playback.wantsToPlay ? .pause : .play, size: 38)
-                                .frame(width: 54, height: 54).background(.white.opacity(0.4)).clipShape(Circle())
-                        }.buttonStyle(.plain).accessibilityLabel(playback.wantsToPlay ? "Pause video" : "Play video")
-                        if playback.loading { Text("Loading…").font(.caption).foregroundStyle(.white) }
-                    }
-                } else {
-                    VStack(spacing: 16) {
-                        Art(name: "media-placeholder", width: 78)
-                        Text(playback.failure ?? failure ?? "The video could not be loaded.").font(.headline).multilineTextAlignment(.center)
-                        TatiButton(title: "Retry") { preparePlayback() }.frame(width: 150)
-                    }.padding(25).foregroundStyle(Color.tatiInk)
+                        Spacer()
+                        HStack(alignment: .bottom, spacing: 16) {
+                            ScrollView {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    if let person = FoodCatalog.person(clip.authorID) {
+                                        NavigationLink(destination: PersonProfileView(person: person)) {
+                                            HStack { Avatar(asset: person.portraitArtwork, size: 36); Text(person.name).font(.headline).lineLimit(1) }
+                                        }.buttonStyle(.plain)
+                                    } else { Text(store.authorName(for: clip)).font(.headline) }
+                                    Text(clip.caption).font(.subheadline)
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                            }.frame(maxHeight: min(150, geometry.size.height * 0.28))
+                            VStack(spacing: 12) {
+                                ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 33) { store.toggleLike(clip.id) }
+                                Button { showComments = true } label: { SupplementIcon(icon: .comment, size: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Comments")
+                            }
+                        }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
+                    }.padding(.horizontal, 14).foregroundStyle(showsVideo ? Color.white : Color.tatiInk)
                 }
+                .overlay {
+                    if playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
+                        VStack(spacing: 8) {
+                            Button { playback.toggle() } label: {
+                                SupplementIcon(icon: playback.wantsToPlay ? .pause : .play, size: 38)
+                                    .frame(width: 54, height: 54).background(.white.opacity(0.4)).clipShape(Circle())
+                            }.buttonStyle(.plain).accessibilityLabel(playback.wantsToPlay ? "Pause video" : "Play video")
+                            if playback.loading { Text("Loading…").font(.caption).foregroundStyle(.white) }
+                        }
+                    } else {
+                        VStack(spacing: 16) {
+                            Art(name: "media-placeholder", width: 78)
+                            Text(playback.failure ?? failure ?? "The video could not be loaded.").font(.headline).multilineTextAlignment(.center)
+                            TatiButton(title: "Retry") { preparePlayback() }.frame(width: 150)
+                        }.padding(25).foregroundStyle(Color.tatiInk)
+                    }
+                }
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
         .background {
@@ -154,7 +162,7 @@ struct CommentDraftView: View {
                     guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
                     if store.saveDraft("comment:" + clip.id, text: text) { store.tell("Draft saved", "Your comment draft has been saved. It has not been posted.") }
                 } label: { Text("SAVE").font(.system(size: 13, weight: .bold)).foregroundStyle(Color.tatiInk).padding(.horizontal, 14).padding(.vertical, 9).background(Color.tatiLime).clipShape(Capsule()).frame(minHeight: 44) }.buttonStyle(.plain).accessibilityLabel("Save comment draft")
-            }.padding(.horizontal, 5).background(Color.tatiPink).clipShape(Capsule()).padding(16)
+            }.padding(.horizontal, 5).padding(.vertical, 4).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22)).padding(16)
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
             .tatiScreen()
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
@@ -194,7 +202,6 @@ struct PublishVideoView: View {
             InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false)
                 .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
             Text("\(caption.count)/50").font(.caption).frame(maxWidth: .infinity, alignment: .trailing)
-            Note(text: "Save the video to your collection. Publishing is currently unavailable.")
         } footer: {
             TatiButton(title: "Save video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }

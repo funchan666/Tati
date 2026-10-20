@@ -18,7 +18,8 @@ struct PersonProfileView: View {
                     HStack(spacing: 10) {
                         Avatar(asset: person.portraitArtwork, size: 62).padding(.top, -24)
                         VStack(alignment: .leading, spacing: 4) {
-                            HStack { Text(person.name).font(.system(size: 17, weight: .semibold)); Text(person.country).font(.system(size: 11)).foregroundStyle(Color.tatiOlive) }
+                            Text(person.name).font(.system(size: 17, weight: .semibold)).lineLimit(1)
+                            Text(person.country).font(.system(size: 11)).foregroundStyle(Color.tatiOlive).lineLimit(1)
                             Text("Food lover").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                         }
                         Spacer(minLength: 0)
@@ -77,7 +78,7 @@ struct MyProfileView: View {
                         HStack(spacing: 10) {
                             Avatar(file: store.account.profile.avatarFile, size: 72, isCurrent: true).padding(.top, -24)
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(store.account.profile.name).font(.system(size: 20, weight: .semibold))
+                                Text(store.account.profile.name).font(.system(size: 20, weight: .semibold)).lineLimit(2)
                                 Text("Edit profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                             }
                             Spacer(); Art(name: "chevron", width: 12)
@@ -220,64 +221,86 @@ struct ConversationView: View {
     @State private var media: PhotosPickerItem?
     @Environment(\.dismiss) private var dismiss
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 6) {
-                ArtButton(asset: "back", label: "Back") { dismiss() }
-                Avatar(asset: person.portraitArtwork, size: 42)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(person.name).font(.system(size: 17, weight: .medium))
-                    Text("Messaging unavailable").font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
-                }
-                Spacer()
-                ArtButton(asset: "add-video", label: "Video call", size: 24) { store.tell("Video call unavailable", "Video calls are currently unavailable. No call has been placed.") }
-                NavigationLink(destination: PersonProfileView(person: person)) { Art(name: "profile-button", width: 64, height: 32) }.accessibilityLabel("View profile")
-            }.padding(.horizontal, 6)
-            ScrollView {
-                VStack(spacing: 18) {
-                    Text("Messaging is currently unavailable. You can save a draft.").font(.system(size: 11)).foregroundStyle(Color.tatiOlive).padding(.top, 12)
-                    if let draft = store.account.drafts[person.id], !draft.isEmpty {
-                        HStack {
-                            Spacer(minLength: 56)
-                            VStack(alignment: .leading, spacing: 6) { Text(draft).font(.system(size: 14)); Text("Draft · not sent").font(.system(size: 10)) }
-                                .padding(14).foregroundStyle(.white).background(Color.tatiPink)
-                                .clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
-                        }
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                HStack(spacing: 6) {
+                    ArtButton(asset: "back", label: "Back") { dismiss() }
+                    Avatar(asset: person.portraitArtwork, size: 42)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(1)
                     }
-                }.padding(.horizontal, 18)
-            }
-            if store.account.draftImages?[person.id] != nil { DraftPhotoAttachment(draftKey: person.id).padding(.horizontal, 12) }
-            HStack(spacing: 2) {
-                ArtButton(asset: "chat-mic", label: "Voice message", size: 32) { store.tell("Voice messaging unavailable", "Voice messages are currently unavailable. No recording has started.") }
-                HStack(spacing: 0) {
-                    TextField("Say Hi~", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 13)).padding(.leading, 12).tint(.white)
-                    Button { store.attemptMessage(to: person.id, text: text) } label: { SupplementIcon(icon: .send, size: 22).frame(width: 40, height: 44) }.buttonStyle(.plain).accessibilityLabel("Send message")
-                }.foregroundStyle(.white).background(Color.tatiPink).clipShape(Capsule())
-                ArtButton(asset: "chat-speaker", label: "Voice call", size: 32) { store.tell("Voice call unavailable", "Voice calls are currently unavailable. No call has been placed.") }
-                DraftPhotoAttachment(draftKey: person.id, compact: true)
-                ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
-            }.padding(.horizontal, 8).padding(.vertical, 10).background(Color.tatiLime.opacity(0.7))
+                    Spacer()
+                    ArtButton(asset: "add-video", label: "Video call", size: 24) { store.tell("Video call unavailable", "Video calls are currently unavailable. No call has been placed.") }
+                    NavigationLink(destination: PersonProfileView(person: person)) { Art(name: "profile-button", width: 64, height: 32) }.accessibilityLabel("View profile")
+                }.padding(.horizontal, 6)
+                ScrollView {
+                    VStack(spacing: 18) {
+                        if let draft = store.account.drafts[person.id], !draft.isEmpty {
+                            HStack {
+                                Spacer(minLength: 56)
+                                VStack(alignment: .leading, spacing: 6) { Text(draft).font(.system(size: 14)); Text("Draft · not sent").font(.system(size: 10)) }
+                                    .padding(14).foregroundStyle(.white).background(Color.tatiPink)
+                                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
+                            }
+                        }
+                    }.padding(.horizontal, 18)
+                }
+                if store.account.draftImages?[person.id] != nil { DraftPhotoAttachment(draftKey: person.id).padding(.horizontal, 12) }
+                // Reflow the same children so an attachment import survives resizing.
+                let inputLayout = geometry.size.width < 350
+                    ? AnyLayout(VStackLayout(alignment: .trailing, spacing: 4))
+                    : AnyLayout(HStackLayout(spacing: 2))
+                inputLayout {
+                    HStack(spacing: 2) { microphoneButton; composer }
+                    attachmentActions
+                }.padding(.horizontal, 8).padding(.vertical, 6).background(Color.tatiLime.opacity(0.7))
+            }.frame(width: geometry.size.width, height: geometry.size.height)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
         .onAppear { text = store.account.drafts[person.id] ?? "" }
         .sheet(isPresented: $gifts) { NavigationStack { GiftShopView(recipient: person) }.overlay { NoticeLayer() }.presentationDetents([.height(390), .large]) }
     }
+    private var microphoneButton: some View {
+        ArtButton(asset: "chat-mic", label: "Voice message", size: 32) {
+            store.tell("Voice messaging unavailable", "Voice messages are currently unavailable. No recording has started.")
+        }
+    }
+    private var composer: some View {
+        HStack(spacing: 0) {
+            TextField("Say Hi~", text: $text, axis: .vertical).lineLimit(1...4)
+                .font(.system(size: 13)).padding(.leading, 12).padding(.vertical, 8).tint(.white)
+            Button { store.attemptMessage(to: person.id, text: text) } label: {
+                SupplementIcon(icon: .send, size: 22).frame(width: 40, height: 44)
+            }.buttonStyle(.plain).accessibilityLabel("Send message")
+        }.foregroundStyle(.white).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22))
+    }
+    private var attachmentActions: some View {
+        HStack(spacing: 2) {
+            ArtButton(asset: "chat-speaker", label: "Voice call", size: 32) {
+                store.tell("Voice call unavailable", "Voice calls are currently unavailable. No call has been placed.")
+            }
+            DraftPhotoAttachment(draftKey: person.id, compact: true)
+            ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
+        }
+    }
+
 }
 struct FoodExpertView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var question = ""
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .bottom, spacing: 0) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Art(name: "brand-heading", width: 146, height: 48)
-                    Text("Hi, I'm your AI Food Expert!").font(.system(size: 18, weight: .semibold)).fixedSize(horizontal: false, vertical: true)
-                }.padding(.bottom, 18)
-                Spacer(minLength: 0)
-                Art(name: "chef", width: 116, height: 150)
-            }.padding(.horizontal, 16).padding(.top, 8).background { TatiBackground() }
-            VStack(spacing: 0) {
-                ScrollView {
+            ScrollView {
+                VStack(spacing: 0) {
+                    HStack(alignment: .bottom, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Art(name: "brand-heading", width: 146, height: 48)
+                            Text("Hi, I'm your AI Food Expert!").font(.system(size: 18, weight: .semibold)).fixedSize(horizontal: false, vertical: true)
+                        }.padding(.bottom, 18)
+                        Spacer(minLength: 0)
+                        Art(name: "chef", width: 116, height: 150)
+                    }.padding(.horizontal, 16).padding(.top, 8).background { TatiBackground() }
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("You can ask me anything. Here are some examples:").font(.system(size: 15)).foregroundStyle(.black.opacity(0.65))
+                        Text("Talk food, flavours and recipes.").font(.system(size: 15)).foregroundStyle(.black.opacity(0.65))
                         ForEach(["How to get crispy fried food?", "How to make food look delicious?", "How to balance sweet and savory taste?"], id: \.self) { prompt in
                             Button { question = prompt } label: {
                                 HStack(spacing: 7) { Text(prompt).font(.system(size: 14)).multilineTextAlignment(.leading); Art(name: "food-flame", width: 23, height: 23); Spacer(minLength: 0) }
@@ -294,22 +317,20 @@ struct FoodExpertView: View {
                                 Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
                             }.padding(.top, 20)
                         }
-                        HStack(alignment: .top, spacing: 8) {
-                            Art(name: "chef-avatar", width: 40, height: 40)
-                            Text("AI replies are currently unavailable. You can save your question.").font(.system(size: 13)).padding(14)
-                                .background(Color(red: 1, green: 0.97, blue: 0.22)).clipShape(UnevenRoundedRectangle(bottomLeadingRadius: 12, bottomTrailingRadius: 12, topTrailingRadius: 12))
-                            Spacer(minLength: 20)
-                        }.padding(.top, 4)
-                    }.padding(18)
-                }
-                HStack(spacing: 8) {
-                    TextField("Ask about food…", text: $question, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiCream).clipShape(Capsule())
-                    Button {
-                        guard !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                        if store.saveDraft("food-expert", text: question) { question = "" }
-                    } label: { Art(name: "ai-off", width: 30, height: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save food question")
-                }.padding(.horizontal, 18).padding(.bottom, 10)
-            }.background(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 22, topTrailingRadius: 22))
+                    }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 22, topTrailingRadius: 22))
+                }.background(Color.tatiLime)
+            }.background(.white)
+            HStack(spacing: 8) {
+                TextField("Ask about food…", text: $question, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 22))
+                Button {
+                    guard !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+                    if store.saveDraft("food-expert", text: question) {
+                        question = ""
+                        store.tell("Question saved", "AI replies are currently unavailable. Your question is saved as a draft.")
+                    }
+                } label: { Art(name: "ai-off", width: 30, height: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save food question")
+            }.padding(.horizontal, 18).padding(.vertical, 8).background(.white)
         }.frame(maxWidth: 680).frame(maxWidth: .infinity).foregroundStyle(Color.tatiInk)
     }
 }

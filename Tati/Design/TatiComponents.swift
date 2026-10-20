@@ -297,8 +297,8 @@ struct NoticeLayer: View {
                         }
                     }
                     .frame(width: min(366, max(0, geometry.size.width - 32)))
-                    .frame(maxHeight: max(0, geometry.size.height - 32))
                     .background { Image("dialog-card").resizable() }
+                    .padding(.vertical, 16)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }.foregroundStyle(Color.tatiInk)
             }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)

@@ -27,91 +27,93 @@ struct RoomView: View {
     private var layout: String { store.account.roomLayouts[room.id] ?? "10-seat voice room" }
     private var ownsPlayback: Bool { playback.ownerID == playbackOwner }
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 0) {
-                Button { panel = .host } label: {
-                    HStack(spacing: 6) {
-                        Avatar(asset: host.portraitArtwork, size: 42)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(host.name).font(.system(size: 15, weight: .medium)).lineLimit(1)
-                            Text(host.city).font(.system(size: 10)).opacity(0.8)
-                        }
-                    }
-                }.buttonStyle(.plain)
-                ArtButton(asset: store.account.following.contains(host.id) ? "check" : "follow-small", label: "Follow host", size: 18) { store.toggleFollow(host.id) }
-                Spacer(minLength: 0)
-                Button { panel = .members } label: {
-                    HStack(spacing: 3) { SupplementIcon(icon: .viewers, size: 14); Text("0").font(.system(size: 10)) }
-                        .padding(.horizontal, 6).padding(.vertical, 4).background(.black.opacity(0.35)).clipShape(Capsule()).frame(minHeight: 44)
-                }.buttonStyle(.plain).accessibilityLabel("Room members: zero")
-                ArtButton(asset: "more", label: "Room tools", size: 22) { panel = .tools }
-                ArtButton(asset: "close", label: "Leave room", size: 22) { leave() }
-            }.padding(.horizontal, 12)
-            HStack {
-                RoomKindBadge(isVoice: room.isVoice, animates: room.isVoice || (ownsPlayback && playback.playing))
-                Spacer(minLength: 0)
-            }.padding(.horizontal, 16)
-            if room.isVoice {
-                ScrollView {
-                    VStack(spacing: 16) {
+        MediaViewport {
+            GeometryReader { geometry in
+                VStack(spacing: 8) {
+                    HStack(spacing: 0) {
                         Button { panel = .host } label: {
-                            Avatar(asset: host.portraitArtwork, size: 68)
-                                .overlay { Art(name: "host-frame", width: 96, height: 96) }.frame(height: 100)
-                        }.buttonStyle(.plain).accessibilityLabel("Host details")
-                        if videoSlots > 0 {
-                            HStack(spacing: 8) {
-                                ForEach(0..<videoSlots, id: \.self) { slot in MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 150 : 112) }
+                            HStack(spacing: 6) {
+                                Avatar(asset: host.portraitArtwork, size: 42)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(host.name).font(.system(size: 15, weight: .medium)).lineLimit(1)
+                                    Text(host.city).font(.system(size: 10)).opacity(0.8).lineLimit(1)
+                                }
                             }
+                        }.buttonStyle(.plain)
+                        ArtButton(asset: store.account.following.contains(host.id) ? "check" : "follow-small", label: "Follow host", size: 18) { store.toggleFollow(host.id) }
+                        Spacer(minLength: 0)
+                        Button { panel = .members } label: {
+                            HStack(spacing: 3) { SupplementIcon(icon: .viewers, size: 14); Text("0").font(.system(size: 10)) }
+                                .padding(.horizontal, 6).padding(.vertical, 4).background(.black.opacity(0.35)).clipShape(Capsule()).frame(minHeight: 44)
+                        }.buttonStyle(.plain).accessibilityLabel("Room members: zero")
+                        ArtButton(asset: "more", label: "Room tools", size: 22) { panel = .tools }
+                        ArtButton(asset: "close", label: "Leave room", size: 22) { leave() }
+                    }.padding(.horizontal, 12)
+                    HStack {
+                        RoomKindBadge(isVoice: room.isVoice, animates: room.isVoice || (ownsPlayback && playback.playing))
+                        Spacer(minLength: 0)
+                    }.padding(.horizontal, 16)
+                    if room.isVoice {
+                        ScrollView {
+                            VStack(spacing: 16) {
+                                Button { panel = .host } label: {
+                                    Avatar(asset: host.portraitArtwork, size: 68)
+                                        .overlay { Art(name: "host-frame", width: 96, height: 96) }.frame(height: 100)
+                                }.buttonStyle(.plain).accessibilityLabel("Host details")
+                                if videoSlots > 0 {
+                                    HStack(spacing: 8) {
+                                        ForEach(0..<videoSlots, id: \.self) { slot in MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 150 : 112) }
+                                    }
+                                }
+                                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 18) {
+                                    ForEach(0..<voiceSeats, id: \.self) { index in
+                                        Button { panel = .microphone } label: {
+                                            VStack(spacing: 5) { Art(name: "tool-mic", width: 48, height: 48); Text("\(index + 2)").font(.system(size: 11)) }
+                                        }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
+                                    }
+                                }
+                            }.padding(.horizontal, 22).padding(.top, 8)
                         }
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 18) {
-                            ForEach(0..<voiceSeats, id: \.self) { index in
-                                Button { panel = .microphone } label: {
-                                    VStack(spacing: 5) { Art(name: "tool-mic", width: 48, height: 48); Text("\(index + 2)").font(.system(size: 11)) }
-                                }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
-                            }
-                        }
-                    }.padding(.horizontal, 22).padding(.top, 8)
-                }
-            } else {
-                ScrollView {
-                    VStack(spacing: 8) {
-                        HStack {
-                            Spacer()
-                            Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
-                        }.padding(.horizontal, 18)
-                        if showPK {
-                            HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
-                        }
-                        if let failure = videoFailure ?? (ownsPlayback ? playback.failure : nil) {
+                    } else {
+                        ScrollView {
                             VStack(spacing: 8) {
-                                Text(failure).font(.system(size: 12)).multilineTextAlignment(.center)
-                                TatiButton(title: "Retry video") { startRoomVideo() }.frame(width: 150)
-                            }.padding(16).background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 12))
-                        } else if ownsPlayback && playback.loading {
-                            Text("Loading…").font(.system(size: 12))
+                                HStack {
+                                    Spacer()
+                                    Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
+                                }.padding(.horizontal, 18)
+                                if showPK {
+                                    HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
+                                }
+                                if let failure = videoFailure ?? (ownsPlayback ? playback.failure : nil) {
+                                    VStack(spacing: 8) {
+                                        Text(failure).font(.system(size: 12)).multilineTextAlignment(.center)
+                                        TatiButton(title: "Retry video") { startRoomVideo() }.frame(width: 150)
+                                    }.padding(16).background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 12))
+                                } else if ownsPlayback && playback.loading {
+                                    Text("Loading…").font(.system(size: 12))
+                                }
+                            }
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
+                    RoomActivityFeed(room: room, isActive: isVisible && panel == nil, maximumHeight: min(160, geometry.size.height * 0.28))
+                    HStack(spacing: 4) {
+                        if room.isVoice { ArtButton(asset: "chat-mic", label: "Join microphone", size: 32) { panel = .microphone } }
+                        HStack(spacing: 0) {
+                            TextField("Say Hi~", text: $message).font(.system(size: 13)).textFieldStyle(.plain).tint(.white).padding(.leading, 14)
+                                .onChange(of: message) { _, value in message = String(value.prefix(300)) }
+                            Button {
+                                if store.saveRoomMessage(roomID: room.id, text: message) { message = "" }
+                            } label: { SupplementIcon(icon: .send, size: 24).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save room message")
+                        }.background(.white.opacity(0.30)).clipShape(Capsule())
+                        if room.isVoice { RoomSoundButton(player: music) }
+                        ArtButton(asset: "gift-live", label: "Gifts", size: 36) { panel = .gifts }
+                    }.padding(.horizontal, 10).padding(.vertical, 8).background(.black.opacity(0.22))
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.top, 4).foregroundStyle(.white)
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            RoomActivityFeed(room: room, isActive: isVisible && panel == nil)
-            Text(room.title).font(.system(size: 12)).lineLimit(1).padding(.horizontal, 10).padding(.vertical, 9)
-                .background(.black.opacity(0.40)).clipShape(RoundedRectangle(cornerRadius: 8))
-                .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16)
-            HStack(spacing: 4) {
-                if room.isVoice { ArtButton(asset: "chat-mic", label: "Join microphone", size: 32) { panel = .microphone } }
-                HStack(spacing: 0) {
-                    TextField("Say Hi~", text: $message).font(.system(size: 13)).textFieldStyle(.plain).tint(.white).padding(.leading, 14)
-                        .onChange(of: message) { _, value in message = String(value.prefix(300)) }
-                    Button {
-                        if store.saveRoomMessage(roomID: room.id, text: message) { message = "" }
-                    } label: { SupplementIcon(icon: .send, size: 24).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save room message")
-                }.background(.white.opacity(0.30)).clipShape(Capsule())
-                if room.isVoice { RoomSoundButton(player: music) }
-                ArtButton(asset: "gift-live", label: "Gifts", size: 36) { panel = .gifts }
-            }.padding(.horizontal, 10).padding(.vertical, 8).background(.black.opacity(0.22))
         }
-        .padding(.top, 4).foregroundStyle(.white)
         .background {
             GeometryReader { geo in
                 ZStack {
@@ -164,7 +166,6 @@ struct RoomView: View {
                         if room.isVoice { TatiButton(title: "Keep listening · Minimize") { roomSession.minimize(); panel = nil; dismiss() } }
                         TatiButton(title: "Leave room", secondary: true) { roomSession.leave(room.id); panel = nil; dismiss() }
                         TatiButton(title: "Stay here", secondary: true) { panel = nil }
-                        Note(text: "Your selected music can keep playing while you browse Tati.")
                     }
                     }
                 }
@@ -230,35 +231,51 @@ struct GiftShopView: View {
                 ForEach(FoodCatalog.gifts) { gift in
                     Button { selected = gift } label: {
                         VStack(spacing: 8) {
-                            Art(name: gift.artwork, width: 60, height: 60)
+                            Art(name: gift.artwork, height: 56)
                                 .frame(maxWidth: .infinity).background(selected.id == gift.id ? Color.tatiOlive.opacity(0.35) : .clear).clipShape(RoundedRectangle(cornerRadius: 8))
                             HStack(spacing: 3) { Art(name: "coin-small", width: 15); Text("\(gift.cost)").font(.system(size: 13)) }
                         }
                     }.buttonStyle(.plain).accessibilityLabel("\(gift.name), \(gift.cost) reward coins").accessibilityAddTraits(selected.id == gift.id ? .isSelected : [])
                 }
             }
-            HStack(spacing: 4) {
-                NavigationLink(destination: RechargePanel()) { HStack(spacing: 4) { Art(name: "coin", width: 24); Text("\(store.account.demoCoins)").font(.system(size: 15)) } }.buttonStyle(.plain).accessibilityLabel("Reward balance and recharge")
-                Spacer(minLength: 0)
-                HStack(spacing: 0) {
-                    ArtButton(asset: "remove", label: "Decrease quantity", size: 22) { quantity = max(1, quantity - 1) }
-                    Text("\(quantity)").font(.system(size: 13)).monospacedDigit().frame(minWidth: 22)
-                    ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
-                }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
-                TatiButton(title: "Use gift", enabled: !store.account.blocked.contains(recipient.id)) {
-                    if store.previewGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID) {
-                        if let onGiftSaved { onGiftSaved() }
-                        else { store.tell("Gift saved", "Your reward balance and gift record have been updated. Gift delivery is currently unavailable.") }
-                    }
-                }.frame(width: 82)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) { balance; Spacer(minLength: 0); giftActions }
+                VStack(alignment: .leading, spacing: 8) {
+                    balance
+                    HStack { Spacer(minLength: 0); giftActions }
+                }
             }.padding(.top, 4)
-            HStack {
+            VStack(alignment: .leading, spacing: 4) {
                 Text("Reward coins · Delivery unavailable").font(.system(size: 10))
-                Spacer()
-                NavigationLink("Check-in", destination: CheckInView()).font(.system(size: 11, weight: .semibold))
-                NavigationLink("Wallet", destination: WalletView()).font(.system(size: 11, weight: .semibold))
+                HStack(spacing: 18) {
+                    NavigationLink("Check-in", destination: CheckInView()).font(.system(size: 11, weight: .semibold)).frame(minHeight: 32)
+                    NavigationLink("Wallet", destination: WalletView()).font(.system(size: 11, weight: .semibold)).frame(minHeight: 32)
+                }
             }
         }
+    }
+    private var balance: some View {
+        NavigationLink(destination: RechargePanel()) {
+            HStack(spacing: 4) {
+                Art(name: "coin", width: 24)
+                Text("\(store.account.demoCoins)").font(.system(size: 15)).lineLimit(1).fixedSize()
+            }.frame(minHeight: 44)
+        }.buttonStyle(.plain).accessibilityLabel("Reward balance and recharge")
+    }
+    private var giftActions: some View {
+        HStack(spacing: 8) {
+            HStack(spacing: 0) {
+                ArtButton(asset: "remove", label: "Decrease quantity", size: 22) { quantity = max(1, quantity - 1) }
+                Text("\(quantity)").font(.system(size: 13)).monospacedDigit().frame(minWidth: 22)
+                ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
+            }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
+            TatiButton(title: "Use gift", enabled: !store.account.blocked.contains(recipient.id)) {
+                if store.previewGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID) {
+                    if let onGiftSaved { onGiftSaved() }
+                    else { store.tell("Gift saved", "Your reward balance and gift record have been updated. Gift delivery is currently unavailable.") }
+                }
+            }.frame(width: 82)
+        }.fixedSize(horizontal: true, vertical: false)
     }
 }
 struct MicrophonePanel: View {
@@ -274,7 +291,6 @@ struct MicrophonePanel: View {
                     Task { @MainActor in requesting = false; status = granted ? "Microphone access granted. Voice chat is currently unavailable; recording has not started." : "Microphone access was denied. You can allow it in iOS Settings." }
                 }
             }
-            Note(text: "No recording starts when you grant permission.")
         }
     }
 }

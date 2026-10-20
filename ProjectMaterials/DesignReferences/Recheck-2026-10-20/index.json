@@ -1,0 +1,448 @@
+{
+  "scope": "直播社交4（33）",
+  "count": 63,
+  "source": "Lanhu rendered canvas, pageAssets export; no hidden API",
+  "artboards": [
+    {
+      "number": 1,
+      "artboard": "语音房-Voice",
+      "file": "01.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover5f32f222e79e7d8e70d7a8fbc74da732.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "518154cfb3b6af2a"
+    },
+    {
+      "number": 2,
+      "artboard": "语音房-加入麦克风",
+      "file": "02.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverc7403e21da74b666e20307a892e91e41.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "f2f6f2ec963e5049"
+    },
+    {
+      "number": 3,
+      "artboard": "语音房-礼物",
+      "file": "03.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverc3435ad0a2493053606f669278395361.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "174c532c1985a9aa"
+    },
+    {
+      "number": 4,
+      "artboard": "语音房（房内）",
+      "file": "04.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovera655cdff3db9de7b5581677722be30ef.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "2379228e7a8aa7f4"
+    },
+    {
+      "number": 5,
+      "artboard": "语音房间背景",
+      "file": "05.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover9684ebdbf61067a4909f6cf2464b2393.png?x-oss-process=image/quality,q_lossless/resize,w_1325/format,webp",
+      "assetID": "bae1491c04f4d7d2"
+    },
+    {
+      "number": 6,
+      "artboard": "直播-礼物",
+      "file": "06.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovera68bcc8ddaf85e43876f724d551d1824.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "03e4b2e61a335210"
+    },
+    {
+      "number": 7,
+      "artboard": "直播-pk",
+      "file": "07.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverca0a35c6d77714b02fd16d5a64ddb886.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "66899d6dec665fab"
+    },
+    {
+      "number": 8,
+      "artboard": "直播",
+      "file": "08.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover4eee870777549d0fe17de4c3d0cf0ce5.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "e919d6c81d4546aa"
+    },
+    {
+      "number": 9,
+      "artboard": "排行榜",
+      "file": "09.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover81400833f99189aec0e32b942b2e281f.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "2dc5ae7da9c1bbfe"
+    },
+    {
+      "number": 10,
+      "artboard": "搜索",
+      "file": "10.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover48f346659059be783161e1d83ff7534a.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "455d5ab634157c4c"
+    },
+    {
+      "number": 11,
+      "artboard": "语音房-功能入口",
+      "file": "11.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoveraf8f5c54025ca401a2772b53b4dee775.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "8bcaae21530db7e4"
+    },
+    {
+      "number": 12,
+      "artboard": "首页-筛选",
+      "file": "12.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoveraf5cdff1d3f2b4491d2ddb47bbcd0731.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "85d3fb3c1fae0167"
+    },
+    {
+      "number": 13,
+      "artboard": "首页-关注",
+      "file": "13.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover5ef939523a7b2de049641bdb917b8efa.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "96b1f924ed688bf7"
+    },
+    {
+      "number": 14,
+      "artboard": "语音房-关注",
+      "file": "14.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverfac9bce7e1bc968d224a32f3617a908d.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "dfb3f74a77290252"
+    },
+    {
+      "number": 15,
+      "artboard": "语音房-成员",
+      "file": "15.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover6958604ec535e821427867bde8702ac7.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "7f1f4eaa6ff3cd56"
+    },
+    {
+      "number": 16,
+      "artboard": "ai美食师",
+      "file": "16.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover3bafee7c1074ad532959a52d8cce5853.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "149e9cb2e07b6190"
+    },
+    {
+      "number": 17,
+      "artboard": "我的钱包-充值",
+      "file": "17.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover462229f21c33d0096c7cbe483a6badd4.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "09e68047eea940a8"
+    },
+    {
+      "number": 18,
+      "artboard": "邀请码",
+      "file": "18.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover6e2cac1a8c8a2dc8db8709d586e2a1a4.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "fa4a9cd0ea6ef180"
+    },
+    {
+      "number": 19,
+      "artboard": "客服支持-展开",
+      "file": "19.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover89e9d04b81b2a389cd70042b0dedef63.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "a124be4cb94158d7"
+    },
+    {
+      "number": 20,
+      "artboard": "我的等级",
+      "file": "20.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovera83fc5290b1c34fb0f11034e39bad7cb.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "fa0fda13e4459033"
+    },
+    {
+      "number": 21,
+      "artboard": "粉丝",
+      "file": "21.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovere3033179fc461673d13c490134715db7.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "2f2ae32ef79b24b8"
+    },
+    {
+      "number": 22,
+      "artboard": "每日签到",
+      "file": "22.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover84c2e36c43d8a913e5971b268c272891.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "72829bcd290464f4"
+    },
+    {
+      "number": 23,
+      "artboard": "黑名单",
+      "file": "23.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover25b0e0d93959cb19ac0e1270888bf393.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "7508f133e5deac71"
+    },
+    {
+      "number": 24,
+      "artboard": "设置",
+      "file": "24.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover3c7f4fc01a372f134c5f42b081da4db1.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "5e5b9c22a4b239da"
+    },
+    {
+      "number": 25,
+      "artboard": "切换语言-弹窗",
+      "file": "25.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovere85426f11f9ebf04444b6e7bd7bbf364.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "a5895e21236ec034"
+    },
+    {
+      "number": 26,
+      "artboard": "编辑资料",
+      "file": "26.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover0db74a449d55624f4726def976a21df4.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "a128faaeaea64f6b"
+    },
+    {
+      "number": 27,
+      "artboard": "切换语言",
+      "file": "27.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverf4ebb542a587800e44f33f50576d56e9.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "3949e33b5454a086"
+    },
+    {
+      "number": 28,
+      "artboard": "评论",
+      "file": "28.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover6fd55e9efe5995e8b51189456587e6f6.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "c532b693e46e2d70"
+    },
+    {
+      "number": 29,
+      "artboard": "用户主页",
+      "file": "29.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover4a6f826d497c1690422509a9a587b691.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "4d38253116068e19"
+    },
+    {
+      "number": 30,
+      "artboard": "用户主页-弹窗",
+      "file": "30.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover0429b874288b251f04945f0b534cf64c.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "4d568f655a3c0f71"
+    },
+    {
+      "number": 31,
+      "artboard": "马上发布",
+      "file": "31.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverb02bc0d965c9b471c97c287023201b92.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "0dd76d0fab740a0e"
+    },
+    {
+      "number": 32,
+      "artboard": "发布视频",
+      "file": "32.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoveref3c14b4200127514bbb96da2044f369.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "640099fea4905cf5"
+    },
+    {
+      "number": 33,
+      "artboard": "直播+发布",
+      "file": "33.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverdd9884b677bc9b247165667c79d11aa2.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "ddf20d4832a78339"
+    },
+    {
+      "number": 34,
+      "artboard": "去开直播",
+      "file": "34.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover337da8ca1ff57eb871874ef7071a92a4.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "218c8672cccf2dc5"
+    },
+    {
+      "number": 35,
+      "artboard": "语音房-离开房间",
+      "file": "35.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverce573daaee1a70641135018393493a5d.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "8e09b9ef82a7215c"
+    },
+    {
+      "number": 36,
+      "artboard": "语音房-邀请朋友",
+      "file": "36.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover2de0e01101c01bc13298cf678dc14fbd.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "6465ace2c8affd9f"
+    },
+    {
+      "number": 37,
+      "artboard": "语音房-音乐播放",
+      "file": "37.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover8bbd58b4339777b8f59ca11314602397.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "ce568aed18a701c2"
+    },
+    {
+      "number": 38,
+      "artboard": "语音房-房型切换",
+      "file": "38.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovercedfbfdda4f72288f2d501c39a24b059.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "42fe852bd8d0d8ff"
+    },
+    {
+      "number": 39,
+      "artboard": "语音房-多位视频",
+      "file": "39.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovere38d8958ae3835d0bbde09bf854f9c17.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "241b83bf28c9c3df"
+    },
+    {
+      "number": 40,
+      "artboard": "语音房-美食",
+      "file": "40.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover8b8020386a7f988e9745fa015cd3c920.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "419241346b110981"
+    },
+    {
+      "number": 41,
+      "artboard": "语音房（Party 列表）",
+      "file": "41.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoveredc78cf5ccb37d5db15110269f2d763d.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "2bb4c939a6751ae2"
+    },
+    {
+      "number": 42,
+      "artboard": "直播-礼物充值",
+      "file": "42.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovere1dfb4bb306567023b20bb252a9911b5.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "e3e1ac5b3389e5d4"
+    },
+    {
+      "number": 43,
+      "artboard": "直播-观众列表",
+      "file": "43.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover9d79530d6338ef5924c37e18e2756699.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "93a17bfd2316ce1b"
+    },
+    {
+      "number": 44,
+      "artboard": "首页",
+      "file": "44.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovercc2e235f43f469fd3959e160ad0a58a7.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "2701aab5370d2669"
+    },
+    {
+      "number": 45,
+      "artboard": "首页-发现",
+      "file": "45.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverc958333028173d52b944c7f3ecdbdeae.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "48546803d33c3b14"
+    },
+    {
+      "number": 46,
+      "artboard": "美食直播logo",
+      "file": "46.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover920dd184cebefd8d3540a416dd627626.png?x-oss-process=image/quality,q_lossless/resize,w_1024/format,webp",
+      "assetID": "679486e68a9db4c6"
+    },
+    {
+      "number": 47,
+      "artboard": "tab栏",
+      "file": "47.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoveraf5aadcd776c067b8e0cabfcab7a2c10.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "9d40e85dfdd739f2"
+    },
+    {
+      "number": 48,
+      "artboard": "邮箱与密码",
+      "file": "48.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverd5f15039d18a2540026530a91911ceef.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "5a9537a19c6f06bb"
+    },
+    {
+      "number": 49,
+      "artboard": "登陆-苹果",
+      "file": "49.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverd8117c3039fa026c77283d4c6fd7423f.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "984d0e6cd91d45e0"
+    },
+    {
+      "number": 50,
+      "artboard": "登陆",
+      "file": "50.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover00af8d1b08191797895998b4bd22a4ac.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "3948f5050d3929ec"
+    },
+    {
+      "number": 51,
+      "artboard": "启动",
+      "file": "51.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovera1110097518c55e37a457c61df3221c1.png?x-oss-process=image/quality,q_lossless/resize,w_390/format,webp",
+      "assetID": "d2cb9c29cf68429a"
+    },
+    {
+      "number": 52,
+      "artboard": "视频（详情）",
+      "file": "52.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover3c5d771cc7365a93b8debba0f480071b.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "bb23ac8b6afbea93"
+    },
+    {
+      "number": 53,
+      "artboard": "我的背包",
+      "file": "53.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover2aeea3c7a08afec87d3ce2aa3c38ab47.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "c309597e34b3fbb5"
+    },
+    {
+      "number": 54,
+      "artboard": "视频（列表）",
+      "file": "54.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover6ddc276a1ee7de2bd9231ff8266dccc8.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "e45e07c82ad02e72"
+    },
+    {
+      "number": 55,
+      "artboard": "聊天",
+      "file": "55.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover4670082825ab9befbe44324829475d15.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "3537da72636c3a0f"
+    },
+    {
+      "number": 56,
+      "artboard": "联系客服",
+      "file": "56.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovere875d1c3cb55a2622764d616dcb6dcad.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "00055940abdbc443"
+    },
+    {
+      "number": 57,
+      "artboard": "我的",
+      "file": "57.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover4883235cb1af39a4d1379d5da533f685.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "fb6271c3f676d889"
+    },
+    {
+      "number": 58,
+      "artboard": "发布成功",
+      "file": "58.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverb32cb70a191598c175d80f85b79f87f0.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "188ecf793ceff2c8"
+    },
+    {
+      "number": 59,
+      "artboard": "客服支持",
+      "file": "59.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover42a5395c2a3f58540aa7c83f5924bd82.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "ea819f534de6e25e"
+    },
+    {
+      "number": 60,
+      "artboard": "缺省页",
+      "file": "60.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCovera4f06e214b2c5cfc919791d7a55530a7.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "220caafabad0865a"
+    },
+    {
+      "number": 61,
+      "artboard": "语音房（背景面板）",
+      "file": "61.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverf036d069947ba883c9d616819297717a.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "0d66ec3c0821502c"
+    },
+    {
+      "number": 62,
+      "artboard": "直播-主页",
+      "file": "62.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCoverf0c606c0c46cc91310a2df4f075148ce.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "ca7d72334f057ff6"
+    },
+    {
+      "number": 63,
+      "artboard": "反馈",
+      "file": "63.webp",
+      "observedURL": "https://assets.lanhuapp.com/FigmaCover68f3607f7047042dd616d391615a6ba4.png?x-oss-process=image/quality,q_lossless/resize,w_375/format,webp",
+      "assetID": "61a1d035353fa9c8"
+    }
+  ]
+}

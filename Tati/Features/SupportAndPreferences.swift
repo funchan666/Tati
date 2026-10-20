@@ -99,7 +99,7 @@ struct SupportDraftView: View {
         TatiForm(title: "Customer support") {
             HStack(alignment: .top, spacing: 8) {
                 Art(name: "support-avatar", width: 40, height: 40)
-                Text("Support is currently unavailable. You can save your question as a draft.").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
+                Text("What can we help with?").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
             }
             if let draft = store.account.drafts["support-chat"], !draft.isEmpty {
                 HStack {
@@ -110,7 +110,7 @@ struct SupportDraftView: View {
             if store.account.draftImages?["support-chat"] != nil { DraftPhotoAttachment(draftKey: "support-chat") }
         } footer: {
             HStack(spacing: 6) {
-                TextField("Describe your question", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiPink).foregroundStyle(.white).tint(.white).clipShape(Capsule())
+                TextField("Describe your question", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiPink).foregroundStyle(.white).tint(.white).clipShape(RoundedRectangle(cornerRadius: 22))
                 DraftPhotoAttachment(draftKey: "support-chat", compact: true)
                 Button {
                     guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
@@ -133,10 +133,12 @@ struct LanguagePreferenceView: View {
                 } label: {
                     HStack { Text(language).font(.system(size: 14)); Spacer(); if (store.account.preferredLanguage ?? "English") == language { Art(name: "check", width: 22) } }
                         .padding(.horizontal, 18).frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
-                        .background { Image("outlined-card").resizable() }
+                        .background {
+                            if (store.account.preferredLanguage ?? "English") == language { Color.tatiLime.opacity(0.55).clipShape(RoundedRectangle(cornerRadius: 8)) }
+                            Image("outlined-card").resizable().opacity((store.account.preferredLanguage ?? "English") == language ? 0.35 : 1)
+                        }
                 }.buttonStyle(.plain)
             }
-            Note(text: "Interface language: English. This choice saves a preference, not an installed translation.")
         }
     }
 }

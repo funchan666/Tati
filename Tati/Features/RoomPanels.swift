@@ -3,6 +3,7 @@ import SwiftUI
 struct RoomActivityFeed: View {
     var room: FoodRoom
     var isActive: Bool
+    var maximumHeight: CGFloat = 160
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -26,10 +27,6 @@ struct RoomActivityFeed: View {
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("Room highlights")
-                .font(.system(size: 10, weight: .medium))
-                .padding(.horizontal, 8).padding(.vertical, 3)
-                .background(.black.opacity(0.45)).clipShape(Capsule())
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 6) {
@@ -48,7 +45,7 @@ struct RoomActivityFeed: View {
                 }
             }
         }
-        .foregroundStyle(.white).frame(maxWidth: 430, maxHeight: 190, alignment: .leading)
+        .foregroundStyle(.white).frame(maxWidth: 430, maxHeight: maximumHeight, alignment: .leading)
         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16)
         .task(id: room.id + (advancesSamples ? "-active" : "-paused")) {
             guard advancesSamples else { return }
@@ -68,7 +65,7 @@ struct RoomActivityFeed: View {
             HStack(spacing: 7) {
                 Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 26, isCurrent: current)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiLime)
+                    Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiLime).lineLimit(1)
                     Text(entry.isSample ? "\(gift.name)" : "Saved \(gift.name)")
                         .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
                 }
@@ -103,19 +100,18 @@ struct RoomLayoutPanel: View {
             }
             if mode == "Voice" { layout("10-seat voice room", "10 voice seats") }
             else { ForEach(videoLayouts.indices, id: \.self) { index in layout(videoLayouts[index].0, videoLayouts[index].1) } }
-            Note(text: "Choose a room layout. Joining a microphone seat is currently unavailable.")
         }.onAppear { mode = current == "10-seat voice room" ? "Voice" : "Video + Voice" }
     }
     private func layout(_ name: String, _ subtitle: String) -> some View {
         Button { choose(name) } label: {
             HStack(spacing: 14) {
                 Art(name: "layout-seat", width: 32, height: 32)
-                VStack(alignment: .leading, spacing: 5) { Text(name).font(.headline); Text(subtitle).font(.caption) }
+                VStack(alignment: .leading, spacing: 5) { Text(name).font(.system(size: 14, weight: .medium)).fixedSize(horizontal: false, vertical: true); Text(subtitle).font(.system(size: 11)) }
                 Spacer()
-                if current == name { Text("Current").font(.caption.bold()) }
+                if current == name { Text("Current").font(.system(size: 10)).fixedSize() }
                 else { Art(name: "chevron", width: 14) }
-            }.padding(16).foregroundStyle(current == name ? Color.tatiInk : .white)
-                .background(current == name ? Color.yellow.opacity(0.65) : Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 18))
+            }.padding(12).foregroundStyle(current == name ? Color.tatiInk : .white)
+                .background(current == name ? Color.yellow.opacity(0.65) : Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 8))
         }.buttonStyle(.plain).accessibilityAddTraits(current == name ? .isSelected : [])
     }
 }
@@ -127,10 +123,9 @@ struct RoomPersonPanel: View {
     var body: some View {
         TatiPanel(title: roomMember ? "Room member" : "Host") {
             VStack(spacing: 10) {
-                Avatar(asset: person.portraitArtwork, size: 76)
-                Text(person.name).font(.title2.bold())
-                Text(person.city).font(.subheadline)
-                Note(text: person.interest)
+                Avatar(asset: person.portraitArtwork, size: 60)
+                Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(2).multilineTextAlignment(.center)
+                Text(person.city).font(.system(size: 11))
             }.frame(maxWidth: .infinity)
             HStack(spacing: 10) {
                 NavigationLink(destination: PersonProfileView(person: person)) { panelLink("Profile") }
@@ -155,8 +150,7 @@ struct RoomInvitePanel: View {
     private var following: [FoodPerson] { FoodCatalog.people.filter { store.account.following.contains($0.id) && !store.account.blocked.contains($0.id) } }
     var body: some View {
         TatiPanel(title: "Invite friends") {
-            Note(text: "Invite friends to \(room.title). Invitations are currently unavailable.")
-            if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Profiles you choose to follow will appear here. Nobody is added automatically.", artwork: "tool-invite") }
+            if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Follow a profile to find it here.", artwork: "tool-invite") }
             ForEach(following) { person in
                 HStack {
                     NavigationLink(destination: PersonProfileView(person: person)) { HStack { Avatar(asset: person.portraitArtwork); Text(person.name).font(.headline) } }.buttonStyle(.plain)

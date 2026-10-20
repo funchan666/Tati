@@ -86,8 +86,8 @@ struct LiveRoomCard: View {
                         HStack(spacing: 5) {
                             Avatar(asset: host?.portraitArtwork, size: 24)
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(host?.name ?? "Creator").font(.system(size: 12, weight: .semibold))
-                                Text(host?.city ?? "").font(.system(size: 9))
+                                Text(host?.name ?? "Creator").font(.system(size: 12, weight: .semibold)).lineLimit(1)
+                                Text(host?.city ?? "").font(.system(size: 9)).lineLimit(1)
                             }
                         }
                         HStack(spacing: 3) {
@@ -133,7 +133,7 @@ struct RoomListCard: View {
                 }
             }.padding(.top, 8).frame(maxWidth: .infinity, alignment: .leading)
         }.padding(.horizontal, 12).frame(height: 94, alignment: .top)
-            .background { Image("outlined-card").resizable() }.padding(.top, 20).foregroundStyle(Color.tatiInk)
+            .background { Image("outlined-card").resizable() }.padding(.top, 30).foregroundStyle(Color.tatiInk)
     }
 }
 
@@ -270,8 +270,7 @@ struct RankingView: View {
                 }.padding(5).background(Color.tatiCream.opacity(0.9)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.horizontal, 42)
                 ScrollView {
                     VStack(spacing: 8) {
-                        Text("No ranking data yet").font(.system(size: 16, weight: .medium))
-                        Text("\(period) \(category.lowercased()) rankings are currently unavailable.").font(.system(size: 12)).multilineTextAlignment(.center)
+                        Text("No rankings yet").font(.system(size: 16, weight: .medium))
                     }.padding(24).frame(maxWidth: .infinity).padding(.top, geometry.size.height * 0.40)
                 }
             }

@@ -38,7 +38,7 @@ targets:
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIUserInterfaceStyle: Light
         UIApplicationSupportsIndirectInputEvents: true
-        NSCameraUsageDescription: Tati uses the camera when you choose to preview your own live session.
+        NSCameraUsageDescription: Tati uses the camera when you turn it on to prepare a live session.
         NSMicrophoneUsageDescription: Tati checks microphone permission only when you choose the microphone permission control.
         NSPhotoLibraryUsageDescription: Choose your own profile photos and food videos for Tati.
 schemes:

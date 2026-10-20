@@ -41,10 +41,9 @@ struct WalletView: View {
                 Art(name: "gift-hero", width: 125, height: 105).padding(.trailing, 4)
                 VStack(alignment: .leading, spacing: 7) {
                     Text("My coins:").font(.system(size: 15))
-                    Text("\(store.account.purchasedCoins)").font(.system(size: 28, weight: .heavy))
-                }.foregroundStyle(.white).padding(20).frame(maxWidth: .infinity, alignment: .leading)
+                    Text("\(store.account.purchasedCoins)").font(.system(size: 28, weight: .heavy)).lineLimit(1).minimumScaleFactor(0.6)
+                }.foregroundStyle(.white).padding(20).padding(.trailing, 112).frame(maxWidth: .infinity, alignment: .leading)
             }
-            Note(text: "Check-in rewards and purchased coins have separate balances.")
             RechargeOptions(showsActions: false).padding(14).background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
             NavigationLink(destination: CheckInView()) { SettingRow(title: "Reward coins", asset: "coin-small", detail: "\(store.account.demoCoins) · Check-in") }.buttonStyle(.plain)
             if !store.account.gifts.isEmpty {
@@ -72,7 +71,11 @@ struct LevelView: View {
     var body: some View {
         TatiPage(title: "My level") {
             VStack(alignment: .leading, spacing: 10) {
-                HStack { Avatar(file: store.account.profile.avatarFile, size: 44, isCurrent: true); Text(store.account.profile.name).font(.system(size: 20, weight: .medium)); Spacer() }
+                HStack {
+                    Avatar(file: store.account.profile.avatarFile, size: 44, isCurrent: true)
+                    Text(store.account.profile.name).font(.system(size: 17, weight: .medium)).lineLimit(2)
+                    Spacer(minLength: 0)
+                }.padding(.trailing, 72)
                 Text("Lv. \(level)").font(.system(size: 26, weight: .heavy))
                 Color.white.opacity(0.8).frame(height: 2)
                 Text("\(store.account.claimedDays.count % 7) / 7 check-ins").font(.system(size: 11)).frame(maxWidth: .infinity)
@@ -143,7 +146,6 @@ struct SettingsView: View {
                     if store.account.notifications { Art(name: "toggle-on", width: 32, height: 23) } else { SupplementIcon(icon: .toggleOff, size: 32) }
                 }.padding(.horizontal, 18).frame(height: 50).background { Image("outlined-card").resizable() }
             }.buttonStyle(.plain).accessibilityValue(store.account.notifications ? "Preference on" : "Preference off")
-            Note(text: "Your preferences are saved. Push notifications are unavailable and the interface currently uses English.")
         }.buttonStyle(.plain)
     }
 }
@@ -163,7 +165,6 @@ struct ReportView: View {
             InputField(title: "Description", text: $details, multiline: true, minimumHeight: 160).onChange(of: details) { _, value in details = String(value.prefix(1000)) }
             Text("Upload photo").font(.system(size: 14))
             PhotoAttachmentPicker(data: $photoData, loading: $photoLoading)
-            Note(text: "Submissions are currently unavailable. You can save a draft without submitting it.")
 
             let saved = store.account.reports.filter { $0.subjectID == subjectID }
             if !saved.isEmpty {
@@ -206,7 +207,6 @@ struct InviteView: View {
                     HStack(alignment: .top, spacing: 6) { Art(name: "check-pink", width: 16, height: 16); Text(text).font(.system(size: 12)) }
                 }
             }.padding(16).frame(maxWidth: .infinity, alignment: .leading).background { Image("outlined-card").resizable() }
-            Note(text: "Invitations are currently unavailable. No invitation rewards have been issued.")
         }
     }
 }

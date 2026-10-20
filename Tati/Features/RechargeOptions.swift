@@ -18,16 +18,18 @@ struct RechargeOptions: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if compact { Art(name: "recharge-banner") }
-            Note(text: "Purchases currently unavailable")
             if compact {
                 ForEach(packages) { package in
                     Button { selected = package.id } label: {
                         HStack(spacing: 14) {
                             Art(name: package.bonus > 0 ? "coin-pile" : "coin", width: 42, height: 42)
                             VStack(alignment: .leading, spacing: 6) { Text(package.total.formatted()).font(.title3.bold()); if package.bonus > 0 { Text("Includes \(package.bonus.formatted()) bonus").font(.caption) } }
-                            Spacer(); Text("Price pending").font(.caption)
-                            if selected == package.id { Art(name: "check-pink", width: 20) }
-                        }.padding(16).background { Image("coin-pack-card").resizable() }
+                            Spacer(minLength: 0)
+                            Text("Unavailable").font(.system(size: 11)).fixedSize()
+                        }.padding(12).background { Image("coin-pack-card").resizable() }
+                            .overlay(alignment: .topTrailing) {
+                                if selected == package.id { Art(name: "check-pink", width: 17, height: 17).padding(3) }
+                            }
                     }.buttonStyle(.plain)
                 }
             } else {
@@ -37,7 +39,7 @@ struct RechargeOptions: View {
                             VStack(spacing: 5) {
                                 Text(package.total.formatted()).font(.headline).minimumScaleFactor(0.7).lineLimit(1)
                                 Art(name: "coin", width: 34, height: 34)
-                                Text("Price pending").font(.system(size: 10)).padding(6).foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
+                                Text("Unavailable").font(.system(size: 10)).lineLimit(1).minimumScaleFactor(0.75).padding(.horizontal, 4).padding(.vertical, 6).foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
 
                             }.padding(10).frame(maxWidth: .infinity).background { Image("coin-pack-card").resizable() }
                                 .overlay(alignment: .topTrailing) { if selected == package.id { Art(name: "check-pink", width: 17, height: 17).padding(3) } }
@@ -58,7 +60,6 @@ struct RechargePanel: View {
         TatiPanel(title: "Recharge") {
             HStack { Art(name: "coin", width: 30); Text("Purchased balance \(store.account.purchasedCoins)").font(.headline) }
             RechargeOptions(compact: true)
-            Note(text: "Gifts use check-in reward coins. No purchase is made.")
         }
     }
 }
