@@ -28,7 +28,7 @@ struct CheckInView: View {
                 Note(text: "One reward per UTC day · Demo coins have no cash value.")
                 TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) demo coins", enabled: !store.checkedIn) { store.checkIn() }
             }.padding(18).frame(maxWidth: 600)
-        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
 struct WalletView: View {

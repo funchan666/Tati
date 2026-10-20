@@ -40,7 +40,7 @@ struct PersonProfileView: View {
                     }
                 }.padding(.horizontal, 16).padding(.bottom, 16)
             }.frame(maxWidth: 680).frame(maxWidth: .infinity)
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
         .overlay {
             if more {
                 ZStack {
@@ -256,7 +256,7 @@ struct ConversationView: View {
                 DraftPhotoAttachment(draftKey: person.id, compact: true)
                 ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
             }.padding(.horizontal, 8).padding(.vertical, 10).background(Color.tatiLime.opacity(0.7))
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
         .onAppear { text = store.account.drafts[person.id] ?? "" }
         .sheet(isPresented: $gifts) { NavigationStack { GiftShopView(recipient: person) }.overlay { NoticeLayer() }.presentationDetents([.height(390), .large]) }
     }

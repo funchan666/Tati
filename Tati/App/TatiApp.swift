@@ -14,7 +14,7 @@ struct TatiApp: App {
                 else { WelcomeView() }
                 NoticeLayer()
             }
-            .ignoresSafeArea(.container, edges: .all)
+            .background { Color.tatiCream.ignoresSafeArea(.container) }
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .tint(.tatiPink).preferredColorScheme(.light)
             .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
@@ -51,12 +51,12 @@ struct CommunityRoot: View {
                                 .frame(maxWidth: .infinity, minHeight: 54)
                         }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
                     }
-                }.padding(.top, 4).background {
+                }.padding(.top, 4).padding(.bottom, 6).background {
                     UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28)
                         .fill(Color.tatiPink).ignoresSafeArea(edges: .bottom)
                 }
-            }.background(Color.tatiCream).tatiEdgeToEdge()
-        }.ignoresSafeArea(.container, edges: .all)
+            }.background(Color.tatiCream).tatiScreen()
+        }
     }
 }
 struct WelcomeView: View {
@@ -89,9 +89,12 @@ struct WelcomeView: View {
                     }.padding(.horizontal, 26).padding(.bottom, 12)
                 }.frame(width: geo.size.width, height: geo.size.height)
                     .background {
-                        Image("welcome").resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped()
+                        GeometryReader { backdrop in
+                            Image("welcome").resizable().scaledToFill()
+                                .frame(width: backdrop.size.width, height: backdrop.size.height).clipped()
+                        }.ignoresSafeArea(.container)
                     }
-            }.tatiEdgeToEdge()
-        }.ignoresSafeArea(.container, edges: .all)
+            }.tatiScreen()
+        }
     }
 }

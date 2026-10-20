@@ -49,8 +49,8 @@ struct PortraitPhotoView: View {
     }
 }
 
-/// Photos and players fill their container, including camera-cutout areas.
-/// An active fold division still keeps this independent unit on one panel.
+/// Independent media and player controls avoid active folds and camera occlusions.
+/// Full-screen backdrops are rendered separately and may extend to every edge.
 struct MediaViewport<Content: View>: View {
     @ViewBuilder var content: () -> Content
     var body: some View {
@@ -66,8 +66,10 @@ struct MediaViewport<Content: View>: View {
     private func availableFrame(in geometry: GeometryProxy) -> CGRect {
         let bounds = CGRect(origin: .zero, size: geometry.size)
         if #available(iOS 27.1, *) {
-            let obstacles = geometry.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
-                .filter(\.isActive).map(\.frame)
+            let obstacles = (
+                geometry.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
+                + geometry.reservedRegions(kind: .occlusion, layoutDirectionBehavior: .fixed)
+            ).filter(\.isActive).map(\.frame)
             var candidates = [bounds]
             for obstacle in obstacles {
                 candidates = candidates.flatMap { rectangle -> [CGRect] in

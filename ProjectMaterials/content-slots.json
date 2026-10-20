@@ -1034,10 +1034,10 @@
     }
   ],
   "roomCovers": {
-    "pasta-table": "portrait-37",
-    "street-bites": "portrait-12",
-    "kitchen-stories": "portrait-01",
-    "sweet-evening": "portrait-33",
+    "pasta-table": "poster-toasted-sandwich",
+    "street-bites": "poster-street-food-table",
+    "kitchen-stories": "poster-crispy-bites",
+    "sweet-evening": "poster-bakery-dessert",
     "dinner-conversation": "portrait-01",
     "dessert-club": "portrait-33",
     "market-table": "portrait-42",
@@ -1071,6 +1071,7 @@
       "caption": "A sweet bake, from pan to plate",
       "duration": 94.527029,
       "uses": [
+        "home.room-cover",
         "room.video-background",
         "search.rooms"
       ],
@@ -1101,6 +1102,7 @@
       "caption": "Crunchy bites at the kitchen counter",
       "duration": 19.432245,
       "uses": [
+        "home.room-cover",
         "room.video-background",
         "search.rooms"
       ],
@@ -1131,6 +1133,7 @@
       "caption": "A toasted sandwich, packed with flavour",
       "duration": 32.22644,
       "uses": [
+        "home.room-cover",
         "room.video-background",
         "search.rooms"
       ],
@@ -1161,6 +1164,7 @@
       "caption": "A table full of street-food flavours",
       "duration": 77.180272,
       "uses": [
+        "home.room-cover",
         "room.video-background",
         "search.rooms"
       ],

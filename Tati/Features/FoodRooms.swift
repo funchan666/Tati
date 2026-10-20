@@ -47,6 +47,10 @@ struct RoomView: View {
                 ArtButton(asset: "more", label: "Room tools", size: 22) { panel = .tools }
                 ArtButton(asset: "close", label: "Leave room", size: 22) { leave() }
             }.padding(.horizontal, 12)
+            HStack {
+                RoomKindBadge(isVoice: room.isVoice, animates: room.isVoice || (ownsPlayback && playback.playing))
+                Spacer(minLength: 0)
+            }.padding(.horizontal, 16)
             if room.isVoice {
                 ScrollView {
                     VStack(spacing: 16) {
@@ -69,22 +73,26 @@ struct RoomView: View {
                     }.padding(.horizontal, 22).padding(.top, 8)
                 }
             } else {
-                HStack {
-                    Spacer()
-                    Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
-                }.padding(.horizontal, 18)
-                if showPK {
-                    HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
-                }
-                if let failure = videoFailure ?? (ownsPlayback ? playback.failure : nil) {
+                ScrollView {
                     VStack(spacing: 8) {
-                        Text(failure).font(.system(size: 12)).multilineTextAlignment(.center)
-                        TatiButton(title: "Retry video") { startRoomVideo() }.frame(width: 150)
-                    }.padding(16).background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 12))
-                } else if ownsPlayback && playback.loading {
-                    Text("Loading…").font(.system(size: 12))
+                        HStack {
+                            Spacer()
+                            Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
+                        }.padding(.horizontal, 18)
+                        if showPK {
+                            HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
+                        }
+                        if let failure = videoFailure ?? (ownsPlayback ? playback.failure : nil) {
+                            VStack(spacing: 8) {
+                                Text(failure).font(.system(size: 12)).multilineTextAlignment(.center)
+                                TatiButton(title: "Retry video") { startRoomVideo() }.frame(width: 150)
+                            }.padding(16).background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 12))
+                        } else if ownsPlayback && playback.loading {
+                            Text("Loading…").font(.system(size: 12))
+                        }
+                    }
                 }
-                Spacer(minLength: 30)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             Text(room.title).font(.system(size: 12)).padding(.horizontal, 10).padding(.vertical, 9)
                 .background(.black.opacity(0.40)).clipShape(RoundedRectangle(cornerRadius: 8))
@@ -115,7 +123,7 @@ struct RoomView: View {
                 }.allowsHitTesting(false)
             }.ignoresSafeArea()
         }
-        .tatiEdgeToEdge()
+        .tatiScreen()
         .onAppear {
             isVisible = true
             roomSession.enter(room); message = store.account.drafts["room-" + room.id] ?? ""

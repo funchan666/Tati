@@ -99,7 +99,11 @@ struct LiveRoomCard: View {
                             RoomTopicTag(topic: room.topic)
                         }
                     }.padding(7).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2, y: 1)
-                }.clipShape(RoundedRectangle(cornerRadius: 18))
+                }
+                .overlay(alignment: .topLeading) {
+                    RoomKindBadge(isVoice: false).padding(8)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 18))
             }.aspectRatio(0.86, contentMode: .fit)
             VStack(alignment: .leading, spacing: 3) {
                 Text(room.title).font(.system(size: 12, weight: .semibold)).lineLimit(1)
@@ -116,6 +120,7 @@ struct RoomListCard: View {
         HStack(alignment: .top, spacing: 12) {
             ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(alignment: .bottomLeading) { RoomKindBadge(isVoice: room.isVoice).padding(6) }
                 .overlay(alignment: .topLeading) { Art(name: "hot-room", width: 90, height: 31).offset(y: -18) }
                 .offset(y: -12)
             VStack(alignment: .leading, spacing: 5) {
@@ -220,7 +225,7 @@ struct SearchView: View {
             }
             }.padding(.horizontal, 18).padding(.bottom, 16).frame(maxWidth: 600).frame(maxWidth: .infinity)
             }
-        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
 struct PersonRow: View {
@@ -270,8 +275,13 @@ struct RankingView: View {
                     }.padding(24).frame(maxWidth: .infinity).padding(.top, geometry.size.height * 0.40)
                 }
             }
-            .background { Image("rank-background").resizable().scaledToFill().frame(width: geometry.size.width, height: geometry.size.height).clipped().ignoresSafeArea() }
-        }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+            .background {
+                GeometryReader { backdrop in
+                    Image("rank-background").resizable().scaledToFill()
+                        .frame(width: backdrop.size.width, height: backdrop.size.height).clipped()
+                }.ignoresSafeArea(.container)
+            }
+        }.foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
 

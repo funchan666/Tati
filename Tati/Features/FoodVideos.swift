@@ -49,11 +49,6 @@ struct ClipDetailView: View {
     var body: some View {
         MediaViewport {
             ZStack {
-                if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
-                    ClipSurface(player: player).background(Color.black).allowsHitTesting(false)
-                } else {
-                    Color.tatiCream
-                }
                 VStack {
                     HStack {
                         ArtButton(asset: "back", label: "Back") { dismiss() }
@@ -96,7 +91,19 @@ struct ClipDetailView: View {
                     }.padding(25).foregroundStyle(Color.tatiInk)
                 }
             }
-        }.background(Color.black).tatiEdgeToEdge()
+        }
+        .background {
+            GeometryReader { geometry in
+                if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
+                    ClipSurface(player: player).background(Color.black)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .allowsHitTesting(false)
+                } else {
+                    Color.tatiCream
+                }
+            }.ignoresSafeArea(.container)
+        }
+        .tatiScreen()
         .onAppear { isVisible = true; preparePlayback() }
         .onDisappear { isVisible = false; if playback.ownerID == playbackOwner { playback.stop() } }
         .onChange(of: scenePhase) { _, value in
@@ -149,7 +156,7 @@ struct CommentDraftView: View {
                 } label: { Text("SAVE").font(.system(size: 13, weight: .bold)).foregroundStyle(Color.tatiInk).padding(.horizontal, 14).padding(.vertical, 9).background(Color.tatiLime).clipShape(Capsule()).frame(minHeight: 44) }.buttonStyle(.plain).accessibilityLabel("Save comment draft")
             }.padding(.horizontal, 5).background(Color.tatiPink).clipShape(Capsule()).padding(16)
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
-            .tatiEdgeToEdge()
+            .tatiScreen()
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
     }
 }

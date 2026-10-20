@@ -1,10 +1,10 @@
 import SwiftUI
 
 extension View {
-    /// Screen content reaches every container edge; keyboard avoidance stays enabled.
-    func tatiEdgeToEdge() -> some View {
-        ignoresSafeArea(.container, edges: .all)
-            .toolbar(.hidden, for: .navigationBar)
+    /// Foreground follows its navigation/sheet container's safe area and keyboard.
+    /// Apply edge extension to backgrounds only, never to the screen's controls.
+    func tatiScreen() -> some View {
+        toolbar(.hidden, for: .navigationBar)
     }
 }
 
@@ -21,6 +21,43 @@ struct Art: View {
     var height: CGFloat? = nil
     var body: some View {
         Image(name).resizable().scaledToFit().frame(width: width, height: height).accessibilityHidden(true)
+    }
+}
+
+/// Identifies the room category; motion does not represent a connected broadcast
+/// or a participant speaking. Reuses the original Lanhu raster artwork.
+struct RoomKindBadge: View {
+    var isVoice: Bool
+    var animates = true
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var isVisible = false
+    private var shouldAnimate: Bool {
+        animates && isVisible && !reduceMotion && scenePhase == .active
+    }
+    var body: some View {
+        Group {
+            if isVoice {
+                HStack(spacing: 4) {
+                    Art(name: "mic-small", width: 10, height: 14)
+                    Text("Voice").font(.system(size: 10, weight: .semibold))
+                }
+                .padding(.horizontal, 7).frame(height: 22)
+                .foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
+            } else {
+                Art(name: "live-pink", width: 48, height: 22)
+            }
+        }
+        .phaseAnimator(shouldAnimate ? [false, true] : [false]) { content, phase in
+            content.scaleEffect(shouldAnimate && phase ? 1.04 : 1)
+                .opacity(shouldAnimate && phase ? 0.82 : 1)
+        } animation: { _ in
+            shouldAnimate ? .easeInOut(duration: 1.2) : nil
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isVoice ? "Voice room" : "Video room")
+        .onAppear { isVisible = true }
+        .onDisappear { isVisible = false }
     }
 }
 enum MissingIcon: Int { case send, pause, comment, viewers, toggleOff, play }
@@ -107,7 +144,7 @@ struct TatiPage<Content: View>: View {
             if scrolling {
                 ScrollView { VStack(alignment: .leading, spacing: 12) { content() }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity) }
             } else { content() }
-        }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
 struct Chip: View {
@@ -140,7 +177,7 @@ struct TatiForm<Content: View, Footer: View>: View {
             }
             VStack(spacing: 8) { footer() }.padding(.horizontal, 18).padding(.vertical, 12)
                 .frame(maxWidth: 600).frame(maxWidth: .infinity)
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
 struct TopicStrip: View {
@@ -286,7 +323,7 @@ struct TatiPanel<Content: View>: View {
         }.background(Color.tatiLime).foregroundStyle(Color.tatiInk)
             .presentationBackground(Color.tatiLime).presentationDragIndicator(.hidden)
             .presentationCornerRadius(20)
-            .tatiEdgeToEdge()
+            .tatiScreen()
             .accessibilityAction(.escape) { dismiss() }
     }
 }
