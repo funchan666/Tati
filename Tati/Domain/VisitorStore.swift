@@ -154,5 +154,18 @@ final class VisitorStore: ObservableObject {
         try data.write(to: mediaURL(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         return name
     }
+    func videoURL(for clip: FoodClip) -> URL? {
+        if let bundled = clip.bundledFile {
+            let file = URL(fileURLWithPath: bundled)
+            return Bundle.main.url(forResource: file.deletingPathExtension().lastPathComponent, withExtension: file.pathExtension)
+        }
+        if let local = clip.fileName { return mediaURL(local) }
+        return nil
+    }
+    func authorName(for clip: FoodClip) -> String {
+        if clip.isCollection { return "Tati collection" }
+        if clip.authorID == account.profile.id { return account.profile.name }
+        return FoodCatalog.person(clip.authorID)?.name ?? "Creator"
+    }
     var visibleClips: [FoodClip] { (account.clips + FoodCatalog.sampleClips).filter { !account.blocked.contains($0.authorID) } }
 }

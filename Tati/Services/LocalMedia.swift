@@ -63,8 +63,12 @@ final class ClipLayerView: UIView {
 }
 struct ClipSurface: UIViewRepresentable {
     var player: AVPlayer?
-    func makeUIView(context: Context) -> ClipLayerView { let view = ClipLayerView(); view.videoLayer.videoGravity = .resizeAspect; return view }
-    func updateUIView(_ view: ClipLayerView, context: Context) { view.videoLayer.player = player }
+    var fillsContainer = false
+    func makeUIView(context: Context) -> ClipLayerView { ClipLayerView() }
+    func updateUIView(_ view: ClipLayerView, context: Context) {
+        view.videoLayer.player = player
+        view.videoLayer.videoGravity = fillsContainer ? .resizeAspectFill : .resizeAspect
+    }
     static func dismantleUIView(_ view: ClipLayerView, coordinator: ()) { view.videoLayer.player = nil }
 }
 @MainActor final class CameraPreviewController: ObservableObject {

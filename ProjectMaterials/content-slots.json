@@ -1,92 +1,1289 @@
 {
-  "status": "pending-user-media",
-  "people": [
+  "version": 1,
+  "status": "assigned-local-bundle",
+  "portraits": [
     {
-      "id": "creator-luna",
-      "avatar": "ContentImages/creator-luna-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-luna-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/828776562_18110484950019933_1274418079164789390_n.jpg",
+      "sha256": "c7be9101699a7fec9469d75f4653644c3b6e58c8451b15d83b8f93d7a20ef4a9",
+      "personID": "creator-luna",
+      "asset": "portrait-01",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
     },
     {
-      "id": "creator-chloe",
-      "avatar": "ContentImages/creator-chloe-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-chloe-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/829054808_18157222810512696_1511540759907490784_n.jpg",
+      "sha256": "4a7983f161796f51279b6ae84a688ca54891aea236642673c9a8efb3c69fef64",
+      "personID": "portrait-02",
+      "asset": "portrait-02",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-02",
+        "name": "Avery",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
     },
     {
-      "id": "creator-maria",
-      "avatar": "ContentImages/creator-maria-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-maria-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/829310825_18627363997010758_4506985276544211277_n.jpg",
+      "sha256": "2fcff461bc49fd31ec0d3cbaef619d596f00993958e6036a2cc10bfca13ba0c4",
+      "personID": "portrait-03",
+      "asset": "portrait-03",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-03",
+        "name": "Rowan",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
     },
     {
-      "id": "creator-elowen",
-      "avatar": "ContentImages/creator-elowen-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-elowen-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/829602854_18637273639035454_7863518920919092101_n.jpg",
+      "sha256": "6a4258408a0ce94660a514a0c8d3e4b20b6e324d917a825f6131d75b38cc2005",
+      "personID": "creator-andre",
+      "asset": "portrait-04",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
     },
     {
-      "id": "creator-seraphina",
-      "avatar": "ContentImages/creator-seraphina-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-seraphina-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/829711039_18587777635069401_6858970808061207273_n.jpg",
+      "sha256": "0d0ad5495044cec0f128064193be559ea32411a00b683a88ad432b11f4e4a900",
+      "personID": "portrait-05",
+      "asset": "portrait-05",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-05",
+        "name": "Trail Friends",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
     },
     {
-      "id": "creator-andre",
-      "avatar": "ContentImages/creator-andre-avatar.jpg",
-      "profilePhoto": "ContentImages/creator-andre-profile.jpg"
+      "source": "ProjectMaterials/ContentImages/829973023_18633178075060794_6462288533902213791_n.jpg",
+      "sha256": "3858846b484e0b7ab2e16a95fc0c1ad0888f33debc1cf6ef5121fadf38ebf917",
+      "personID": "portrait-06",
+      "asset": "portrait-06",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-06",
+        "name": "Ellis",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/830272061_18655744786032706_2790915464625276229_n.jpg",
+      "sha256": "6a5318de3b059ac73687adc677f96b20a22f1aeddc3f0b842b7bafaf8801d390",
+      "personID": "portrait-07",
+      "asset": "portrait-07",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-07",
+        "name": "Jamie",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/831424277_18490614706105805_849108897253351104_n.jpg",
+      "sha256": "ab1ce3c81863c09f9a397d89d1a2c671ca39a36d62c5eed722c735c71b4bb009",
+      "personID": "portrait-08",
+      "asset": "portrait-08",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-08",
+        "name": "Morgan",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/834317533_18132112789784995_6704606860262801293_n.jpg",
+      "sha256": "8104452c03b3239582a6a29c7a8bb8f3056e3b5cc799f00302eeb6a203dae95d",
+      "personID": "portrait-09",
+      "asset": "portrait-09",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-09",
+        "name": "Quinn",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/836248660_18393126976167387_8090635735672246557_n.jpg",
+      "sha256": "df6af6e0551fd7287d661b7992cd180ef23ec0d45170a6afc5b85a0367dbd002",
+      "personID": "portrait-10",
+      "asset": "portrait-10",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-10",
+        "name": "Riley",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/836787533_18033720395890693_6120712375957738863_n.jpg",
+      "sha256": "20c4afd102ab2532b1fb3e65c9aed472497a01c92957aa0541da252db1b228e9",
+      "personID": "portrait-11",
+      "asset": "portrait-11",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-11",
+        "name": "Beach Table",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/837632427_18632650270011107_4403921076513325941_n.jpg",
+      "sha256": "5dd38039ee9ceb867365d027fee85cd4b372684d52f8fc6e1fdaa344515738bc",
+      "personID": "creator-chloe",
+      "asset": "portrait-12",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/838658775_18646835638060210_5169025348299645935_n.jpg",
+      "sha256": "a3f39734271b6e4a84b6a9ed8781c5a2043b170c9179a73fe44042a4c3550034",
+      "personID": "portrait-13",
+      "asset": "portrait-13",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-13",
+        "name": "Blair",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/838985333_18107305592192461_2116322463346817209_n.jpg",
+      "sha256": "d08a2795964c6d419e7283ca36c13c163b0e6c755af114f4a80a8783175d78a9",
+      "personID": "portrait-14",
+      "asset": "portrait-14",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-14",
+        "name": "Cameron",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839179549_18641471329031914_5481253250148838365_n.jpg",
+      "sha256": "d3eb7568865a55ecea8e392ad6562c99baeef7db319d8ae582c151345714f99c",
+      "personID": "portrait-15",
+      "asset": "portrait-15",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-15",
+        "name": "Reese",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
+      "sha256": "4ffbbffbe856ee495ef4c7f300e3835720406fec0c90866a7729103824c13b68",
+      "personID": "portrait-16",
+      "asset": "portrait-16",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-16",
+        "name": "Finley",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
+      "sha256": "e2e68b48ab62efdd52de289884e19971f7e6903b5771c1da963abc95c6dfc799",
+      "personID": "portrait-17",
+      "asset": "portrait-17",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-17",
+        "name": "Jordan",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/840900763_18629218363016458_6769438208836358437_n.jpg",
+      "sha256": "101b3ae3291258869275143767a9d6a73d62b1ff99091d13ad94c6b506047239",
+      "personID": "portrait-18",
+      "asset": "portrait-18",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-18",
+        "name": "Alex",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/841865648_18565415170078011_7354168267474431641_n.jpg",
+      "sha256": "8007014f178f91783f8cc7c25c4335050d18fba0c56320d3819aaa5c3202fa57",
+      "personID": "portrait-19",
+      "asset": "portrait-19",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-19",
+        "name": "Harper",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/843116921_18637496905042936_171745215508899891_n.jpg",
+      "sha256": "39c94a49c41723ba07dadb7a2afc7b32a0c2c37068cc966358ce1dd978c9ddf4",
+      "personID": "portrait-20",
+      "asset": "portrait-20",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-20",
+        "name": "Drew",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/843205753_18632792290036679_8602263243103834282_n.jpg",
+      "sha256": "a8f3870bf2ab0e40313a1d1ef1c52a8aeba0cb1747a501779ec039175ba2b6ce",
+      "personID": "portrait-21",
+      "asset": "portrait-21",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-21",
+        "name": "Taylor",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/843838416_18120983045289691_4899054224201084247_n.jpg",
+      "sha256": "23f4327b980b0dc065c03a6316379b693a10dcfb72f4bd74e6356a7a07d2cfa8",
+      "personID": "portrait-22",
+      "asset": "portrait-22",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-22",
+        "name": "Parker",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/844190190_18636426934039263_6884579072562259791_n.jpg",
+      "sha256": "2c0c635a06ffab8196029a0556c63183f7cda805127b13807387936e98abefab",
+      "personID": "portrait-23",
+      "asset": "portrait-23",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-23",
+        "name": "Skyler",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/844340780_18638813539054188_3830060607232740863_n.jpg",
+      "sha256": "ab496b6e237eb3a76f95ebc12a931cbb6129a0accb2397baaea1867006e6056e",
+      "personID": "portrait-24",
+      "asset": "portrait-24",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-24",
+        "name": "Charlie",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/844394608_18634550761055018_7929487706353879535_n.jpg",
+      "sha256": "0ef210a0d8a371048afd674a7da5849c884b37d935657f0e4da97d53af3f82d4",
+      "personID": "portrait-25",
+      "asset": "portrait-25",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-25",
+        "name": "River",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/844417632_18635528491056541_3211862696628029101_n.jpg",
+      "sha256": "599489eee1a805c7821124a5cfacdde76fd06afc4065f86e3fd60ce7184b6168",
+      "personID": "portrait-26",
+      "asset": "portrait-26",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-26",
+        "name": "Casey",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/845426207_18030181799887168_6154182754476216077_n.jpg",
+      "sha256": "460301beb860528553036b09b752462578553c9d4432d847a45e5fd97b1e41e6",
+      "personID": "portrait-27",
+      "asset": "portrait-27",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-27",
+        "name": "Robin",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/846612204_18468348052140978_4703040474988332638_n.jpg",
+      "sha256": "672ff00a287e2e2d967078b3d98e282f5b9af8f1906d3807cdbc66056f8fc4d8",
+      "personID": "portrait-28",
+      "asset": "portrait-28",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-28",
+        "name": "Blake",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/846809318_18638088085046648_7081383790175278758_n.jpg",
+      "sha256": "88e15f5e512245fdc486be4bf17a0340af6376e15e8f4aeb9d94b5c6523c1d15",
+      "personID": "portrait-29",
+      "asset": "portrait-29",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-29",
+        "name": "Hayden",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
+      "sha256": "aae9c18901871e38f9ae53ed7b36df64ebe4c5c84187313e2e98473bf37d5b5a",
+      "personID": "portrait-30",
+      "asset": "portrait-30",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-30",
+        "name": "Arden",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848186636_18634657000034456_1849772215626504826_n.jpg",
+      "sha256": "867c6c1de277628ffece94e086f1cb89e6245128aef28cb8857cd8d2b180bc2e",
+      "personID": "portrait-31",
+      "asset": "portrait-31",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-31",
+        "name": "Marley",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
+      "sha256": "06d5e576684d0919dcc4b816f7d6087b0ea3f7fef91fa9d26bd9f4fad7e52c94",
+      "personID": "portrait-32",
+      "asset": "portrait-32",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-32",
+        "name": "Remy",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848350979_18117800251966463_4246244980606132227_n.jpg",
+      "sha256": "58f43037420f0a325ed471a41172a834459776233f74b8e663dc6f35b811590b",
+      "personID": "creator-elowen",
+      "asset": "portrait-33",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848455291_18632687518006554_3359078306032398090_n.jpg",
+      "sha256": "56b53a6aa85e8f545f94f4ebb97b8e7ba6016f8cc1bbd6a29add7406f7bf32f4",
+      "personID": "portrait-34",
+      "asset": "portrait-34",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-34",
+        "name": "Frankie",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848570268_18640427161053528_7037236695005080667_n.jpg",
+      "sha256": "af8ad5f628a988dca87db25a4e309286053f21f8499606c9adc14494cac58645",
+      "personID": "portrait-35",
+      "asset": "portrait-35",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-35",
+        "name": "Jules",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848787245_18641211943061805_9184416787013129240_n.jpg",
+      "sha256": "e450ba48468751df97f7d4fd026ec83e993d3731f972d7754345998e6bd69f6a",
+      "personID": "portrait-36",
+      "asset": "portrait-36",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-36",
+        "name": "Lane",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/848993977_18648226450040978_509925620388878282_n.jpeg",
+      "sha256": "c85dc2ba65fb2a733510fd94c37a907e5cd4d1b7e40b95218dbee06fc58ad3c9",
+      "personID": "creator-maria",
+      "asset": "portrait-37",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849249060_18491159053111288_3983019166277374001_n.jpg",
+      "sha256": "283daf40fd99df33843d8681d9000807669f28d05692cdfb3511400b8fe1808f",
+      "personID": "portrait-38",
+      "asset": "portrait-38",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-38",
+        "name": "Shiloh",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849379197_18634841125034320_7118850056566480884_n.jpg",
+      "sha256": "1fd11cf8589237439c118955345927f0dad75222ca1a5852aa25350150b0889f",
+      "personID": "portrait-39",
+      "asset": "portrait-39",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-39",
+        "name": "Milan",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849477563_18644804980020391_7819057180524614658_n.jpg",
+      "sha256": "f27b829d342b31178e9393ae33fbe92f63d82ead9e11a2899945bd21155ff09d",
+      "personID": "portrait-40",
+      "asset": "portrait-40",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-40",
+        "name": "Dakota",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849550952_18647420800054373_7823618734353762798_n.jpg",
+      "sha256": "6ac570ed952b1267f80b234f7e7c534a6860f720c86fbd495f35664ecd8444b7",
+      "personID": "portrait-41",
+      "asset": "portrait-41",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-41",
+        "name": "Scout",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849772940_18633906298015460_6434628501364025450_n.jpg",
+      "sha256": "679203307e2621af2660b48b0c7573ecfef29d8312a82d2058754e9448b27149",
+      "personID": "creator-seraphina",
+      "asset": "portrait-42",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849773126_18639655996046648_3371346672247127660_n.jpg",
+      "sha256": "4e011353303c51bef42c25aa4a35cfb05e66a6b49abd95faf1c0c3bf46d246fd",
+      "personID": "portrait-43",
+      "asset": "portrait-43",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-43",
+        "name": "Kendall",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849891055_18637263916055018_725435053853064446_n.jpg",
+      "sha256": "54c6602fe0d70356d07ba8712d0dcf9307fa0db69dba64d1cc49b84b7d27eaed",
+      "personID": "portrait-44",
+      "asset": "portrait-44",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-44",
+        "name": "Rory",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Street food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/849951132_18645365749035248_82605801469605953_n.jpg",
+      "sha256": "8fc30e21126d926d5d01f4ff3a28d706d3ed3bd8f3b41e1262156c3bb4174cd1",
+      "personID": "portrait-45",
+      "asset": "portrait-45",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-45",
+        "name": "City Duo",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Italian food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851150067_18452401138123730_8650624205739965452_n.jpg",
+      "sha256": "ba51ab2a2117e99cb6c15640cdd0485e3052bb880249bd54dc5da8f5af6b5e09",
+      "personID": "portrait-46",
+      "asset": "portrait-46",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-46",
+        "name": "Linden",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Dessert",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
+      "sha256": "15d6f3124b02ec07b006ef62276db96dafe9e8cbb5c16854ffecca2176d61cdc",
+      "personID": "portrait-47",
+      "asset": "portrait-47",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-47",
+        "name": "Reagan",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Healthy food",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/856125458_18634475317010758_476292385336594519_n.jpg",
+      "sha256": "7ba01cbcb552d662eb889bbbb5e42072a34008ce8d12efb6eacff1a0ab4b149f",
+      "personID": "portrait-48",
+      "asset": "portrait-48",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-48",
+        "name": "Oakley",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "BBQ",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
+    },
+    {
+      "source": "ProjectMaterials/ContentImages/858594027_18637182445035158_2943445897430238107_n.jpg",
+      "sha256": "ead03cabfcc3d67ed74c9e40cb07d72ec1cdf4ebed281358603abb9cfe780772",
+      "personID": "portrait-49",
+      "asset": "portrait-49",
+      "uses": [
+        "search.people",
+        "profile.avatar",
+        "profile.photo",
+        "chat.avatar",
+        "following.avatar",
+        "blacklist.avatar"
+      ],
+      "person": {
+        "id": "portrait-49",
+        "name": "Wren",
+        "country": "Tati collection",
+        "language": "English",
+        "interest": "Home cooking",
+        "bio": "A sample profile from the Tati photo collection. Say hello over a good meal."
+      }
     }
   ],
-  "rooms": [
-    {
-      "id": "pasta-table",
-      "cover": "ContentImages/pasta-table-cover.jpg"
-    },
-    {
-      "id": "street-bites",
-      "cover": "ContentImages/street-bites-cover.jpg"
-    },
-    {
-      "id": "kitchen-stories",
-      "cover": "ContentImages/kitchen-stories-cover.jpg"
-    },
-    {
-      "id": "sweet-evening",
-      "cover": "ContentImages/sweet-evening-cover.jpg"
-    },
-    {
-      "id": "dinner-conversation",
-      "cover": "ContentImages/dinner-conversation-cover.jpg"
-    },
-    {
-      "id": "dessert-club",
-      "cover": "ContentImages/dessert-club-cover.jpg"
-    },
-    {
-      "id": "market-table",
-      "cover": "ContentImages/market-table-cover.jpg"
-    },
-    {
-      "id": "weekend-bbq",
-      "cover": "ContentImages/weekend-bbq-cover.jpg"
-    }
-  ],
+  "roomCovers": {
+    "pasta-table": "portrait-37",
+    "street-bites": "portrait-12",
+    "kitchen-stories": "portrait-01",
+    "sweet-evening": "portrait-33",
+    "dinner-conversation": "portrait-01",
+    "dessert-club": "portrait-33",
+    "market-table": "portrait-42",
+    "weekend-bbq": "portrait-04"
+  },
   "videos": [
     {
+      "source": "ProjectMaterials/ContentVideos/AQM73a4ipCmrxlpBnWBRJ1SNQLiLaqVlF-MBchpBH2r1NCWOi8Pa5eztLFXyz7hh9oT2SG6WijaBM14veix6l00jT03UGG2dguoG8TM.mp4",
+      "sha256": "801193a0d56d9b32f3efe66b361fc07dfffd15b3d4190fc740afa7cf4f3b406a",
       "id": "sample-clip-0",
-      "file": "ContentVideos/sample-clip-0.mp4",
-      "cover": "ContentImages/sample-clip-0-cover.jpg"
+      "resource": "collection-osaka-sandwich.mp4",
+      "posterAsset": "poster-osaka-sandwich",
+      "posterSeconds": 2.152,
+      "caption": "A generous sandwich in Osaka",
+      "duration": 21.522041,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
     },
     {
+      "source": "ProjectMaterials/ContentVideos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4",
+      "sha256": "3fdf5593dadf9274fd0bdf3d688e69d86b79549523a6f1902bea48a73e973188",
       "id": "sample-clip-1",
-      "file": "ContentVideos/sample-clip-1.mp4",
-      "cover": "ContentImages/sample-clip-1-cover.jpg"
+      "resource": "collection-bakery-dessert.mp4",
+      "posterAsset": "poster-bakery-dessert",
+      "posterSeconds": 9.453,
+      "caption": "A sweet bake, from pan to plate",
+      "duration": 94.527029,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
     },
     {
+      "source": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
+      "sha256": "0d3152cae6fbe523386c8ce36218cccebbb060130f2256e99b8a2a0a648f4d49",
       "id": "sample-clip-2",
-      "file": "ContentVideos/sample-clip-2.mp4",
-      "cover": "ContentImages/sample-clip-2-cover.jpg"
+      "resource": "collection-cafe-break.mp4",
+      "posterAsset": "poster-cafe-break",
+      "posterSeconds": 0.713,
+      "caption": "A little cafe break",
+      "duration": 7.125669,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
     },
     {
+      "source": "ProjectMaterials/ContentVideos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
+      "sha256": "88e9a6258f42e80f792dd7af3826e65737ff2066a50a76fd5d12e431891a2ec9",
       "id": "sample-clip-3",
-      "file": "ContentVideos/sample-clip-3.mp4",
-      "cover": "ContentImages/sample-clip-3-cover.jpg"
+      "resource": "collection-crispy-bites.mp4",
+      "posterAsset": "poster-crispy-bites",
+      "posterSeconds": 1.943,
+      "caption": "Crunchy bites at the kitchen counter",
+      "duration": 19.432245,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
+      "sha256": "5eae27dd6afce6d499ceeeb13cab5a84a06041b4be3b77ff8b540442ef49f652",
+      "id": "sample-clip-4",
+      "resource": "collection-outdoor-noodles.mp4",
+      "posterAsset": "poster-outdoor-noodles",
+      "posterSeconds": 12.019,
+      "caption": "Noodles at an outdoor table",
+      "duration": 120.185079,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
+      "sha256": "ee5899e38237e4573addf728c8773bbc6ca73fb1ad18d53b89d0ecb84aa8ff46",
+      "id": "sample-clip-5",
+      "resource": "collection-toasted-sandwich.mp4",
+      "posterAsset": "poster-toasted-sandwich",
+      "posterSeconds": 3.223,
+      "caption": "A toasted sandwich, packed with flavour",
+      "duration": 32.22644,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
+      "sha256": "daffa40d48e095b6da0f1f1ef0402850e4b002226b1e16126abb92b3cdc6e18b",
+      "id": "sample-clip-6",
+      "resource": "collection-creative-mix.mp4",
+      "posterAsset": "poster-creative-mix",
+      "posterSeconds": 1.43,
+      "caption": "A creative mixing experiment",
+      "duration": 14.300635,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
+      "sha256": "c704cb3849ae1587ef8546c923ae6976dc4a7c3bf9a77d6ab4c211fd90b6276f",
+      "id": "sample-clip-7",
+      "resource": "collection-street-food-table.mp4",
+      "posterAsset": "poster-street-food-table",
+      "posterSeconds": 7.718,
+      "caption": "A table full of street-food flavours",
+      "duration": 77.180272,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
+      "sha256": "87d956ae2769487ef59f64f8a40212de3942f2d72b67e82f8969ce32802eabb2",
+      "id": "sample-clip-8",
+      "resource": "collection-kitchen-soup.mp4",
+      "posterAsset": "poster-kitchen-soup",
+      "posterSeconds": 5.162,
+      "caption": "A look inside a busy kitchen",
+      "duration": 51.615102,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
+      "sha256": "6a41009037b81a2eb61cfc8aaded242d6a929605c8938bfe3e491f833c34c451",
+      "id": "sample-clip-9",
+      "resource": "collection-dumplings.mp4",
+      "posterAsset": "poster-dumplings",
+      "posterSeconds": 4.049,
+      "caption": "Folding and cooking homemade dumplings",
+      "duration": 40.492744,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
+      "sha256": "51c8326dfb8484ef5544bfa66f50d66fbdf4caba4df78246299d5c244892bf42",
+      "id": "sample-clip-10",
+      "resource": "collection-dinner-friends.mp4",
+      "posterAsset": "poster-dinner-friends",
+      "posterSeconds": 1.755,
+      "caption": "A lively evening around the dinner table",
+      "duration": 17.551429,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
+      "sha256": "62c006f2997e7d2bfb8098878b905932508762947dca83388c6da555083e53a9",
+      "id": "sample-clip-11",
+      "resource": "collection-crepe-making.mp4",
+      "posterAsset": "poster-crepe-making",
+      "posterSeconds": 4.182,
+      "caption": "Fresh crepes on the griddle",
+      "duration": 41.816281,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
+      "sha256": "7d3f4aa976e4956916ce5e092dbf782014300548897f58a3f1d354ac9ad455f3",
+      "id": "sample-clip-12",
+      "resource": "collection-trail-break.mp4",
+      "posterAsset": "poster-trail-break",
+      "posterSeconds": 1.481,
+      "caption": "A quiet break on the trail",
+      "duration": 14.811474,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
+      "sha256": "99a4e78b62ac8e0a5dd04391cbfa4ddc26b4a4681909f0eb553dc15248967e4d",
+      "id": "sample-clip-13",
+      "resource": "collection-everyday-moments.mp4",
+      "posterAsset": "poster-everyday-moments",
+      "posterSeconds": 1.312,
+      "caption": "Everyday moments with friends",
+      "duration": 13.116417,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
+      "sha256": "32fa54f7d7b28a773c00467038d9fb86a06e72d4f8d5c028ef003f84a41d2034",
+      "id": "sample-clip-14",
+      "resource": "collection-noodle-tasting.mp4",
+      "posterAsset": "poster-noodle-tasting",
+      "posterSeconds": 6.861,
+      "caption": "An outdoor noodle tasting",
+      "duration": 68.61356,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
+    },
+    {
+      "source": "ProjectMaterials/ContentVideos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
+      "sha256": "be7277907033083ec832222b27392e322ed6b0a6ae6e975c267ed415c06ef667",
+      "id": "sample-clip-15",
+      "resource": "collection-cooking-together.mp4",
+      "posterAsset": "poster-cooking-together",
+      "posterSeconds": 1.045,
+      "caption": "Cooking together in the kitchen",
+      "duration": 10.446122,
+      "uses": [
+        "video.feed",
+        "video.detail",
+        "search.videos"
+      ]
     }
   ],
-  "note": "Recommended file names only. No media is included or synthesized. Map and import supplied files explicitly before runtime use."
+  "note": "Every supplied file has an explicit runtime use. Profile names are fictional samples, not identities inferred from photos. Videos belong to the Tati collection; no photo-to-video identity relationship is inferred. Original files remain unchanged."
 }

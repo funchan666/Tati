@@ -1,0 +1,162 @@
+[
+  {
+    "index": 1,
+    "path": "ProjectMaterials/ContentVideos/AQM73a4ipCmrxlpBnWBRJ1SNQLiLaqVlF-MBchpBH2r1NCWOi8Pa5eztLFXyz7hh9oT2SG6WijaBM14veix6l00jT03UGG2dguoG8TM.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 21.522041,
+    "bytes": 5505664,
+    "sha256": "801193a0d56d9b32f3efe66b361fc07dfffd15b3d4190fc740afa7cf4f3b406a"
+  },
+  {
+    "index": 2,
+    "path": "ProjectMaterials/ContentVideos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 94.527029,
+    "bytes": 11510690,
+    "sha256": "3fdf5593dadf9274fd0bdf3d688e69d86b79549523a6f1902bea48a73e973188"
+  },
+  {
+    "index": 3,
+    "path": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 7.125669,
+    "bytes": 1143728,
+    "sha256": "0d3152cae6fbe523386c8ce36218cccebbb060130f2256e99b8a2a0a648f4d49"
+  },
+  {
+    "index": 4,
+    "path": "ProjectMaterials/ContentVideos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 19.432245,
+    "bytes": 4500868,
+    "sha256": "88e9a6258f42e80f792dd7af3826e65737ff2066a50a76fd5d12e431891a2ec9"
+  },
+  {
+    "index": 5,
+    "path": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 120.185079,
+    "bytes": 20807799,
+    "sha256": "5eae27dd6afce6d499ceeeb13cab5a84a06041b4be3b77ff8b540442ef49f652"
+  },
+  {
+    "index": 6,
+    "path": "ProjectMaterials/ContentVideos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 32.22644,
+    "bytes": 9205384,
+    "sha256": "ee5899e38237e4573addf728c8773bbc6ca73fb1ad18d53b89d0ecb84aa8ff46"
+  },
+  {
+    "index": 7,
+    "path": "ProjectMaterials/ContentVideos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 14.300635,
+    "bytes": 3941141,
+    "sha256": "daffa40d48e095b6da0f1f1ef0402850e4b002226b1e16126abb92b3cdc6e18b"
+  },
+  {
+    "index": 8,
+    "path": "ProjectMaterials/ContentVideos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 77.180272,
+    "bytes": 24744981,
+    "sha256": "c704cb3849ae1587ef8546c923ae6976dc4a7c3bf9a77d6ab4c211fd90b6276f"
+  },
+  {
+    "index": 9,
+    "path": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 51.615102,
+    "bytes": 13380777,
+    "sha256": "87d956ae2769487ef59f64f8a40212de3942f2d72b67e82f8969ce32802eabb2"
+  },
+  {
+    "index": 10,
+    "path": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 40.492744,
+    "bytes": 9183928,
+    "sha256": "6a41009037b81a2eb61cfc8aaded242d6a929605c8938bfe3e491f833c34c451"
+  },
+  {
+    "index": 11,
+    "path": "ProjectMaterials/ContentVideos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 17.551429,
+    "bytes": 4029548,
+    "sha256": "51c8326dfb8484ef5544bfa66f50d66fbdf4caba4df78246299d5c244892bf42"
+  },
+  {
+    "index": 12,
+    "path": "ProjectMaterials/ContentVideos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 41.816281,
+    "bytes": 12368779,
+    "sha256": "62c006f2997e7d2bfb8098878b905932508762947dca83388c6da555083e53a9"
+  },
+  {
+    "index": 13,
+    "path": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 14.811474,
+    "bytes": 2672872,
+    "sha256": "7d3f4aa976e4956916ce5e092dbf782014300548897f58a3f1d354ac9ad455f3"
+  },
+  {
+    "index": 14,
+    "path": "ProjectMaterials/ContentVideos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 13.116417,
+    "bytes": 2170441,
+    "sha256": "99a4e78b62ac8e0a5dd04391cbfa4ddc26b4a4681909f0eb553dc15248967e4d"
+  },
+  {
+    "index": 15,
+    "path": "ProjectMaterials/ContentVideos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 68.61356,
+    "bytes": 19354551,
+    "sha256": "32fa54f7d7b28a773c00467038d9fb86a06e72d4f8d5c028ef003f84a41d2034"
+  },
+  {
+    "index": 16,
+    "path": "ProjectMaterials/ContentVideos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
+    "width": 720,
+    "height": 1280,
+    "codec": "h264",
+    "duration": 10.446122,
+    "bytes": 2100250,
+    "sha256": "be7277907033083ec832222b27392e322ed6b0a6ae6e975c267ed415c06ef667"
+  }
+]

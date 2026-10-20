@@ -30,6 +30,7 @@ struct PhotoAttachmentPicker: View {
 }
 struct DraftPhotoAttachment: View {
     var draftKey: String
+    var compact = false
     @EnvironmentObject private var store: VisitorStore
     @State private var selection: PhotosPickerItem?
     @State private var importing = false
@@ -37,11 +38,11 @@ struct DraftPhotoAttachment: View {
         HStack(spacing: 12) {
             PhotosPicker(selection: $selection, matching: .images) { Art(name: "chat-photo", width: 36, height: 36).frame(width: 44, height: 44) }
                 .buttonStyle(.plain).disabled(importing).accessibilityLabel("Attach local photo")
-            if let file = store.account.draftImages?[draftKey], let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
-                Image(uiImage: image).resizable().scaledToFill().frame(width: 70, height: 70).clipped().clipShape(RoundedRectangle(cornerRadius: 12))
-                Note(text: "Local attachment · not sent")
+            if !compact, let file = store.account.draftImages?[draftKey], let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
+                Image(uiImage: image).resizable().scaledToFill().frame(width: compact ? 36 : 70, height: compact ? 36 : 70).clipped().clipShape(RoundedRectangle(cornerRadius: 8))
+                if !compact { Note(text: "Local attachment · not sent") }
                 ArtButton(asset: "remove", label: "Remove draft photo") { _ = store.saveDraftImage(nil, key: draftKey); selection = nil }
-            } else { Note(text: importing ? "Importing photo…" : "Optional photo draft") }
+            } else if !compact { Note(text: importing ? "Importing photo…" : "Optional photo draft") }
         }.task(id: selection) {
             guard let selection else { return }; let owner = store.account.profile.id
             importing = true; defer { importing = false }
@@ -69,9 +70,9 @@ struct SupportView: View {
     ]
     private var matches: [HelpArticle] { articles.filter { query.isEmpty || ($0.question + $0.answer).localizedCaseInsensitiveContains(query) } }
     var body: some View {
-        TatiPage(title: "Help & Support") {
+        TatiForm(title: "Help & Support") {
             Art(name: "support-banner")
-            InputField(title: "Search for a question", text: $query)
+            TextField("Search for a question", text: $query).font(.system(size: 13)).textFieldStyle(.plain).padding(12).background { Image("outlined-card").resizable() }
             if matches.isEmpty { EmptyContent(title: "No matching answers", detail: "Try a shorter phrase, or save a feedback draft below.") }
             ForEach(matches) { article in
                 VStack(alignment: .leading, spacing: 12) {
@@ -81,11 +82,13 @@ struct SupportView: View {
                         HStack { Text(article.question).font(.subheadline.bold()).multilineTextAlignment(.leading); Spacer(); Art(name: expanded.contains(article.id) ? "dropdown" : "chevron", width: 17, height: 17) }.frame(minHeight: 44)
                     }.buttonStyle(.plain).accessibilityValue(expanded.contains(article.id) ? "Expanded" : "Collapsed")
                     if expanded.contains(article.id) { Text(article.answer).font(.subheadline).fixedSize(horizontal: false, vertical: true) }
-                }.padding(14).background(Color.tatiLime.opacity(0.48)).clipShape(RoundedRectangle(cornerRadius: 13))
+                }.padding(.horizontal, 12).padding(.vertical, 4).background(Color.tatiLime.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 8))
             }
-            NavigationLink(destination: SupportDraftView()) { SettingRow(title: "Write a support draft", asset: "support-avatar") }.buttonStyle(.plain)
-            NavigationLink(destination: ReportView(subjectID: "feedback", feedback: true)) { SettingRow(title: "Feedback", asset: "feedback") }.buttonStyle(.plain)
-            Note(text: "No support address or service is configured. Drafts are saved only on this device and are not reviewed by a support team.")
+        } footer: {
+            NavigationLink(destination: SupportDraftView()) {
+                HStack(spacing: 8) { Art(name: "support", width: 22, height: 22); Text("Contact support").font(.system(size: 15)) }
+                    .frame(maxWidth: .infinity, minHeight: 44).foregroundStyle(.white).background(Color.tatiPink).clipShape(Capsule())
+            }.buttonStyle(.plain)
         }
     }
 }
@@ -93,13 +96,26 @@ struct SupportDraftView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var text = ""
     var body: some View {
-        TatiPage(title: "Customer support") {
-            HStack { Art(name: "support-avatar", width: 52, height: 52); VStack(alignment: .leading) { Text("Customer support").font(.headline); Note(text: "Not connected") } }
-            Note(text: "Describe your question below. No agent is online in this local preview.")
-            InputField(title: "Describe your question", text: $text, multiline: true)
-            DraftPhotoAttachment(draftKey: "support-chat")
-            TatiButton(title: "Save message draft", enabled: !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
-                if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your support message and optional photo stay on this device. Nothing was sent.") }
+        TatiForm(title: "Customer support") {
+            HStack(alignment: .top, spacing: 8) {
+                Art(name: "support-avatar", width: 40, height: 40)
+                Text("Support isn't connected yet. Leave a question as a local draft.").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+            if let draft = store.account.drafts["support-chat"], !draft.isEmpty {
+                HStack {
+                    Spacer(minLength: 44)
+                    VStack(alignment: .leading, spacing: 6) { Text(draft).font(.system(size: 14)); Text("Draft · not sent").font(.system(size: 10)) }.padding(14).background(Color.tatiPink).foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+            if store.account.draftImages?["support-chat"] != nil { DraftPhotoAttachment(draftKey: "support-chat") }
+        } footer: {
+            HStack(spacing: 6) {
+                TextField("Describe your question", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiPink).foregroundStyle(.white).tint(.white).clipShape(Capsule())
+                DraftPhotoAttachment(draftKey: "support-chat", compact: true)
+                Button {
+                    guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+                    if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your support message and optional photo stay on this device. Nothing was sent.") }
+                } label: { SupplementIcon(icon: .send, size: 25).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save support draft")
             }
         }.onAppear { text = store.account.drafts["support-chat"] ?? "" }
     }
@@ -115,8 +131,8 @@ struct LanguagePreferenceView: View {
                         _ = store.change { $0.preferredLanguage = language }
                     }
                 } label: {
-                    HStack { Text(language).font(.headline); Spacer(); if (store.account.preferredLanguage ?? "English") == language { Art(name: "check", width: 22) } }
-                        .padding(20).frame(maxWidth: .infinity, alignment: .leading)
+                    HStack { Text(language).font(.system(size: 14)); Spacer(); if (store.account.preferredLanguage ?? "English") == language { Art(name: "check", width: 22) } }
+                        .padding(.horizontal, 18).frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
                         .background { Image("outlined-card").resizable() }
                 }.buttonStyle(.plain)
             }

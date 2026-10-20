@@ -7,7 +7,10 @@ struct RoomLayoutPanel: View {
     private let videoLayouts = [("Spotlight + voices", "1 video + 8 voice"), ("Duo video + voices", "2 video + 6 voice"), ("Three video + voices", "3 video + 6 voice")]
     var body: some View {
         TatiPanel(title: "Room Layout") {
-            TopicStrip(items: ["Voice", "Video + Voice"], selected: $mode)
+            HStack(spacing: 12) {
+                TatiButton(title: "Voice", secondary: mode != "Voice") { mode = "Voice" }
+                TatiButton(title: "Video + Voice", secondary: mode != "Video + Voice") { mode = "Video + Voice" }
+            }
             if mode == "Voice" { layout("10-seat voice room", "10 voice seats") }
             else { ForEach(videoLayouts.indices, id: \.self) { index in layout(videoLayouts[index].0, videoLayouts[index].1) } }
             Note(text: "Choose a layout for this local preview. Remote seats remain empty until the live service is connected.")
@@ -21,31 +24,38 @@ struct RoomLayoutPanel: View {
                 Spacer()
                 if current == name { Text("Current").font(.caption.bold()) }
                 else { Art(name: "chevron", width: 14) }
-            }.padding(18).background(current == name ? Color.yellow.opacity(0.65) : Color.tatiOlive.opacity(0.15)).clipShape(RoundedRectangle(cornerRadius: 20))
+            }.padding(16).foregroundStyle(current == name ? Color.tatiInk : .white)
+                .background(current == name ? Color.yellow.opacity(0.65) : Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 18))
         }.buttonStyle(.plain).accessibilityAddTraits(current == name ? .isSelected : [])
     }
 }
 struct RoomPersonPanel: View {
     var person: FoodPerson
+    var roomMember = false
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPanel(title: "Host") {
+        TatiPanel(title: roomMember ? "Room member" : "Host") {
             VStack(spacing: 10) {
-                Avatar(size: 76)
+                Avatar(asset: person.portraitArtwork, size: 76)
                 Text(person.name).font(.title2.bold())
                 Text(person.city).font(.subheadline)
                 Note(text: "Sample profile · not connected")
             }.frame(maxWidth: .infinity)
             HStack(spacing: 10) {
                 NavigationLink(destination: PersonProfileView(person: person)) { panelLink("Profile") }
-                NavigationLink(destination: ConversationView(person: person)) { panelLink("Message") }
-                TatiButton(title: store.account.following.contains(person.id) ? "Following" : "Follow") { store.toggleFollow(person.id) }
-            }.buttonStyle(.plain)
-            NavigationLink(destination: GiftShopView(recipient: person)) { panelLink("Preview a gift") }.buttonStyle(.plain)
+                if roomMember {
+                    NavigationLink(destination: GiftShopView(recipient: person)) {
+                        Text("Preview gift").font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiPink).foregroundStyle(.white).clipShape(Capsule())
+                    }
+                } else {
+                    NavigationLink(destination: ConversationView(person: person)) { panelLink("Message") }
+                    TatiButton(title: store.account.following.contains(person.id) ? "Following" : "Follow") { store.toggleFollow(person.id) }
+                }
+            }.buttonStyle(.plain).padding(.top, 8)
         }
     }
     private func panelLink(_ text: String) -> some View {
-        Text(text).font(.subheadline.bold()).frame(maxWidth: .infinity, minHeight: 48).background(Color.tatiOlive.opacity(0.22)).clipShape(Capsule())
+        Text(text).font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiOlive.opacity(0.65)).foregroundStyle(.white).clipShape(Capsule())
     }
 }
 struct RoomInvitePanel: View {
@@ -58,7 +68,7 @@ struct RoomInvitePanel: View {
             if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Profiles you choose to follow will appear here. Nobody is added automatically.", artwork: "tool-invite") }
             ForEach(following) { person in
                 HStack {
-                    NavigationLink(destination: PersonProfileView(person: person)) { HStack { Avatar(); Text(person.name).font(.headline) } }.buttonStyle(.plain)
+                    NavigationLink(destination: PersonProfileView(person: person)) { HStack { Avatar(asset: person.portraitArtwork); Text(person.name).font(.headline) } }.buttonStyle(.plain)
                     Spacer()
                     TatiButton(title: "Invite", secondary: true) { store.tell("Invitation unavailable", "No invitation was sent. This sample profile and room are not connected to a service.") }.frame(width: 100)
                 }

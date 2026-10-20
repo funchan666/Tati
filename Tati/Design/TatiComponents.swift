@@ -44,10 +44,11 @@ struct TatiButton: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text(title).font(.system(size: 16, weight: .semibold)).foregroundStyle(secondary ? Color.tatiInk : .white)
-                .frame(maxWidth: .infinity, minHeight: 48)
-                .background(secondary ? Color.tatiLime : Color.tatiPink)
-                .clipShape(RoundedRectangle(cornerRadius: 24))
+            Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(.white)
+                .frame(maxWidth: .infinity, minHeight: 42)
+                .background(secondary ? Color.tatiOlive.opacity(0.65) : Color.tatiPink)
+                .clipShape(Capsule())
+                .frame(minHeight: 44)
                 .opacity(enabled ? 1 : 0.48)
         }.buttonStyle(.plain).disabled(!enabled)
     }
@@ -81,7 +82,7 @@ struct TatiHeader: View {
     var body: some View {
         HStack {
             ArtButton(asset: "back", label: "Back") { dismiss() }
-            Text(title).font(.system(size: 19, weight: .bold)).frame(maxWidth: .infinity)
+            Text(title).font(.system(size: 17, weight: .medium)).frame(maxWidth: .infinity)
             if let trailing { ArtButton(asset: trailing, label: trailingLabel) { action?() } }
             else { Color.clear.frame(width: 44, height: 44) }
         }.foregroundStyle(Color.tatiInk).padding(.horizontal, 8)
@@ -96,7 +97,7 @@ struct TatiPage<Content: View>: View {
         VStack(spacing: 0) {
             TatiHeader(title: title)
             if scrolling {
-                ScrollView { VStack(alignment: .leading, spacing: 20) { content() }.padding(20).frame(maxWidth: 600) }
+                ScrollView { VStack(alignment: .leading, spacing: 12) { content() }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity) }
             } else { content() }
         }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
     }
@@ -107,12 +108,31 @@ struct Chip: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text(text).font(.system(size: 13, weight: selected ? .bold : .medium))
-                .padding(.horizontal, 15).padding(.vertical, 10)
-                .foregroundStyle(selected ? Color.tatiInk : Color.tatiOlive)
-                .background(selected ? Color.tatiLime : Color.white.opacity(0.58))
-                .clipShape(Capsule())
+            Text(text).font(.system(size: 12, weight: .medium))
+                .padding(.horizontal, 10).padding(.vertical, 4)
+                .foregroundStyle(.white)
+                .background(selected ? Color.tatiPink.opacity(0.65) : Color.tatiOlive.opacity(0.48))
+                .clipShape(RoundedRectangle(cornerRadius: 4))
+                .frame(minHeight: 32)
         }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+/// Forms keep their primary action above the bottom safe area and keyboard.
+struct TatiForm<Content: View, Footer: View>: View {
+    var title: String
+    @ViewBuilder var content: () -> Content
+    @ViewBuilder var footer: () -> Footer
+    var body: some View {
+        VStack(spacing: 0) {
+            TatiHeader(title: title)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) { content() }
+                    .padding(.horizontal, 18).padding(.top, 14).padding(.bottom, 18)
+                    .frame(maxWidth: 600).frame(maxWidth: .infinity)
+            }
+            VStack(spacing: 8) { footer() }.padding(.horizontal, 18).padding(.vertical, 12)
+                .frame(maxWidth: 600).frame(maxWidth: .infinity)
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
     }
 }
 struct TopicStrip: View {
@@ -120,7 +140,16 @@ struct TopicStrip: View {
     @Binding var selected: String
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) { ForEach(items, id: \.self) { item in Chip(text: item, selected: selected == item) { selected = item } } }
+            HStack(spacing: 24) {
+                ForEach(items, id: \.self) { item in
+                    Button { selected = item } label: {
+                        Text(item).font(.system(size: 15, weight: selected == item ? .bold : .regular))
+                            .foregroundStyle(selected == item ? Color.tatiOlive : Color.tatiOlive.opacity(0.55))
+                            .padding(.vertical, 10)
+                            .background(alignment: .bottom) { if selected == item { Color.tatiLime.frame(height: 3) } }
+                    }.buttonStyle(.plain).accessibilityAddTraits(selected == item ? .isSelected : [])
+                }
+            }
         }
     }
 }
@@ -153,6 +182,7 @@ struct MediaPlaceholder: View {
 }
 struct Avatar: View {
     var file: String? = nil
+    var asset: String? = nil
     var size: CGFloat = 46
     var isCurrent = false
     @EnvironmentObject private var store: VisitorStore
@@ -160,20 +190,24 @@ struct Avatar: View {
         Group {
             if let file, let ui = UIImage(contentsOfFile: store.mediaURL(file).path) {
                 Image(uiImage: ui).resizable().scaledToFill()
-            } else { Image("media-placeholder").resizable().scaledToFit().padding(size * 0.15).background(Color.tatiCream) }
-        }.frame(width: size, height: size).clipShape(Circle()).overlay { if isCurrent && store.account.equippedFrame { Art(name: "host-frame", width: size * 1.3, height: size * 1.3) } }.accessibilityHidden(true)
+            } else if let asset { Image(asset).resizable().scaledToFill() }
+            else { Image("media-placeholder").resizable().scaledToFit().padding(size * 0.15).background(Color.tatiCream) }
+        }.frame(width: size, height: size, alignment: asset == nil ? .center : .top).clipShape(Circle()).overlay { if isCurrent && store.account.equippedFrame { Art(name: "host-frame", width: size * 1.3, height: size * 1.3) } }.accessibilityHidden(true)
     }
 }
 struct InputField: View {
     var title: String
     @Binding var text: String
     var multiline = false
+    var showsLabel = true
+    var minimumHeight: CGFloat? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title).font(.system(size: 13, weight: .semibold))
+            if showsLabel { Text(title).font(.system(size: 13, weight: .regular)) }
             TextField(title, text: $text, axis: multiline ? .vertical : .horizontal)
                 .lineLimit(multiline ? 4...7 : 1...1).textFieldStyle(.plain)
-                .padding(16).background(Color.tatiLime.opacity(0.40))
+                .frame(minHeight: minimumHeight, alignment: .topLeading)
+                .font(.system(size: 14)).padding(16).background(Color.tatiLime.opacity(0.55))
                 .clipShape(RoundedRectangle(cornerRadius: 16)).tint(.tatiPink)
                 .accessibilityLabel(title)
         }
@@ -183,15 +217,20 @@ struct SettingRow: View {
     var title: String
     var asset: String? = nil
     var detail: String? = nil
+    var outlined = false
     var body: some View {
         HStack(spacing: 13) {
-            if let asset { Art(name: asset, width: 24, height: 24) }
-            Text(title).font(.system(size: 15, weight: .medium))
+            if let asset { Art(name: asset, width: 22, height: 22) }
+            Text(title).font(.system(size: 14, weight: .regular))
             Spacer(minLength: 6)
             if let detail { Text(detail).font(.caption).foregroundStyle(Color.tatiOlive) }
             Art(name: "chevron", width: 14, height: 14)
-        }.foregroundStyle(Color.tatiInk).padding(16).frame(minHeight: 54)
-            .background(Color.white.opacity(0.45)).clipShape(RoundedRectangle(cornerRadius: 14))
+        }.foregroundStyle(Color.tatiInk).padding(.horizontal, 12).frame(minHeight: 50)
+            .background {
+                if outlined { Image("outlined-card").resizable() }
+                else { Color.white.opacity(0.3) }
+            }
+            .overlay(alignment: .bottom) { if !outlined { Color.tatiOlive.opacity(0.12).frame(height: 0.5).padding(.horizontal, 12) } }
     }
 }
 struct NoticeLayer: View {
@@ -201,17 +240,22 @@ struct NoticeLayer: View {
             ZStack {
                 Color.black.opacity(0.48).ignoresSafeArea()
                 VStack(spacing: 18) {
-                    Text(notice.title).font(.system(size: 23, weight: .heavy, design: .rounded))
-                    Text(notice.message).font(.system(size: 15)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    Text(notice.title).font(.system(size: 18, weight: .semibold))
+                    Text(notice.message).font(.system(size: 13)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                     HStack {
-                        if notice.action != nil { TatiButton(title: "Cancel", secondary: true) { store.notice = nil } }
+                        if notice.action != nil {
+                            Button { store.notice = nil } label: {
+                                Text("Cancel").font(.system(size: 14, weight: .medium)).foregroundStyle(.gray)
+                                    .frame(maxWidth: .infinity, minHeight: 42).background(Color.gray.opacity(0.18)).clipShape(Capsule())
+                            }.buttonStyle(.plain).frame(minHeight: 44)
+                        }
                         TatiButton(title: notice.actionTitle) {
                             store.notice = nil
                             notice.action?()
                         }
                     }
-                }.padding(.horizontal, 32).padding(.vertical, 42).background { Image("dialog-card").resizable() }
-                    .padding(26).frame(maxWidth: 440).foregroundStyle(Color.tatiInk)
+                }.padding(.horizontal, 24).padding(.vertical, 28).background { Image("dialog-card").resizable() }
+                    .padding(34).frame(maxWidth: 400).foregroundStyle(Color.tatiInk)
             }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)
         }
     }
@@ -220,18 +264,21 @@ struct NoticeLayer: View {
 /// Shared bright bottom panel used by the Lanhu room and filter artboards.
 struct TatiPanel<Content: View>: View {
     var title: String
+    var showsHeader = true
     @ViewBuilder var content: () -> Content
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text(title).font(.system(size: 22, weight: .bold, design: .serif))
+            if showsHeader { HStack {
+                Text(title).font(.system(size: 19, weight: .bold, design: .serif))
                 Spacer()
                 ArtButton(asset: "close-light", label: "Close") { dismiss() }
-            }.padding(.horizontal, 18).padding(.top, 12)
-            ScrollView { VStack(alignment: .leading, spacing: 18) { content() }.padding(18).frame(maxWidth: 600) }
+            }.padding(.horizontal, 16).padding(.top, 4) }
+            ScrollView { VStack(alignment: .leading, spacing: 12) { content() }.padding(.horizontal, 16).padding(.top, showsHeader ? 0 : 18).padding(.bottom, 16).frame(maxWidth: 600).frame(maxWidth: .infinity) }
         }.background(Color.tatiLime).foregroundStyle(Color.tatiInk)
             .presentationBackground(Color.tatiLime).presentationDragIndicator(.hidden)
+            .presentationCornerRadius(20)
             .toolbar(.hidden, for: .navigationBar)
+            .accessibilityAction(.escape) { dismiss() }
     }
 }

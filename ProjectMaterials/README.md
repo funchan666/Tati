@@ -15,4 +15,4 @@
 
 Tati 原生工程已建立。UI 副本由 Scripts/import_assets.py 按 runtime-mapping.json 导入。GeneratedUI 保存 Tati 品牌文字局部适配和缺失图标补充；不修改 UIAssets 原图。
 
-人物和视频的建议命名及归属见 content-slots.json。仍可使用你原来的文件名，只需补充与角色/房间的对应关系。放入原始素材目录后还需要显式导入，不会将目录整体打包。
+2026-10-20：49 张图片与 16 段视频已经逐一分配并显式导入。原始文件保留原名与内容，准确对应关系见 content-slots.json，逐项清单与检查证据见 DesignReferences/ContentAudit/README.md。Scripts/import_content.py 将照片和原片副本放入独立运行时资源，并从原片提取封面；ProjectMaterials 本身不打包。

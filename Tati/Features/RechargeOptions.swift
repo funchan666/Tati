@@ -10,14 +10,15 @@ struct CoinPackage: Identifiable {
 }
 struct RechargeOptions: View {
     var compact = false
+    var showsActions = true
     @EnvironmentObject private var store: VisitorStore
     @EnvironmentObject private var purchases: TatiPurchases
     @State private var selected: Int?
     private var packages: [CoinPackage] { compact ? CoinPackage.room : CoinPackage.grid }
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Art(name: "recharge-banner")
-            Note(text: "Package layout preview · Products and prices are not configured. Amounts below are design samples, not purchasable offers.")
+            if compact { Art(name: "recharge-banner") }
+            Note(text: "Design samples · Purchases unavailable")
             if compact {
                 ForEach(packages) { package in
                     Button { selected = package.id } label: {
@@ -33,18 +34,21 @@ struct RechargeOptions: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
                     ForEach(packages) { package in
                         Button { selected = package.id } label: {
-                            VStack(spacing: 10) {
+                            VStack(spacing: 5) {
                                 Text(package.total.formatted()).font(.headline).minimumScaleFactor(0.7).lineLimit(1)
                                 Art(name: "coin", width: 34, height: 34)
                                 Text("Price pending").font(.system(size: 10)).padding(6).foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
-                                if selected == package.id { Art(name: "check-pink", width: 18, height: 18) } else { Color.clear.frame(height: 18) }
-                            }.padding(12).frame(maxWidth: .infinity).background { Image("coin-pack-card").resizable() }
+
+                            }.padding(10).frame(maxWidth: .infinity).background { Image("coin-pack-card").resizable() }
+                                .overlay(alignment: .topTrailing) { if selected == package.id { Art(name: "check-pink", width: 17, height: 17).padding(3) } }
                         }.buttonStyle(.plain).accessibilityAddTraits(selected == package.id ? .isSelected : [])
                     }
                 }
             }
+            if showsActions {
             TatiButton(title: "Continue", enabled: selected != nil) { store.tell("Purchases aren't configured", purchases.availability) }
-            TatiButton(title: "Restore purchases", secondary: true) { store.tell("Purchases aren't configured", purchases.availability) }
+            Button("Restore purchases") { store.tell("Purchases aren't configured", purchases.availability) }.font(.caption).buttonStyle(.plain).frame(minHeight: 32)
+            }
         }
     }
 }

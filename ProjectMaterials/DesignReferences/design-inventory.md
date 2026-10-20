@@ -1,5 +1,7 @@
 # 蓝湖设计盘点
 
+> 2026-10-20 更新：用户新增的 49 张图片和 16 段视频已全部接入，现有 UI 原图未改变。素材接入与当前状态以 ProjectMaterials/DesignReferences/ContentAudit/README.md 为准；下文的待补记录保留为早期盘点。
+
 日期：2026-10-16
 
 来源：https://lanhuapp.com/web/#/item/project/stage?pid=3874af28-5582-47e0-a2ef-64bcd37f5fc2&teamId=022f8369-f445-4528-bf2b-bdf2a9e319c4&tid=022f8369-f445-4528-bf2b-bdf2a9e319c4

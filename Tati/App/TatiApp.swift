@@ -47,11 +47,14 @@ struct CommunityRoot: View {
                             playback.stop(); selected = tab
                         } label: {
                             Art(name: "\(tab.assetPrefix)-\(tab == selected ? "on" : "off")", width: 27, height: 27)
-                                .frame(maxWidth: .infinity, minHeight: 58)
+                                .frame(maxWidth: .infinity, minHeight: 54)
                         }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
                     }
-                }.padding(.top, 6).background { Color.tatiPink.ignoresSafeArea(edges: .bottom) }
-            }.background { TatiBackground() }.toolbar(.hidden, for: .navigationBar)
+                }.padding(.top, 4).background {
+                    UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28)
+                        .fill(Color.tatiPink).ignoresSafeArea(edges: .bottom)
+                }
+            }.background(Color.tatiCream).toolbar(.hidden, for: .navigationBar)
         }
     }
 }

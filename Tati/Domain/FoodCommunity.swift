@@ -1,12 +1,13 @@
 import Foundation
 
-struct FoodPerson: Identifiable, Hashable {
+struct FoodPerson: Identifiable, Hashable, Codable {
     let id: String
     let name: String
     let country: String
     let language: String
     let interest: String
     let bio: String
+    var portraitArtwork: String? { ContentLibrary.shared.portraits[id] }
     var city: String { ["creator-luna": "Paris", "creator-chloe": "Singapore", "creator-maria": "Toronto", "creator-elowen": "Los Angeles", "creator-seraphina": "Bangkok", "creator-andre": "Kuala Lumpur"][id] ?? country }
 }
 struct FoodRoom: Identifiable, Hashable {
@@ -16,6 +17,7 @@ struct FoodRoom: Identifiable, Hashable {
     let topic: String
     let isVoice: Bool
     let background: String
+    var coverArtwork: String? { ContentLibrary.shared.roomCovers[id] }
     var foodFocused: Bool { topic != "Home cooking" }
 }
 struct FoodClip: Identifiable, Codable, Hashable {
@@ -25,6 +27,9 @@ struct FoodClip: Identifiable, Codable, Hashable {
     var fileName: String?
     var createdAt: Date
     var isSample: Bool
+    var bundledFile: String? = nil
+    var posterArtwork: String? = nil
+    var isCollection: Bool { authorID == "tati-collection" }
 }
 struct FoodGift: Identifiable, Hashable {
     let id: String
@@ -91,7 +96,8 @@ struct LocalAccount: Codable {
 }
 
 enum FoodCatalog {
-    static let people = [
+    static let people: [FoodPerson] = originalPeople + ContentLibrary.shared.additionalPeople
+    private static let originalPeople = [
         FoodPerson(id: "creator-luna", name: "Luna", country: "France", language: "English", interest: "Home cooking", bio: "Simple ingredients, great taste. A little kitchen and a lot of curiosity."),
         FoodPerson(id: "creator-chloe", name: "Chloe", country: "Singapore", language: "English", interest: "Street food", bio: "Every street has a story. Let's discover it over a delicious bite."),
         FoodPerson(id: "creator-maria", name: "Maria", country: "Italy", language: "Italian", interest: "Italian food", bio: "Homemade pasta, slow Sundays, and a seat for everyone at the table."),
@@ -123,11 +129,7 @@ enum FoodCatalog {
     static let languages = ["All", "English", "Hindi", "Español", "Türkçe", "Português", "French", "Italian"]
     static let popularTopics = [("Italian food", "category-italian"), ("Sushi", "category-sushi"), ("Street food", "category-street"), ("Dessert", "category-dessert"), ("Healthy food", "category-healthy"), ("BBQ", "category-bbq")]
     static let topics = ["All", "Home cooking", "Italian food", "Street food", "Dessert", "Healthy food", "BBQ"]
-    static let sampleClips: [FoodClip] = people.prefix(4).enumerated().map {
-        FoodClip(id: "sample-clip-\($0.offset)", authorID: $0.element.id,
-                 caption: ["Food check-in, taste bud party", "Find delicious surprises around us", "A little sweetness for today", "Simple ingredients, great taste"][$0.offset],
-                 createdAt: Date(timeIntervalSince1970: 1_760_000_000), isSample: true)
-    }
+    static let sampleClips: [FoodClip] = ContentLibrary.shared.clips
     static func person(_ id: String) -> FoodPerson? { people.first { $0.id == id } }
     static func gift(_ id: String) -> FoodGift? { gifts.first { $0.id == id } }
 }
