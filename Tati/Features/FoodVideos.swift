@@ -12,9 +12,9 @@ struct VideoFeedView: View {
                     Spacer()
                     NavigationLink(destination: PublishVideoView()) { Art(name: "publish", width: 32).frame(width: 44, height: 44) }.accessibilityLabel("Add a video")
                 }
-                if ContentLibrary.unavailable { Note(text: "The bundled content library could not be loaded.") }
+                if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 ForEach(store.visibleClips) { clip in FeedVideoCard(clip: clip) }
-                if store.visibleClips.isEmpty { EmptyContent(title: "A little taste of your world", detail: "Add a food video to your local collection.") }
+                if store.visibleClips.isEmpty { EmptyContent(title: "A little taste of your world", detail: "Add a food video to your collection.") }
             }.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 12).frame(maxWidth: 680).frame(maxWidth: .infinity)
         }
     }
@@ -54,7 +54,7 @@ struct ClipDetailView: View {
                         ArtButton(asset: "back", label: "Back") { dismiss() }
                         Spacer()
                         if clip.authorID == store.account.profile.id {
-                            ArtButton(asset: "remove", label: "Delete local video") { delete() }
+                            ArtButton(asset: "remove", label: "Delete video") { delete() }
                         } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
                     }
                     Spacer()
@@ -118,10 +118,10 @@ struct ClipDetailView: View {
         roomSession.audio.stop()
         guard let url = store.videoURL(for: clip) else { failure = "The video file could not be found."; return }
         do { try playback.load(id: clip.id, url: url, owner: playbackOwner) }
-        catch { failure = clip.isCollection ? "This bundled video is unavailable." : "This video file is missing. Reimport it from your library." }
+        catch { failure = clip.isCollection ? "This video is unavailable." : "This video file is missing. Reimport it from your library." }
     }
     private func delete() {
-        store.confirm("Delete local video?", "This removes the imported copy from Tati. The original in Photos is unchanged.", button: "Delete", destructive: true) {
+        store.confirm("Delete video?", "This removes the imported copy from Tati. The original in Photos is unchanged.", button: "Delete", destructive: true) {
             playback.stop()
             if store.change({ $0.clips.removeAll { $0.id == clip.id }; $0.likes.remove(clip.id) }) {
                 if let file = clip.fileName { store.removeUnusedMedia(file) }
@@ -139,7 +139,7 @@ struct CommentDraftView: View {
             HStack { Text("DISCUSS").font(.system(size: 18, weight: .bold, design: .serif)); Spacer() }.padding(18)
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
-                    Text("No connected comments").font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
+                    Text("No comments yet").font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
                     if let saved = store.account.drafts["comment:" + clip.id], !saved.isEmpty {
                         HStack(alignment: .top, spacing: 10) {
                             Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
@@ -152,7 +152,7 @@ struct CommentDraftView: View {
                 TextField("Tell me your opinion…", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 13)).padding(.leading, 14).tint(.white)
                 Button {
                     guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                    if store.saveDraft("comment:" + clip.id, text: text) { store.tell("Draft saved", "This comment is saved only on this device. It has not been posted.") }
+                    if store.saveDraft("comment:" + clip.id, text: text) { store.tell("Draft saved", "Your comment draft has been saved. It has not been posted.") }
                 } label: { Text("SAVE").font(.system(size: 13, weight: .bold)).foregroundStyle(Color.tatiInk).padding(.horizontal, 14).padding(.vertical, 9).background(Color.tatiLime).clipShape(Capsule()).frame(minHeight: 44) }.buttonStyle(.plain).accessibilityLabel("Save comment draft")
             }.padding(.horizontal, 5).background(Color.tatiPink).clipShape(Capsule()).padding(16)
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
@@ -194,12 +194,12 @@ struct PublishVideoView: View {
             InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false)
                 .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
             Text("\(caption.count)/50").font(.caption).frame(maxWidth: .infinity, alignment: .trailing)
-            Note(text: "Saved as a local video. Upload and moderation are not connected. No coins will be charged.")
+            Note(text: "Save the video to your collection. Publishing is currently unavailable.")
         } footer: {
-            TatiButton(title: "Save local video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiButton(title: "Save video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }
                 let clip = FoodClip(id: UUID().uuidString, authorID: store.account.profile.id, caption: caption.trimmingCharacters(in: .whitespacesAndNewlines), fileName: localFile, createdAt: Date(), isSample: false)
-                if store.change({ $0.clips.insert(clip, at: 0) }) { committed = true; dismiss(); store.tell("Video saved", "Your video is saved locally. It has not been uploaded or submitted for review. No coins were charged.") }
+                if store.change({ $0.clips.insert(clip, at: 0) }) { committed = true; dismiss(); store.tell("Video saved", "Your video has been added to your collection. It has not been published.") }
             }
         }
         .task(id: selection) {
@@ -252,7 +252,7 @@ struct GoLiveView: View {
             }
         } footer: {
             TatiButton(title: "Start live", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
-                store.tell("Live service not connected", "The camera image stays on this device. A connected streaming service is required to start a broadcast. No coins have been charged.")
+                store.tell("Broadcast unavailable", "Broadcasting is currently unavailable. No broadcast has started and no coins were charged.")
             }
         }.task(id: cover) {
             guard let cover else { return }

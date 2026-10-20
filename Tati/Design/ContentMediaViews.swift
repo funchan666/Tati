@@ -40,7 +40,7 @@ struct PortraitPhotoView: View {
             MediaViewport {
                 if let asset = person.portraitArtwork {
                     Image(asset).resizable().scaledToFit()
-                        .accessibilityLabel("Photo for the " + person.name + " sample profile")
+                        .accessibilityLabel("Photo of " + person.name)
                 } else {
                     EmptyContent(title: "Photo unavailable", detail: "This photo could not be loaded.")
                 }

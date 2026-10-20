@@ -43,7 +43,7 @@ struct RoomView: View {
                 Button { panel = .members } label: {
                     HStack(spacing: 3) { SupplementIcon(icon: .viewers, size: 14); Text("0").font(.system(size: 10)) }
                         .padding(.horizontal, 6).padding(.vertical, 4).background(.black.opacity(0.35)).clipShape(Capsule()).frame(minHeight: 44)
-                }.buttonStyle(.plain).accessibilityLabel("Connected members: zero")
+                }.buttonStyle(.plain).accessibilityLabel("Room members: zero")
                 ArtButton(asset: "more", label: "Room tools", size: 22) { panel = .tools }
                 ArtButton(asset: "close", label: "Leave room", size: 22) { leave() }
             }.padding(.horizontal, 12)
@@ -94,17 +94,18 @@ struct RoomView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            Text(room.title).font(.system(size: 12)).padding(.horizontal, 10).padding(.vertical, 9)
+            RoomActivityFeed(room: room, isActive: isVisible && panel == nil)
+            Text(room.title).font(.system(size: 12)).lineLimit(1).padding(.horizontal, 10).padding(.vertical, 9)
                 .background(.black.opacity(0.40)).clipShape(RoundedRectangle(cornerRadius: 8))
                 .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16)
             HStack(spacing: 4) {
                 if room.isVoice { ArtButton(asset: "chat-mic", label: "Join microphone", size: 32) { panel = .microphone } }
                 HStack(spacing: 0) {
                     TextField("Say Hi~", text: $message).font(.system(size: 13)).textFieldStyle(.plain).tint(.white).padding(.leading, 14)
+                        .onChange(of: message) { _, value in message = String(value.prefix(300)) }
                     Button {
-                        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                        if store.saveDraft("room-" + room.id, text: message) { store.tell("Not broadcast", "Live chat is not connected. Your room message is saved as a local draft.") }
-                    } label: { SupplementIcon(icon: .send, size: 24).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Send room message")
+                        if store.saveRoomMessage(roomID: room.id, text: message) { message = "" }
+                    } label: { SupplementIcon(icon: .send, size: 24).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save room message")
                 }.background(.white.opacity(0.30)).clipShape(Capsule())
                 if room.isVoice { RoomSoundButton(player: music) }
                 ArtButton(asset: "gift-live", label: "Gifts", size: 36) { panel = .gifts }
@@ -144,26 +145,26 @@ struct RoomView: View {
             NavigationStack {
                 Group {
                     switch selected {
-                    case .gifts: GiftShopView(recipient: host)
+                    case .gifts: GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil })
                     case .tools: toolsPanel
-                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No connected members", detail: "This room is not connected to a live service."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
+                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No members yet", detail: "Member information is currently unavailable."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
                     case .layout: layoutPanel
                     case .background: backgroundPanel
                     case .microphone: MicrophonePanel()
                     case .music: RoomMusicPanel(player: music)
                     case .invite: RoomInvitePanel(room: room)
-                    case .host: RoomPersonPanel(person: host, roomMember: room.isVoice)
+                    case .host: RoomPersonPanel(person: host, roomMember: room.isVoice, roomID: room.id)
                     case .report: ReportView(subjectID: "room:" + room.id)
                     case .pk: TatiPanel(title: "PK") {
                         Art(name: "versus", height: 85).frame(maxWidth: .infinity)
-                        Note(text: "PK requires two connected hosts. This only changes the local camera layout; no opponent, timer or scores are simulated.")
+                        Note(text: "Choose a camera layout. PK matches are currently unavailable.")
                         TatiButton(title: showPK ? "Return to single camera" : "Split camera layout") { showPK.toggle(); panel = nil }
                     }
                     case .leave: TatiPanel(title: "Leave the room?") {
                         if room.isVoice { TatiButton(title: "Keep listening · Minimize") { roomSession.minimize(); panel = nil; dismiss() } }
                         TatiButton(title: "Leave room", secondary: true) { roomSession.leave(room.id); panel = nil; dismiss() }
                         TatiButton(title: "Stay here", secondary: true) { panel = nil }
-                        Note(text: "Only selected local music can keep playing while browsing Tati. There is no live audio stream.")
+                        Note(text: "Your selected music can keep playing while you browse Tati.")
                     }
                     }
                 }
@@ -218,6 +219,8 @@ struct RoomView: View {
 }
 struct GiftShopView: View {
     var recipient: FoodPerson
+    var roomID: String? = nil
+    var onGiftSaved: (() -> Void)? = nil
     @EnvironmentObject private var store: VisitorStore
     @State private var selected = FoodCatalog.gifts[0]
     @State private var quantity = 1
@@ -231,11 +234,11 @@ struct GiftShopView: View {
                                 .frame(maxWidth: .infinity).background(selected.id == gift.id ? Color.tatiOlive.opacity(0.35) : .clear).clipShape(RoundedRectangle(cornerRadius: 8))
                             HStack(spacing: 3) { Art(name: "coin-small", width: 15); Text("\(gift.cost)").font(.system(size: 13)) }
                         }
-                    }.buttonStyle(.plain).accessibilityLabel("\(gift.name), \(gift.cost) demo coins").accessibilityAddTraits(selected.id == gift.id ? .isSelected : [])
+                    }.buttonStyle(.plain).accessibilityLabel("\(gift.name), \(gift.cost) reward coins").accessibilityAddTraits(selected.id == gift.id ? .isSelected : [])
                 }
             }
             HStack(spacing: 4) {
-                NavigationLink(destination: RechargePanel()) { HStack(spacing: 4) { Art(name: "coin", width: 24); Text("\(store.account.demoCoins)").font(.system(size: 15)) } }.buttonStyle(.plain).accessibilityLabel("Demo balance and recharge")
+                NavigationLink(destination: RechargePanel()) { HStack(spacing: 4) { Art(name: "coin", width: 24); Text("\(store.account.demoCoins)").font(.system(size: 15)) } }.buttonStyle(.plain).accessibilityLabel("Reward balance and recharge")
                 Spacer(minLength: 0)
                 HStack(spacing: 0) {
                     ArtButton(asset: "remove", label: "Decrease quantity", size: 22) { quantity = max(1, quantity - 1) }
@@ -243,11 +246,14 @@ struct GiftShopView: View {
                     ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
                 }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
                 TatiButton(title: "Use gift", enabled: !store.account.blocked.contains(recipient.id)) {
-                    if store.previewGift(selected, quantity: quantity, recipient: recipient.id) { store.tell("Gift saved on this device", "Your local demo balance was updated. This gift has not been delivered to anyone.") }
+                    if store.previewGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID) {
+                        if let onGiftSaved { onGiftSaved() }
+                        else { store.tell("Gift saved", "Your reward balance and gift record have been updated. Gift delivery is currently unavailable.") }
+                    }
                 }.frame(width: 82)
             }.padding(.top, 4)
             HStack {
-                Text("Demo coins · Nothing is sent").font(.system(size: 10))
+                Text("Reward coins · Delivery unavailable").font(.system(size: 10))
                 Spacer()
                 NavigationLink("Check-in", destination: CheckInView()).font(.system(size: 11, weight: .semibold))
                 NavigationLink("Wallet", destination: WalletView()).font(.system(size: 11, weight: .semibold))
@@ -260,12 +266,12 @@ struct MicrophonePanel: View {
     @State private var requesting = false
     var body: some View {
         TatiPanel(title: "Join the conversation") {
-            Text("Microphone access is needed to speak in a connected room.").font(.system(size: 12)).padding(.vertical, 8)
+            Text("Allow microphone access to use voice features.").font(.system(size: 12)).padding(.vertical, 8)
             Note(text: status)
             TatiButton(title: requesting ? "Waiting for permission…" : "Check microphone permission", enabled: !requesting) {
                 requesting = true
                 AVAudioApplication.requestRecordPermission { granted in
-                    Task { @MainActor in requesting = false; status = granted ? "Permission granted. You are not broadcasting; the voice service is not connected." : "Microphone access was denied. You can allow it in iOS Settings." }
+                    Task { @MainActor in requesting = false; status = granted ? "Microphone access granted. Voice chat is currently unavailable; recording has not started." : "Microphone access was denied. You can allow it in iOS Settings." }
                 }
             }
             Note(text: "No recording starts when you grant permission.")
@@ -312,7 +318,7 @@ struct RoomMusicPanel: View {
                     .padding(14).background(Color.tatiOlive.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 14))
             }
             Text(player.title).font(.headline)
-            Note(text: "Playback is only on this device. It is not broadcast to a room.")
+            Note(text: "Selected music is for your listening only.")
             TatiButton(title: "Choose audio") { importing = true }
             TatiButton(title: player.playing ? "Pause" : "Play", secondary: true, enabled: player.title != "No audio selected") {
                 do { try player.toggle() } catch { store.tell("Audio unavailable", "The audio couldn't be played. Try another file.") }

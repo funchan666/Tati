@@ -28,7 +28,7 @@ final class VisitorStore: ObservableObject {
                 guard account.version == 1 else { throw CocoaError(.fileReadCorruptFile) }
             }
         } catch {
-            storageFailure = "Your local data could not be opened. It has not been replaced. Please free storage or restore the original file before continuing."
+            storageFailure = "Your saved data could not be opened. It has not been replaced. Please check available storage before trying again."
         }
     }
     @discardableResult
@@ -46,7 +46,7 @@ final class VisitorStore: ObservableObject {
             account = durable
             return true
         } catch {
-            storageFailure = "Local storage could not be verified. Further changes are paused to protect your data. Reopen Tati after checking device storage."
+            storageFailure = "Your changes could not be verified. Saving is paused to protect your data. Check available storage, then reopen Tati."
             tell("Couldn't verify save", storageFailure!)
             return false
         }
@@ -57,19 +57,19 @@ final class VisitorStore: ObservableObject {
     }
     func signIn() { _ = change { $0.signedIn = true } }
     func logout() {
-        confirm("Leave Tati?", "Your guest profile and drafts stay on this device. You can return to the same local profile.", button: "Log out") {
+        confirm("Leave Tati?", "Your profile and saved content will be kept when you log out.", button: "Log out") {
             _ = self.change { $0.signedIn = false }
         }
     }
     func deleteVisitor() {
-        confirm("Delete local profile?", "This removes this guest profile, local photos, videos, drafts and rewards from this device. There is no server account to delete.", button: "Delete", destructive: true) {
+        confirm("Delete profile?", "This permanently removes your Tati profile, imported photos and videos, drafts and rewards from app storage.", button: "Delete", destructive: true) {
             let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName) + self.account.reports.compactMap(\.imageFile) + Array((self.account.draftImages ?? [:]).values)
             guard self.change({ $0 = LocalAccount() }) else { return }
             var cleanupFailed = false
             for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {
                 do { try FileManager.default.removeItem(at: self.mediaURL(file)) } catch { cleanupFailed = true }
             }
-            if cleanupFailed { self.tell("Profile deleted", "Some imported media files could not be removed from app storage. Remove Tati from this device to erase its remaining local storage.") }
+            if cleanupFailed { self.tell("Profile deleted", "Some imported files could not be removed. Uninstall Tati to erase the remaining app data.") }
         }
     }
     func toggleFollow(_ id: String) {
@@ -77,7 +77,7 @@ final class VisitorStore: ObservableObject {
         _ = change { if $0.following.contains(id) { $0.following.remove(id) } else { $0.following.insert(id) } }
     }
     func block(_ id: String) {
-        confirm("Block this profile?", "Their sample rooms and videos will be hidden on this device. You can undo this in your blacklist.", button: "Block", destructive: true) {
+        confirm("Block this profile?", "Their rooms and videos will be hidden. You can unblock this profile in Settings.", button: "Block", destructive: true) {
             _ = self.change { $0.blocked.insert(id); $0.following.remove(id) }
         }
     }
@@ -97,16 +97,36 @@ final class VisitorStore: ObservableObject {
         guard !account.claimedDays.contains(day) else { return }
         let reward = nextCheckInReward
         if change({ $0.claimedDays.insert(day); $0.demoCoins += reward }) {
-            tell("A delicious little reward", "\(reward) demo coins saved on this device. They can be used for local gifts. They have no cash value.")
+            tell("A delicious little reward", "\(reward) reward coins added to your balance. They have no cash value.")
         }
     }
-    func previewGift(_ gift: FoodGift, quantity: Int, recipient: String) -> Bool {
+    func previewGift(_ gift: FoodGift, quantity: Int, recipient: String, roomID: String? = nil) -> Bool {
         guard (1...99).contains(quantity), FoodCatalog.person(recipient) != nil, !account.blocked.contains(recipient) else { return false }
+        if let roomID {
+            guard FoodCatalog.rooms.contains(where: { $0.id == roomID && $0.hostID == recipient }) else { return false }
+        }
         let total = gift.cost * quantity
-        guard account.demoCoins >= total else { tell("More demo coins needed", "Visit Check-in to collect local demo coins. No purchase is required for local gifts."); return false }
+        guard account.demoCoins >= total else { tell("More reward coins needed", "Visit Check-in to collect reward coins. No purchase is required."); return false }
         return change { value in
             value.demoCoins -= total
-            value.gifts.append(GiftReceipt(giftID: gift.id, recipientID: recipient, quantity: quantity, spent: total))
+            value.gifts.append(GiftReceipt(giftID: gift.id, recipientID: recipient, quantity: quantity, spent: total, roomID: roomID))
+        }
+    }
+    func saveRoomMessage(roomID: String, text: String) -> Bool {
+        let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(300))
+        guard !body.isEmpty,
+              let room = FoodCatalog.rooms.first(where: { $0.id == roomID }),
+              !account.blocked.contains(room.hostID) else { return false }
+        return change { value in
+            var messages = value.roomMessages ?? []
+            messages.append(LocalRoomMessage(roomID: roomID, text: body))
+            let overflow = messages.filter { $0.roomID == roomID }.count - 100
+            if overflow > 0 {
+                let oldest = Set(messages.filter { $0.roomID == roomID }.prefix(overflow).map(\.id))
+                messages.removeAll { oldest.contains($0.id) }
+            }
+            value.roomMessages = messages
+            value.drafts["room-" + roomID] = ""
         }
     }
     func saveDraft(_ key: String, text: String) -> Bool { change { $0.drafts[key] = text } }
@@ -114,7 +134,7 @@ final class VisitorStore: ObservableObject {
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         guard saveDraft(recipient, text: text) else { return }
         if account.blocked.contains(recipient) { tell("Profile blocked", "Unblock this profile before messaging."); return }
-        tell("Not sent", "Messaging requires a connected service and mutual follows. Sample profiles cannot receive messages. Your text is saved as a local draft.")
+        tell("Not sent", "Messaging is currently unavailable. Your message has been saved as a draft.")
     }
     func saveReport(subject: String, reason: String, details: String, imageFile: String? = nil) -> Bool {
         change { $0.reports.append(ReportDraft(subjectID: subject, reason: reason, details: details, imageFile: imageFile)) }

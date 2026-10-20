@@ -37,10 +37,10 @@ struct DraftPhotoAttachment: View {
     var body: some View {
         HStack(spacing: 12) {
             PhotosPicker(selection: $selection, matching: .images) { Art(name: "chat-photo", width: 36, height: 36).frame(width: 44, height: 44) }
-                .buttonStyle(.plain).disabled(importing).accessibilityLabel("Attach local photo")
+                .buttonStyle(.plain).disabled(importing).accessibilityLabel("Attach photo")
             if !compact, let file = store.account.draftImages?[draftKey], let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
                 Image(uiImage: image).resizable().scaledToFill().frame(width: compact ? 36 : 70, height: compact ? 36 : 70).clipped().clipShape(RoundedRectangle(cornerRadius: 8))
-                if !compact { Note(text: "Local attachment · not sent") }
+                if !compact { Note(text: "Attachment · not sent") }
                 ArtButton(asset: "remove", label: "Remove draft photo") { _ = store.saveDraftImage(nil, key: draftKey); selection = nil }
             } else if !compact { Note(text: importing ? "Importing photo…" : "Optional photo draft") }
         }.task(id: selection) {
@@ -62,11 +62,11 @@ struct SupportView: View {
     @State private var query = ""
     @State private var expanded: Set<String> = []
     private let articles = [
-        HelpArticle(question: "How do I recharge diamonds?", answer: "Open your wallet from Me, or tap the balance inside the gift panel. This local edition has no configured App Store products, so recharge is unavailable and no charge is made. Free demo coins come from daily check-ins."),
-        HelpArticle(question: "My purchase is still processing", answer: "Tati's local edition cannot start a purchase. If a future connected version shows a pending Apple transaction, wait for its verified status rather than buying the same package again. Demo coins are separate from purchased coins."),
-        HelpArticle(question: "Why did my call pause?", answer: "Live calls are not connected in this edition. Video playback and the camera stop when you leave the page or the app enters the background. Nothing is streamed to a remote person."),
+        HelpArticle(question: "How do I recharge diamonds?", answer: "Open your wallet from Me, or tap the balance in the gift panel. Recharge is currently unavailable. You can collect free reward coins through daily check-ins."),
+        HelpArticle(question: "My purchase is still processing", answer: "Purchases are currently unavailable, so no payment can be started. Check-in rewards are separate from purchased coins."),
+        HelpArticle(question: "Why did my call pause?", answer: "Calls are currently unavailable. Video playback and the camera stop when you leave the page or Tati enters the background."),
         HelpArticle(question: "How can I change my language?", answer: "Open Settings, then Language. You can save a preferred language and cancel or confirm the choice. The interface and supplied artwork currently remain in English until translations are available."),
-        HelpArticle(question: "Where is my saved content?", answer: "Open Me for your local profile, videos, rewards and gift records. Logging out retains them. Deleting your local profile removes its records and associated imported files from Tati.")
+        HelpArticle(question: "Where is my saved content?", answer: "Open Me for your profile, videos, rewards and gift records. Logging out keeps them. Deleting your profile removes its records and imported files from Tati.")
     ]
     private var matches: [HelpArticle] { articles.filter { query.isEmpty || ($0.question + $0.answer).localizedCaseInsensitiveContains(query) } }
     var body: some View {
@@ -99,7 +99,7 @@ struct SupportDraftView: View {
         TatiForm(title: "Customer support") {
             HStack(alignment: .top, spacing: 8) {
                 Art(name: "support-avatar", width: 40, height: 40)
-                Text("Support isn't connected yet. Leave a question as a local draft.").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
+                Text("Support is currently unavailable. You can save your question as a draft.").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
             }
             if let draft = store.account.drafts["support-chat"], !draft.isEmpty {
                 HStack {
@@ -114,7 +114,7 @@ struct SupportDraftView: View {
                 DraftPhotoAttachment(draftKey: "support-chat", compact: true)
                 Button {
                     guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                    if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your support message and optional photo stay on this device. Nothing was sent.") }
+                    if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your message and attachment have been saved as a draft. They have not been sent.") }
                 } label: { SupplementIcon(icon: .send, size: 25).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save support draft")
             }
         }.onAppear { text = store.account.drafts["support-chat"] ?? "" }

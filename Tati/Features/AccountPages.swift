@@ -18,15 +18,15 @@ struct CheckInView: View {
                                     if earned { Art(name: "paw", width: 16, height: 16) } else { Color.clear.frame(height: 16) }
                                 }.padding(.vertical, 10).frame(maxWidth: .infinity).background { Image(earned ? "day-selected" : "day-default").resizable() }
                                 Text("\((day + 1) * 10)").font(.system(size: 13))
-                            }.accessibilityLabel("Day \(day + 1), \((day + 1) * 10) demo coins, \(earned ? "collected" : "not collected")")
+                            }.accessibilityLabel("Day \(day + 1), \((day + 1) * 10) reward coins, \(earned ? "collected" : "not collected")")
                         }
                     }.padding(16).background(Color.tatiCream).clipShape(UnevenRoundedRectangle(topLeadingRadius: 18, topTrailingRadius: 18))
-                    Text("Demo balance: \(store.account.demoCoins)").font(.system(size: 12)).padding(10)
+                    Text("Reward balance: \(store.account.demoCoins)").font(.system(size: 12)).padding(10)
                 }.frame(maxWidth: 600).frame(maxWidth: .infinity)
             }
             VStack(spacing: 8) {
-                Note(text: "One reward per UTC day · Demo coins have no cash value.")
-                TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) demo coins", enabled: !store.checkedIn) { store.checkIn() }
+                Note(text: "One reward per UTC day · Reward coins have no cash value.")
+                TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) reward coins", enabled: !store.checkedIn) { store.checkIn() }
             }.padding(18).frame(maxWidth: 600)
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
     }
@@ -44,9 +44,9 @@ struct WalletView: View {
                     Text("\(store.account.purchasedCoins)").font(.system(size: 28, weight: .heavy))
                 }.foregroundStyle(.white).padding(20).frame(maxWidth: .infinity, alignment: .leading)
             }
-            Note(text: "Coins can be used for videos and gifts once services are connected.")
+            Note(text: "Check-in rewards and purchased coins have separate balances.")
             RechargeOptions(showsActions: false).padding(14).background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
-            NavigationLink(destination: CheckInView()) { SettingRow(title: "Demo coins", asset: "coin-small", detail: "\(store.account.demoCoins) · Check-in") }.buttonStyle(.plain)
+            NavigationLink(destination: CheckInView()) { SettingRow(title: "Reward coins", asset: "coin-small", detail: "\(store.account.demoCoins) · Check-in") }.buttonStyle(.plain)
             if !store.account.gifts.isEmpty {
                 Text("Gift history").font(.system(size: 14, weight: .semibold))
                 ForEach(store.account.gifts.reversed()) { receipt in
@@ -54,15 +54,15 @@ struct WalletView: View {
                         Art(name: FoodCatalog.gift(receipt.giftID)?.artwork ?? "gift-box", width: 38, height: 38)
                         VStack(alignment: .leading, spacing: 3) {
                             Text("\(FoodCatalog.gift(receipt.giftID)?.name ?? "Gift") × \(receipt.quantity)").font(.system(size: 13))
-                            Text("For \(FoodCatalog.person(receipt.recipientID)?.name ?? "sample profile")").font(.system(size: 10))
+                            Text("For \(FoodCatalog.person(receipt.recipientID)?.name ?? "recipient")").font(.system(size: 10))
                         }
                         Spacer(); Text("−\(receipt.spent)").font(.system(size: 13))
                     }
                 }
             }
         } footer: {
-            TatiButton(title: "Continue") { store.tell("Purchases aren't configured", purchases.availability) }
-            Button("Restore purchases") { store.tell("Purchases aren't configured", purchases.availability) }.font(.system(size: 12)).buttonStyle(.plain).frame(minHeight: 32)
+            TatiButton(title: "Continue") { store.tell("Purchases unavailable", purchases.availability) }
+            Button("Restore purchases") { store.tell("Purchases unavailable", purchases.availability) }.font(.system(size: 12)).buttonStyle(.plain).frame(minHeight: 32)
         }
     }
 }
@@ -77,7 +77,7 @@ struct LevelView: View {
                 Color.white.opacity(0.8).frame(height: 2)
                 Text("\(store.account.claimedDays.count % 7) / 7 check-ins").font(.system(size: 11)).frame(maxWidth: .infinity)
             }.padding(.horizontal, 22).padding(.top, 36).padding(.bottom, 18).frame(maxWidth: .infinity, alignment: .leading).background { Image("level-card").resizable() }.padding(.top, 20)
-            Note(text: "In this local version, every seven check-in days adds one level. Gifts do not affect your level.")
+            Note(text: "Every seven check-in days adds one level. Gifts do not affect your level.")
             NavigationLink(destination: CheckInView()) { SettingRow(title: "Daily check-in", asset: "level") }.buttonStyle(.plain)
         }
     }
@@ -91,7 +91,7 @@ struct BackpackView: View {
             if category == "Frames" {
                 Art(name: "host-frame", width: 150, height: 150).frame(maxWidth: .infinity)
                 Text("Kitchen spotlight").font(.title3.bold())
-                Note(text: "A local profile frame unlocked by your first daily check-in.")
+                Note(text: "A profile frame unlocked by your first daily check-in.")
                 TatiButton(title: store.account.equippedFrame ? "Remove frame" : "Wear frame", enabled: !store.account.claimedDays.isEmpty) {
                     _ = store.change { $0.equippedFrame.toggle() }
                 }
@@ -106,7 +106,7 @@ struct BackpackView: View {
                 NavigationLink(destination: WalletView()) { SettingRow(title: "Gift history", asset: "gift-chat") }
             } else {
                 Art(name: "level", width: 80, height: 80).frame(maxWidth: .infinity)
-                Text("Local level \(1 + store.account.claimedDays.count / 7)").font(.headline)
+                Text("Level \(1 + store.account.claimedDays.count / 7)").font(.headline)
                 NavigationLink(destination: LevelView()) { SettingRow(title: "View level progress", asset: "level") }
             }
         }
@@ -117,7 +117,7 @@ struct BlacklistView: View {
     var body: some View {
         TatiPage(title: "Blacklist") {
             let blocked = FoodCatalog.people.filter { store.account.blocked.contains($0.id) }
-            if blocked.isEmpty { EmptyContent(title: "No blocked profiles", detail: "Profiles you block will appear here. Their rooms and videos are hidden on this device.", artwork: "blacklist") }
+            if blocked.isEmpty { EmptyContent(title: "No blocked profiles", detail: "Profiles you block will appear here. Their rooms and videos will be hidden.", artwork: "blacklist") }
             ForEach(blocked) { person in
                 HStack {
                     Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)); Spacer()
@@ -134,7 +134,7 @@ struct SettingsView: View {
             NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", outlined: true) }
             NavigationLink(destination: PolicyView(kind: .privacy)) { SettingRow(title: "Privacy agreement", outlined: true) }
             NavigationLink(destination: PolicyView(kind: .terms)) { SettingRow(title: "User agreement", outlined: true) }
-            Button { store.deleteVisitor() } label: { SettingRow(title: "Deletion of local account", outlined: true) }
+            Button { store.deleteVisitor() } label: { SettingRow(title: "Delete profile", outlined: true) }
             Button { store.logout() } label: { SettingRow(title: "Log Out", outlined: true) }
             NavigationLink(destination: LanguagePreferenceView()) { SettingRow(title: "Language", detail: store.account.preferredLanguage ?? "English", outlined: true) }
             Button { _ = store.change { $0.notifications.toggle() } } label: {
@@ -143,7 +143,7 @@ struct SettingsView: View {
                     if store.account.notifications { Art(name: "toggle-on", width: 32, height: 23) } else { SupplementIcon(icon: .toggleOff, size: 32) }
                 }.padding(.horizontal, 18).frame(height: 50).background { Image("outlined-card").resizable() }
             }.buttonStyle(.plain).accessibilityValue(store.account.notifications ? "Preference on" : "Preference off")
-            Note(text: "Local guest edition · Notification and language preferences are saved on this device. Online delivery and translations are not connected.")
+            Note(text: "Your preferences are saved. Push notifications are unavailable and the interface currently uses English.")
         }.buttonStyle(.plain)
     }
 }
@@ -163,7 +163,7 @@ struct ReportView: View {
             InputField(title: "Description", text: $details, multiline: true, minimumHeight: 160).onChange(of: details) { _, value in details = String(value.prefix(1000)) }
             Text("Upload photo").font(.system(size: 14))
             PhotoAttachmentPicker(data: $photoData, loading: $photoLoading)
-            Note(text: "Support is not connected yet. This saves a private draft on this device; it is not submitted to a moderation team.")
+            Note(text: "Submissions are currently unavailable. You can save a draft without submitting it.")
 
             let saved = store.account.reports.filter { $0.subjectID == subjectID }
             if !saved.isEmpty {
@@ -178,13 +178,13 @@ struct ReportView: View {
                 }
             }
         } footer: {
-            TatiButton(title: "Save local draft", enabled: !photoLoading && !details.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiButton(title: "Save draft", enabled: !photoLoading && !details.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 var file: String?
                 do {
                     if let photoData { file = try store.importImage(photoData) }
                     if store.saveReport(subject: subjectID, reason: reason, details: details, imageFile: file) {
                         dismiss()
-                        store.tell("Draft saved", "Your \(feedback ? "feedback" : "report") and optional photo are saved locally. They have not been sent to support.")
+                        store.tell("Draft saved", "Your \(feedback ? "feedback" : "report") and attachment have been saved as a draft. They have not been submitted.")
                     } else if let file { store.removeUnusedMedia(file) }
                 } catch { store.tell("Couldn't save attachment", "Your text and photo selection are still here. Free device storage and try again.") }
             }
@@ -202,11 +202,11 @@ struct InviteView: View {
             TatiButton(title: "Share invite link", enabled: false) {}
             VStack(alignment: .leading, spacing: 8) {
                 Text("How it works").font(.system(size: 15, weight: .semibold))
-                ForEach(["A connected account receives a unique invite code.", "Friends enter that code when signing up.", "Rewards follow the connected service's confirmed rules."], id: \.self) { text in
+                ForEach(["Your invitation code will appear here when available.", "Friends enter that code when signing up.", "Invitation rewards depend on the active offer."], id: \.self) { text in
                     HStack(alignment: .top, spacing: 6) { Art(name: "check-pink", width: 16, height: 16); Text(text).font(.system(size: 12)) }
                 }
             }.padding(16).frame(maxWidth: .infinity, alignment: .leading).background { Image("outlined-card").resizable() }
-            Note(text: "No invite code, link or reward is issued in local guest mode. Sharing becomes available only after a real link has been configured.")
+            Note(text: "Invitations are currently unavailable. No invitation rewards have been issued.")
         }
     }
 }

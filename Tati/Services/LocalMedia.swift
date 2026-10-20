@@ -120,7 +120,7 @@ struct ClipSurface: UIViewRepresentable {
         let authorized = await AVCaptureDevice.requestAccess(for: .video)
         guard generation == requestID, !Task.isCancelled else { return }
         guard authorized else { status = "Camera access was denied. You can allow it in iOS Settings."; return }
-        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front), let input = try? AVCaptureDeviceInput(device: device) else { status = "No camera is available on this device."; return }
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front), let input = try? AVCaptureDeviceInput(device: device) else { status = "No camera is available."; return }
         let capture = session
         let configured = await withCheckedContinuation { continuation in
             queue.async {
@@ -154,7 +154,7 @@ struct LocalVideoPoster: View {
     var body: some View {
         Group {
             if let image { Image(uiImage: image).resizable().scaledToFill().frame(height: height).clipped() }
-            else { MediaPlaceholder(title: "Local video", height: height) }
+            else { MediaPlaceholder(title: "Video", height: height) }
         }.task(id: url) {
             image = nil
             let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))

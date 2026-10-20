@@ -70,7 +70,7 @@ struct WelcomeView: View {
                     VStack(spacing: 14) {
                         if let error = store.storageFailure { Text(error).font(.footnote).foregroundStyle(Color.tatiInk) }
                         TatiButton(title: "Enter Tati", enabled: consent && store.storageFailure == nil) { store.signIn() }
-                        Text("Continue as a local guest. Your profile and activity stay on this device.")
+                        Text("Discover good food and share your interests.")
                             .font(.system(size: 12)).foregroundStyle(Color.tatiInk).multilineTextAlignment(.center)
                         HStack(alignment: .center, spacing: 8) {
                             Button { consent.toggle() } label: {

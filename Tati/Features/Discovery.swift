@@ -51,7 +51,7 @@ struct DiscoverView: View {
                 if voice {
                     ImageAction(asset: "topic-banner", label: "Browse food topics", height: 73) { showTopic = true }
                 }
-                if ContentLibrary.unavailable { Note(text: "The bundled content library could not be loaded.") }
+                if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 if rooms.isEmpty { EmptyContent(title: "No rooms here yet", detail: selected == "Follow" ? "Rooms from profiles you follow appear here." : "Try another topic or clear your filters.") }
                 else if voice {
                     LazyVStack(spacing: 20) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain) } }
@@ -271,7 +271,7 @@ struct RankingView: View {
                 ScrollView {
                     VStack(spacing: 8) {
                         Text("No ranking data yet").font(.system(size: 16, weight: .medium))
-                        Text("\(period) \(category.lowercased()) rankings need a connected community.").font(.system(size: 12)).multilineTextAlignment(.center)
+                        Text("\(period) \(category.lowercased()) rankings are currently unavailable.").font(.system(size: 12)).multilineTextAlignment(.center)
                     }.padding(24).frame(maxWidth: .infinity).padding(.top, geometry.size.height * 0.40)
                 }
             }

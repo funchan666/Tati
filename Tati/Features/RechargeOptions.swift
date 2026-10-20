@@ -18,7 +18,7 @@ struct RechargeOptions: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             if compact { Art(name: "recharge-banner") }
-            Note(text: "Design samples · Purchases unavailable")
+            Note(text: "Purchases currently unavailable")
             if compact {
                 ForEach(packages) { package in
                     Button { selected = package.id } label: {
@@ -46,8 +46,8 @@ struct RechargeOptions: View {
                 }
             }
             if showsActions {
-            TatiButton(title: "Continue", enabled: selected != nil) { store.tell("Purchases aren't configured", purchases.availability) }
-            Button("Restore purchases") { store.tell("Purchases aren't configured", purchases.availability) }.font(.caption).buttonStyle(.plain).frame(minHeight: 32)
+            TatiButton(title: "Continue", enabled: selected != nil) { store.tell("Purchases unavailable", purchases.availability) }
+            Button("Restore purchases") { store.tell("Purchases unavailable", purchases.availability) }.font(.caption).buttonStyle(.plain).frame(minHeight: 32)
             }
         }
     }
@@ -58,7 +58,7 @@ struct RechargePanel: View {
         TatiPanel(title: "Recharge") {
             HStack { Art(name: "coin", width: 30); Text("Purchased balance \(store.account.purchasedCoins)").font(.headline) }
             RechargeOptions(compact: true)
-            Note(text: "Local gifts use free reward coins. No purchase is made.")
+            Note(text: "Gifts use check-in reward coins. No purchase is made.")
         }
     }
 }

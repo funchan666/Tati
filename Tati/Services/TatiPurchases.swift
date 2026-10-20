@@ -5,5 +5,5 @@ import Combine
 /// Connect verified product IDs, ownership and durable delivery before enabling payments.
 @MainActor
 final class TatiPurchases: ObservableObject {
-    let availability = "Real purchases are not connected in this local guest edition. App Store products and gift delivery must be configured before top-ups can be enabled. No charge will be made."
+    let availability = "Purchases are currently unavailable. No charge will be made."
 }

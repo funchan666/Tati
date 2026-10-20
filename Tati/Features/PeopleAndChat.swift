@@ -19,7 +19,7 @@ struct PersonProfileView: View {
                         Avatar(asset: person.portraitArtwork, size: 62).padding(.top, -24)
                         VStack(alignment: .leading, spacing: 4) {
                             HStack { Text(person.name).font(.system(size: 17, weight: .semibold)); Text(person.country).font(.system(size: 11)).foregroundStyle(Color.tatiOlive) }
-                            Text("Sample profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
+                            Text("Food lover").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                         }
                         Spacer(minLength: 0)
                         ArtButton(asset: "gift-chat", label: "Gifts", size: 30) { gift = true }
@@ -31,12 +31,12 @@ struct PersonProfileView: View {
                         NavigationLink(destination: ConversationView(person: person)) { Art(name: "chat-button", height: 42).frame(maxWidth: .infinity) }.accessibilityLabel("Chat with \(person.name)")
                     }.padding(.vertical, 4)
                     Text("Video").font(.system(size: 17, weight: .bold))
-                    if store.account.blocked.contains(person.id) { EmptyContent(title: "Profile blocked", detail: "Unblock this profile in Settings to see its sample content.") }
+                    if store.account.blocked.contains(person.id) { EmptyContent(title: "Profile blocked", detail: "Unblock this profile in Settings to see its content.") }
                     else {
                         ForEach(store.visibleClips.filter { $0.authorID == person.id }) { clip in
                             NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain)
                         }
-                        if !store.visibleClips.contains(where: { $0.authorID == person.id }) { EmptyContent(title: "No videos yet", detail: "This profile doesn't have any sample videos.") }
+                        if !store.visibleClips.contains(where: { $0.authorID == person.id }) { EmptyContent(title: "No videos yet", detail: "This profile doesn't have any videos yet.") }
                     }
                 }.padding(.horizontal, 16).padding(.bottom, 16)
             }.frame(maxWidth: 680).frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct MyProfileView: View {
                             Avatar(file: store.account.profile.avatarFile, size: 72, isCurrent: true).padding(.top, -24)
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(store.account.profile.name).font(.system(size: 20, weight: .semibold))
-                                Text("Local guest · Edit profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
+                                Text("Edit profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                             }
                             Spacer(); Art(name: "chevron", width: 12)
                         }
@@ -101,7 +101,7 @@ struct MyProfileView: View {
                         NavigationLink(destination: InviteView()) { SettingRow(title: "Invite Code", asset: "invite") }
                         NavigationLink(destination: ReportView(subjectID: "feedback", feedback: true)) { SettingRow(title: "Feedback", asset: "feedback") }
                         NavigationLink(destination: BackpackView()) { SettingRow(title: "My backpack", asset: "backpack") }
-                        NavigationLink(destination: MyVideosView()) { SettingRow(title: "My local videos", asset: "video-off", detail: "\(store.account.clips.count)") }
+                        NavigationLink(destination: MyVideosView()) { SettingRow(title: "My videos", asset: "video-off", detail: "\(store.account.clips.count)") }
                     }.buttonStyle(.plain)
                 }.padding(.horizontal, 16).padding(.bottom, 12)
             }.frame(maxWidth: 680).frame(maxWidth: .infinity)
@@ -124,16 +124,16 @@ struct RelationshipView: View {
                         NavigationLink(destination: ConversationView(person: person)) { SupplementIcon(icon: .comment, size: 22).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Chat with \(person.name)")
                     }.padding(.horizontal, 12).padding(.vertical, 4).background { Image("outlined-card").resizable() }
                 }
-            } else { EmptyContent(title: "No \(kind.lowercased()) yet", detail: "A connected service is needed for real follows from other people. Sample profiles never follow you automatically.") }
+            } else { EmptyContent(title: "No \(kind.lowercased()) yet", detail: "New connections will appear here.") }
         }
     }
 }
 struct MyVideosView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPage(title: "My local videos") {
+        TatiPage(title: "My videos") {
             NavigationLink(destination: PublishVideoView()) { SettingRow(title: "Add a video", asset: "add-video") }
-            if store.account.clips.isEmpty { EmptyContent(title: "Your story starts here", detail: "Import a food video to keep it in your local collection.") }
+            if store.account.clips.isEmpty { EmptyContent(title: "Your story starts here", detail: "Add a food video to your collection.") }
             ForEach(store.account.clips) { clip in NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain) }
         }
     }
@@ -226,15 +226,15 @@ struct ConversationView: View {
                 Avatar(asset: person.portraitArtwork, size: 42)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(person.name).font(.system(size: 17, weight: .medium))
-                    Text("Not connected").font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
+                    Text("Messaging unavailable").font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
                 }
                 Spacer()
-                ArtButton(asset: "add-video", label: "Video call", size: 24) { store.tell("Video call unavailable", "Video calls require mutual follows and a connected calling service. No call has been placed.") }
+                ArtButton(asset: "add-video", label: "Video call", size: 24) { store.tell("Video call unavailable", "Video calls are currently unavailable. No call has been placed.") }
                 NavigationLink(destination: PersonProfileView(person: person)) { Art(name: "profile-button", width: 64, height: 32) }.accessibilityLabel("View profile")
             }.padding(.horizontal, 6)
             ScrollView {
                 VStack(spacing: 18) {
-                    Text("Messages stay on this device until chat is connected.").font(.system(size: 11)).foregroundStyle(Color.tatiOlive).padding(.top, 12)
+                    Text("Messaging is currently unavailable. You can save a draft.").font(.system(size: 11)).foregroundStyle(Color.tatiOlive).padding(.top, 12)
                     if let draft = store.account.drafts[person.id], !draft.isEmpty {
                         HStack {
                             Spacer(minLength: 56)
@@ -247,12 +247,12 @@ struct ConversationView: View {
             }
             if store.account.draftImages?[person.id] != nil { DraftPhotoAttachment(draftKey: person.id).padding(.horizontal, 12) }
             HStack(spacing: 2) {
-                ArtButton(asset: "chat-mic", label: "Voice message", size: 32) { store.tell("Voice messaging unavailable", "A connected messaging service and mutual follows are required. No recording was started.") }
+                ArtButton(asset: "chat-mic", label: "Voice message", size: 32) { store.tell("Voice messaging unavailable", "Voice messages are currently unavailable. No recording has started.") }
                 HStack(spacing: 0) {
                     TextField("Say Hi~", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 13)).padding(.leading, 12).tint(.white)
                     Button { store.attemptMessage(to: person.id, text: text) } label: { SupplementIcon(icon: .send, size: 22).frame(width: 40, height: 44) }.buttonStyle(.plain).accessibilityLabel("Send message")
                 }.foregroundStyle(.white).background(Color.tatiPink).clipShape(Capsule())
-                ArtButton(asset: "chat-speaker", label: "Voice call", size: 32) { store.tell("Voice call unavailable", "Voice calls require mutual follows and a connected calling service. No call has been placed.") }
+                ArtButton(asset: "chat-speaker", label: "Voice call", size: 32) { store.tell("Voice call unavailable", "Voice calls are currently unavailable. No call has been placed.") }
                 DraftPhotoAttachment(draftKey: person.id, compact: true)
                 ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
             }.padding(.horizontal, 8).padding(.vertical, 10).background(Color.tatiLime.opacity(0.7))
@@ -289,14 +289,14 @@ struct FoodExpertView: View {
                                 Spacer(minLength: 20)
                                 VStack(alignment: .leading, spacing: 6) {
                                     Text(saved).font(.system(size: 14))
-                                    Text("Local draft · not sent").font(.system(size: 10))
+                                    Text("Draft · not sent").font(.system(size: 10))
                                 }.padding(16).background(Color.tatiOlive).foregroundStyle(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
                                 Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
                             }.padding(.top, 20)
                         }
                         HStack(alignment: .top, spacing: 8) {
                             Art(name: "chef-avatar", width: 40, height: 40)
-                            Text("AI is not connected yet. You can save a question here.").font(.system(size: 13)).padding(14)
+                            Text("AI replies are currently unavailable. You can save your question.").font(.system(size: 13)).padding(14)
                                 .background(Color(red: 1, green: 0.97, blue: 0.22)).clipShape(UnevenRoundedRectangle(bottomLeadingRadius: 12, bottomTrailingRadius: 12, topTrailingRadius: 12))
                             Spacer(minLength: 20)
                         }.padding(.top, 4)
