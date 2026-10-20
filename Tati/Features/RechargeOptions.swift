@@ -58,7 +58,7 @@ struct RechargePanel: View {
         TatiPanel(title: "Recharge") {
             HStack { Art(name: "coin", width: 30); Text("Purchased balance \(store.account.purchasedCoins)").font(.headline) }
             RechargeOptions(compact: true)
-            Note(text: "Demo gift previews do not use purchased coins. No charge is made in this local edition.")
+            Note(text: "Local gifts use free reward coins. No purchase is made.")
         }
     }
 }

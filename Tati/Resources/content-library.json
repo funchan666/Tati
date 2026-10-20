@@ -404,7 +404,9 @@
     "dinner-conversation": "portrait-01",
     "dessert-club": "portrait-33",
     "market-table": "portrait-42",
-    "weekend-bbq": "portrait-04"
+    "weekend-bbq": "portrait-04",
+    "soup-kitchen": "poster-kitchen-soup",
+    "crepe-station": "poster-crepe-making"
   },
   "clips": [
     {
@@ -480,15 +482,6 @@
       "posterArtwork": "poster-street-food-table"
     },
     {
-      "id": "sample-clip-8",
-      "authorID": "tati-collection",
-      "caption": "A look inside a busy kitchen",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-kitchen-soup.mp4",
-      "posterArtwork": "poster-kitchen-soup"
-    },
-    {
       "id": "sample-clip-9",
       "authorID": "tati-collection",
       "caption": "Folding and cooking homemade dumplings",
@@ -505,15 +498,6 @@
       "isSample": true,
       "bundledFile": "collection-dinner-friends.mp4",
       "posterArtwork": "poster-dinner-friends"
-    },
-    {
-      "id": "sample-clip-11",
-      "authorID": "tati-collection",
-      "caption": "Fresh crepes on the griddle",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-crepe-making.mp4",
-      "posterArtwork": "poster-crepe-making"
     },
     {
       "id": "sample-clip-12",
@@ -551,5 +535,25 @@
       "bundledFile": "collection-cooking-together.mp4",
       "posterArtwork": "poster-cooking-together"
     }
-  ]
+  ],
+  "roomClips": {
+    "soup-kitchen": {
+      "id": "sample-clip-8",
+      "authorID": "tati-collection",
+      "caption": "A look inside a busy kitchen",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-kitchen-soup.mp4",
+      "posterArtwork": "poster-kitchen-soup"
+    },
+    "crepe-station": {
+      "id": "sample-clip-11",
+      "authorID": "tati-collection",
+      "caption": "Fresh crepes on the griddle",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-crepe-making.mp4",
+      "posterArtwork": "poster-crepe-making"
+    }
+  }
 }

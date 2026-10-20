@@ -1,5 +1,13 @@
 import SwiftUI
 
+extension View {
+    /// Screen content reaches every container edge; keyboard avoidance stays enabled.
+    func tatiEdgeToEdge() -> some View {
+        ignoresSafeArea(.container, edges: .all)
+            .toolbar(.hidden, for: .navigationBar)
+    }
+}
+
 extension Color {
     static let tatiInk = Color(red: 0.23, green: 0.29, blue: 0.03)
     static let tatiOlive = Color(red: 0.36, green: 0.45, blue: 0.02)
@@ -99,7 +107,7 @@ struct TatiPage<Content: View>: View {
             if scrolling {
                 ScrollView { VStack(alignment: .leading, spacing: 12) { content() }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity) }
             } else { content() }
-        }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
     }
 }
 struct Chip: View {
@@ -117,7 +125,7 @@ struct Chip: View {
         }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
-/// Forms keep their primary action above the bottom safe area and keyboard.
+/// Forms fill the screen and keep their primary action above the keyboard.
 struct TatiForm<Content: View, Footer: View>: View {
     var title: String
     @ViewBuilder var content: () -> Content
@@ -132,7 +140,7 @@ struct TatiForm<Content: View, Footer: View>: View {
             }
             VStack(spacing: 8) { footer() }.padding(.horizontal, 18).padding(.vertical, 12)
                 .frame(maxWidth: 600).frame(maxWidth: .infinity)
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
     }
 }
 struct TopicStrip: View {
@@ -278,7 +286,7 @@ struct TatiPanel<Content: View>: View {
         }.background(Color.tatiLime).foregroundStyle(Color.tatiInk)
             .presentationBackground(Color.tatiLime).presentationDragIndicator(.hidden)
             .presentationCornerRadius(20)
-            .toolbar(.hidden, for: .navigationBar)
+            .tatiEdgeToEdge()
             .accessibilityAction(.escape) { dismiss() }
     }
 }

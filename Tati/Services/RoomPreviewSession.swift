@@ -25,7 +25,7 @@ struct MinimizedRoomBar: View {
                         Art(name: "chat-speaker", width: 32, height: 32)
                         VStack(alignment: .leading, spacing: 3) {
                             Text(room.title).font(.subheadline.bold()).lineLimit(1)
-                            Text("Local room preview · Tap to return").font(.caption2)
+                            Text("Tap to return").font(.caption2)
                         }
                         Spacer()
                     }.frame(minHeight: 48)

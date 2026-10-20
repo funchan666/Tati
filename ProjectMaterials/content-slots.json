@@ -1041,7 +1041,9 @@
     "dinner-conversation": "portrait-01",
     "dessert-club": "portrait-33",
     "market-table": "portrait-42",
-    "weekend-bbq": "portrait-04"
+    "weekend-bbq": "portrait-04",
+    "soup-kitchen": "poster-kitchen-soup",
+    "crepe-station": "poster-crepe-making"
   },
   "videos": [
     {
@@ -1174,10 +1176,11 @@
       "caption": "A look inside a busy kitchen",
       "duration": 51.615102,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "home.room-cover",
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "soup-kitchen"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
@@ -1219,10 +1222,11 @@
       "caption": "Fresh crepes on the griddle",
       "duration": 41.816281,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "home.room-cover",
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "crepe-station"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",

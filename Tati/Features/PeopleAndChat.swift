@@ -22,7 +22,7 @@ struct PersonProfileView: View {
                             Text("Sample profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                         }
                         Spacer(minLength: 0)
-                        ArtButton(asset: "gift-chat", label: "Preview a gift", size: 30) { gift = true }
+                        ArtButton(asset: "gift-chat", label: "Gifts", size: 30) { gift = true }
                     }
                     Text(person.bio).font(.system(size: 13)).foregroundStyle(Color.tatiOlive)
                     Text(person.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
@@ -40,7 +40,7 @@ struct PersonProfileView: View {
                     }
                 }.padding(.horizontal, 16).padding(.bottom, 16)
             }.frame(maxWidth: 680).frame(maxWidth: .infinity)
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
         .overlay {
             if more {
                 ZStack {
@@ -256,7 +256,7 @@ struct ConversationView: View {
                 DraftPhotoAttachment(draftKey: person.id, compact: true)
                 ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
             }.padding(.horizontal, 8).padding(.vertical, 10).background(Color.tatiLime.opacity(0.7))
-        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
         .onAppear { text = store.account.drafts[person.id] ?? "" }
         .sheet(isPresented: $gifts) { NavigationStack { GiftShopView(recipient: person) }.overlay { NoticeLayer() }.presentationDetents([.height(390), .large]) }
     }

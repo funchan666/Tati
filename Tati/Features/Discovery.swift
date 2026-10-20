@@ -27,7 +27,7 @@ struct DiscoverView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
-                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 120 : 168, height: 48)
+                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 149 : 168, height: voice ? 62 : 48)
                     Spacer()
                     if voice {
                         ArtButton(asset: "publish", label: "Create a room", size: 32) { showPublish = true }
@@ -49,12 +49,12 @@ struct DiscoverView: View {
                     ArtButton(asset: "filter", label: "Filter rooms", size: 26) { showFilter = true }
                 }
                 if voice {
-                    ImageAction(asset: "topic-banner", label: "Browse food topics", height: 64) { showTopic = true }
+                    ImageAction(asset: "topic-banner", label: "Browse food topics", height: 73) { showTopic = true }
                 }
                 if ContentLibrary.unavailable { Note(text: "The bundled content library could not be loaded.") }
                 if rooms.isEmpty { EmptyContent(title: "No rooms here yet", detail: selected == "Follow" ? "Rooms from profiles you follow appear here." : "Try another topic or clear your filters.") }
                 else if voice {
-                    LazyVStack(spacing: 8) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain) } }
+                    LazyVStack(spacing: 20) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain) } }
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                         ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { LiveRoomCard(room: room) }.buttonStyle(.plain) }
@@ -82,25 +82,30 @@ struct LiveRoomCard: View {
                 ZStack(alignment: .bottomLeading) {
                     ContentPhoto(asset: room.coverArtwork, height: geometry.size.height)
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Preview").font(.system(size: 9, weight: .semibold)).padding(.horizontal, 6).padding(.vertical, 3).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 4))
                         Spacer()
                         HStack(spacing: 5) {
                             Avatar(asset: host?.portraitArtwork, size: 24)
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(host?.name ?? "Creator").font(.system(size: 11, weight: .semibold))
+                                Text(host?.name ?? "Creator").font(.system(size: 12, weight: .semibold))
                                 Text(host?.city ?? "").font(.system(size: 9))
                             }
                         }
-                        Text(room.topic).font(.system(size: 9, weight: .medium)).padding(.horizontal, 5).padding(.vertical, 3)
-                            .background(Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 3))
-                    }.padding(8).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2, y: 1)
-                }.clipped()
+                        HStack(spacing: 3) {
+                            Text(host?.language ?? "").font(.system(size: 9))
+                                .padding(.horizontal, 4).padding(.vertical, 2)
+                                .background(Color.tatiLime).foregroundStyle(Color.tatiOlive)
+                                .clipShape(RoundedRectangle(cornerRadius: 3))
+                            Spacer(minLength: 0)
+                            RoomTopicTag(topic: room.topic)
+                        }
+                    }.padding(7).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2, y: 1)
+                }.clipShape(RoundedRectangle(cornerRadius: 18))
             }.aspectRatio(0.86, contentMode: .fit)
             VStack(alignment: .leading, spacing: 3) {
-                Text(room.title).font(.system(size: 11, weight: .semibold)).lineLimit(1)
-                Text("Food tastes better together").font(.system(size: 9)).foregroundStyle(Color.tatiOlive).lineLimit(1)
-            }.padding(.horizontal, 9).padding(.vertical, 8).frame(maxWidth: .infinity, alignment: .leading)
-        }.background(.white.opacity(0.92)).clipShape(RoundedRectangle(cornerRadius: 18))
+                Text(room.title).font(.system(size: 12, weight: .semibold)).lineLimit(1)
+                Text(host?.bio ?? "").font(.system(size: 9)).foregroundStyle(Color.tatiOlive.opacity(0.6)).lineLimit(1)
+            }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: .infinity, alignment: .leading)
+        }.background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
             .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(Color.tatiOlive.opacity(0.65), lineWidth: 0.6) }.foregroundStyle(Color.tatiInk)
     }
 }
@@ -108,20 +113,39 @@ struct RoomListCard: View {
     var room: FoodRoom
     private var host: FoodPerson? { FoodCatalog.person(room.hostID) }
     var body: some View {
-        HStack(spacing: 12) {
-            ContentPhoto(asset: room.coverArtwork, height: 88).frame(width: 88).clipShape(RoundedRectangle(cornerRadius: 12)).offset(y: -8)
+        HStack(alignment: .top, spacing: 12) {
+            ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(alignment: .topLeading) { Art(name: "hot-room", width: 90, height: 31).offset(y: -18) }
+                .offset(y: -12)
             VStack(alignment: .leading, spacing: 5) {
-                Text(room.title).font(.system(size: 14, weight: .medium)).lineLimit(1)
-                Text("Talk about your favorite food").font(.system(size: 11)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+                Text(room.title).font(.system(size: 15, weight: .medium)).lineLimit(1)
+                Text(host?.bio ?? "").font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.65)).lineLimit(1)
                 HStack(spacing: 5) {
                     Avatar(asset: host?.portraitArtwork, size: 22)
-                    Text(room.topic).font(.system(size: 10)).padding(.horizontal, 5).padding(.vertical, 3).foregroundStyle(.white).background(Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 4))
+                    RoomTopicTag(topic: room.topic)
+                    Spacer(minLength: 0)
                 }
-            }
-            Spacer(minLength: 0)
-            Text("Preview").font(.system(size: 9)).foregroundStyle(Color.tatiOlive)
-        }.padding(.horizontal, 10).padding(.vertical, 4)
-            .background { Image("outlined-card").resizable() }.padding(.top, 8).foregroundStyle(Color.tatiInk)
+            }.padding(.top, 8).frame(maxWidth: .infinity, alignment: .leading)
+        }.padding(.horizontal, 12).frame(height: 94, alignment: .top)
+            .background { Image("outlined-card").resizable() }.padding(.top, 20).foregroundStyle(Color.tatiInk)
+    }
+}
+
+private struct RoomTopicTag: View {
+    var topic: String
+    private var tint: Color {
+        switch topic {
+        case "Street food": return Color(red: 0.43, green: 0.29, blue: 0.96)
+        case "Dessert": return Color.tatiPink
+        case "Healthy food": return Color(red: 0.25, green: 0.73, blue: 0.35)
+        default: return Color(red: 1, green: 0.68, blue: 0.19)
+        }
+    }
+    var body: some View {
+        Text(topic).font(.system(size: 9, weight: .medium)).lineLimit(1)
+            .padding(.horizontal, 5).padding(.vertical, 2)
+            .foregroundStyle(.white).background(tint).clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 
@@ -196,7 +220,7 @@ struct SearchView: View {
             }
             }.padding(.horizontal, 18).padding(.bottom, 16).frame(maxWidth: 600).frame(maxWidth: .infinity)
             }
-        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
     }
 }
 struct PersonRow: View {
@@ -247,7 +271,7 @@ struct RankingView: View {
                 }
             }
             .background { Image("rank-background").resizable().scaledToFill().frame(width: geometry.size.width, height: geometry.size.height).clipped().ignoresSafeArea() }
-        }.foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
     }
 }
 
@@ -257,7 +281,6 @@ struct HotTopicView: View {
         TatiPanel(title: "Hot topic") {
             Art(name: "topic-banner")
             Text("Late-night snack: sweet or savoury?").font(.title3.bold())
-            Note(text: "Explore sample food rooms. These are previews, not connected broadcasts.")
             ForEach(FoodCatalog.rooms.filter { $0.isVoice && $0.foodFocused && !store.account.blocked.contains($0.hostID) }) { room in
                 NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain)
             }

@@ -49,8 +49,8 @@ struct PortraitPhotoView: View {
     }
 }
 
-/// A photo/player is one independent visual unit. Keep it and its controls in
-/// one unobstructed region while preserving the same view and playback owner.
+/// Photos and players fill their container, including camera-cutout areas.
+/// An active fold division still keeps this independent unit on one panel.
 struct MediaViewport<Content: View>: View {
     @ViewBuilder var content: () -> Content
     var body: some View {
@@ -66,10 +66,8 @@ struct MediaViewport<Content: View>: View {
     private func availableFrame(in geometry: GeometryProxy) -> CGRect {
         let bounds = CGRect(origin: .zero, size: geometry.size)
         if #available(iOS 27.1, *) {
-            let obstacles = (
-                geometry.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
-                + geometry.reservedRegions(kind: .occlusion, layoutDirectionBehavior: .fixed)
-            ).filter(\.isActive).map(\.frame)
+            let obstacles = geometry.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
+                .filter(\.isActive).map(\.frame)
             var candidates = [bounds]
             for obstacle in obstacles {
                 candidates = candidates.flatMap { rectangle -> [CGRect] in

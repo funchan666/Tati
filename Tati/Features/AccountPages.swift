@@ -28,7 +28,7 @@ struct CheckInView: View {
                 Note(text: "One reward per UTC day · Demo coins have no cash value.")
                 TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) demo coins", enabled: !store.checkedIn) { store.checkIn() }
             }.padding(18).frame(maxWidth: 600)
-        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).toolbar(.hidden, for: .navigationBar)
+        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiEdgeToEdge()
     }
 }
 struct WalletView: View {
@@ -48,13 +48,13 @@ struct WalletView: View {
             RechargeOptions(showsActions: false).padding(14).background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
             NavigationLink(destination: CheckInView()) { SettingRow(title: "Demo coins", asset: "coin-small", detail: "\(store.account.demoCoins) · Check-in") }.buttonStyle(.plain)
             if !store.account.gifts.isEmpty {
-                Text("Gift preview history").font(.system(size: 14, weight: .semibold))
+                Text("Gift history").font(.system(size: 14, weight: .semibold))
                 ForEach(store.account.gifts.reversed()) { receipt in
                     HStack {
                         Art(name: FoodCatalog.gift(receipt.giftID)?.artwork ?? "gift-box", width: 38, height: 38)
                         VStack(alignment: .leading, spacing: 3) {
                             Text("\(FoodCatalog.gift(receipt.giftID)?.name ?? "Gift") × \(receipt.quantity)").font(.system(size: 13))
-                            Text("Preview for \(FoodCatalog.person(receipt.recipientID)?.name ?? "sample profile")").font(.system(size: 10))
+                            Text("For \(FoodCatalog.person(receipt.recipientID)?.name ?? "sample profile")").font(.system(size: 10))
                         }
                         Spacer(); Text("−\(receipt.spent)").font(.system(size: 13))
                     }
@@ -77,7 +77,7 @@ struct LevelView: View {
                 Color.white.opacity(0.8).frame(height: 2)
                 Text("\(store.account.claimedDays.count % 7) / 7 check-ins").font(.system(size: 11)).frame(maxWidth: .infinity)
             }.padding(.horizontal, 22).padding(.top, 36).padding(.bottom, 18).frame(maxWidth: .infinity, alignment: .leading).background { Image("level-card").resizable() }.padding(.top, 20)
-            Note(text: "In this local version, every seven check-in days adds one level. Buying or previewing gifts does not affect your level.")
+            Note(text: "In this local version, every seven check-in days adds one level. Gifts do not affect your level.")
             NavigationLink(destination: CheckInView()) { SettingRow(title: "Daily check-in", asset: "level") }.buttonStyle(.plain)
         }
     }
@@ -103,7 +103,7 @@ struct BackpackView: View {
                             .padding(10).frame(maxWidth: .infinity).background { Image("outlined-card").resizable() }
                     }
                 }
-                NavigationLink(destination: WalletView()) { SettingRow(title: "Gift preview history", asset: "gift-chat") }
+                NavigationLink(destination: WalletView()) { SettingRow(title: "Gift history", asset: "gift-chat") }
             } else {
                 Art(name: "level", width: 80, height: 80).frame(maxWidth: .infinity)
                 Text("Local level \(1 + store.account.claimedDays.count / 7)").font(.headline)
@@ -268,6 +268,8 @@ private struct PolicyWebView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        webView.scrollView.automaticallyAdjustsScrollIndicatorInsets = false
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         context.coordinator.loadIfNeeded(webView)

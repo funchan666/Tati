@@ -57,6 +57,7 @@ def main():
     for entry in mapping["portraits"]:
         image_set(entry["asset"], ROOT / entry["source"])
     clips = []
+    room_clips = {}
     for entry in mapping["videos"]:
         source = ROOT / entry["source"]
         shutil.copyfile(source, MOVIES / entry["resource"])
@@ -71,19 +72,26 @@ def main():
             "images": [{"filename": poster.name, "idiom": "universal"}],
             "info": {"author": "xcode", "version": 1},
         })
-        clips.append({
+        clip = {
             "id": entry["id"], "authorID": "tati-collection",
             "caption": entry["caption"], "createdAt": 0, "isSample": True,
             "bundledFile": entry["resource"], "posterArtwork": entry["posterAsset"],
-        })
+        }
+        if room_id := entry.get("roomID"):
+            if room_id in room_clips:
+                raise ValueError(f"More than one video assigned to room: {room_id}")
+            room_clips[room_id] = clip
+        else:
+            clips.append(clip)
     write_json(RESOURCES / "content-library.json", {
         "portraits": {p["personID"]: p["asset"] for p in mapping["portraits"]},
         "additionalPeople": [p["person"] for p in mapping["portraits"] if "person" in p],
         "roomCovers": mapping["roomCovers"],
         "clips": clips,
+        "roomClips": room_clips,
     })
     total = sum(p.stat().st_size for folder in [CATALOG, MOVIES] for p in folder.rglob("*") if p.is_file())
-    print(f"Imported {len(mapping['portraits'])} portraits and {len(clips)} videos, with original-frame posters.")
+    print(f"Imported {len(mapping['portraits'])} portraits, {len(clips)} feed videos and {len(room_clips)} room videos, with original-frame posters.")
     print(f"Content resource source size: {total / 2**20:.2f} MiB; not an IPA measurement.")
 
 

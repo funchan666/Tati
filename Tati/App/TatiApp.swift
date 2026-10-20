@@ -14,6 +14,7 @@ struct TatiApp: App {
                 else { WelcomeView() }
                 NoticeLayer()
             }
+            .ignoresSafeArea(.container, edges: .all)
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .tint(.tatiPink).preferredColorScheme(.light)
             .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
@@ -54,8 +55,8 @@ struct CommunityRoot: View {
                     UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28)
                         .fill(Color.tatiPink).ignoresSafeArea(edges: .bottom)
                 }
-            }.background(Color.tatiCream).toolbar(.hidden, for: .navigationBar)
-        }
+            }.background(Color.tatiCream).tatiEdgeToEdge()
+        }.ignoresSafeArea(.container, edges: .all)
     }
 }
 struct WelcomeView: View {
@@ -88,9 +89,9 @@ struct WelcomeView: View {
                     }.padding(.horizontal, 26).padding(.bottom, 12)
                 }.frame(width: geo.size.width, height: geo.size.height)
                     .background {
-                        Image("welcome").resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height + geo.safeAreaInsets.top + geo.safeAreaInsets.bottom).clipped().ignoresSafeArea()
+                        Image("welcome").resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped()
                     }
-            }.toolbar(.hidden, for: .navigationBar)
-        }
+            }.tatiEdgeToEdge()
+        }.ignoresSafeArea(.container, edges: .all)
     }
 }

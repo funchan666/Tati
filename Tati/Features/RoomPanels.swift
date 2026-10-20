@@ -13,7 +13,7 @@ struct RoomLayoutPanel: View {
             }
             if mode == "Voice" { layout("10-seat voice room", "10 voice seats") }
             else { ForEach(videoLayouts.indices, id: \.self) { index in layout(videoLayouts[index].0, videoLayouts[index].1) } }
-            Note(text: "Choose a layout for this local preview. Remote seats remain empty until the live service is connected.")
+            Note(text: "Choose a room layout. Seats are available when the live service is connected.")
         }.onAppear { mode = current == "10-seat voice room" ? "Voice" : "Video + Voice" }
     }
     private func layout(_ name: String, _ subtitle: String) -> some View {
@@ -45,7 +45,7 @@ struct RoomPersonPanel: View {
                 NavigationLink(destination: PersonProfileView(person: person)) { panelLink("Profile") }
                 if roomMember {
                     NavigationLink(destination: GiftShopView(recipient: person)) {
-                        Text("Preview gift").font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiPink).foregroundStyle(.white).clipShape(Capsule())
+                        Text("Gifts").font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiPink).foregroundStyle(.white).clipShape(Capsule())
                     }
                 } else {
                     NavigationLink(destination: ConversationView(person: person)) { panelLink("Message") }

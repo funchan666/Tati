@@ -18,43 +18,78 @@ struct ImportedMovie: Transferable {
     @Published private(set) var activeID: String?
     @Published private(set) var ownerID: String?
     @Published private(set) var playing = false
+    @Published private(set) var wantsToPlay = false
+    @Published private(set) var loading = false
     @Published private(set) var failure: String?
     private var statusObserver: NSKeyValueObservation?
+    private var playbackObserver: NSKeyValueObservation?
     private var failedObserver: NSObjectProtocol?
     private var endedObserver: NSObjectProtocol?
     private var generation = UUID()
-    func load(id: String, url: URL, owner: String) throws {
+    func load(id: String, url: URL, owner: String, loops: Bool = false) throws {
         stop()
         guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
         let request = generation
         let item = AVPlayerItem(url: url)
-        player = AVPlayer(playerItem: item); activeID = id; ownerID = owner
+        let nextPlayer = AVPlayer(playerItem: item)
+        player = nextPlayer; activeID = id; ownerID = owner
+        wantsToPlay = true; loading = true
         statusObserver = item.observe(\.status, options: [.initial, .new]) { [weak self] item, _ in
-            guard item.status == .failed else { return }
+            let status = item.status
             Task { @MainActor in
                 guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }
-                self?.player?.pause(); self?.playing = false
-                self?.failure = "This video cannot be played. Please import another supported file."
+                if status == .failed {
+                    self?.player?.pause(); self?.playing = false
+                    self?.wantsToPlay = false; self?.loading = false
+                    self?.failure = "This video cannot be played. Tap Retry to open it again."
+                }
+            }
+        }
+        playbackObserver = nextPlayer.observe(\.timeControlStatus, options: [.initial, .new]) { [weak self] player, _ in
+            let status = player.timeControlStatus
+            Task { @MainActor in
+                guard self?.generation == request else { return }
+                self?.playing = status == .playing
+                self?.loading = status == .waitingToPlayAtSpecifiedRate
             }
         }
         failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.failure = "Playback stopped because the file could not be read." }
+            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.wantsToPlay = false; self?.loading = false; self?.failure = "Playback stopped because the file could not be read." }
         }
         endedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.player?.seek(to: .zero) }
+            Task { @MainActor in
+                guard let self, self.generation == request, self.activeID == id, self.ownerID == owner else { return }
+                self.playing = false
+                if loops && self.wantsToPlay {
+                    self.player?.seek(to: .zero) { [weak self] finished in
+                        Task { @MainActor in
+                            guard finished, let self, self.generation == request, self.wantsToPlay, self.failure == nil else { return }
+                            self.player?.play()
+                        }
+                    }
+                } else {
+                    self.wantsToPlay = false; self.loading = false
+                    self.player?.seek(to: .zero)
+                }
+            }
         }
+        // Start both list and detail playback; AVPlayer waits until the item is ready.
+        nextPlayer.play()
     }
     func toggle() {
         guard let player, failure == nil else { return }
-        if playing { player.pause(); playing = false } else { player.play(); playing = true }
+        wantsToPlay.toggle()
+        if wantsToPlay { player.play() } else { player.pause(); playing = false; loading = false }
     }
     func stop() {
         generation = UUID()
+        statusObserver = nil; playbackObserver = nil
         player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; ownerID = nil; playing = false
+        wantsToPlay = false; loading = false
         if let endedObserver { NotificationCenter.default.removeObserver(endedObserver) }
         endedObserver = nil
         if let failedObserver { NotificationCenter.default.removeObserver(failedObserver) }
-        failedObserver = nil; statusObserver = nil; failure = nil
+        failedObserver = nil; failure = nil
     }
 }
 final class ClipLayerView: UIView {
@@ -97,7 +132,7 @@ struct ClipSurface: UIViewRepresentable {
             }
         }
         guard generation == requestID, !Task.isCancelled else { stop(); return }
-        ready = configured; status = configured ? "Local camera preview · not broadcasting" : "The camera couldn't be started. Try again."
+        ready = configured; status = configured ? "Camera is on · not broadcasting" : "The camera couldn't be started. Try again."
     }
     func stop() { generation = UUID(); ready = false; status = "Camera is off"; let capture = session; queue.async { capture.stopRunning() } }
 }

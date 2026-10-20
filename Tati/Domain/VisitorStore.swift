@@ -97,13 +97,13 @@ final class VisitorStore: ObservableObject {
         guard !account.claimedDays.contains(day) else { return }
         let reward = nextCheckInReward
         if change({ $0.claimedDays.insert(day); $0.demoCoins += reward }) {
-            tell("A delicious little reward", "\(reward) demo coins saved on this device. They can be used to preview gifts. They have no cash value.")
+            tell("A delicious little reward", "\(reward) demo coins saved on this device. They can be used for local gifts. They have no cash value.")
         }
     }
     func previewGift(_ gift: FoodGift, quantity: Int, recipient: String) -> Bool {
         guard (1...99).contains(quantity), FoodCatalog.person(recipient) != nil, !account.blocked.contains(recipient) else { return false }
         let total = gift.cost * quantity
-        guard account.demoCoins >= total else { tell("More demo coins needed", "Visit Check-in to collect local demo coins. No purchase is required for gift previews."); return false }
+        guard account.demoCoins >= total else { tell("More demo coins needed", "Visit Check-in to collect local demo coins. No purchase is required for local gifts."); return false }
         return change { value in
             value.demoCoins -= total
             value.gifts.append(GiftReceipt(giftID: gift.id, recipientID: recipient, quantity: quantity, spent: total))

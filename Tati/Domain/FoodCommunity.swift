@@ -18,6 +18,7 @@ struct FoodRoom: Identifiable, Hashable {
     let isVoice: Bool
     let background: String
     var coverArtwork: String? { ContentLibrary.shared.roomCovers[id] }
+    var videoClip: FoodClip? { ContentLibrary.shared.roomClips?[id] }
     var foodFocused: Bool { topic != "Home cooking" }
 }
 struct FoodClip: Identifiable, Codable, Hashable {
@@ -110,6 +111,8 @@ enum FoodCatalog {
         FoodRoom(id: "street-bites", hostID: "creator-chloe", title: "Best Street Food in Town", topic: "Street food", isVoice: false, background: "stage-blue"),
         FoodRoom(id: "kitchen-stories", hostID: "creator-luna", title: "Big Bites, Happy Vibes", topic: "Home cooking", isVoice: false, background: "stage-purple"),
         FoodRoom(id: "sweet-evening", hostID: "creator-elowen", title: "Fine Dining at Home", topic: "Dessert", isVoice: false, background: "stage-gifts"),
+        FoodRoom(id: "soup-kitchen", hostID: "creator-andre", title: "Inside the Soup Kitchen", topic: "Home cooking", isVoice: false, background: "stage-blue"),
+        FoodRoom(id: "crepe-station", hostID: "creator-seraphina", title: "Fresh Crepes & Sweet Bites", topic: "Dessert", isVoice: false, background: "stage-gifts"),
         FoodRoom(id: "dinner-conversation", hostID: "creator-luna", title: "What's cooking tonight?", topic: "Home cooking", isVoice: true, background: "stage-confetti"),
         FoodRoom(id: "dessert-club", hostID: "creator-elowen", title: "The dessert club", topic: "Dessert", isVoice: true, background: "stage-purple"),
         FoodRoom(id: "market-table", hostID: "creator-seraphina", title: "Fresh from the market", topic: "Healthy food", isVoice: true, background: "stage-blue"),

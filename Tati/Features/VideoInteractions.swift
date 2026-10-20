@@ -9,49 +9,69 @@ struct FeedVideoCard: View {
     private var active: Bool { playback.activeID == clip.id && playback.ownerID == playbackOwner }
     var body: some View {
         MediaViewport {
-            ZStack {
-                if active, let player = playback.player { ClipSurface(player: player, fillsContainer: true).background(Color.black) }
-                else { ClipPoster(clip: clip, height: 250) }
-                NavigationLink(destination: ClipDetailView(clip: clip)) { Color.clear.contentShape(Rectangle()) }
-                    .buttonStyle(.plain).accessibilityLabel("Open video and comments")
-                Button {
-                    roomSession.audio.stop()
-                    do {
-                        if !active {
-                            guard let url = store.videoURL(for: clip) else { throw CocoaError(.fileNoSuchFile) }
-                            try playback.load(id: clip.id, url: url, owner: playbackOwner)
+            GeometryReader { geometry in
+                ZStack(alignment: .bottomLeading) {
+                    if active, let player = playback.player, playback.failure == nil {
+                        ClipSurface(player: player, fillsContainer: true).background(Color.black).allowsHitTesting(false)
+                    } else { ClipPoster(clip: clip, height: geometry.size.height).allowsHitTesting(false) }
+                    NavigationLink(destination: ClipDetailView(clip: clip)) { Color.clear.contentShape(Rectangle()) }
+                        .buttonStyle(.plain).accessibilityLabel("Open video and comments")
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 8) {
+                            if let person = FoodCatalog.person(clip.authorID) {
+                                NavigationLink(destination: PersonProfileView(person: person)) {
+                                    Avatar(asset: person.portraitArtwork, size: 40)
+                                }.buttonStyle(.plain).accessibilityLabel("View author")
+                            } else if clip.isCollection {
+                                Avatar(asset: "brand-icon", size: 40)
+                            } else {
+                                Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(store.authorName(for: clip)).font(.system(size: 14, weight: .medium))
+                                if !clip.isSample { Text(clip.createdAt, style: .date).font(.system(size: 11)) }
+                            }
+                            Spacer()
                         }
-                        playback.toggle()
-                    } catch { store.tell("Video unavailable", "The video could not be opened. Reopen Tati, or reimport the file if it was added from your library.") }
-                } label: {
-                    SupplementIcon(icon: active && playback.playing ? .pause : .play, size: 32)
-                        .frame(width: 48, height: 48).background(.white.opacity(0.45)).clipShape(Circle())
-                }.buttonStyle(.plain).accessibilityLabel(active && playback.playing ? "Pause video" : "Play video")
-                VStack(alignment: .leading, spacing: 5) {
-                    Spacer()
-                    HStack(spacing: 8) {
-                        if let person = FoodCatalog.person(clip.authorID) {
-                            NavigationLink(destination: PersonProfileView(person: person)) {
-                                Avatar(asset: person.portraitArtwork, size: 34)
-                            }.buttonStyle(.plain).accessibilityLabel("View author")
+                        HStack(alignment: .bottom, spacing: 8) {
+                            NavigationLink(destination: ClipDetailView(clip: clip)) {
+                                Text(clip.caption).font(.system(size: 13)).lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
+                            }.buttonStyle(.plain)
+                            ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 21) { store.toggleLike(clip.id) }
                         }
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(store.authorName(for: clip)).font(.system(size: 13, weight: .medium))
-                            Text(clip.isSample ? "Offline collection" : "On this device").font(.system(size: 10))
-                        }
-                        Spacer()
-                    }
-                    HStack(alignment: .bottom, spacing: 8) {
-                        NavigationLink(destination: ClipDetailView(clip: clip)) {
-                            Text(clip.caption).font(.system(size: 12)).lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
+                    }.padding(.horizontal, 16).padding(.bottom, 10).foregroundStyle(.white).shadow(color: .black, radius: 3, y: 1)
+                }
+                .overlay {
+                    VStack(spacing: 6) {
+                        Button(action: playOrPause) {
+                            if active && playback.failure != nil {
+                                Text("Retry").font(.system(size: 13, weight: .semibold)).padding(12).background(Color.tatiPink).clipShape(Capsule())
+                            } else {
+                                SupplementIcon(icon: active && playback.wantsToPlay ? .pause : .play, size: 30)
+                                    .frame(width: 44, height: 44).background(.white.opacity(0.45)).clipShape(Circle())
+                            }
                         }.buttonStyle(.plain)
-                        ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 21) { store.toggleLike(clip.id) }
-                    }
-                    if active, let failure = playback.failure { Text(failure).font(.caption2) }
-                }.padding(.horizontal, 14).padding(.bottom, 8).foregroundStyle(.white).shadow(color: .black, radius: 3, y: 1)
-            }.clipShape(RoundedRectangle(cornerRadius: 22))
-        }.frame(height: 250)
+                            .accessibilityLabel(active && playback.failure != nil ? "Retry video" : active && playback.wantsToPlay ? "Pause video" : "Play video")
+                        if active && playback.loading { Text("Loading…").font(.caption) }
+                        if active, let failure = playback.failure { Text(failure).font(.caption).multilineTextAlignment(.center).padding(.horizontal, 24) }
+                    }.foregroundStyle(.white).shadow(color: .black, radius: 3)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 30))
+            }
+        }.aspectRatio(1.42, contentMode: .fit)
         .onDisappear { if active { playback.stop() } }
+    }
+
+    private func playOrPause() {
+        roomSession.audio.stop()
+        do {
+            if !active || playback.failure != nil {
+                guard let url = store.videoURL(for: clip) else { throw CocoaError(.fileNoSuchFile) }
+                try playback.load(id: clip.id, url: url, owner: playbackOwner)
+            } else {
+                playback.toggle()
+            }
+        } catch { store.tell("Video unavailable", "The video file could not be found. Reimport it if it was added from your library.") }
     }
 }
 struct VideoOptionsView: View {

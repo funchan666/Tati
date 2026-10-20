@@ -14,6 +14,10 @@ struct RoomView: View {
     @State private var panel: RoomPanel?
     @State private var message = ""
     @EnvironmentObject private var roomSession: RoomPreviewSession
+    @EnvironmentObject private var playback: ClipPlayback
+    @State private var playbackOwner = UUID().uuidString
+    @State private var isVisible = false
+    @State private var videoFailure: String?
     @State private var showPK = false
     private var music: LocalRoomAudio { roomSession.audio }
     private var host: FoodPerson { FoodCatalog.person(room.hostID) ?? FoodCatalog.people[0] }
@@ -21,6 +25,7 @@ struct RoomView: View {
     private var videoSlots: Int { layout == "Spotlight + voices" ? 1 : layout == "Duo video + voices" ? 2 : layout == "Three video + voices" ? 3 : 0 }
     private var voiceSeats: Int { videoSlots == 0 ? 9 : videoSlots == 1 ? 8 : 6 }
     private var layout: String { store.account.roomLayouts[room.id] ?? "10-seat voice room" }
+    private var ownsPlayback: Bool { playback.ownerID == playbackOwner }
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 0) {
@@ -29,7 +34,7 @@ struct RoomView: View {
                         Avatar(asset: host.portraitArtwork, size: 42)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(host.name).font(.system(size: 15, weight: .medium)).lineLimit(1)
-                            Text("Room preview").font(.system(size: 10)).opacity(0.8)
+                            Text(host.city).font(.system(size: 10)).opacity(0.8)
                         }
                     }
                 }.buttonStyle(.plain)
@@ -66,14 +71,22 @@ struct RoomView: View {
             } else {
                 HStack {
                     Spacer()
-                    Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK preview")
+                    Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
                 }.padding(.horizontal, 18)
                 if showPK {
                     HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
                 }
+                if let failure = videoFailure ?? (ownsPlayback ? playback.failure : nil) {
+                    VStack(spacing: 8) {
+                        Text(failure).font(.system(size: 12)).multilineTextAlignment(.center)
+                        TatiButton(title: "Retry video") { startRoomVideo() }.frame(width: 150)
+                    }.padding(16).background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 12))
+                } else if ownsPlayback && playback.loading {
+                    Text("Loading…").font(.system(size: 12))
+                }
                 Spacer(minLength: 30)
             }
-            Text("\(room.title) · Not live").font(.system(size: 12)).padding(.horizontal, 10).padding(.vertical, 9)
+            Text(room.title).font(.system(size: 12)).padding(.horizontal, 10).padding(.vertical, 9)
                 .background(.black.opacity(0.40)).clipShape(RoundedRectangle(cornerRadius: 8))
                 .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16)
             HStack(spacing: 4) {
@@ -92,21 +105,40 @@ struct RoomView: View {
         .padding(.top, 4).foregroundStyle(.white)
         .background {
             GeometryReader { geo in
-                Image(room.isVoice ? background : (store.account.roomBackgrounds[room.id] ?? room.coverArtwork ?? "media-placeholder")).resizable().scaledToFill()
-                    .frame(width: geo.size.width, height: geo.size.height, alignment: room.isVoice ? .center : .top).clipped()
+                ZStack {
+                    Image(room.isVoice ? background : (store.account.roomBackgrounds[room.id] ?? room.coverArtwork ?? "media-placeholder")).resizable().scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height, alignment: room.isVoice ? .center : .top).clipped()
+                    if ownsPlayback, let player = playback.player, playback.failure == nil {
+                        ClipSurface(player: player, fillsContainer: true)
+                            .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                }.allowsHitTesting(false)
             }.ignoresSafeArea()
         }
-        .toolbar(.hidden, for: .navigationBar)
-        .onAppear { roomSession.enter(room); message = store.account.drafts["room-" + room.id] ?? "" }
-        .onDisappear { if !roomSession.minimized { roomSession.leave(room.id) } }
-        .onChange(of: scenePhase) { _, phase in if phase != .active { music.stop() } }
+        .tatiEdgeToEdge()
+        .onAppear {
+            isVisible = true
+            roomSession.enter(room); message = store.account.drafts["room-" + room.id] ?? ""
+            startRoomVideo()
+        }
+        .onDisappear {
+            isVisible = false
+            if ownsPlayback { playback.stop() }
+            if !roomSession.minimized { roomSession.leave(room.id) }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active {
+                music.stop()
+                if ownsPlayback { playback.stop() }
+            } else if isVisible { startRoomVideo() }
+        }
         .sheet(item: $panel) { selected in
             NavigationStack {
                 Group {
                     switch selected {
                     case .gifts: GiftShopView(recipient: host)
                     case .tools: toolsPanel
-                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No connected members", detail: "This is a room preview. The host is a sample profile."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View sample host", asset: "profile-heading") } }
+                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No connected members", detail: "This room is not connected to a live service."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
                     case .layout: layoutPanel
                     case .background: backgroundPanel
                     case .microphone: MicrophonePanel()
@@ -117,7 +149,7 @@ struct RoomView: View {
                     case .pk: TatiPanel(title: "PK") {
                         Art(name: "versus", height: 85).frame(maxWidth: .infinity)
                         Note(text: "PK requires two connected hosts. This only changes the local camera layout; no opponent, timer or scores are simulated.")
-                        TatiButton(title: showPK ? "Return to single camera" : "Preview split camera layout") { showPK.toggle(); panel = nil }
+                        TatiButton(title: showPK ? "Return to single camera" : "Split camera layout") { showPK.toggle(); panel = nil }
                     }
                     case .leave: TatiPanel(title: "Leave the room?") {
                         if room.isVoice { TatiButton(title: "Keep listening · Minimize") { roomSession.minimize(); panel = nil; dismiss() } }
@@ -130,6 +162,18 @@ struct RoomView: View {
             }.overlay { NoticeLayer() }.presentationDetents([.height(selected == .gifts ? 390 : selected == .tools ? 340 : selected == .leave ? 280 : selected == .microphone ? 220 : selected == .host ? 320 : 420), .large]).presentationDragIndicator(.hidden)
         }
     }
+    private func startRoomVideo() {
+        videoFailure = nil
+        guard let clip = room.videoClip else { return }
+        guard !ownsPlayback || playback.failure != nil else { return }
+        music.stop()
+        guard let url = store.videoURL(for: clip) else {
+            videoFailure = "The room video could not be found."
+            return
+        }
+        do { try playback.load(id: clip.id, url: url, owner: playbackOwner, loops: true) }
+        catch { videoFailure = "The room video could not be opened." }
+    }
     private func leave() { panel = .leave }
     private var toolsPanel: some View {
         TatiPanel(title: "Room tools") {
@@ -141,7 +185,6 @@ struct RoomView: View {
                 tool("tool-invite", "Invite", .invite)
                 Button { panel = .leave } label: { VStack { Art(name: "tool-leave", width: 54, height: 54); Text("Leave").font(.caption) } }.buttonStyle(.plain)
             }
-            Note(text: "Changes here affect only your local room preview.")
             NavigationLink(destination: ReportView(subjectID: "room:" + room.id)) { SettingRow(title: "Report room", asset: "feedback") }
         }
     }
@@ -191,8 +234,8 @@ struct GiftShopView: View {
                     Text("\(quantity)").font(.system(size: 13)).monospacedDigit().frame(minWidth: 22)
                     ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
                 }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
-                TatiButton(title: "Preview", enabled: !store.account.blocked.contains(recipient.id)) {
-                    if store.previewGift(selected, quantity: quantity, recipient: recipient.id) { store.tell("Gift preview saved", "Your local demo balance was updated. This gift has not been delivered to anyone.") }
+                TatiButton(title: "Use gift", enabled: !store.account.blocked.contains(recipient.id)) {
+                    if store.previewGift(selected, quantity: quantity, recipient: recipient.id) { store.tell("Gift saved on this device", "Your local demo balance was updated. This gift has not been delivered to anyone.") }
                 }.frame(width: 82)
             }.padding(.top, 4)
             HStack {

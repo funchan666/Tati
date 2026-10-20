@@ -8,7 +8,7 @@ struct VideoFeedView: View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Art(name: "video-heading", width: 140, height: 50)
+                    Art(name: "video-heading", width: 156, height: 62)
                     Spacer()
                     NavigationLink(destination: PublishVideoView()) { Art(name: "publish", width: 32).frame(width: 44, height: 44) }.accessibilityLabel("Add a video")
                 }
@@ -31,7 +31,7 @@ struct VideoCard: View {
                 Text(store.authorName(for: clip)).font(.system(size: 14, weight: .semibold))
                 Text(clip.caption).font(.system(size: 12)).lineLimit(2)
             }.padding(14).foregroundStyle(.white).shadow(color: .black, radius: 3, y: 1)
-        }.frame(height: 240).clipShape(RoundedRectangle(cornerRadius: 22))
+        }.frame(height: 240).clipShape(RoundedRectangle(cornerRadius: 30))
     }
 }
 struct ClipDetailView: View {
@@ -50,16 +50,9 @@ struct ClipDetailView: View {
         MediaViewport {
             ZStack {
                 if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
-                    ClipSurface(player: player).background(Color.black)
-                    Button { playback.toggle() } label: {
-                        SupplementIcon(icon: playback.playing ? .pause : .play, size: 38)
-                            .frame(width: 54, height: 54).background(.white.opacity(0.4)).clipShape(Circle())
-                    }.buttonStyle(.plain).accessibilityLabel(playback.playing ? "Pause video" : "Play video")
+                    ClipSurface(player: player).background(Color.black).allowsHitTesting(false)
                 } else {
-                    VStack(spacing: 16) {
-                        Art(name: "media-placeholder", width: 78)
-                        Text(playback.failure ?? failure ?? "The video could not be loaded.").font(.headline).multilineTextAlignment(.center)
-                    }.padding(25).frame(maxWidth: .infinity, maxHeight: .infinity).background(Color.tatiCream).foregroundStyle(Color.tatiInk)
+                    Color.tatiCream
                 }
                 VStack {
                     HStack {
@@ -78,7 +71,6 @@ struct ClipDetailView: View {
                                 }.buttonStyle(.plain)
                             } else { Text(store.authorName(for: clip)).font(.headline) }
                             Text(clip.caption).font(.subheadline)
-                            Text(clip.isSample ? "Offline collection" : "On this device").font(.caption2)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         VStack(spacing: 12) {
                             ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 33) { store.toggleLike(clip.id) }
@@ -87,7 +79,24 @@ struct ClipDetailView: View {
                     }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
                 }.padding(.horizontal, 14).foregroundStyle(.white)
             }
-        }.background(Color.black).toolbar(.hidden, for: .navigationBar)
+            .overlay {
+                if playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
+                    VStack(spacing: 8) {
+                        Button { playback.toggle() } label: {
+                            SupplementIcon(icon: playback.wantsToPlay ? .pause : .play, size: 38)
+                                .frame(width: 54, height: 54).background(.white.opacity(0.4)).clipShape(Circle())
+                        }.buttonStyle(.plain).accessibilityLabel(playback.wantsToPlay ? "Pause video" : "Play video")
+                        if playback.loading { Text("Loading…").font(.caption).foregroundStyle(.white) }
+                    }
+                } else {
+                    VStack(spacing: 16) {
+                        Art(name: "media-placeholder", width: 78)
+                        Text(playback.failure ?? failure ?? "The video could not be loaded.").font(.headline).multilineTextAlignment(.center)
+                        TatiButton(title: "Retry") { preparePlayback() }.frame(width: 150)
+                    }.padding(25).foregroundStyle(Color.tatiInk)
+                }
+            }
+        }.background(Color.black).tatiEdgeToEdge()
         .onAppear { isVisible = true; preparePlayback() }
         .onDisappear { isVisible = false; if playback.ownerID == playbackOwner { playback.stop() } }
         .onChange(of: scenePhase) { _, value in
@@ -140,6 +149,7 @@ struct CommentDraftView: View {
                 } label: { Text("SAVE").font(.system(size: 13, weight: .bold)).foregroundStyle(Color.tatiInk).padding(.horizontal, 14).padding(.vertical, 9).background(Color.tatiLime).clipShape(Capsule()).frame(minHeight: 44) }.buttonStyle(.plain).accessibilityLabel("Save comment draft")
             }.padding(.horizontal, 5).background(Color.tatiPink).clipShape(Capsule()).padding(16)
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
+            .tatiEdgeToEdge()
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
     }
 }
@@ -229,13 +239,13 @@ struct GoLiveView: View {
             ChoiceGrid(items: Array(FoodCatalog.topics.dropFirst()), selected: $topic)
             if camera.ready { CameraSurface(session: camera.session).frame(height: 260).clipShape(RoundedRectangle(cornerRadius: 20)) }
             Note(text: camera.status)
-            TatiButton(title: camera.starting ? "Starting camera…" : camera.ready ? "Stop camera preview" : "Preview my camera", secondary: true, enabled: !camera.starting) {
+            TatiButton(title: camera.starting ? "Starting camera…" : camera.ready ? "Turn off camera" : "Turn on camera", secondary: true, enabled: !camera.starting) {
                 if camera.ready { previewTask?.cancel(); camera.stop() }
                 else { previewTask?.cancel(); previewTask = Task { await camera.start() } }
             }
         } footer: {
             TatiButton(title: "Start live", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
-                store.tell("Live service not connected", "Your camera preview stays on this device. A connected streaming service is required to start a broadcast. No coins have been charged.")
+                store.tell("Live service not connected", "The camera image stays on this device. A connected streaming service is required to start a broadcast. No coins have been charged.")
             }
         }.task(id: cover) {
             guard let cover else { return }

@@ -64,9 +64,9 @@ struct SupportView: View {
     private let articles = [
         HelpArticle(question: "How do I recharge diamonds?", answer: "Open your wallet from Me, or tap the balance inside the gift panel. This local edition has no configured App Store products, so recharge is unavailable and no charge is made. Free demo coins come from daily check-ins."),
         HelpArticle(question: "My purchase is still processing", answer: "Tati's local edition cannot start a purchase. If a future connected version shows a pending Apple transaction, wait for its verified status rather than buying the same package again. Demo coins are separate from purchased coins."),
-        HelpArticle(question: "Why did my call pause?", answer: "Live calls are not connected in this edition. Local video and camera previews stop when you leave the page or the app enters the background. Nothing is streamed to a remote person."),
+        HelpArticle(question: "Why did my call pause?", answer: "Live calls are not connected in this edition. Video playback and the camera stop when you leave the page or the app enters the background. Nothing is streamed to a remote person."),
         HelpArticle(question: "How can I change my language?", answer: "Open Settings, then Language. You can save a preferred language and cancel or confirm the choice. The interface and supplied artwork currently remain in English until translations are available."),
-        HelpArticle(question: "Where is my saved content?", answer: "Open Me for your local profile, videos, rewards and gift previews. Logging out retains them. Deleting your local profile removes its records and associated imported files from Tati.")
+        HelpArticle(question: "Where is my saved content?", answer: "Open Me for your local profile, videos, rewards and gift records. Logging out retains them. Deleting your local profile removes its records and associated imported files from Tati.")
     ]
     private var matches: [HelpArticle] { articles.filter { query.isEmpty || ($0.question + $0.answer).localizedCaseInsensitiveContains(query) } }
     var body: some View {
