@@ -4,14 +4,15 @@
 
 已查看 49 张图片，以及 16 段视频各三个位置的抽帧。49 张图片分别绑定一个稳定的示例资料 ID；保持原六个示例 ID，再新增 43 个资料。多人合照采用组合示例名称，不通过人脸推断身份，也不把多张照片判断为同一个真人。名字、地区和兴趣属于示例配置，不是对照片中真人的身份认定。
 
-16 段视频按可见内容命名并全部放入 Tati collection。没有照片与视频人物对应说明，因此不强制关联到人物资料。所有原片原样复制，封面来自各自视频约 10% 处的实际画面，不用静态图冒充视频。
+16 段视频按可见内容命名，保留 Tati collection 内容归属；其中 10 段用于短视频列表，6 段分配给全部视频直播间作为循环播放画面。没有照片与视频人物对应说明，因此房间示例主持人的配置不代表照片与视频属于同一真人。所有原片原样复制，封面来自各自视频约 10% 处的实际画面，不用静态图冒充视频。
 
 ## 页面入口
 
-- Home → People at the table（或右上搜索）→ People：可浏览全部 49 个资料；进入资料可查看照片，点击照片可看完整比例。
+- Home → 右上搜索 → People：可浏览全部 49 个资料；进入资料可查看照片，点击照片可看完整比例。
 - 资料头像同步到搜索、关注、聊天、黑名单和房主面板；8 个已有房间封面复用各自房主图片。
-- Video：16 段内置视频全部进入列表，支持卡内播放、详情、点赞和评论草稿；搜索中的 Videos 同样可查找。
-- 保持五个纯图标 Tab、本地访客、礼物预览和既有读写契约；不会自动关注或创建伪造观众。
+- Video：10 段内置视频进入列表，支持卡内播放、详情、点赞和评论草稿；搜索中的 Videos 同样可查找。
+- Home / 搜索 Rooms：新增 `soup-kitchen`（V09）和 `crepe-station`（V12），使用原片封面及循环播放画面。视频直播间从 4 个增至 6 个，语音房保持 4 个；原有 4 个直播间也分别绑定 V06、V08、V04、V02，封面保持不变。6 段房间视频均不再重复出现在短视频列表。当前仍为本地素材播放，未接实时直播服务。
+- 保持五个纯图标 Tab、本地访客、送礼入口和既有读写契约；不会自动关注或创建伪造观众。
 
 ## 静态检查结果
 
@@ -78,22 +79,22 @@
 | I48 | `856125458_18634475317010758_476292385336594519_n.jpg` | Oakley / `portrait-48` | `portrait-48`：头像＋主页照片 |
 | I49 | `858594027_18637182445035158_2943445897430238107_n.jpg` | Wren / `portrait-49` | `portrait-49`：头像＋主页照片 |
 
-## 视频分配（每份均进入 Video 与搜索）
+## 视频分配（6 段用于房间，其余 10 段进入 Video 与搜索）
 
 | 编号 | 内容 | 运行时视频 | 时长 |
 | --- | --- | --- | --- |
 | V01 | A generous sandwich in Osaka | `collection-osaka-sandwich.mp4` | 21.5 秒 |
-| V02 | A sweet bake, from pan to plate | `collection-bakery-dessert.mp4` | 94.5 秒 |
+| V02 | A sweet bake, from pan to plate → `sweet-evening` 房间 | `collection-bakery-dessert.mp4` | 94.5 秒 |
 | V03 | A little cafe break | `collection-cafe-break.mp4` | 7.1 秒 |
-| V04 | Crunchy bites at the kitchen counter | `collection-crispy-bites.mp4` | 19.4 秒 |
+| V04 | Crunchy bites at the kitchen counter → `kitchen-stories` 房间 | `collection-crispy-bites.mp4` | 19.4 秒 |
 | V05 | Noodles at an outdoor table | `collection-outdoor-noodles.mp4` | 120.2 秒 |
-| V06 | A toasted sandwich, packed with flavour | `collection-toasted-sandwich.mp4` | 32.2 秒 |
+| V06 | A toasted sandwich, packed with flavour → `pasta-table` 房间 | `collection-toasted-sandwich.mp4` | 32.2 秒 |
 | V07 | A creative mixing experiment | `collection-creative-mix.mp4` | 14.3 秒 |
-| V08 | A table full of street-food flavours | `collection-street-food-table.mp4` | 77.2 秒 |
-| V09 | A look inside a busy kitchen | `collection-kitchen-soup.mp4` | 51.6 秒 |
+| V08 | A table full of street-food flavours → `street-bites` 房间 | `collection-street-food-table.mp4` | 77.2 秒 |
+| V09 | A look inside a busy kitchen → `soup-kitchen` 房间 | `collection-kitchen-soup.mp4` | 51.6 秒 |
 | V10 | Folding and cooking homemade dumplings | `collection-dumplings.mp4` | 40.5 秒 |
 | V11 | A lively evening around the dinner table | `collection-dinner-friends.mp4` | 17.6 秒 |
-| V12 | Fresh crepes on the griddle | `collection-crepe-making.mp4` | 41.8 秒 |
+| V12 | Fresh crepes on the griddle → `crepe-station` 房间 | `collection-crepe-making.mp4` | 41.8 秒 |
 | V13 | A quiet break on the trail | `collection-trail-break.mp4` | 14.8 秒 |
 | V14 | Everyday moments with friends | `collection-everyday-moments.mp4` | 13.1 秒 |
 | V15 | An outdoor noodle tasting | `collection-noodle-tasting.mp4` | 68.6 秒 |

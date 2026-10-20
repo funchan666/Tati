@@ -419,15 +419,6 @@
       "posterArtwork": "poster-osaka-sandwich"
     },
     {
-      "id": "sample-clip-1",
-      "authorID": "tati-collection",
-      "caption": "A sweet bake, from pan to plate",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-bakery-dessert.mp4",
-      "posterArtwork": "poster-bakery-dessert"
-    },
-    {
       "id": "sample-clip-2",
       "authorID": "tati-collection",
       "caption": "A little cafe break",
@@ -435,15 +426,6 @@
       "isSample": true,
       "bundledFile": "collection-cafe-break.mp4",
       "posterArtwork": "poster-cafe-break"
-    },
-    {
-      "id": "sample-clip-3",
-      "authorID": "tati-collection",
-      "caption": "Crunchy bites at the kitchen counter",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-crispy-bites.mp4",
-      "posterArtwork": "poster-crispy-bites"
     },
     {
       "id": "sample-clip-4",
@@ -455,15 +437,6 @@
       "posterArtwork": "poster-outdoor-noodles"
     },
     {
-      "id": "sample-clip-5",
-      "authorID": "tati-collection",
-      "caption": "A toasted sandwich, packed with flavour",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-toasted-sandwich.mp4",
-      "posterArtwork": "poster-toasted-sandwich"
-    },
-    {
       "id": "sample-clip-6",
       "authorID": "tati-collection",
       "caption": "A creative mixing experiment",
@@ -471,15 +444,6 @@
       "isSample": true,
       "bundledFile": "collection-creative-mix.mp4",
       "posterArtwork": "poster-creative-mix"
-    },
-    {
-      "id": "sample-clip-7",
-      "authorID": "tati-collection",
-      "caption": "A table full of street-food flavours",
-      "createdAt": 0,
-      "isSample": true,
-      "bundledFile": "collection-street-food-table.mp4",
-      "posterArtwork": "poster-street-food-table"
     },
     {
       "id": "sample-clip-9",
@@ -554,6 +518,42 @@
       "isSample": true,
       "bundledFile": "collection-crepe-making.mp4",
       "posterArtwork": "poster-crepe-making"
+    },
+    "sweet-evening": {
+      "id": "sample-clip-1",
+      "authorID": "tati-collection",
+      "caption": "A sweet bake, from pan to plate",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-bakery-dessert.mp4",
+      "posterArtwork": "poster-bakery-dessert"
+    },
+    "kitchen-stories": {
+      "id": "sample-clip-3",
+      "authorID": "tati-collection",
+      "caption": "Crunchy bites at the kitchen counter",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-crispy-bites.mp4",
+      "posterArtwork": "poster-crispy-bites"
+    },
+    "pasta-table": {
+      "id": "sample-clip-5",
+      "authorID": "tati-collection",
+      "caption": "A toasted sandwich, packed with flavour",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-toasted-sandwich.mp4",
+      "posterArtwork": "poster-toasted-sandwich"
+    },
+    "street-bites": {
+      "id": "sample-clip-7",
+      "authorID": "tati-collection",
+      "caption": "A table full of street-food flavours",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-street-food-table.mp4",
+      "posterArtwork": "poster-street-food-table"
     }
   }
 }

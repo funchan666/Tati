@@ -1071,10 +1071,10 @@
       "caption": "A sweet bake, from pan to plate",
       "duration": 94.527029,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "sweet-evening"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
@@ -1101,10 +1101,10 @@
       "caption": "Crunchy bites at the kitchen counter",
       "duration": 19.432245,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "kitchen-stories"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
@@ -1131,10 +1131,10 @@
       "caption": "A toasted sandwich, packed with flavour",
       "duration": 32.22644,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "pasta-table"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
@@ -1161,10 +1161,10 @@
       "caption": "A table full of street-food flavours",
       "duration": 77.180272,
       "uses": [
-        "video.feed",
-        "video.detail",
-        "search.videos"
-      ]
+        "room.video-background",
+        "search.rooms"
+      ],
+      "roomID": "street-bites"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
