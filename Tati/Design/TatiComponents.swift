@@ -90,6 +90,8 @@ struct TatiButton: View {
     var body: some View {
         Button(action: action) {
             Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(.white)
+                .multilineTextAlignment(.center).lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 8)
                 .frame(maxWidth: .infinity, minHeight: 42)
                 .background(secondary ? Color.tatiOlive.opacity(0.65) : Color.tatiPink)
                 .clipShape(Capsule())
@@ -127,7 +129,8 @@ struct TatiHeader: View {
     var body: some View {
         HStack {
             ArtButton(asset: "back", label: "Back") { dismiss() }
-            Text(title).font(.system(size: 17, weight: .medium)).frame(maxWidth: .infinity)
+            Text(title).font(.system(size: 17, weight: .medium)).lineLimit(2)
+                .multilineTextAlignment(.center).frame(maxWidth: .infinity)
             if let trailing { ArtButton(asset: trailing, label: trailingLabel) { action?() } }
             else { Color.clear.frame(width: 44, height: 44) }
         }.foregroundStyle(Color.tatiInk).padding(.horizontal, 8)
@@ -154,6 +157,7 @@ struct Chip: View {
     var body: some View {
         Button(action: action) {
             Text(text).font(.system(size: 12, weight: .medium))
+                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 10).padding(.vertical, 4)
                 .foregroundStyle(.white)
                 .background(selected ? Color.tatiPink.opacity(0.65) : Color.tatiOlive.opacity(0.48))
@@ -284,25 +288,36 @@ struct NoticeLayer: View {
         if let notice = store.notice {
             ZStack {
                 Color.black.opacity(0.48).ignoresSafeArea()
-                VStack(spacing: 18) {
-                    Text(notice.title).font(.system(size: 18, weight: .semibold))
-                    Text(notice.message).font(.system(size: 13)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                    HStack {
-                        if notice.action != nil {
-                            Button { store.notice = nil } label: {
-                                Text("Cancel").font(.system(size: 14, weight: .medium)).foregroundStyle(.gray)
-                                    .frame(maxWidth: .infinity, minHeight: 42).background(Color.gray.opacity(0.18)).clipShape(Capsule())
-                            }.buttonStyle(.plain).frame(minHeight: 44)
-                        }
-                        TatiButton(title: notice.actionTitle) {
-                            store.notice = nil
-                            notice.action?()
+                GeometryReader { geometry in
+                    ViewThatFits(in: .vertical) {
+                        noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action)
+                            .fixedSize(horizontal: false, vertical: true)
+                        ScrollView {
+                            noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action)
                         }
                     }
-                }.padding(.horizontal, 24).padding(.vertical, 28).background { Image("dialog-card").resizable() }
-                    .padding(34).frame(maxWidth: 400).foregroundStyle(Color.tatiInk)
+                    .frame(width: min(366, max(0, geometry.size.width - 32)))
+                    .frame(maxHeight: max(0, geometry.size.height - 32))
+                    .background { Image("dialog-card").resizable() }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }.foregroundStyle(Color.tatiInk)
             }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)
         }
+    }
+    private func noticeContent(title: String, message: String, actionTitle: String, action: (() -> Void)?) -> some View {
+        VStack(spacing: 18) {
+            Text(title).font(.system(size: 18, weight: .semibold)).multilineTextAlignment(.center)
+            Text(message).font(.system(size: 13)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+            HStack {
+                if action != nil {
+                    Button { store.notice = nil } label: {
+                        Text("Cancel").font(.system(size: 14, weight: .medium)).foregroundStyle(.gray)
+                            .frame(maxWidth: .infinity, minHeight: 44).background(Color.gray.opacity(0.18)).clipShape(Capsule())
+                    }.buttonStyle(.plain)
+                }
+                TatiButton(title: actionTitle) { store.notice = nil; action?() }
+            }
+        }.padding(.horizontal, 24).padding(.vertical, 28)
     }
 }
 
