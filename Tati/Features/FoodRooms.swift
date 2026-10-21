@@ -68,7 +68,13 @@ struct RoomView: View {
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 18) {
                                     ForEach(0..<voiceSeats, id: \.self) { index in
                                         Button { panel = .microphone } label: {
-                                            VStack(spacing: 5) { Art(name: "tool-mic", width: 48, height: 48); Text("\(index + 2)").font(.system(size: 11)) }
+                                            VStack(spacing: 5) {
+                                                Art(name: "mic-small", width: 18, height: 18)
+                                                    .frame(width: 50, height: 50)
+                                                    .background(.white.opacity(0.18)).clipShape(Circle())
+                                                    .overlay { Circle().strokeBorder(.white.opacity(0.9), lineWidth: 1) }
+                                                Text("\(index + 2)").font(.system(size: 11))
+                                            }
                                         }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
                                     }
                                 }
@@ -211,7 +217,15 @@ struct RoomView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
                 ForEach(["stage-blue", "stage-gifts", "stage-purple", "stage-confetti"], id: \.self) { name in
                     Button { if store.change({ $0.roomBackgrounds[room.id] = name }) { panel = nil } } label: {
-                        VStack { Image(name).resizable().scaledToFill().frame(height: 165).clipped().clipShape(RoundedRectangle(cornerRadius: 10)); Text(name.replacingOccurrences(of: "stage-", with: "").capitalized).font(.caption); if background == name { Art(name: "check-pink", width: 22) } }
+                        VStack(spacing: 6) {
+                            GeometryReader { geometry in
+                                Image(name).resizable().scaledToFill()
+                                    .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                            }.aspectRatio(110.0 / 130.0, contentMode: .fit).clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(alignment: .topTrailing) { if background == name { Art(name: "check-pink", width: 22, height: 22).padding(4) } }
+                        }
+                        .accessibilityLabel(name.replacingOccurrences(of: "stage-", with: "").capitalized)
+                        .accessibilityAddTraits(background == name ? .isSelected : [])
                     }.buttonStyle(.plain)
                 }
             }

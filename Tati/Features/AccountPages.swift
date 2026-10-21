@@ -4,19 +4,39 @@ import WebKit
 struct CheckInView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
+        GeometryReader { geometry in
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: 0) {
-                    Art(name: "checkin").overlay(alignment: .top) { TatiHeader(title: "") }
+                    let width = min(600, geometry.size.width)
+                    let topInset = geometry.safeAreaInsets.top
+                    // The design crops the decorative bottom of this banner.
+                    // Only its background reaches behind the status area.
+                    Color.clear.frame(height: max(120, width * 0.64 - topInset))
+                        .background(alignment: .top) {
+                            Image("checkin-copy").resizable().scaledToFill()
+                                .frame(width: width, height: max(120 + topInset, width * 0.64), alignment: .top)
+                                .clipped().offset(y: -topInset)
+                                .accessibilityHidden(true)
+                        }
+                        .overlay(alignment: .top) { TatiHeader(title: "") }
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
                         ForEach(0..<8) { day in
-                            let earned = day < (store.account.claimedDays.isEmpty ? 0 : (store.account.claimedDays.count - 1) % 8 + 1)
+                            let completed = store.account.claimedDays.count % 8
+                            let earnedCount = store.checkedIn && !store.account.claimedDays.isEmpty && completed == 0 ? 8 : completed
+                            let earned = day < earnedCount
+                            let next = !store.checkedIn && day == store.account.claimedDays.count % 8
                             VStack(spacing: 6) {
-                                VStack(spacing: 12) {
-                                    Text("Day \(day + 1)").font(.system(size: 10))
-                                    Art(name: "coin", width: 36, height: 36)
+                                VStack(spacing: 8) {
+                                    Art(name: "coin", width: 40, height: 40)
                                     if earned { Art(name: "paw", width: 16, height: 16) } else { Color.clear.frame(height: 16) }
-                                }.padding(.vertical, 10).frame(maxWidth: .infinity).background { Image(earned ? "day-selected" : "day-default").resizable() }
+                                }.padding(.top, 22).padding(.bottom, 8).frame(maxWidth: .infinity)
+                                    .background { Image(earned || next ? "day-selected" : "day-default").resizable() }
+                                    .overlay(alignment: .topTrailing) {
+                                        Text("Day \(day + 1)").font(.system(size: 9)).foregroundStyle(.white)
+                                            .frame(width: 43, height: 20)
+                                            .background { Image(earned || next ? "label-olive" : "label-gray").resizable() }
+                                    }
                                 Text("\((day + 1) * 10)").font(.system(size: 13))
                             }.accessibilityLabel("Day \(day + 1), \((day + 1) * 10) reward coins, \(earned ? "collected" : "not collected")")
                         }
@@ -28,6 +48,7 @@ struct CheckInView: View {
                 Note(text: "One reward per UTC day · Reward coins have no cash value.")
                 TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) reward coins", enabled: !store.checkedIn) { store.checkIn() }
             }.padding(18).frame(maxWidth: 600)
+        }
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
     }
 }
@@ -38,7 +59,7 @@ struct WalletView: View {
         TatiForm(title: "Recharge") {
             ZStack(alignment: .trailing) {
                 Image("wallet-card").resizable().frame(height: 104)
-                Art(name: "gift-hero", width: 125, height: 105).padding(.trailing, 4)
+                Art(name: "coin-pile", width: 125, height: 105).padding(.trailing, 4)
                 VStack(alignment: .leading, spacing: 7) {
                     Text("My coins:").font(.system(size: 15))
                     Text("\(store.account.purchasedCoins)").font(.system(size: 28, weight: .heavy)).lineLimit(1).minimumScaleFactor(0.6)

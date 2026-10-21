@@ -14,13 +14,18 @@ struct PersonProfileView: View {
                     ContentPhoto(asset: person.portraitArtwork, height: 420)
                 }.buttonStyle(.plain).accessibilityLabel("View full photo")
                     .overlay(alignment: .top) { TatiHeader(title: "", trailing: "more") { more = true } }
+                    .overlay(alignment: .bottomLeading) {
+                        if store.account.following.contains(person.id) {
+                            ImageAction(asset: "followed-button", label: "Unfollow \(person.name)", height: 46) { store.toggleFollow(person.id) }
+                                .frame(width: 154).padding(.leading, 20).padding(.bottom, 48)
+                        }
+                    }
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(spacing: 10) {
                         Avatar(asset: person.portraitArtwork, size: 62).padding(.top, -24)
                         VStack(alignment: .leading, spacing: 4) {
                             Text(person.name).font(.system(size: 17, weight: .semibold)).lineLimit(1)
                             Text(person.country).font(.system(size: 11)).foregroundStyle(Color.tatiOlive).lineLimit(1)
-                            Text("Food lover").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
                         }
                         Spacer(minLength: 0)
                         ArtButton(asset: "gift-chat", label: "Gifts", size: 30) { gift = true }
@@ -28,14 +33,14 @@ struct PersonProfileView: View {
                     Text(person.bio).font(.system(size: 13)).foregroundStyle(Color.tatiOlive)
                     Text(person.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
                     HStack(spacing: 10) {
-                        ImageAction(asset: store.account.following.contains(person.id) ? "followed-button" : "follow-button", label: "Follow", height: 42) { store.toggleFollow(person.id) }
+                        ImageAction(asset: store.account.following.contains(person.id) ? "followed-button" : "follow-button", label: store.account.following.contains(person.id) ? "Unfollow \(person.name)" : "Follow \(person.name)", height: 42) { store.toggleFollow(person.id) }
                         NavigationLink(destination: ConversationView(person: person)) { Art(name: "chat-button", height: 42).frame(maxWidth: .infinity) }.accessibilityLabel("Chat with \(person.name)")
                     }.padding(.vertical, 4)
                     Text("Video").font(.system(size: 17, weight: .bold))
                     if store.account.blocked.contains(person.id) { EmptyContent(title: "Profile blocked", detail: "Unblock this profile in Settings to see its content.") }
                     else {
                         ForEach(store.visibleClips.filter { $0.authorID == person.id }) { clip in
-                            NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain)
+                            FeedVideoCard(clip: clip)
                         }
                         if !store.visibleClips.contains(where: { $0.authorID == person.id }) { EmptyContent(title: "No videos yet", detail: "This profile doesn't have any videos yet.") }
                     }
@@ -135,7 +140,7 @@ struct MyVideosView: View {
         TatiPage(title: "My videos") {
             NavigationLink(destination: PublishVideoView()) { SettingRow(title: "Add a video", asset: "add-video") }
             if store.account.clips.isEmpty { EmptyContent(title: "Your story starts here", detail: "Add a food video to your collection.") }
-            ForEach(store.account.clips) { clip in NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain) }
+            ForEach(store.account.clips) { clip in FeedVideoCard(clip: clip) }
         }
     }
 }
@@ -160,7 +165,12 @@ struct EditProfileView: View {
         TatiForm(title: "Edit profile") {
             PhotosPicker(selection: $coverItem, matching: .images) {
                 Group {
-                    if let image = preview(coverData, removeCover ? nil : store.account.profile.coverFile) { Image(uiImage: image).resizable().scaledToFill().frame(height: 190).clipped() }
+                    if let image = preview(coverData, removeCover ? nil : store.account.profile.coverFile) {
+                        GeometryReader { geometry in
+                            Image(uiImage: image).resizable().scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                        }.frame(height: 190)
+                    }
                     else { MediaPlaceholder(title: "Change the background image", height: 190) }
                 }.clipShape(RoundedRectangle(cornerRadius: 20))
             }.buttonStyle(.plain)

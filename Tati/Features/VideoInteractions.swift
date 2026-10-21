@@ -28,7 +28,7 @@ struct FeedVideoCard: View {
                                 Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
                             }
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(store.authorName(for: clip)).font(.system(size: 14, weight: .medium))
+                                Text(store.authorName(for: clip)).font(.system(size: 14, weight: .medium)).lineLimit(1)
                                 if !clip.isSample { Text(clip.createdAt, style: .date).font(.system(size: 11)) }
                             }
                             Spacer()

@@ -11,9 +11,10 @@ extension View {
 extension Color {
     static let tatiInk = Color(red: 0.23, green: 0.29, blue: 0.03)
     static let tatiOlive = Color(red: 0.36, green: 0.45, blue: 0.02)
-    static let tatiPink = Color(red: 1, green: 0.30, blue: 0.69)
-    static let tatiLime = Color(red: 0.83, green: 1, blue: 0.13)
-    static let tatiCream = Color(red: 0.96, green: 1, blue: 0.78)
+    // Flat fills sampled from the supplied Lanhu boards 44, 06 and 16.
+    static let tatiPink = Color(red: 254 / 255, green: 104 / 255, blue: 185 / 255)
+    static let tatiLime = Color(red: 211 / 255, green: 254 / 255, blue: 46 / 255)
+    static let tatiCream = Color(red: 244 / 255, green: 1, blue: 199 / 255)
 }
 struct Art: View {
     var name: String
@@ -250,14 +251,23 @@ struct InputField: View {
     var multiline = false
     var showsLabel = true
     var minimumHeight: CGFloat? = nil
+    var characterLimit: Int? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if showsLabel { Text(title).font(.system(size: 13, weight: .regular)) }
             TextField(title, text: $text, axis: multiline ? .vertical : .horizontal)
                 .lineLimit(multiline ? 4...7 : 1...1).textFieldStyle(.plain)
                 .frame(minHeight: minimumHeight, alignment: .topLeading)
-                .font(.system(size: 14)).padding(16).background(Color.tatiLime.opacity(0.55))
+                .font(.system(size: 14)).padding(.horizontal, 16).padding(.top, 16)
+                .padding(.bottom, characterLimit == nil ? 16 : 28).background(Color.tatiLime.opacity(0.55))
                 .clipShape(RoundedRectangle(cornerRadius: 16)).tint(.tatiPink)
+                .overlay(alignment: .bottomTrailing) {
+                    if let characterLimit {
+                        Text("\(text.count)/\(characterLimit)").font(.system(size: 11))
+                            .foregroundStyle(Color.tatiOlive.opacity(0.65)).padding(.trailing, 12).padding(.bottom, 8)
+                            .allowsHitTesting(false)
+                    }
+                }
                 .accessibilityLabel(title)
         }
     }

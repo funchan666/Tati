@@ -54,7 +54,7 @@ struct DiscoverView: View {
                 if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 if rooms.isEmpty { EmptyContent(title: "No rooms here yet", detail: selected == "Follow" ? "Rooms from profiles you follow appear here." : "Try another topic or clear your filters.") }
                 else if voice {
-                    LazyVStack(spacing: 20) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain) } }
+                    LazyVStack(spacing: 20) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room, showsHotBanner: currentSection != "Follow") }.buttonStyle(.plain) } }
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                         ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { LiveRoomCard(room: room) }.buttonStyle(.plain) }
@@ -69,7 +69,7 @@ struct DiscoverView: View {
                 .presentationDetents([.height(390), .large]).presentationDragIndicator(.hidden)
         }
         .sheet(isPresented: $showPublish) {
-            NavigationStack { PublishChooser() }.overlay { NoticeLayer() }.presentationDetents([.height(210)]).presentationDragIndicator(.hidden)
+            PublishSheet()
         }
     }
 }
@@ -115,13 +115,16 @@ struct LiveRoomCard: View {
 }
 struct RoomListCard: View {
     var room: FoodRoom
+    var showsHotBanner = true
     private var host: FoodPerson? { FoodCatalog.person(room.hostID) }
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(alignment: .bottomLeading) { RoomKindBadge(isVoice: room.isVoice).padding(6) }
-                .overlay(alignment: .topLeading) { Art(name: "hot-room", width: 90, height: 31).offset(y: -18) }
+                .overlay(alignment: .topLeading) {
+                    if showsHotBanner { Art(name: "hot-room", width: 90, height: 31).offset(y: -18) }
+                }
                 .offset(y: -12)
             VStack(alignment: .leading, spacing: 5) {
                 Text(room.title).font(.system(size: 15, weight: .medium)).lineLimit(1)
@@ -133,7 +136,7 @@ struct RoomListCard: View {
                 }
             }.padding(.top, 8).frame(maxWidth: .infinity, alignment: .leading)
         }.padding(.horizontal, 12).frame(height: 94, alignment: .top)
-            .background { Image("outlined-card").resizable() }.padding(.top, 30).foregroundStyle(Color.tatiInk)
+            .background { Image("outlined-card").resizable() }.padding(.top, showsHotBanner ? 30 : 12).foregroundStyle(Color.tatiInk)
     }
 }
 
@@ -200,7 +203,7 @@ struct SearchView: View {
             }.padding(.leading, 4).padding(.trailing, 16)
             ScrollView {
             VStack(alignment: .leading, spacing: 10) {
-            Text("Popular searches").font(.system(size: 21, weight: .bold, design: .serif))
+            Text("Popular searches").font(.system(size: 18, weight: .bold, design: .serif))
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
                 ForEach(FoodCatalog.popularTopics.indices, id: \.self) { index in
                     let topic = FoodCatalog.popularTopics[index]
@@ -208,8 +211,8 @@ struct SearchView: View {
                         .buttonStyle(.plain).accessibilityLabel("Search " + topic.0)
                 }
             }
-            Text(category == "People" ? "Creators" : category).font(.system(size: 19, weight: .bold, design: .serif))
-            TopicStrip(items: ["People", "Rooms", "Videos"], selected: $category)
+            Text(category == "People" ? "Creators" : category).font(.system(size: 18, weight: .bold, design: .serif))
+            if !query.isEmpty { TopicStrip(items: ["People", "Rooms", "Videos"], selected: $category) }
             if category == "People" {
                 let matches = FoodCatalog.people.filter { !store.account.blocked.contains($0.id) && (query.isEmpty || ($0.name + $0.interest).localizedCaseInsensitiveContains(query)) }
                 if matches.isEmpty { EmptyContent(title: "No people found", detail: "Try a different name or food interest.") }
@@ -221,31 +224,41 @@ struct SearchView: View {
             } else {
                 let matches = store.visibleClips.filter { query.isEmpty || $0.caption.localizedCaseInsensitiveContains(query) }
                 if matches.isEmpty { EmptyContent(title: "No videos found", detail: "Try another phrase.") }
-                ForEach(matches) { clip in NavigationLink(destination: ClipDetailView(clip: clip)) { VideoCard(clip: clip) }.buttonStyle(.plain) }
+                ForEach(matches) { clip in FeedVideoCard(clip: clip) }
             }
             }.padding(.horizontal, 18).padding(.bottom, 16).frame(maxWidth: 600).frame(maxWidth: .infinity)
             }
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
+            .onChange(of: query) { _, value in if value.isEmpty { category = "People" } }
     }
 }
 struct PersonRow: View {
     var person: FoodPerson
-    @EnvironmentObject private var store: VisitorStore
+    private var hasVideoRoom: Bool { FoodCatalog.rooms.contains { !$0.isVoice && $0.hostID == person.id } }
     var body: some View {
-        HStack(spacing: 10) {
-            NavigationLink(destination: PersonProfileView(person: person)) {
-                HStack(spacing: 10) {
-                    Avatar(asset: person.portraitArtwork)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(person.name).font(.system(size: 15, weight: .bold))
-                        Text("\(person.country) · \(person.interest)").font(.system(size: 11)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+        NavigationLink(destination: PersonProfileView(person: person)) {
+            HStack(spacing: 10) {
+                Avatar(asset: person.portraitArtwork, size: 46)
+                VStack(alignment: .leading, spacing: 5) {
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 7) {
+                            Text(person.name).font(.system(size: 13, weight: .medium))
+                            Text(person.city).font(.system(size: 10)).foregroundStyle(Color.tatiPink)
+                            if hasVideoRoom { Art(name: "live-pink", width: 34, height: 16) }
+                        }.fixedSize()
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(person.name).font(.system(size: 13, weight: .medium)).lineLimit(1)
+                            Text(person.city).font(.system(size: 10)).foregroundStyle(Color.tatiPink).lineLimit(1)
+                        }
                     }
+                    Text(person.interest).font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.65)).lineLimit(1)
                 }
-            }.buttonStyle(.plain)
-            Spacer(minLength: 0)
-            NavigationLink(destination: PersonProfileView(person: person)) { Art(name: "chevron", width: 12).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("View \(person.name)")
-        }.foregroundStyle(Color.tatiInk).padding(.vertical, 9)
-            .overlay(alignment: .bottom) { Color.tatiOlive.opacity(0.15).frame(height: 0.5) }
+                Spacer(minLength: 4)
+                Art(name: "chevron", width: 10, height: 14).frame(width: 20)
+            }.foregroundStyle(Color.tatiInk).padding(.vertical, 10)
+                .contentShape(Rectangle())
+                .overlay(alignment: .bottom) { Color.tatiOlive.opacity(0.15).frame(height: 0.5) }
+        }.buttonStyle(.plain).accessibilityLabel("View \(person.name), \(person.city), \(person.interest)")
     }
 }
 struct RankingView: View {

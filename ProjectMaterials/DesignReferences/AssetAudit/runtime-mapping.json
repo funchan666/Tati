@@ -568,6 +568,10 @@
     "source": "ProjectMaterials/GeneratedUI/checkin.png"
   },
   {
+    "name": "checkin-copy",
+    "source": "ProjectMaterials/GeneratedUI/checkin-copy.png"
+  },
+  {
     "name": "brand-icon",
     "source": "ProjectMaterials/GeneratedUI/brand-icon.png"
   },

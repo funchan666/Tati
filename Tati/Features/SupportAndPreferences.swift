@@ -79,9 +79,9 @@ struct SupportView: View {
                     Button {
                         if expanded.contains(article.id) { expanded.remove(article.id) } else { expanded.insert(article.id) }
                     } label: {
-                        HStack { Text(article.question).font(.subheadline.bold()).multilineTextAlignment(.leading); Spacer(); Art(name: expanded.contains(article.id) ? "dropdown" : "chevron", width: 17, height: 17) }.frame(minHeight: 44)
+                        HStack { Text(article.question).font(.system(size: 13, weight: .medium)).multilineTextAlignment(.leading); Spacer(); Art(name: expanded.contains(article.id) ? "dropdown" : "chevron", width: 13, height: 13) }.frame(minHeight: 44)
                     }.buttonStyle(.plain).accessibilityValue(expanded.contains(article.id) ? "Expanded" : "Collapsed")
-                    if expanded.contains(article.id) { Text(article.answer).font(.subheadline).fixedSize(horizontal: false, vertical: true) }
+                    if expanded.contains(article.id) { Text(article.answer).font(.system(size: 12)).foregroundStyle(Color.tatiOlive.opacity(0.7)).fixedSize(horizontal: false, vertical: true).padding(.bottom, 8) }
                 }.padding(.horizontal, 12).padding(.vertical, 4).background(Color.tatiLime.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 8))
             }
         } footer: {
@@ -94,11 +94,20 @@ struct SupportView: View {
 }
 struct SupportDraftView: View {
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.dismiss) private var dismiss
     @State private var text = ""
     var body: some View {
-        TatiForm(title: "Customer support") {
+        VStack(spacing: 0) {
+            HStack(spacing: 8) {
+                ArtButton(asset: "back", label: "Back") { dismiss() }
+                Art(name: "support-avatar", width: 42, height: 42)
+                Text("Customer support").font(.system(size: 15, weight: .medium)).lineLimit(2)
+                Spacer(minLength: 0)
+            }.padding(.horizontal, 8).padding(.bottom, 8)
+            ScrollView {
+            VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top, spacing: 8) {
-                Art(name: "support-avatar", width: 40, height: 40)
+                Art(name: "support-avatar", width: 30, height: 30)
                 Text("What can we help with?").font(.system(size: 14)).padding(12).background(.white).clipShape(RoundedRectangle(cornerRadius: 8))
             }
             if let draft = store.account.drafts["support-chat"], !draft.isEmpty {
@@ -108,16 +117,24 @@ struct SupportDraftView: View {
                 }
             }
             if store.account.draftImages?["support-chat"] != nil { DraftPhotoAttachment(draftKey: "support-chat") }
-        } footer: {
-            HStack(spacing: 6) {
-                TextField("Describe your question", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiPink).foregroundStyle(.white).tint(.white).clipShape(RoundedRectangle(cornerRadius: 22))
-                DraftPhotoAttachment(draftKey: "support-chat", compact: true)
-                Button {
-                    guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                    if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your message and attachment have been saved as a draft. They have not been sent.") }
-                } label: { SupplementIcon(icon: .send, size: 25).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save support draft")
+            }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity)
             }
-        }.onAppear { text = store.account.drafts["support-chat"] ?? "" }
+            HStack(spacing: 6) {
+                ArtButton(asset: "chat-mic", label: "Voice message", size: 32) {
+                    store.tell("Voice messaging unavailable", "Voice messages are currently unavailable. No recording has started.")
+                }
+                HStack(spacing: 0) {
+                    TextField("Describe your question", text: $text, axis: .vertical).lineLimit(1...4)
+                        .font(.system(size: 13)).padding(.leading, 12).padding(.vertical, 8).tint(.white)
+                    Button {
+                        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+                        if store.saveDraft("support-chat", text: text) { store.tell("Draft saved", "Your message and attachment have been saved as a draft. They have not been sent.") }
+                    } label: { SupplementIcon(icon: .send, size: 23).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save support draft")
+                }.foregroundStyle(.white).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22))
+                DraftPhotoAttachment(draftKey: "support-chat", compact: true)
+            }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: 600).frame(maxWidth: .infinity).background(Color.tatiLime.opacity(0.7))
+        }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
+            .onAppear { text = store.account.drafts["support-chat"] ?? "" }
     }
 }
 struct LanguagePreferenceView: View {

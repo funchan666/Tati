@@ -19,21 +19,6 @@ struct VideoFeedView: View {
         }
     }
 }
-struct VideoCard: View {
-    var clip: FoodClip
-    @EnvironmentObject private var store: VisitorStore
-    var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            ClipPoster(clip: clip, height: 240)
-            Art(name: "play-small", width: 30, height: 30).padding(12).background(.white.opacity(0.4)).clipShape(Circle())
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            VStack(alignment: .leading, spacing: 5) {
-                Text(store.authorName(for: clip)).font(.system(size: 14, weight: .semibold))
-                Text(clip.caption).font(.system(size: 12)).lineLimit(2)
-            }.padding(14).foregroundStyle(.white).shadow(color: .black, radius: 3, y: 1)
-        }.frame(height: 240).clipShape(RoundedRectangle(cornerRadius: 30))
-    }
-}
 struct ClipDetailView: View {
     var clip: FoodClip
     @EnvironmentObject private var store: VisitorStore
@@ -168,11 +153,34 @@ struct CommentDraftView: View {
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
     }
 }
-struct PublishChooser: View {
+private enum PublishDestination: Hashable { case live, video }
+
+struct PublishSheet: View {
+    @State private var path: [PublishDestination] = []
+    var body: some View {
+        NavigationStack(path: $path) {
+            PublishChooser()
+                .navigationDestination(for: PublishDestination.self) { destination in
+                    switch destination {
+                    case .live: GoLiveView()
+                    case .video: PublishVideoView()
+                    }
+                }
+        }
+        .overlay { NoticeLayer() }
+        // A form must not inherit the 210-point chooser height after navigation.
+        .presentationDetents(path.isEmpty ? [.height(210), .large] : [.large])
+        .presentationDragIndicator(.hidden)
+    }
+}
+
+private struct PublishChooser: View {
     var body: some View {
         TatiPanel(title: "Create") {
-            HStack(spacing: 14) { NavigationLink(destination: GoLiveView()) { Art(name: "go-live", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Go live")
-            NavigationLink(destination: PublishVideoView()) { Art(name: "post-video", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Post video") }
+            HStack(spacing: 14) {
+                NavigationLink(value: PublishDestination.live) { Art(name: "go-live", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Go live")
+                NavigationLink(value: PublishDestination.video) { Art(name: "post-video", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Post video")
+            }
         }
     }
 }
@@ -199,9 +207,8 @@ struct PublishVideoView: View {
                     }
                 }.frame(maxWidth: 250).frame(height: 280).background(Color.tatiLime.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 20)).frame(maxWidth: .infinity)
             }.buttonStyle(.plain).disabled(importing)
-            InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false)
+            InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false, minimumHeight: 80, characterLimit: 50)
                 .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
-            Text("\(caption.count)/50").font(.caption).frame(maxWidth: .infinity, alignment: .trailing)
         } footer: {
             TatiButton(title: "Save video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }
