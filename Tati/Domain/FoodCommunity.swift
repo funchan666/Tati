@@ -102,6 +102,28 @@ struct LocalProfile: Codable {
     var avatarFile: String?
     var coverFile: String?
 }
+struct CoinPurchaseIntent: Codable {
+    let token: UUID
+    let ownerID: String
+    let productID: String
+    let coins: Int
+    let createdAt: Date
+}
+struct CoinPurchaseCredit: Codable {
+    let transactionID: String
+    let token: UUID
+    let ownerID: String
+    let productID: String
+    let coins: Int
+    let creditedAt: Date
+    var revoked = false
+}
+struct CoinExpense: Codable, Identifiable {
+    var id = UUID().uuidString
+    let title: String
+    let coins: Int
+    var date = Date()
+}
 struct LocalAccount: Codable {
     var version = 1
     var profile = LocalProfile()
@@ -130,6 +152,13 @@ struct LocalAccount: Codable {
     var processedTransactions: Set<String> = []
     var purchaseOwnerByProduct: [String: String] = [:]
     var equippedFrame = false
+    var frameUnlocked: Bool? = false
+    var welcomeGranted: Bool? = false
+    var welcomeAcknowledged: Bool? = false
+    var purchaseIntents: [String: CoinPurchaseIntent]? = [:]
+    var purchaseCredits: [String: CoinPurchaseCredit]? = [:]
+    var purchaseDebt: Int? = 0
+    var coinExpenses: [CoinExpense]? = []
 }
 
 enum FoodCatalog {
@@ -156,13 +185,13 @@ enum FoodCatalog {
     ]
     static let gifts = [
         FoodGift(id: "balloons", name: "Sending love", artwork: "gift-balloons", cost: 50),
-        FoodGift(id: "peach", name: "Peach", artwork: "gift-peach", cost: 50),
-        FoodGift(id: "drink", name: "Sweet sip", artwork: "gift-drink", cost: 50),
-        FoodGift(id: "cake", name: "Cake", artwork: "gift-cake", cost: 50),
-        FoodGift(id: "box", name: "Little surprise", artwork: "gift-box", cost: 100),
-        FoodGift(id: "headphones", name: "Good vibes", artwork: "gift-headphones", cost: 100),
-        FoodGift(id: "car", name: "Food trip", artwork: "gift-car", cost: 100),
-        FoodGift(id: "crown", name: "Kitchen crown", artwork: "gift-crown", cost: 100)
+        FoodGift(id: "peach", name: "Peach", artwork: "gift-peach", cost: 80),
+        FoodGift(id: "drink", name: "Sweet sip", artwork: "gift-drink", cost: 120),
+        FoodGift(id: "cake", name: "Cake", artwork: "gift-cake", cost: 180),
+        FoodGift(id: "box", name: "Little surprise", artwork: "gift-box", cost: 240),
+        FoodGift(id: "headphones", name: "Good vibes", artwork: "gift-headphones", cost: 360),
+        FoodGift(id: "car", name: "Food trip", artwork: "gift-car", cost: 680),
+        FoodGift(id: "crown", name: "Kitchen crown", artwork: "gift-crown", cost: 1200)
     ]
     static let cities = ["All", "Singapore", "Toronto", "Bangkok", "Paris", "Los Angeles", "Kuala Lumpur"]
     static let languages = ["All", "English", "Hindi", "Español", "Türkçe", "Português", "French", "Italian"]

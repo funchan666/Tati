@@ -18,6 +18,7 @@ struct RoomView: View {
     @State private var playbackOwner = UUID().uuidString
     @State private var isVisible = false
     @State private var videoFailure: String?
+    @State private var giftEffect: GiftReceipt?
     @State private var showPK = false
     private var music: LocalRoomAudio { roomSession.audio }
     private var host: FoodPerson { FoodCatalog.person(room.hostID) ?? FoodCatalog.people[0] }
@@ -154,6 +155,18 @@ struct RoomView: View {
                 music.stop()
                 if ownsPlayback { playback.stop() }
             } else if isVisible { startRoomVideo() }
+        }
+        .overlay {
+            if let receipt = giftEffect, let gift = FoodCatalog.gift(receipt.giftID) {
+                RoomGiftEffect(gift: gift, quantity: receipt.quantity).id(receipt.id).allowsHitTesting(false)
+            }
+        }
+        .onChange(of: store.account.gifts.count) { _, _ in
+            if let receipt = store.account.gifts.last, receipt.roomID == room.id { giftEffect = receipt }
+        }
+        .task(id: giftEffect?.id) {
+            guard giftEffect != nil else { return }
+            do { try await Task.sleep(for: .seconds(2.5)); giftEffect = nil } catch { }
         }
         .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
         .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
@@ -302,6 +315,7 @@ struct GiftShopView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var selected = FoodCatalog.gifts[0]
     @State private var quantity = 1
+    @State private var showRecharge = false
     var body: some View {
         TatiPanel(title: "Gifts", showsHeader: false) {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
@@ -312,7 +326,7 @@ struct GiftShopView: View {
                                 .frame(maxWidth: .infinity).background(selected.id == gift.id ? Color.tatiOlive.opacity(0.35) : .clear).clipShape(RoundedRectangle(cornerRadius: 8))
                             HStack(spacing: 3) { Art(name: "coin-small", width: 15); Text("\(gift.cost)").font(.system(size: 13)) }
                         }
-                    }.buttonStyle(.plain).accessibilityLabel("\(gift.name), \(gift.cost) reward coins").accessibilityAddTraits(selected.id == gift.id ? .isSelected : [])
+                    }.buttonStyle(.plain).accessibilityLabel("\(gift.name), \(gift.cost) coins").accessibilityAddTraits(selected.id == gift.id ? .isSelected : [])
                 }
             }
             ViewThatFits(in: .horizontal) {
@@ -323,21 +337,21 @@ struct GiftShopView: View {
                 }
             }.padding(.top, 4)
             VStack(alignment: .leading, spacing: 4) {
-                Text("Reward coins · Delivery unavailable").font(.system(size: 10))
+                Text("Room effects · Plays on your screen").font(.system(size: 10))
                 HStack(spacing: 18) {
                     NavigationLink("Check-in", destination: CheckInView()).font(.system(size: 11, weight: .semibold)).frame(minHeight: 32)
                     NavigationLink("Wallet", destination: WalletView()).font(.system(size: 11, weight: .semibold)).frame(minHeight: 32)
                 }
             }
-        }
+        }.sheet(isPresented: $showRecharge) { NavigationStack { WalletView() }.overlay { NoticeLayer() } }
     }
     private var balance: some View {
         NavigationLink(destination: RechargePanel()) {
             HStack(spacing: 4) {
                 Art(name: "coin", width: 24)
-                Text("\(store.account.demoCoins)").font(.system(size: 15)).lineLimit(1).fixedSize()
+                Text("\(store.coinBalance.formatted())").font(.system(size: 15)).lineLimit(1).fixedSize()
             }.frame(minHeight: 44)
-        }.buttonStyle(.plain).accessibilityLabel("Reward balance and recharge")
+        }.buttonStyle(.plain).accessibilityLabel("Coin balance and recharge")
     }
     private var giftActions: some View {
         HStack(spacing: 8) {
@@ -346,12 +360,13 @@ struct GiftShopView: View {
                 Text("\(quantity)").font(.system(size: 13)).monospacedDigit().frame(minWidth: 22)
                 ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
             }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
-            TatiButton(title: "Use gift", enabled: !store.isPersonHidden(recipient.id)) {
-                if store.previewGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID) {
+            TatiButton(title: "Play effect", enabled: !store.isPersonHidden(recipient.id)) {
+                store.requestGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID,
+                                  recharge: { showRecharge = true }, completed: {
                     if let onGiftSaved { onGiftSaved() }
-                    else { store.tell("Gift saved", "Your reward balance and gift record have been updated. Gift delivery is currently unavailable.") }
-                }
-            }.frame(width: 82)
+                    else { store.celebrate("Effect unlocked", "Your coin balance and gift history have been updated.", artwork: selected.artwork) }
+                })
+            }.frame(width: 100)
         }.fixedSize(horizontal: true, vertical: false)
     }
 }
@@ -423,5 +438,24 @@ struct RoomMusicPanel: View {
                 try player.load(url)
             } catch { store.tell("Audio not selected", "No playable audio was loaded. You can try another file.") }
         }
+    }
+}
+
+private struct RoomGiftEffect: View {
+    let gift: FoodGift
+    let quantity: Int
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var revealed = false
+    var body: some View {
+        VStack(spacing: 12) {
+            Art(name: gift.artwork, width: 170, height: 170)
+            Text("\(gift.name) ×\(quantity)").font(.headline).foregroundStyle(.white)
+                .padding(.horizontal, 16).padding(.vertical, 10)
+                .background(Color.tatiInk.opacity(0.8)).clipShape(Capsule())
+        }.scaleEffect(revealed ? 1 : 0.65).opacity(revealed ? 1 : 0)
+            .onAppear {
+                if reduceMotion { revealed = true }
+                else { withAnimation(.spring(response: 0.5, dampingFraction: 0.65)) { revealed = true } }
+            }
     }
 }

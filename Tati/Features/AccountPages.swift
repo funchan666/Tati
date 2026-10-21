@@ -3,86 +3,143 @@ import WebKit
 
 struct CheckInView: View {
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    private var earnedCount: Int {
+        let completed = store.account.claimedDays.count % 8
+        return store.checkedIn && !store.account.claimedDays.isEmpty && completed == 0 ? 8 : completed
+    }
     var body: some View {
         GeometryReader { geometry in
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 0) {
-                    let width = min(600, geometry.size.width)
-                    let topInset = geometry.safeAreaInsets.top
-                    // The design crops the decorative bottom of this banner.
-                    // Only its background reaches behind the status area.
-                    Color.clear.frame(height: max(120, width * 0.64 - topInset))
-                        .background(alignment: .top) {
-                            Image("checkin-copy").resizable().scaledToFill()
-                                .frame(width: width, height: max(120 + topInset, width * 0.64), alignment: .top)
-                                .clipped().offset(y: -topInset)
-                                .accessibilityHidden(true)
-                        }
-                        .overlay(alignment: .top) { TatiHeader(title: "") }
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
-                        ForEach(0..<8) { day in
-                            let completed = store.account.claimedDays.count % 8
-                            let earnedCount = store.checkedIn && !store.account.claimedDays.isEmpty && completed == 0 ? 8 : completed
-                            let earned = day < earnedCount
-                            let next = !store.checkedIn && day == store.account.claimedDays.count % 8
-                            VStack(spacing: 6) {
-                                VStack(spacing: 8) {
-                                    Art(name: "coin", width: 40, height: 40)
-                                    if earned { Art(name: "paw", width: 16, height: 16) } else { Color.clear.frame(height: 16) }
-                                }.padding(.top, 22).padding(.bottom, 8).frame(maxWidth: .infinity)
-                                    .background { Image(earned || next ? "day-selected" : "day-default").resizable() }
-                                    .overlay(alignment: .topTrailing) {
-                                        Text("Day \(day + 1)").font(.system(size: 9)).foregroundStyle(.white)
-                                            .frame(width: 43, height: 20)
-                                            .background { Image(earned || next ? "label-olive" : "label-gray").resizable() }
-                                    }
-                                Text("\((day + 1) * 10)").font(.system(size: 13))
-                            }.accessibilityLabel("Day \(day + 1), \((day + 1) * 10) reward coins, \(earned ? "collected" : "not collected")")
-                        }
-                    }.padding(16).background(Color.tatiCream).clipShape(UnevenRoundedRectangle(topLeadingRadius: 18, topTrailingRadius: 18))
-                    Text("Reward balance: \(store.account.demoCoins)").font(.system(size: 12)).padding(10)
-                }.frame(maxWidth: 600).frame(maxWidth: .infinity)
+            let width = min(600, geometry.size.width)
+            let columns = width < 340 || dynamicTypeSize >= .xxxLarge ? 2 : 4
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        let topInset = geometry.safeAreaInsets.top
+                        // Extend only the supplied banner behind the status area.
+                        Color.clear.frame(height: max(120, width * 0.64 - topInset))
+                            .background(alignment: .top) {
+                                Image("checkin-copy").resizable().scaledToFill()
+                                    .frame(width: width, height: max(120 + topInset, width * 0.64), alignment: .top)
+                                    .clipped().offset(y: -topInset)
+                                    .accessibilityHidden(true)
+                            }
+                            .overlay(alignment: .top) { TatiHeader(title: "") }
+                        VStack(alignment: .leading, spacing: 16) {
+                            ViewThatFits(in: .horizontal) {
+                                HStack(alignment: .firstTextBaseline) {
+                                    Text("Daily rewards").font(.headline)
+                                    Spacer(minLength: 8)
+                                    Text("\(earnedCount)/8 collected").font(.caption).foregroundStyle(Color.tatiOlive)
+                                }
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("Daily rewards").font(.headline)
+                                    Text("\(earnedCount)/8 collected").font(.caption).foregroundStyle(Color.tatiOlive)
+                                }
+                            }
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: columns), spacing: 10) {
+                                ForEach(0..<8) { day in
+                                    CheckInRewardTile(day: day + 1, collected: day < earnedCount,
+                                                      available: !store.checkedIn && day == store.account.claimedDays.count % 8)
+                                }
+                            }
+                            HStack(spacing: 7) {
+                                Art(name: "coin-small", width: 20, height: 20)
+                                Text("Reward balance").font(.subheadline)
+                                Spacer(minLength: 8)
+                                Text(store.account.demoCoins.formatted()).font(.headline).monospacedDigit()
+                            }.padding(.top, 4).padding(.horizontal, 2)
+                        }.padding(16).background {
+                            UnevenRoundedRectangle(topLeadingRadius: 22, topTrailingRadius: 22).fill(Color.tatiCream)
+                        }.padding(.top, -12)
+                    }.frame(maxWidth: 600).frame(maxWidth: .infinity)
+                }
+                VStack(spacing: 8) {
+                    Note(text: "One reward per UTC day · Reward coins have no cash value.")
+                    TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) reward coins", enabled: !store.checkedIn) { store.checkIn() }
+                }.padding(18).frame(maxWidth: 600)
             }
-            VStack(spacing: 8) {
-                Note(text: "One reward per UTC day · Reward coins have no cash value.")
-                TatiButton(title: store.checkedIn ? "Collected today" : "Collect \(store.nextCheckInReward) reward coins", enabled: !store.checkedIn) { store.checkIn() }
-            }.padding(18).frame(maxWidth: 600)
-        }
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).tatiScreen()
+    }
+}
+
+private struct CheckInRewardTile: View {
+    let day: Int
+    let collected: Bool
+    let available: Bool
+    private var status: String { collected ? "Collected" : available ? "Today" : "Upcoming" }
+    var body: some View {
+        VStack(spacing: 4) {
+            Text("Day \(day)").font(.caption.weight(available ? .bold : .medium))
+                .foregroundStyle(available ? Color.tatiInk : Color.tatiOlive)
+            Art(name: "coin", width: 32, height: 32).opacity(collected || available ? 1 : 0.65)
+                .padding(.vertical, 1)
+            Text("+\(day * 10)").font(.system(.headline, design: .rounded).weight(.bold)).monospacedDigit()
+            HStack(spacing: 3) {
+                if collected { Art(name: "paw", width: 11, height: 11) }
+                Text(status).font(.caption2.weight(available ? .semibold : .regular))
+            }.foregroundStyle(available ? Color.tatiInk : Color.tatiOlive)
+                .fixedSize(horizontal: false, vertical: true)
+        }.padding(.vertical, 10).padding(.horizontal, 4)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background {
+                Image(available ? "day-selected" : "day-default")
+                    .resizable(capInsets: EdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12))
+                    .opacity(available ? 1 : collected ? 0.45 : 0.7)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Day \(day), \(day * 10) reward coins, \(status)")
     }
 }
 struct WalletView: View {
     @EnvironmentObject private var store: VisitorStore
     @EnvironmentObject private var purchases: TatiPurchases
+    @State private var selected = CoinPackage.all[0].id
+    private var package: CoinPackage { CoinPackage.all.first { $0.id == selected } ?? CoinPackage.all[0] }
     var body: some View {
         TatiForm(title: "Recharge") {
-            ZStack(alignment: .trailing) {
-                Image("wallet-card").resizable().frame(height: 104)
-                Art(name: "coin-pile", width: 125, height: 105).padding(.trailing, 4)
-                VStack(alignment: .leading, spacing: 7) {
-                    Text("My coins:").font(.system(size: 15))
-                    Text("\(store.account.purchasedCoins)").font(.system(size: 28, weight: .heavy)).lineLimit(1).minimumScaleFactor(0.6)
-                }.foregroundStyle(.white).padding(20).padding(.trailing, 112).frame(maxWidth: .infinity, alignment: .leading)
+            HStack(alignment: .center, spacing: 8) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Your balance").font(.subheadline)
+                    Text(store.coinBalance.formatted()).font(.system(size: 34, weight: .heavy, design: .rounded)).monospacedDigit().lineLimit(1).minimumScaleFactor(0.6)
+                    Text("coins").font(.caption)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "coin-pile", width: 116, height: 100)
+            }.padding(20).foregroundStyle(.white)
+                .background { Image("wallet-card").resizable(capInsets: EdgeInsets(top: 24, leading: 24, bottom: 24, trailing: 24)) }
+            ViewThatFits(in: .horizontal) {
+                HStack { Text("Purchased \(store.account.purchasedCoins.formatted())"); Spacer(minLength: 8); Text("Bonus \(store.account.demoCoins.formatted())") }
+                VStack(alignment: .leading, spacing: 4) { Text("Purchased \(store.account.purchasedCoins.formatted())"); Text("Bonus \(store.account.demoCoins.formatted())") }
+            }.font(.caption).foregroundStyle(Color.tatiOlive).padding(.horizontal, 4)
+            Text("Choose your treat").font(.headline).padding(.top, 4)
+            RechargeOptions(selected: $selected)
+            Text("USD guide prices. Apple confirms your local price before payment.")
+                .font(.caption2).foregroundStyle(Color.tatiOlive)
+            if let issue = purchases.recoveryIssue { Note(text: issue) }
+            if let debt = store.account.purchaseDebt, debt > 0 {
+                Note(text: "A previous refund adjustment of \(debt.formatted()) coins will be settled from your next purchase.")
             }
-            RechargeOptions(showsActions: false).padding(14).background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
-            NavigationLink(destination: CheckInView()) { SettingRow(title: "Reward coins", asset: "coin-small", detail: "\(store.account.demoCoins) · Check-in") }.buttonStyle(.plain)
-            if !store.account.gifts.isEmpty {
-                Text("Gift history").font(.system(size: 14, weight: .semibold))
-                ForEach(store.account.gifts.reversed()) { receipt in
-                    HStack {
-                        Art(name: FoodCatalog.gift(receipt.giftID)?.artwork ?? "gift-box", width: 38, height: 38)
-                        VStack(alignment: .leading, spacing: 3) {
-                            Text("\(FoodCatalog.gift(receipt.giftID)?.name ?? "Gift") × \(receipt.quantity)").font(.system(size: 13))
-                            Text("For \(FoodCatalog.person(receipt.recipientID)?.name ?? "recipient")").font(.system(size: 10))
-                        }
-                        Spacer(); Text("−\(receipt.spent)").font(.system(size: 13))
-                    }
+            CoinUsesView()
+            NavigationLink(destination: BackpackView()) { SettingRow(title: "My frames", asset: "host-frame") }.buttonStyle(.plain)
+            NavigationLink(destination: CheckInView()) { SettingRow(title: "Daily rewards", asset: "coin-small", detail: "Check-in") }.buttonStyle(.plain)
+            if !(store.account.coinExpenses ?? []).isEmpty {
+                Text("Recent coin activity").font(.headline)
+                ForEach(Array((store.account.coinExpenses ?? []).suffix(10).reversed())) { expense in
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 4) { Text(expense.title).font(.subheadline); Text(expense.date, style: .date).font(.caption).foregroundStyle(Color.tatiOlive) }
+                        Spacer(minLength: 8)
+                        Text("−\(expense.coins.formatted())").font(.subheadline.weight(.semibold)).monospacedDigit()
+                    }.padding(.vertical, 6)
                 }
             }
         } footer: {
-            TatiButton(title: "Continue") { store.tell("Purchases unavailable", purchases.availability) }
-            Button("Restore purchases") { store.tell("Purchases unavailable", purchases.availability) }.font(.system(size: 12)).buttonStyle(.plain).frame(minHeight: 32)
+            TatiButton(title: purchases.busyProductID != nil ? "Waiting for Apple…" : "Buy \(package.coins.formatted()) coins", enabled: !purchases.busy && store.storageFailure == nil) {
+                let offer = package
+                Task { await purchases.buy(offer) }
+            }
+            Button(purchases.recovering ? "Checking purchases…" : "Recover purchases") {
+                Task { await purchases.recover() }
+            }.font(.caption).buttonStyle(.plain).frame(minHeight: 44).disabled(purchases.busy)
         }
     }
 }
@@ -109,21 +166,21 @@ struct LevelView: View {
 struct BackpackView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var category = "Stickers"
+    @State private var showRecharge = false
     var body: some View {
         TatiPage(title: "My backpack") {
             TopicStrip(items: ["Stickers", "Frames", "Badges"], selected: $category)
             if category == "Frames" {
                 Art(name: "host-frame", width: 150, height: 150).frame(maxWidth: .infinity)
                 Text("Kitchen spotlight").font(.title3.bold())
-                Note(text: "A profile frame unlocked by your first daily check-in.")
-                TatiButton(title: store.account.equippedFrame ? "Remove frame" : "Wear frame", enabled: !store.account.claimedDays.isEmpty) {
-                    _ = store.change { $0.equippedFrame.toggle() }
+                Note(text: store.ownsFrame ? "Yours to wear whenever you like." : "300 coins · A permanent frame for your profile.")
+                TatiButton(title: store.ownsFrame ? (store.account.equippedFrame ? "Remove frame" : "Wear frame") : "Unlock · 300 coins") {
+                    store.requestFrame { showRecharge = true }
                 }
-                if store.account.claimedDays.isEmpty { NavigationLink(destination: CheckInView()) { SettingRow(title: "Check in to unlock", asset: "coin") } }
             } else if category == "Stickers" {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     ForEach(FoodCatalog.gifts) { gift in
-                        VStack(spacing: 8) { Art(name: gift.artwork, width: 48, height: 48); Text(gift.name).font(.system(size: 14)); Text("×0").font(.system(size: 11)) }
+                        VStack(spacing: 8) { Art(name: gift.artwork, width: 48, height: 48); Text(gift.name).font(.system(size: 14)); Text("\(gift.cost) coins / effect").font(.system(size: 11)) }
                             .padding(10).frame(maxWidth: .infinity).background { Image("outlined-card").resizable() }
                     }
                 }
@@ -133,7 +190,7 @@ struct BackpackView: View {
                 Text("Level \(1 + store.account.claimedDays.count / 7)").font(.headline)
                 NavigationLink(destination: LevelView()) { SettingRow(title: "View level progress", asset: "level") }
             }
-        }
+        }.sheet(isPresented: $showRecharge) { NavigationStack { WalletView() }.overlay { NoticeLayer() } }
     }
 }
 struct BlacklistView: View {

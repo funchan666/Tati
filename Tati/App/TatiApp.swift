@@ -12,11 +12,15 @@ struct TatiApp: App {
             ZStack {
                 if store.account.signedIn { CommunityRoot().id(store.account.profile.id) }
                 else { WelcomeView() }
+                if store.account.signedIn && store.account.welcomeGranted == true && store.account.welcomeAcknowledged == false {
+                    WelcomeCoinsView()
+                }
                 NoticeLayer()
             }
             .background { Color.tatiCream.ignoresSafeArea(.container) }
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .tint(.tatiPink).preferredColorScheme(.light)
+            .task { purchases.start(store: store) }
             .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
             .onChange(of: store.account.blocked) { _, _ in hideUnavailableRoom() }
             .onChange(of: store.account.hiddenSubjects) { _, _ in hideUnavailableRoom() }

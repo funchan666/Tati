@@ -1,65 +1,122 @@
 import SwiftUI
 
-struct CoinPackage: Identifiable {
-    let id: Int
-    let coins: Int
-    let bonus: Int
-    var total: Int { coins + bonus }
-    static let grid = Array(repeating: 99, count: 9).enumerated().map { CoinPackage(id: $0.offset, coins: $0.element, bonus: 0) }
-    static let room = [CoinPackage(id: 0, coins: 2405, bonus: 0), CoinPackage(id: 1, coins: 4955, bonus: 1650), CoinPackage(id: 2, coins: 9600, bonus: 4200)]
-}
 struct RechargeOptions: View {
-    var compact = false
-    var showsActions = true
-    @EnvironmentObject private var store: VisitorStore
+    @Binding var selected: String
     @EnvironmentObject private var purchases: TatiPurchases
-    @State private var selected: Int?
-    private var packages: [CoinPackage] { compact ? CoinPackage.room : CoinPackage.grid }
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if compact { Art(name: "recharge-banner") }
-            if compact {
-                ForEach(packages) { package in
-                    Button { selected = package.id } label: {
-                        HStack(spacing: 14) {
-                            Art(name: package.bonus > 0 ? "coin-pile" : "coin", width: 42, height: 42)
-                            VStack(alignment: .leading, spacing: 6) { Text(package.total.formatted()).font(.title3.bold()); if package.bonus > 0 { Text("Includes \(package.bonus.formatted()) bonus").font(.caption) } }
-                            Spacer(minLength: 0)
-                            Text("Unavailable").font(.system(size: 11)).fixedSize()
-                        }.padding(12).background { Image("coin-pack-card").resizable() }
-                            .overlay(alignment: .topTrailing) {
-                                if selected == package.id { Art(name: "check-pink", width: 17, height: 17).padding(3) }
-                            }
-                    }.buttonStyle(.plain)
-                }
-            } else {
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
-                    ForEach(packages) { package in
-                        Button { selected = package.id } label: {
-                            VStack(spacing: 5) {
-                                Text(package.total.formatted()).font(.headline).minimumScaleFactor(0.7).lineLimit(1)
-                                Art(name: "coin", width: 34, height: 34)
-                                Text("Unavailable").font(.system(size: 10)).lineLimit(1).minimumScaleFactor(0.75).padding(.horizontal, 4).padding(.vertical, 6).foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
-
-                            }.padding(10).frame(maxWidth: .infinity).background { Image("coin-pack-card").resizable() }
-                                .overlay(alignment: .topTrailing) { if selected == package.id { Art(name: "check-pink", width: 17, height: 17).padding(3) } }
-                        }.buttonStyle(.plain).accessibilityAddTraits(selected == package.id ? .isSelected : [])
-                    }
-                }
-            }
-            if showsActions {
-            TatiButton(title: "Continue", enabled: selected != nil) { store.tell("Purchases unavailable", purchases.availability) }
-            Button("Restore purchases") { store.tell("Purchases unavailable", purchases.availability) }.font(.caption).buttonStyle(.plain).frame(minHeight: 32)
+        ViewThatFits(in: .horizontal) {
+            packGrid(columns: dynamicTypeSize >= .xxxLarge ? 2 : 3)
+                .frame(minWidth: dynamicTypeSize >= .xxxLarge ? 220 : 310)
+            packGrid(columns: 2)
+        }
+    }
+    private func packGrid(columns: Int) -> some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: columns), spacing: 10) {
+            ForEach(CoinPackage.all) { package in
+                let isSelected = selected == package.id
+                Button { selected = package.id } label: {
+                    VStack(spacing: 7) {
+                        Art(name: package.coins >= 12400 ? "coin-pile" : "coin", width: 36, height: 36)
+                        Text(package.coins.formatted()).font(.system(.headline, design: .rounded).weight(.bold)).monospacedDigit()
+                            .lineLimit(1).minimumScaleFactor(0.75)
+                        Text(purchases.prices[package.id] ?? package.referencePrice)
+                            .font(.subheadline.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.75)
+                            .foregroundStyle(isSelected ? Color.white : Color.tatiInk)
+                            .padding(.horizontal, 8).padding(.vertical, 6)
+                            .frame(maxWidth: .infinity)
+                            .background(isSelected ? Color.tatiOlive : Color.white.opacity(0.65))
+                            .clipShape(Capsule())
+                    }.padding(.horizontal, 9).padding(.vertical, 14).frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background {
+                            Image(isSelected ? "day-selected" : "coin-pack-card")
+                                .resizable(capInsets: EdgeInsets(top: 14, leading: 14, bottom: 14, trailing: 14))
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            if isSelected { Art(name: "check-pink", width: 18, height: 18).padding(5) }
+                        }
+                }.buttonStyle(.plain).disabled(purchases.busy)
+                    .accessibilityLabel("\(package.coins) coins, \(purchases.prices[package.id] ?? package.referencePrice)")
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
     }
 }
+
 struct RechargePanel: View {
-    @EnvironmentObject private var store: VisitorStore
+    var body: some View { WalletView() }
+}
+
+struct CoinUsesView: View {
     var body: some View {
-        TatiPanel(title: "Recharge") {
-            HStack { Art(name: "coin", width: 30); Text("Purchased balance \(store.account.purchasedCoins)").font(.headline) }
-            RechargeOptions(compact: true)
-        }
+        VStack(alignment: .leading, spacing: 14) {
+            Text("A little extra delight").font(.headline)
+            HStack(spacing: 12) {
+                Art(name: "gift-balloons", width: 38, height: 38)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Room gift effects").font(.subheadline.weight(.semibold))
+                    Text("50–1,200 coins each · Quantity is shown before use").font(.caption).foregroundStyle(Color.tatiOlive)
+                }
+            }
+            HStack(spacing: 12) {
+                Art(name: "host-frame", width: 38, height: 38)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Kitchen spotlight frame").font(.subheadline.weight(.semibold))
+                    Text("300 coins · Unlock once, keep forever").font(.caption).foregroundStyle(Color.tatiOlive)
+                }
+            }
+            Text("Messages, voice and video calls, follows, browsing and posting are always free.")
+                .font(.caption).fixedSize(horizontal: false, vertical: true)
+            Text("Bonus coins are used first. Room effects play on your screen and do not transfer coins to another user.")
+                .font(.caption).foregroundStyle(Color.tatiOlive)
+        }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.white.opacity(0.7)).clipShape(RoundedRectangle(cornerRadius: 18))
+    }
+}
+
+struct WelcomeCoinsView: View {
+    @EnvironmentObject private var store: VisitorStore
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var arrived = false
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                Color.tatiInk.opacity(0.72).ignoresSafeArea()
+                ScrollView {
+                    VStack(spacing: 18) {
+                        ZStack {
+                            Art(name: "coin-pile", width: 176, height: 136)
+                                .scaleEffect(arrived ? 1 : 0.78)
+                            Art(name: "coin", width: 30, height: 30).rotationEffect(.degrees(-18))
+                                .offset(x: -100, y: arrived ? -25 : 8)
+                            Art(name: "coin", width: 23, height: 23).rotationEffect(.degrees(22))
+                                .offset(x: 100, y: arrived ? -52 : -12)
+                        }.frame(height: 144).accessibilityHidden(true)
+                        VStack(spacing: 7) {
+                            Text("Your seat is saved!").font(.system(.title2, design: .serif).weight(.bold))
+                            Text("Welcome to Tati. Your first treat is on us.").font(.subheadline).multilineTextAlignment(.center)
+                        }
+                        HStack(alignment: .firstTextBaseline, spacing: 7) {
+                            Text("+\(VisitorStore.welcomeCoins)").font(.system(size: 44, weight: .heavy, design: .rounded)).monospacedDigit()
+                            Text("coins").font(.headline)
+                        }.foregroundStyle(Color.tatiOlive)
+                        Text("Already in your wallet. Pick a room effect or make your profile shine.")
+                            .font(.caption).multilineTextAlignment(.center)
+                        TatiButton(title: "Take my seat") {
+                            _ = store.change { $0.welcomeAcknowledged = true }
+                        }
+                    }.padding(.horizontal, 24).padding(.vertical, 30)
+                        .frame(maxWidth: 350)
+                        .background { Image("dialog-card").resizable(capInsets: EdgeInsets(top: 36, leading: 32, bottom: 36, trailing: 32)) }
+                        .padding(.horizontal, 20).padding(.vertical, 24)
+                        .frame(minHeight: geometry.size.height)
+                        .frame(maxWidth: .infinity)
+                }.scrollIndicators(.hidden)
+            }
+        }.foregroundStyle(Color.tatiInk).accessibilityAddTraits(.isModal)
+            .onAppear {
+                if reduceMotion { arrived = true }
+                else { withAnimation(.spring(response: 0.65, dampingFraction: 0.7)) { arrived = true } }
+            }
     }
 }

@@ -14,6 +14,7 @@ struct TatiNotice: Identifiable {
 final class VisitorStore: ObservableObject {
     @Published private(set) var account = LocalAccount()
     @Published var notice: TatiNotice?
+    @Published var paymentInProgress = false
     @Published private(set) var storageFailure: String?
     private let fileURL: URL
     let mediaDirectory: URL
@@ -27,6 +28,12 @@ final class VisitorStore: ObservableObject {
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 account = try JSONDecoder().decode(LocalAccount.self, from: Data(contentsOf: fileURL))
                 guard account.version == 1 else { throw CocoaError(.fileReadCorruptFile) }
+                // Existing profiles retain their rewards and previously earned frame.
+                if account.welcomeGranted == nil { account.welcomeGranted = true; account.welcomeAcknowledged = true }
+                if account.frameUnlocked == nil { account.frameUnlocked = account.equippedFrame || !account.claimedDays.isEmpty }
+                if account.coinExpenses == nil {
+                    account.coinExpenses = account.gifts.map { CoinExpense(id: $0.id, title: "Gift · " + (FoodCatalog.gift($0.giftID)?.name ?? "Gift"), coins: $0.spent, date: $0.date) }
+                }
             }
         } catch {
             storageFailure = "Your saved data could not be opened. It has not been replaced. Please check available storage before trying again."
@@ -59,16 +66,40 @@ final class VisitorStore: ObservableObject {
     func confirm(_ title: String, _ message: String, button: String, destructive: Bool = false, action: @escaping () -> Void) {
         notice = TatiNotice(title: title, message: message, actionTitle: button, action: action, destructive: destructive)
     }
-    func signIn() { _ = change { $0.signedIn = true } }
+    static let welcomeCoins = 300
+    static let frameCost = 300
+    var coinBalance: Int { account.demoCoins + account.purchasedCoins }
+    var ownsFrame: Bool { account.frameUnlocked == true || account.equippedFrame }
+    func signIn() {
+        _ = change { value in
+            value.signedIn = true
+            if value.welcomeGranted == false {
+                value.demoCoins += Self.welcomeCoins
+                value.welcomeGranted = true
+                value.welcomeAcknowledged = false
+            }
+        }
+    }
     func logout() {
+        guard !paymentInProgress else { tell("Purchase in progress", "Finish the Apple purchase before signing out."); return }
         confirm("Leave Tati?", "Your profile and saved content will be kept when you log out.", button: "Log out") {
             _ = self.change { $0.signedIn = false }
         }
     }
     func deleteVisitor() {
-        confirm("Delete profile?", "This permanently removes your Tati profile, imported photos and videos, drafts and rewards from app storage.", button: "Delete", destructive: true) {
+        guard !paymentInProgress else { tell("Purchase in progress", "Finish the Apple purchase before deleting this profile."); return }
+        confirm("Delete profile?", "This permanently removes your Tati profile, imported photos and videos, drafts and coin balance from app storage. Consumable coins cannot be restored after deletion.", button: "Delete", destructive: true) {
             let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName) + self.account.reports.compactMap(\.imageFile) + self.account.messages.compactMap(\.imageFile) + Array((self.account.draftImages ?? [:]).values)
-            guard self.change({ $0 = LocalAccount() }) else { return }
+            guard self.change({ value in
+                let intents = value.purchaseIntents
+                let credits = value.purchaseCredits
+                let processed = value.processedTransactions
+                let legacyOwners = value.purchaseOwnerByProduct
+                value = LocalAccount()
+                // Keep transaction evidence; a new profile must never inherit an old order.
+                value.purchaseIntents = intents; value.purchaseCredits = credits
+                value.processedTransactions = processed; value.purchaseOwnerByProduct = legacyOwners
+            }) else { return }
             var cleanupFailed = false
             for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {
                 do { try FileManager.default.removeItem(at: self.mediaURL(file)) } catch { cleanupFailed = true }
@@ -111,6 +142,7 @@ final class VisitorStore: ObservableObject {
         return account.messages.filter { $0.recipientID == id && !isHidden("message:" + $0.id) }.sorted { $0.createdAt < $1.createdAt }
     }
     func toggleLike(_ id: String) {
+        guard visibleClips.contains(where: { $0.id == id }) else { return }
         _ = change { if $0.likes.contains(id) { $0.likes.remove(id) } else { $0.likes.insert(id) } }
     }
     func likeCount(for clip: FoodClip) -> Int { account.likes.contains(clip.id) ? 1 : 0 }
@@ -149,17 +181,46 @@ final class VisitorStore: ObservableObject {
             tell("A delicious little reward", "\(reward) reward coins added to your balance. They have no cash value.")
         }
     }
-    func previewGift(_ gift: FoodGift, quantity: Int, recipient: String, roomID: String? = nil) -> Bool {
-        guard (1...99).contains(quantity), FoodCatalog.person(recipient) != nil, !isPersonHidden(recipient) else { return false }
-        if let roomID {
-            guard visibleRooms.contains(where: { $0.id == roomID && $0.hostID == recipient }) else { return false }
+    func requestGift(_ gift: FoodGift, quantity: Int, recipient: String, roomID: String?, recharge: @escaping () -> Void, completed: @escaping () -> Void) {
+        guard let roomID else { tell("Room gift effects", "Open a room to play a gift effect. Private chats are free."); return }
+        guard (1...99).contains(quantity), !isPersonHidden(recipient),
+              visibleRooms.contains(where: { $0.id == roomID && $0.hostID == recipient }) else { return }
+        let cost = gift.cost * quantity
+        requestSpend(cost, title: "Play \(gift.name) ×\(quantity)?", purpose: "Room effect · \(gift.name)",
+                     detail: "Plays a gift effect on your screen. It does not transfer coins to the host.", recharge: recharge,
+                     valid: { self.visibleRooms.contains { $0.id == roomID && $0.hostID == recipient } },
+                     edit: { value in value.gifts.append(GiftReceipt(giftID: gift.id, recipientID: recipient, quantity: quantity, spent: cost, roomID: roomID)) },
+                     completed: completed)
+    }
+    func requestFrame(recharge: @escaping () -> Void) {
+        if ownsFrame { _ = change { $0.equippedFrame.toggle() }; return }
+        requestSpend(Self.frameCost, title: "Unlock Kitchen spotlight?", purpose: "Kitchen spotlight frame",
+                     detail: "Keep this profile frame and wear it whenever you like.", recharge: recharge,
+                     valid: { !self.ownsFrame },
+                     edit: { $0.frameUnlocked = true; $0.equippedFrame = true },
+                     completed: { self.celebrate("Your frame is ready", "Kitchen spotlight is now on your profile.", artwork: "host-frame") })
+    }
+    private func requestSpend(_ amount: Int, title: String, purpose: String, detail: String,
+                              recharge: @escaping () -> Void, valid: @escaping () -> Bool,
+                              edit: @escaping (inout LocalAccount) -> Void, completed: @escaping () -> Void) {
+        let owner = account.profile.id
+        guard account.signedIn, amount > 0, valid() else { return }
+        guard coinBalance >= amount else { insufficientCoins(amount, recharge: recharge); return }
+        confirm(title, "\(detail)\n\n\(amount.formatted()) coins · Balance \(coinBalance.formatted())", button: "Use \(amount.formatted()) coins") {
+            guard self.account.profile.id == owner, self.account.signedIn, valid() else { return }
+            guard self.coinBalance >= amount else { self.insufficientCoins(amount, recharge: recharge); return }
+            if self.change({ value in
+                let bonusUsed = min(value.demoCoins, amount)
+                value.demoCoins -= bonusUsed
+                value.purchasedCoins -= amount - bonusUsed
+                var expenses = value.coinExpenses ?? []
+                expenses.append(CoinExpense(title: purpose, coins: amount)); value.coinExpenses = expenses
+                edit(&value)
+            }) { completed() }
         }
-        let total = gift.cost * quantity
-        guard account.demoCoins >= total else { tell("More reward coins needed", "Visit Check-in to collect reward coins. No purchase is required."); return false }
-        return change { value in
-            value.demoCoins -= total
-            value.gifts.append(GiftReceipt(giftID: gift.id, recipientID: recipient, quantity: quantity, spent: total, roomID: roomID))
-        }
+    }
+    private func insufficientCoins(_ amount: Int, recharge: @escaping () -> Void) {
+        notice = TatiNotice(title: "A little more sparkle", message: "You need \((amount - coinBalance).formatted()) more coins. Your balance is \(coinBalance.formatted()).", actionTitle: "Recharge", action: recharge, artwork: "coin-pile")
     }
     func saveRoomMessage(roomID: String, text: String) -> Bool {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(300))

@@ -213,7 +213,12 @@ struct CommentDraftView: View {
             .sheet(item: $selectedComment) { comment in
                 SafetyActionsView(subjectID: "comment:" + comment.id, authorID: comment.authorID, contextID: clip.id)
             }
-            .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
+            .onAppear {
+                text = store.account.drafts["comment:" + clip.id] ?? ""
+                if !store.isClipVisible(clip) { dismiss() }
+            }
+            .onChange(of: store.account.hiddenSubjects) { _, _ in if !store.isClipVisible(clip) { dismiss() } }
+            .onChange(of: store.account.blocked) { _, _ in if !store.isClipVisible(clip) { dismiss() } }
             .onDisappear { if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { _ = store.saveDraft("comment:" + clip.id, text: text) } }
     }
 }
