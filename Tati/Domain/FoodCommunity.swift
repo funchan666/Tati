@@ -30,6 +30,8 @@ struct FoodClip: Identifiable, Codable, Hashable {
     var isSample: Bool
     var bundledFile: String? = nil
     var posterArtwork: String? = nil
+    // Only a real moderation result may promote an imported post to approved.
+    var moderationStatus: String? = nil
     var isCollection: Bool { authorID == "tati-collection" }
 }
 struct FoodGift: Identifiable, Hashable {
@@ -45,6 +47,8 @@ struct LocalMessage: Identifiable, Codable {
     var createdAt = Date()
     // A draft is never represented as delivered.
     var status = "Draft · not sent"
+    var senderID: String? = nil
+    var imageFile: String? = nil
 }
 struct VideoComment: Identifiable, Codable {
     var id = UUID().uuidString
@@ -121,6 +125,9 @@ struct ReportDraft: Identifiable, Codable {
     var details: String
     var imageFile: String? = nil
     var date = Date()
+    var recorded: Bool? = nil
+    var authorID: String? = nil
+    var contextID: String? = nil
 }
 struct LocalProfile: Codable {
     var id = UUID().uuidString
@@ -136,6 +143,9 @@ struct LocalAccount: Codable {
     var profile = LocalProfile()
     var signedIn = false
     var following: Set<String> = []
+    // Populated only by authenticated inbound relationship events, never by a follow tap.
+    var followers: Set<String>? = nil
+    var hiddenSubjects: Set<String>? = nil
     var blocked: Set<String> = []
     var likes: Set<String> = []
     var demoCoins = 0

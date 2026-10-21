@@ -7,6 +7,7 @@ struct TatiNotice: Identifiable {
     var actionTitle: String = "OK"
     var action: (() -> Void)?
     var destructive = false
+    var artwork: String? = nil
 }
 
 @MainActor
@@ -52,6 +53,9 @@ final class VisitorStore: ObservableObject {
         }
     }
     func tell(_ title: String, _ message: String) { notice = TatiNotice(title: title, message: message) }
+    func celebrate(_ title: String, _ message: String, artwork: String) {
+        notice = TatiNotice(title: title, message: message, artwork: artwork)
+    }
     func confirm(_ title: String, _ message: String, button: String, destructive: Bool = false, action: @escaping () -> Void) {
         notice = TatiNotice(title: title, message: message, actionTitle: button, action: action, destructive: destructive)
     }
@@ -73,20 +77,45 @@ final class VisitorStore: ObservableObject {
         }
     }
     func toggleFollow(_ id: String) {
-        guard !account.blocked.contains(id) else { tell("Blocked profile", "Unblock this profile in Settings to follow it."); return }
+        guard id != account.profile.id, FoodCatalog.person(id) != nil else { return }
+        guard !isPersonHidden(id) else { tell("Profile unavailable", "This profile is hidden or blocked."); return }
         _ = change { if $0.following.contains(id) { $0.following.remove(id) } else { $0.following.insert(id) } }
     }
     func block(_ id: String) {
-        confirm("Block this profile?", "Their rooms and videos will be hidden. You can unblock this profile in Settings.", button: "Block", destructive: true) {
-            _ = self.change { $0.blocked.insert(id); $0.following.remove(id) }
+        guard id != account.profile.id else { return }
+        confirm("Block this profile?", "Their posts, comments, rooms and conversations will be hidden. You can unblock them in Settings.", button: "Block", destructive: true) {
+            if self.change({ $0.blocked.insert(id); $0.following.remove(id); $0.followers?.remove(id) }) {
+                self.celebrate("Profile blocked", "Their content and conversations are now hidden.", artwork: "blacklist")
+            }
         }
+    }
+    func isHidden(_ subject: String) -> Bool { account.hiddenSubjects?.contains(subject) == true }
+    func isPersonHidden(_ id: String) -> Bool { account.blocked.contains(id) || isHidden("person:" + id) }
+    var visiblePeople: [FoodPerson] { FoodCatalog.people.filter { !isPersonHidden($0.id) } }
+    var visibleRooms: [FoodRoom] { FoodCatalog.rooms.filter { !isPersonHidden($0.hostID) && !isHidden("room:" + $0.id) } }
+    var mutualIDs: Set<String> { account.following.intersection(account.followers ?? []).filter { !isPersonHidden($0) } }
+    func canCommunicate(with id: String) -> Bool {
+        account.signedIn && id != account.profile.id && mutualIDs.contains(id)
+    }
+    @discardableResult
+    func requireMutualFollow(_ id: String) -> Bool {
+        guard !isPersonHidden(id) else { tell("Conversation unavailable", "This profile is hidden or blocked."); return false }
+        guard canCommunicate(with: id) else {
+            tell("Follow each other first", "You can send messages and start video calls after you both choose to follow each other. Your draft is kept.")
+            return false
+        }
+        return true
+    }
+    func messages(with id: String) -> [LocalMessage] {
+        guard !isPersonHidden(id) else { return [] }
+        return account.messages.filter { $0.recipientID == id && !isHidden("message:" + $0.id) }.sorted { $0.createdAt < $1.createdAt }
     }
     func toggleLike(_ id: String) {
         _ = change { if $0.likes.contains(id) { $0.likes.remove(id) } else { $0.likes.insert(id) } }
     }
     func likeCount(for clip: FoodClip) -> Int { account.likes.contains(clip.id) ? 1 : 0 }
     func comments(for clip: FoodClip) -> [VideoComment] {
-        (account.videoComments ?? []).filter { $0.clipID == clip.id && !account.blocked.contains($0.authorID) }
+        (account.videoComments ?? []).filter { $0.clipID == clip.id && !isPersonHidden($0.authorID) && !isHidden("comment:" + $0.id) }
             .sorted { $0.createdAt < $1.createdAt }
     }
     func addComment(to clip: FoodClip, text: String) -> Bool {
@@ -136,7 +165,7 @@ final class VisitorStore: ObservableObject {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(300))
         guard !body.isEmpty,
               let room = FoodCatalog.rooms.first(where: { $0.id == roomID }),
-              !account.blocked.contains(room.hostID) else { return false }
+              visibleRooms.contains(where: { $0.id == room.id }) else { return false }
         return change { value in
             var messages = value.roomMessages ?? []
             messages.append(LocalRoomMessage(roomID: roomID, text: body))
@@ -150,14 +179,35 @@ final class VisitorStore: ObservableObject {
         }
     }
     func saveDraft(_ key: String, text: String) -> Bool { change { $0.drafts[key] = text } }
-    func attemptMessage(to recipient: String, text: String) {
-        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-        guard saveDraft(recipient, text: text) else { return }
-        if account.blocked.contains(recipient) { tell("Profile blocked", "Unblock this profile before messaging."); return }
-        tell("Not sent", "Messaging is currently unavailable. Your message has been saved as a draft.")
+    @discardableResult
+    func attemptMessage(to recipient: String, text: String) -> Bool {
+        let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(2000))
+        let attachment = account.draftImages?[recipient]
+        guard !body.isEmpty || attachment != nil else { return false }
+        guard saveDraft(recipient, text: text), requireMutualFollow(recipient) else { return false }
+        // Persist an outbox entry; without transport, never label it delivered.
+        return change { value in
+            var message = LocalMessage(recipientID: recipient, text: body)
+            message.senderID = value.profile.id
+            message.imageFile = attachment
+            message.status = "Waiting to send"
+            value.messages.append(message)
+            value.drafts.removeValue(forKey: recipient)
+            value.draftImages?.removeValue(forKey: recipient)
+        }
     }
-    func saveReport(subject: String, reason: String, details: String, imageFile: String? = nil) -> Bool {
-        change { $0.reports.append(ReportDraft(subjectID: subject, reason: reason, details: details, imageFile: imageFile)) }
+    func saveReport(subject: String, reason: String, details: String, imageFile: String? = nil, authorID: String? = nil, contextID: String? = nil, feedback: Bool = false) -> Bool {
+        guard !reason.isEmpty else { return false }
+        return change { value in
+            var report = ReportDraft(subjectID: subject, reason: reason, details: details, imageFile: imageFile)
+            report.recorded = true; report.authorID = authorID; report.contextID = contextID
+            value.reports.append(report)
+            if !feedback {
+                var hidden = value.hiddenSubjects ?? []
+                hidden.insert(subject)
+                value.hiddenSubjects = hidden
+            }
+        }
     }
     func removeReport(_ report: ReportDraft) {
         if change({ $0.reports.removeAll { $0.id == report.id } }), let file = report.imageFile { removeUnusedMedia(file) }
@@ -166,6 +216,7 @@ final class VisitorStore: ObservableObject {
         guard storageFailure == nil else { return }
         let referenced = [account.profile.avatarFile, account.profile.coverFile].compactMap { $0 }
             + account.clips.compactMap(\.fileName) + account.reports.compactMap(\.imageFile)
+            + account.messages.compactMap(\.imageFile)
             + Array((account.draftImages ?? [:]).values)
         guard !referenced.contains(file) else { return }
         if FileManager.default.fileExists(atPath: mediaURL(file).path) {
@@ -207,5 +258,15 @@ final class VisitorStore: ObservableObject {
         if clip.authorID == account.profile.id { return account.profile.name }
         return FoodCatalog.person(clip.authorID)?.name ?? "Creator"
     }
-    var visibleClips: [FoodClip] { (account.clips + FoodCatalog.sampleClips).filter { !account.blocked.contains($0.authorID) } }
+    func isClipVisible(_ clip: FoodClip) -> Bool {
+        !isPersonHidden(clip.authorID) && !isHidden("video:" + clip.id)
+            && (clip.bundledFile != nil || clip.moderationStatus == "approved")
+    }
+    var visibleClips: [FoodClip] { (account.clips + FoodCatalog.sampleClips).filter { isClipVisible($0) } }
+    func submitPost(_ clip: FoodClip) -> Bool {
+        guard clip.authorID == account.profile.id, clip.fileName != nil else { return false }
+        var pending = clip
+        pending.moderationStatus = "pendingReview"
+        return change { $0.clips.insert(pending, at: 0) }
+    }
 }

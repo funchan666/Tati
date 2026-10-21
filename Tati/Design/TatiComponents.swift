@@ -309,10 +309,10 @@ struct NoticeLayer: View {
                 Color.black.opacity(0.48).ignoresSafeArea()
                 GeometryReader { geometry in
                     ViewThatFits(in: .vertical) {
-                        noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action)
+                        noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action, artwork: notice.artwork)
                             .fixedSize(horizontal: false, vertical: true)
                         ScrollView {
-                            noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action)
+                            noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action, artwork: notice.artwork)
                         }
                     }
                     .frame(width: min(366, max(0, geometry.size.width - 32)))
@@ -323,8 +323,9 @@ struct NoticeLayer: View {
             }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)
         }
     }
-    private func noticeContent(title: String, message: String, actionTitle: String, action: (() -> Void)?) -> some View {
+    private func noticeContent(title: String, message: String, actionTitle: String, action: (() -> Void)?, artwork: String?) -> some View {
         VStack(spacing: 18) {
+            if let artwork { Art(name: artwork, width: 64, height: 64) }
             Text(title).font(.system(size: 18, weight: .semibold)).multilineTextAlignment(.center)
             Text(message).font(.system(size: 13)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             HStack {

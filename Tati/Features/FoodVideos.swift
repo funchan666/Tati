@@ -252,10 +252,10 @@ struct PublishVideoView: View {
             InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false, minimumHeight: 80, characterLimit: 50)
                 .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
         } footer: {
-            TatiButton(title: "Save video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiButton(title: "Post", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }
                 let clip = FoodClip(id: UUID().uuidString, authorID: store.account.profile.id, caption: caption.trimmingCharacters(in: .whitespacesAndNewlines), fileName: localFile, createdAt: Date(), isSample: false)
-                if store.change({ $0.clips.insert(clip, at: 0) }) { committed = true; dismiss(); store.tell("Video saved", "Your video has been added to your collection. It has not been published.") }
+                if store.submitPost(clip) { committed = true; dismiss(); store.celebrate("Saved for review", "Your post stays private until review is complete and it is approved.", artwork: "chef") }
             }
         }
         .task(id: selection) {

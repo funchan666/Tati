@@ -173,9 +173,11 @@ struct SettingsView: View {
 struct ReportView: View {
     var subjectID: String
     var feedback = false
+    var authorID: String? = nil
+    var contextID: String? = nil
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.dismiss) private var dismiss
-    @State private var reason = "Other"
+    @State private var reason = ""
     @State private var details = ""
     @State private var photoData: Data?
     @State private var photoLoading = false
@@ -189,24 +191,24 @@ struct ReportView: View {
 
             let saved = store.account.reports.filter { $0.subjectID == subjectID }
             if !saved.isEmpty {
-                Text("Saved drafts").font(.headline)
+                Text("Report history").font(.headline)
                 ForEach(saved.reversed()) { draft in
                     VStack(alignment: .leading, spacing: 8) {
                         Text(draft.reason).font(.subheadline.bold()); Text(draft.details).font(.subheadline)
                         if let file = draft.imageFile, let image = UIImage(contentsOfFile: store.mediaURL(file).path) { Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 150) }
                         Text(draft.date, style: .date).font(.caption)
-                        Button("Delete draft") { store.removeReport(draft) }.font(.caption.bold()).foregroundStyle(Color.tatiOlive).buttonStyle(.plain).padding(.vertical, 10)
+                        Button("Remove record") { store.removeReport(draft) }.font(.caption.bold()).foregroundStyle(Color.tatiOlive).buttonStyle(.plain).padding(.vertical, 10)
                     }.padding(16).frame(maxWidth: .infinity, alignment: .leading).background(Color.white.opacity(0.5)).clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
         } footer: {
-            TatiButton(title: "Save draft", enabled: !photoLoading && !details.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiButton(title: feedback ? "Save feedback" : "Report", enabled: !photoLoading && !reason.isEmpty) {
                 var file: String?
                 do {
                     if let photoData { file = try store.importImage(photoData) }
-                    if store.saveReport(subject: subjectID, reason: reason, details: details, imageFile: file) {
+                    if store.saveReport(subject: subjectID, reason: reason, details: details, imageFile: file, authorID: authorID, contextID: contextID, feedback: feedback) {
                         dismiss()
-                        store.tell("Draft saved", "Your \(feedback ? "feedback" : "report") and attachment have been saved as a draft. They have not been submitted.")
+                        store.celebrate(feedback ? "Feedback saved" : "Report saved", feedback ? "Thank you for helping improve Tati." : "This content is now hidden from your feed.", artwork: "support-mascot")
                     } else if let file { store.removeUnusedMedia(file) }
                 } catch { store.tell("Couldn't save attachment", "Your text and photo selection are still here. Free device storage and try again.") }
             }
