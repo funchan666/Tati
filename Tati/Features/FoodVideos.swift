@@ -49,31 +49,14 @@ struct ClipDetailView: View {
                             } else { ArtButton(asset: "more", label: "Video options: report or block") { showReport = true } }
                         }
                         Spacer()
-                        HStack(alignment: .bottom, spacing: 16) {
-                            ScrollView {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    VideoAuthor(clip: clip)
-                                    Text(clip.caption).font(.subheadline)
-                                    if !store.isClipVisible(clip) {
-                                        Text("Awaiting review · Only you can see this").font(.caption)
-                                    }
-                                }.frame(maxWidth: .infinity, alignment: .leading)
-                            }.frame(maxHeight: min(150, geometry.size.height * 0.28))
-                            if store.isClipVisible(clip) {
-                            VStack(spacing: 12) {
-                                VStack(spacing: 2) {
-                                    ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: store.account.likes.contains(clip.id) ? "Unlike video" : "Like video", size: 33) { store.toggleLike(clip.id) }
-                                    Text("\(store.likeCount(for: clip))").font(.system(size: 12)).monospacedDigit()
-                                }
-                                Button { showComments = true } label: {
-                                    VStack(spacing: 2) {
-                                        SupplementIcon(icon: .comment, size: 30, tint: showsVideo ? .white : .tatiInk).frame(width: 44, height: 44)
-                                        Text("\(store.comments(for: clip).count)").font(.system(size: 12)).monospacedDigit()
-                                    }
-                                }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
-                            }
-                            }
-                        }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
+                        ViewThatFits(in: .vertical) {
+                            videoInformation.fixedSize(horizontal: false, vertical: true)
+                            ScrollView { videoInformation }
+                                .scrollIndicators(.hidden)
+                        }
+                        .frame(maxHeight: min(230, geometry.size.height * 0.42), alignment: .bottom)
+                        .padding(.top, 12).padding(.bottom, 12)
+
                     }.padding(.horizontal, 14).foregroundStyle(showsVideo ? Color.white : Color.tatiInk)
                 }
                 .overlay {
@@ -101,6 +84,14 @@ struct ClipDetailView: View {
                 if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
                     ClipSurface(player: player, fillsContainer: true).background(Color.black)
                         .frame(width: geometry.size.width, height: geometry.size.height)
+                        .overlay(alignment: .bottom) {
+                            LinearGradient(stops: [
+                                .init(color: .clear, location: 0),
+                                .init(color: .black.opacity(0.42), location: 0.4),
+                                .init(color: .black.opacity(0.78), location: 1)
+                            ], startPoint: .top, endPoint: .bottom)
+                            .frame(height: min(320, geometry.size.height * 0.42))
+                        }
                         .allowsHitTesting(false)
                 } else {
                     Color.tatiCream
@@ -132,6 +123,32 @@ struct ClipDetailView: View {
         .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
         .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
     }
+    private var videoInformation: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .center, spacing: 12) {
+                    VideoAuthor(clip: clip, size: 38)
+                        .fixedSize(horizontal: true, vertical: false)
+                    Spacer(minLength: 4)
+                    VideoEngagementActions(clip: clip, tint: showsVideo ? .white : .tatiInk) { showComments = true }
+                        .fixedSize(horizontal: true, vertical: false)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    VideoAuthor(clip: clip, size: 38)
+                    VideoEngagementActions(clip: clip, tint: showsVideo ? .white : .tatiInk) { showComments = true }
+                }
+            }
+            Text(clip.caption).font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            if !store.isClipVisible(clip) {
+                Text("Awaiting review · Only you can see this").font(.caption)
+            }
+        }
+        .frame(maxWidth: 640, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
     private func closeIfHidden() {
         if store.isPersonHidden(clip.authorID) || store.isHidden("video:" + clip.id) {
             if playback.ownerID == playbackOwner { playback.stop() }
@@ -189,7 +206,9 @@ struct CommentDraftView: View {
                                         Text(current ? store.account.profile.name : person?.name ?? "Creator").font(.system(size: 14, weight: .medium))
                                     }
                                     Text(comment.text).font(.system(size: 13)).fixedSize(horizontal: false, vertical: true)
-                                    Text(comment.createdAt, style: .relative).font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
+                                    if comment.isCurated != true {
+                                        Text(comment.createdAt, style: .relative).font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
+                                    }
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                                 if current {
                                     ArtButton(asset: "remove", label: "Delete comment", size: 16) {

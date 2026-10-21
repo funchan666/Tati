@@ -555,5 +555,657 @@
       "bundledFile": "collection-street-food-table.mp4",
       "posterArtwork": "poster-street-food-table"
     }
+  },
+  "curatedEngagement": {
+    "sample-clip-0": {
+      "likes": 1286,
+      "comments": [
+        {
+          "id": "curated-sample-clip-0-comment-01",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-16",
+          "text": "That sandwich needs both hands.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-02",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-17",
+          "text": "The crust looks beautifully toasted.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-03",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-18",
+          "text": "Osaka is going straight on my food list.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-04",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-19",
+          "text": "I would share this and still need a nap.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-05",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-20",
+          "text": "The bread-to-filling ratio is impressive.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-06",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-21",
+          "text": "Would you add mustard or keep it simple?",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-07",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-22",
+          "text": "That first cut through the sandwich is so satisfying.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-08",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-23",
+          "text": "A little pickle on the side would be perfect.",
+          "createdAt": 7,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-2": {
+      "likes": 763,
+      "comments": [
+        {
+          "id": "curated-sample-clip-2-comment-01",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-19",
+          "text": "This looks like a lovely place to slow down.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-02",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-20",
+          "text": "Is that matcha? The colour is beautiful.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-03",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-21",
+          "text": "A small cafe break makes the whole afternoon better.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-04",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-22",
+          "text": "I always look for independent cafes when I travel.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-05",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-23",
+          "text": "What would you order to go with that drink?",
+          "createdAt": 4,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-4": {
+      "likes": 2148,
+      "comments": [
+        {
+          "id": "curated-sample-clip-4-comment-01",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-22",
+          "text": "Noodles always taste better outside.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-02",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-23",
+          "text": "I would definitely ask for extra broth.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-03",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-24",
+          "text": "Are those wheat noodles or rice noodles?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-04",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-25",
+          "text": "This is exactly the kind of lunch I crave.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-05",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-26",
+          "text": "A little chilli oil would finish that nicely.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-06",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-27",
+          "text": "I love seeing the steam rise off a fresh bowl.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-07",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-28",
+          "text": "Chopsticks ready, conversation paused.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-08",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-29",
+          "text": "Do you prefer your noodles firm or soft?",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-09",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-30",
+          "text": "That outdoor table is such a good lunch spot.",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-10",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-31",
+          "text": "Now I need to plan a noodle stop this weekend.",
+          "createdAt": 9,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-6": {
+      "likes": 458,
+      "comments": [
+        {
+          "id": "curated-sample-clip-6-comment-01",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-25",
+          "text": "I did not expect those ingredients together.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-02",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-26",
+          "text": "The texture changes so much as it mixes.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-03",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-27",
+          "text": "What inspired this combination?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-04",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-28",
+          "text": "I would love to see how the final batch turns out.",
+          "createdAt": 3,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-9": {
+      "likes": 3261,
+      "comments": [
+        {
+          "id": "curated-sample-clip-9-comment-01",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-28",
+          "text": "Those folds are much neater than mine.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-02",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-29",
+          "text": "Dumpling-making is the best weekend ritual.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-03",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-30",
+          "text": "Do you seal the edges with water?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-04",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-31",
+          "text": "I always make extra and freeze a tray.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-05",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-32",
+          "text": "The little pleats take so much practice.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-06",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-34",
+          "text": "What filling are you using here?",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-07",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-35",
+          "text": "I like mine with vinegar and fresh ginger.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-08",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-36",
+          "text": "Watching the wrappers become dumplings is so calming.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-09",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-38",
+          "text": "My family turns this into a whole afternoon together.",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-10",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-39",
+          "text": "Pan-fried bottoms are my favourite part.",
+          "createdAt": 9,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-11",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-40",
+          "text": "That dough looks really easy to work with.",
+          "createdAt": 10,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-12",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-41",
+          "text": "I need a slow version of the folding step.",
+          "createdAt": 11,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-10": {
+      "likes": 937,
+      "comments": [
+        {
+          "id": "curated-sample-clip-10-comment-01",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-31",
+          "text": "A full table and good company is my kind of evening.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-02",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-32",
+          "text": "Everyone bringing one dish makes dinner more fun.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-03",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-34",
+          "text": "Which dish disappeared first?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-04",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-35",
+          "text": "I love meals where nobody is in a hurry.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-05",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-36",
+          "text": "There is always room for one more chair.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-06",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-38",
+          "text": "This makes me want to host dinner this weekend.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-07",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-39",
+          "text": "Shared plates are such a good way to try something new.",
+          "createdAt": 6,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-12": {
+      "likes": 184,
+      "comments": [
+        {
+          "id": "curated-sample-clip-12-comment-01",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-35",
+          "text": "A quiet pause on the trail is sometimes the best part.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-12-comment-02",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-36",
+          "text": "I always pack something crunchy for a walking break.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-12-comment-03",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-38",
+          "text": "That looks like a wonderful place to catch your breath.",
+          "createdAt": 2,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-13": {
+      "likes": 652,
+      "comments": [
+        {
+          "id": "curated-sample-clip-13-comment-01",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-39",
+          "text": "The ordinary afternoons are the ones you remember.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-02",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-40",
+          "text": "Good company makes a simple day feel special.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-03",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-41",
+          "text": "I like these little moments between the big plans.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-04",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-43",
+          "text": "This feels like the start of a long conversation.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-05",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-44",
+          "text": "No packed schedule, just time together.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-06",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-45",
+          "text": "A reminder to make room for friends this week.",
+          "createdAt": 5,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-14": {
+      "likes": 1673,
+      "comments": [
+        {
+          "id": "curated-sample-clip-14-comment-01",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-43",
+          "text": "I would happily join this noodle tasting.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-02",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-44",
+          "text": "What is the first flavour you notice?",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-03",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-45",
+          "text": "Fresh air and a warm bowl is a great combination.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-04",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-46",
+          "text": "I am curious about the sauce on these noodles.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-05",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-47",
+          "text": "Do you mix everything first or taste the broth alone?",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-06",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-48",
+          "text": "The best food stops are often the unplanned ones.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-07",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-49",
+          "text": "Would you choose this bowl again?",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-08",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-16",
+          "text": "A squeeze of lime would be my finishing touch.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-09",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-17",
+          "text": "Now I want to compare noodles from a few different places.",
+          "createdAt": 8,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-15": {
+      "likes": 1189,
+      "comments": [
+        {
+          "id": "curated-sample-clip-15-comment-01",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-46",
+          "text": "Cooking together makes prep feel less like a chore.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-02",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-47",
+          "text": "One person chops, one person tastes. Fair deal.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-03",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-48",
+          "text": "I like how everyone has something to do.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-04",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-49",
+          "text": "What are you making together today?",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-05",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-16",
+          "text": "This is how my favourite recipes get passed around.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-06",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-17",
+          "text": "The kitchen always ends up being the gathering spot.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-07",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-18",
+          "text": "I volunteer for the taste-testing job.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-08",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-19",
+          "text": "A shared meal starts long before it reaches the table.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-09",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-20",
+          "text": "Do you follow a recipe or adjust as you go?",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-10",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-21",
+          "text": "We always put on music when we cook together.",
+          "createdAt": 9,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-11",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-22",
+          "text": "I hope somebody saved a little for tomorrow.",
+          "createdAt": 10,
+          "isCurated": true
+        }
+      ]
+    }
   }
 }

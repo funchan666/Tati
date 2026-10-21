@@ -73,6 +73,7 @@ struct VideoComment: Identifiable, Codable {
     var authorID: String
     var text: String
     var createdAt = Date()
+    var isCurated: Bool? = nil
 }
 struct GiftReceipt: Identifiable, Codable {
     var id = UUID().uuidString

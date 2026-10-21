@@ -185,10 +185,20 @@ final class VisitorStore: ObservableObject {
         guard visibleClips.contains(where: { $0.id == id }) else { return }
         _ = change { if $0.likes.contains(id) { $0.likes.remove(id) } else { $0.likes.insert(id) } }
     }
-    func likeCount(for clip: FoodClip) -> Int { account.likes.contains(clip.id) ? 1 : 0 }
+    private func curatedEngagement(for clip: FoodClip) -> CuratedClipEngagement? {
+        // Imported/user-authored videos never receive editorial interactions.
+        guard clip.isSample, ContentLibrary.shared.clips.contains(where: { $0.id == clip.id }) else { return nil }
+        return ContentLibrary.shared.curatedEngagement?[clip.id]
+    }
+    func likeCount(for clip: FoodClip) -> Int {
+        max(0, curatedEngagement(for: clip)?.likes ?? 0) + (account.likes.contains(clip.id) ? 1 : 0)
+    }
+    func commentCount(for clip: FoodClip) -> Int { comments(for: clip).count }
     func comments(for clip: FoodClip) -> [VideoComment] {
-        (account.videoComments ?? []).filter { $0.clipID == clip.id && !isPersonHidden($0.authorID) && !isHidden("comment:" + $0.id) }
-            .sorted { $0.createdAt < $1.createdAt }
+        let curated = curatedEngagement(for: clip)?.comments ?? []
+        return (curated + (account.videoComments ?? []))
+            .filter { $0.clipID == clip.id && !isPersonHidden($0.authorID) && !isHidden("comment:" + $0.id) }
+            .sorted { $0.createdAt == $1.createdAt ? $0.id < $1.id : $0.createdAt < $1.createdAt }
     }
     func addComment(to clip: FoodClip, text: String) -> Bool {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(500))

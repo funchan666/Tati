@@ -34,7 +34,7 @@ struct DiscoverView: View {
                 }
                 browseControls
                 if voice {
-                    ImageAction(asset: "topic-banner", label: "Choose a food topic", height: 66) { showFilter = true }
+                    voiceTopicPrompt.padding(.bottom, 4)
                 }
                 if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 if rooms.isEmpty {
@@ -75,42 +75,83 @@ struct DiscoverView: View {
         .sheet(isPresented: $showPublish) { PublishSheet() }
     }
 
+    private var voiceTopicPrompt: some View {
+        Button { showFilter = true } label: {
+            HStack(spacing: 10) {
+                Art(name: "food-flame", width: 26, height: 30)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Hot topic").font(.caption.weight(.bold)).foregroundStyle(Color.tatiInk)
+                    Text("Late-night snack: sweet or savory?")
+                        .font(.footnote).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "chevron", width: 8, height: 13)
+            }
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .frame(minHeight: 44)
+            .background(Color.white.opacity(0.65), in: RoundedRectangle(cornerRadius: 14))
+            .contentShape(RoundedRectangle(cornerRadius: 14))
+        }.buttonStyle(.plain)
+            .accessibilityLabel("Hot topic. Late-night snack: sweet or savory?")
+            .accessibilityHint("Opens food, city and language filters")
+    }
+
     private var browseControls: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: 8) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 22) {
-                        ForEach(sections, id: \.self) { value in
-                            Button { selection.section = value } label: {
-                                Text(value).font(.subheadline.weight(currentSection == value ? .bold : .regular))
-                                    .foregroundStyle(currentSection == value ? Color.tatiInk : Color.tatiOlive)
-                                    .frame(minHeight: 44)
-                                    .background(alignment: .bottom) {
-                                        if currentSection == value { Color.tatiLime.frame(height: 3) }
+        VStack(alignment: .leading, spacing: 4) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 26) {
+                    ForEach(sections, id: \.self) { value in
+                        Button { selection.section = value } label: {
+                            Text(value)
+                                .font(.title3.weight(currentSection == value ? .bold : .medium))
+                                .foregroundStyle(currentSection == value ? Color.tatiInk : Color.tatiOlive)
+                                .fixedSize(horizontal: true, vertical: false)
+                                .frame(minWidth: 44, minHeight: 44, alignment: .leading)
+                                .padding(.bottom, 3)
+                                .overlay(alignment: .bottomLeading) {
+                                    if currentSection == value {
+                                        Capsule().fill(Color.tatiPink).frame(width: 24, height: 3)
                                     }
-                            }.buttonStyle(.plain)
-                                .accessibilityAddTraits(currentSection == value ? .isSelected : [])
-                        }
+                                }
+                        }.buttonStyle(.plain)
+                            .accessibilityAddTraits(currentSection == value ? .isSelected : [])
                     }
                 }
-                Button { showFilter = true } label: {
-                    HStack(spacing: 5) {
-                        Art(name: "filter", width: 23, height: 23)
-                        if selection.activeCount > 0 {
-                            Text("\(selection.activeCount)").font(.caption.weight(.bold)).foregroundStyle(Color.tatiInk)
-                        }
-                    }.padding(.horizontal, 10).frame(minHeight: 44)
-                        .background(selection.activeCount > 0 ? Color.tatiLime : Color.white.opacity(0.55), in: Capsule())
-                }.buttonStyle(.plain).accessibilityLabel("Filters, \(selection.activeCount) active")
             }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
-                    ForEach(FoodCatalog.topics, id: \.self) { value in
-                        BrowseFilterChip(title: value == "All" ? "All food" : value, selected: selection.topic == value) {
-                            selection.topic = value
+            HStack(spacing: 8) {
+                ScrollViewReader { proxy in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 6) {
+                            ForEach(FoodCatalog.topics, id: \.self) { value in
+                                DiscoveryTopicTab(title: value == "All" ? "All food" : value,
+                                                  selected: selection.topic == value) {
+                                    selection.topic = value
+                                }.id(value)
+                            }
                         }
                     }
-                }.padding(.vertical, 6)
+                    // A selection made in the sheet must remain visible in the feed.
+                    .onChange(of: selection.topic) { _, value in proxy.scrollTo(value, anchor: .center) }
+                    .onAppear { proxy.scrollTo(selection.topic, anchor: .center) }
+                }
+                Rectangle().fill(Color.tatiOlive.opacity(0.18)).frame(width: 1, height: 20)
+                    .accessibilityHidden(true)
+                Button { showFilter = true } label: {
+                    Art(name: "filter", width: 23, height: 23)
+                        .frame(width: 44, height: 44)
+                        .overlay(alignment: .topTrailing) {
+                            if selection.activeCount > 0 {
+                                Text("\(selection.activeCount)")
+                                    .font(.caption2.weight(.bold)).monospacedDigit()
+                                    .foregroundStyle(Color.tatiInk)
+                                    .padding(.horizontal, 5).padding(.vertical, 2)
+                                    .background(Color.tatiLime, in: Capsule())
+                            }
+                        }
+                        .contentShape(Rectangle())
+                }.buttonStyle(.plain)
+                    .accessibilityLabel("Filters")
+                    .accessibilityValue("\(selection.activeCount) active")
             }
             if selection.city != "All" || selection.language != "All" {
                 FilterTagLayout {
@@ -121,7 +162,7 @@ struct DiscoverView: View {
                         .padding(.horizontal, 6).frame(minHeight: 44).buttonStyle(.plain)
                 }
             }
-        }.padding(.bottom, 4)
+        }.padding(.top, 4).padding(.bottom, 2)
     }
 
     private func appliedCondition(_ title: String, kind: String, clear: @escaping () -> Void) -> some View {
@@ -134,6 +175,28 @@ struct DiscoverView: View {
                 .frame(minHeight: 44)
         }.buttonStyle(.plain).foregroundStyle(Color.tatiInk)
             .accessibilityLabel("Remove \(kind) filter: \(title)")
+    }
+}
+
+/// Feed categories stay visually light; the filter sheet retains its larger form controls.
+private struct DiscoveryTopicTab: View {
+    var title: String
+    var selected: Bool
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title).font(.footnote.weight(selected ? .bold : .medium))
+                .fixedSize(horizontal: true, vertical: false)
+                .foregroundStyle(selected ? Color.tatiCream : Color.tatiInk)
+                .padding(.horizontal, 12).padding(.vertical, 7)
+                .background(selected ? Color.tatiInk : Color.clear, in: Capsule())
+                .overlay {
+                    Capsule().strokeBorder(selected ? Color.clear : Color.tatiOlive.opacity(0.24), lineWidth: 1)
+                }
+                .frame(minHeight: 44).contentShape(Rectangle())
+        }.buttonStyle(.plain)
+            .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 

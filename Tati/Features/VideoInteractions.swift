@@ -21,25 +21,18 @@ struct FeedVideoCard: View {
                 }.buttonStyle(.plain).accessibilityLabel("Play full screen: " + clip.caption)
                 VStack(alignment: .leading, spacing: 7) {
                     Spacer(minLength: 0)
-                    HStack(spacing: 8) {
-                        VideoAuthor(clip: clip, size: 32)
-                        Spacer(minLength: 4)
-                        if store.isClipVisible(clip) {
-                        Button { store.toggleLike(clip.id) } label: {
-                            HStack(spacing: 3) {
-                                Art(name: store.account.likes.contains(clip.id) ? "heart" : "like-video", width: 22, height: 22)
-                                Text("\(store.likeCount(for: clip))").font(.system(size: 11)).monospacedDigit()
-                            }.frame(minWidth: 44, minHeight: 44)
-                        }.buttonStyle(.plain).accessibilityLabel("\(store.likeCount(for: clip)) likes")
-                            .accessibilityAddTraits(store.account.likes.contains(clip.id) ? .isSelected : [])
-                        Button { showComments = true } label: {
-                            HStack(spacing: 3) {
-                                SupplementIcon(icon: .comment, size: 21, tint: .white)
-                                Text("\(store.comments(for: clip).count)").font(.system(size: 11)).monospacedDigit()
-                            }.frame(minWidth: 44, minHeight: 44)
-                        }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 8) {
+                            VideoAuthor(clip: clip, size: 32).fixedSize(horizontal: true, vertical: false)
+                            Spacer(minLength: 4)
+                            VideoEngagementActions(clip: clip) { showComments = true }.fixedSize(horizontal: true, vertical: false)
+                        }
+                        VStack(alignment: .leading, spacing: 0) {
+                            VideoAuthor(clip: clip, size: 32)
+                            VideoEngagementActions(clip: clip) { showComments = true }
                         }
                     }
+
                     NavigationLink(destination: ClipDetailView(clip: clip)) {
                         Text(clip.caption).font(.system(size: 12)).lineLimit(2)
                             .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
@@ -74,6 +67,38 @@ struct FeedVideoCard: View {
         }
         .sheet(isPresented: $showOptions) {
             VideoOptionsView(clip: clip)
+        }
+    }
+
+}
+
+struct VideoEngagementActions: View {
+    var clip: FoodClip
+    var tint: Color = .white
+    var onComment: () -> Void
+    @EnvironmentObject private var store: VisitorStore
+
+    @ViewBuilder var body: some View {
+        if store.isClipVisible(clip) {
+            HStack(spacing: 14) {
+                Button { store.toggleLike(clip.id) } label: {
+                    HStack(spacing: 4) {
+                        Art(name: store.account.likes.contains(clip.id) ? "heart" : "like-video", width: 22, height: 22)
+                        Text(store.likeCount(for: clip).formatted()).font(.caption.weight(.medium)).monospacedDigit()
+                            .fixedSize(horizontal: true, vertical: false)
+                    }.frame(minWidth: 44, minHeight: 44)
+                }.buttonStyle(.plain)
+                    .accessibilityLabel(store.account.likes.contains(clip.id) ? "Unlike video" : "Like video")
+                    .accessibilityValue("\(store.likeCount(for: clip)) likes")
+                    .accessibilityAddTraits(store.account.likes.contains(clip.id) ? .isSelected : [])
+                Button(action: onComment) {
+                    HStack(spacing: 4) {
+                        SupplementIcon(icon: .comment, size: 21, tint: tint)
+                        Text(store.commentCount(for: clip).formatted()).font(.caption.weight(.medium)).monospacedDigit()
+                            .fixedSize(horizontal: true, vertical: false)
+                    }.frame(minWidth: 44, minHeight: 44)
+                }.buttonStyle(.plain).accessibilityLabel("\(store.commentCount(for: clip)) comments")
+            }.foregroundStyle(tint)
         }
     }
 }

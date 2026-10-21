@@ -92,6 +92,12 @@ def main():
         "roomCovers": mapping["roomCovers"],
         "clips": clips,
         "roomClips": room_clips,
+        # Keep explicitly authored display interactions across media re-imports.
+        "curatedEngagement": {
+            entry["id"]: entry["curatedEngagement"]
+            for entry in mapping["videos"]
+            if not entry.get("roomID") and "curatedEngagement" in entry
+        },
     })
     total = sum(p.stat().st_size for folder in [CATALOG, MOVIES] for p in folder.rglob("*") if p.is_file())
     print(f"Imported {len(mapping['portraits'])} portraits, {len(clips)} feed videos and {len(room_clips)} room videos, with original-frame posters.")
