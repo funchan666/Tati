@@ -56,7 +56,7 @@ struct FeedVideoCard: View {
                 .foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 24))
         }.aspectRatio(1.42, contentMode: .fit)
         .sheet(isPresented: $showComments) {
-            CommentDraftView(clip: clip).overlay { NoticeLayer() }.presentationDetents([.medium, .large])
+            NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showOptions) {
             VideoOptionsView(clip: clip).overlay { NoticeLayer() }
@@ -88,33 +88,47 @@ struct VideoAuthor: View {
 }
 
 struct VideoOptionsView: View {
-    private enum Destination: Hashable { case report, profile }
     var clip: FoodClip
+    var body: some View {
+        SafetyActionsView(subjectID: "video:" + clip.id, authorID: clip.authorID)
+    }
+}
+
+/// Shared report/block surface for profiles, posts, comments, messages and rooms.
+struct SafetyActionsView: View {
+    var subjectID: String
+    var authorID: String
+    var contextID: String? = nil
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.dismiss) private var dismiss
-    @State private var path: [Destination] = []
+    @State private var reporting = false
     var body: some View {
-        NavigationStack(path: $path) {
-            TatiPanel(title: "Video options") {
-                NavigationLink(value: Destination.report) {
-                    SettingRow(title: "Report video", asset: "feedback")
-                }.buttonStyle(.plain)
-                if let person = FoodCatalog.person(clip.authorID) {
-                    Button { store.block(person.id) } label: { SettingRow(title: "Block " + person.name, asset: "blacklist") }.buttonStyle(.plain)
-                    NavigationLink(value: Destination.profile) { SettingRow(title: "View author profile", asset: "profile-button") }.buttonStyle(.plain)
+        NavigationStack {
+            VStack(spacing: 12) {
+                HStack {
+                    Text("Manage content").font(.system(size: 18, weight: .bold, design: .serif))
+                    Spacer()
+                    ArtButton(asset: "close-light", label: "Close") { dismiss() }
                 }
-            }
-            .navigationDestination(for: Destination.self) { destination in
-                switch destination {
-                case .report: ReportView(subjectID: "video:" + clip.id)
-                case .profile:
-                    if let person = FoodCatalog.person(clip.authorID) { PersonProfileView(person: person) }
+                HStack(spacing: 28) {
+                    if authorID != store.account.profile.id {
+                        ImageAction(asset: "block-button", label: "Block user", height: 76) { store.block(authorID) }
+                    }
+                    ImageAction(asset: "report-button", label: "Report content", height: 76) { reporting = true }
+                }.padding(.bottom, 16)
+            }.padding(.horizontal, 22).frame(maxWidth: 420).frame(maxWidth: .infinity)
+                .foregroundStyle(Color.tatiInk).background(Color.tatiCream).tatiScreen()
+                .navigationDestination(isPresented: $reporting) {
+                    ReportView(subjectID: subjectID, authorID: authorID, contextID: contextID)
                 }
-            }
         }
-        .presentationDetents(path.isEmpty ? [.height(250), .large] : [.large])
-        .onChange(of: store.account.blocked) { _, blocked in
-            if blocked.contains(clip.authorID) { dismiss() }
+        .presentationBackground(Color.tatiCream).presentationCornerRadius(22)
+        .presentationDetents(reporting ? [.large] : [.height(168)])
+        .presentationDragIndicator(.hidden)
+        .overlay { NoticeLayer() }
+        .onChange(of: store.account.blocked) { _, blocked in if blocked.contains(authorID) { dismiss() } }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in
+            if store.isHidden(subjectID) || store.isPersonHidden(authorID) { dismiss() }
         }
     }
 }

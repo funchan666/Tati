@@ -3,7 +3,7 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 enum RoomPanel: String, Identifiable {
-    case gifts, tools, members, layout, background, microphone, music, invite, host, report, pk, leave
+    case gifts, tools, safety, members, layout, background, microphone, music, invite, host, report, pk, leave
     var id: String { rawValue }
 }
 struct RoomView: View {
@@ -32,7 +32,7 @@ struct RoomView: View {
                 VStack(spacing: 8) {
                     HStack(spacing: 0) {
                         HStack(spacing: 0) {
-                            Button { panel = .host } label: {
+                            NavigationLink(destination: PersonProfileView(person: host)) {
                                 HStack(spacing: 6) {
                                     Avatar(asset: host.portraitArtwork, size: 38)
                                         .overlay { Circle().strokeBorder(.white.opacity(0.75), lineWidth: 1) }
@@ -139,6 +139,7 @@ struct RoomView: View {
         }
         .tatiScreen()
         .onAppear {
+            guard store.visibleRooms.contains(where: { $0.id == room.id }) else { dismiss(); return }
             isVisible = true
             roomSession.enter(room); message = store.account.drafts["room-" + room.id] ?? ""
             startRoomVideo()
@@ -154,12 +155,16 @@ struct RoomView: View {
                 if ownsPlayback { playback.stop() }
             } else if isVisible { startRoomVideo() }
         }
+        .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
         .sheet(item: $panel) { selected in
             if selected == .leave {
                 RoomLeavePanel(isVoice: room.isVoice,
                                minimize: { roomSession.minimize(); panel = nil; dismiss() },
                                leave: { roomSession.leave(room.id); panel = nil; dismiss() },
                                stay: { panel = nil })
+            } else if selected == .safety {
+                SafetyActionsView(subjectID: "room:" + room.id, authorID: room.hostID)
             } else if selected == .tools {
                 RoomToolsPanel(isVoice: room.isVoice) { panel = $0 }
             } else {
@@ -167,7 +172,7 @@ struct RoomView: View {
                     Group {
                         switch selected {
                         case .gifts: GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil })
-                        case .tools: EmptyView() // Uses its own content-sized presentation.
+                        case .tools, .safety: EmptyView() // Uses its own content-sized presentation.
                         case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No members yet", detail: "Member information is currently unavailable."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
                         case .layout: layoutPanel
                         case .background: backgroundPanel
@@ -191,6 +196,12 @@ struct RoomView: View {
             }
         }
     }
+    private func closeIfHidden() {
+        guard !store.visibleRooms.contains(where: { $0.id == room.id }) else { return }
+        if ownsPlayback { playback.stop() }
+        roomSession.leave(room.id)
+        dismiss()
+    }
     private func voiceStage(containerWidth: CGFloat) -> some View {
         let stageWidth = max(0, min(440, containerWidth - 32))
         let maximumColumns = max(1, min(5, Int(stageWidth / 62)))
@@ -199,7 +210,7 @@ struct RoomView: View {
         let cellWidth = min(76, stageWidth / CGFloat(columns))
         return ScrollView {
             VStack(spacing: 20) {
-                Button { panel = .host } label: {
+                NavigationLink(destination: PersonProfileView(person: host)) {
                     Avatar(asset: host.portraitArtwork, size: 68)
                         .overlay { Art(name: "host-frame", width: 96, height: 96) }
                         .frame(width: 104, height: 104)

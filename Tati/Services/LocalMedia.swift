@@ -113,13 +113,18 @@ struct ClipSurface: UIViewRepresentable {
     @Published private(set) var starting = false
     private let queue = DispatchQueue(label: "tati.camera.preview")
     private var generation = UUID()
-    func start() async {
+    func start(requiresMicrophone: Bool = false) async {
         guard !starting else { return }
         starting = true; defer { starting = false }
         let requestID = UUID(); generation = requestID
         let authorized = await AVCaptureDevice.requestAccess(for: .video)
         guard generation == requestID, !Task.isCancelled else { return }
         guard authorized else { status = "Camera access was denied. You can allow it in iOS Settings."; return }
+        if requiresMicrophone {
+            let microphoneAllowed = await AVCaptureDevice.requestAccess(for: .audio)
+            guard generation == requestID, !Task.isCancelled else { return }
+            guard microphoneAllowed else { status = "Microphone access was denied. Allow it in iOS Settings before continuing."; return }
+        }
         guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front), let input = try? AVCaptureDeviceInput(device: device) else { status = "No camera is available."; return }
         let capture = session
         let configured = await withCheckedContinuation { continuation in

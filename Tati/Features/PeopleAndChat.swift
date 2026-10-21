@@ -5,7 +5,7 @@ struct PersonProfileView: View {
     var person: FoodPerson
     @EnvironmentObject private var store: VisitorStore
     @State private var more = false
-    @State private var report = false
+    @Environment(\.dismiss) private var dismiss
     @State private var gift = false
     var body: some View {
         ScrollView {
@@ -47,18 +47,9 @@ struct PersonProfileView: View {
                 }.padding(.horizontal, 16).padding(.bottom, 16)
             }.frame(maxWidth: 680).frame(maxWidth: .infinity)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
-        .overlay {
-            if more {
-                ZStack {
-                    Color.black.opacity(0.48).ignoresSafeArea().onTapGesture { more = false }
-                    HStack(spacing: 32) {
-                        ImageAction(asset: "block-button", label: "Block profile", height: 76) { more = false; store.block(person.id) }
-                        ImageAction(asset: "report-button", label: "Report profile", height: 76) { more = false; report = true }
-                    }.padding(28).frame(maxWidth: 300).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 10))
-                }.accessibilityAddTraits(.isModal).accessibilityAction(.escape) { more = false }
-            }
-        }
-        .sheet(isPresented: $report) { NavigationStack { ReportView(subjectID: "person:" + person.id) }.overlay { NoticeLayer() } }
+        .sheet(isPresented: $more) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
+        .onChange(of: store.account.blocked) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
         .sheet(isPresented: $gift) { NavigationStack { GiftShopView(recipient: person) }.overlay { NoticeLayer() }.presentationDetents([.height(390), .large]) }
     }
 }
@@ -95,14 +86,22 @@ struct MyProfileView: View {
                         Text(store.account.profile.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
                         HStack {
                             NavigationLink(destination: RelationshipView(kind: "Following")) { stat("\(store.account.following.count)", "Following") }
-                            NavigationLink(destination: RelationshipView(kind: "Follower")) { stat("0", "Follower") }
-                            NavigationLink(destination: RelationshipView(kind: "Friends")) { stat("0", "Friends") }
+                            NavigationLink(destination: RelationshipView(kind: "Follower")) { stat("\((store.account.followers ?? []).filter { !store.isPersonHidden($0) }.count)", "Follower") }
+                            NavigationLink(destination: RelationshipView(kind: "Friends")) { stat("\(store.mutualIDs.count)", "Friends") }
                         }.buttonStyle(.plain).padding(.vertical, 10).background(Color(red: 1, green: 0.96, blue: 0.24)).clipShape(RoundedRectangle(cornerRadius: 7))
                         HStack(spacing: 12) {
                             NavigationLink(destination: CheckInView()) { Art(name: "checkin-entry") }.accessibilityLabel("Check in")
                             NavigationLink(destination: WalletView()) { Art(name: "wallet-entry") }.accessibilityLabel("My wallet")
                         }.padding(.vertical, 3)
                         VStack(spacing: 0) {
+                            NavigationLink(destination: ConversationsView()) {
+                                HStack(spacing: 12) {
+                                    SupplementIcon(icon: .comment, size: 22)
+                                    Text("Messages").font(.system(size: 14))
+                                    Spacer()
+                                    Art(name: "chevron", width: 14, height: 14)
+                                }.padding(18).frame(minHeight: 50)
+                            }
                             NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", asset: "blacklist") }
                             NavigationLink(destination: LevelView()) { SettingRow(title: "My level", asset: "level") }
                             NavigationLink(destination: SupportView()) { SettingRow(title: "Customer Support", asset: "support") }
@@ -131,17 +130,16 @@ struct RelationshipView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
         TatiPage(title: kind) {
-            if kind == "Following" {
-                let people = FoodCatalog.people.filter { store.account.following.contains($0.id) && !store.account.blocked.contains($0.id) }
-                if people.isEmpty { EmptyContent(title: "Your table is open", detail: "Follow a profile to find it here.") }
-                ForEach(people) { person in
-                    HStack(spacing: 10) {
-                        NavigationLink(destination: PersonProfileView(person: person)) { HStack { Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)) } }.buttonStyle(.plain)
-                        Spacer()
-                        NavigationLink(destination: ConversationView(person: person)) { SupplementIcon(icon: .comment, size: 22).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Chat with \(person.name)")
-                    }.padding(.horizontal, 12).padding(.vertical, 4).background { Image("outlined-card").resizable() }
-                }
-            } else { EmptyContent(title: "No \(kind.lowercased()) yet", detail: "New connections will appear here.") }
+            let ids = kind == "Following" ? store.account.following : kind == "Friends" ? store.mutualIDs : (store.account.followers ?? [])
+            let people = store.visiblePeople.filter { ids.contains($0.id) }
+            if people.isEmpty { EmptyContent(title: "No \(kind.lowercased()) yet", detail: "Connections appear here after people choose to follow.") }
+            ForEach(people) { person in
+                HStack(spacing: 10) {
+                    UserProfileLink(userID: person.id) { HStack { Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)) } }
+                    Spacer()
+                    NavigationLink(destination: ConversationView(person: person)) { SupplementIcon(icon: .comment, size: 22).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Chat with " + person.name)
+                }.padding(.horizontal, 12).padding(.vertical, 4).background { Image("outlined-card").resizable() }
+            }
         }
     }
 }
@@ -151,7 +149,13 @@ struct MyVideosView: View {
         TatiPage(title: "My videos") {
             NavigationLink(destination: PublishVideoView()) { SettingRow(title: "Add a video", asset: "add-video") }
             if store.account.clips.isEmpty { EmptyContent(title: "Your story starts here", detail: "Add a food video to your collection.") }
-            ForEach(store.account.clips) { clip in FeedVideoCard(clip: clip) }
+            ForEach(store.account.clips.filter { !store.isHidden("video:" + $0.id) }) { clip in
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(clip.moderationStatus == "approved" ? "Published" : "Awaiting review · Only you can see this")
+                        .font(.caption).foregroundStyle(Color.tatiOlive)
+                    FeedVideoCard(clip: clip)
+                }
+            }
         }
     }
 }
@@ -239,77 +243,185 @@ struct EditProfileView: View {
         }
     }
 }
+struct ConversationsView: View {
+    @EnvironmentObject private var store: VisitorStore
+    private var people: [FoodPerson] {
+        store.visiblePeople.filter { person in
+            !store.messages(with: person.id).isEmpty || !(store.account.drafts[person.id] ?? "").isEmpty
+                || store.account.draftImages?[person.id] != nil
+        }
+    }
+    var body: some View {
+        TatiPage(title: "Messages") {
+            if people.isEmpty { EmptyContent(title: "No conversations yet", detail: "Open a profile to start a conversation.") }
+            ForEach(people) { person in
+                HStack(spacing: 12) {
+                    UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 44) }
+                    VStack(alignment: .leading, spacing: 4) {
+                        UserProfileLink(userID: person.id) { Text(person.name).font(.headline) }
+                        NavigationLink(destination: ConversationView(person: person)) {
+                            Text(store.messages(with: person.id).last?.text ?? store.account.drafts[person.id] ?? "Photo attachment")
+                                .font(.caption).lineLimit(1).frame(maxWidth: .infinity, alignment: .leading)
+                        }.buttonStyle(.plain)
+                    }
+                    NavigationLink(destination: ConversationView(person: person)) {
+                        Art(name: "chevron", width: 14, height: 14).frame(width: 44, height: 44)
+                    }.buttonStyle(.plain).accessibilityLabel("Open conversation")
+                }.padding(.vertical, 8)
+            }
+        }
+    }
+}
+
 struct ConversationView: View {
     var person: FoodPerson
     @EnvironmentObject private var store: VisitorStore
     @State private var text = ""
     @State private var gifts = false
-    @State private var media: PhotosPickerItem?
+    @State private var showCall = false
+    @State private var showSafety = false
+    @State private var reportedMessage: LocalMessage?
     @Environment(\.dismiss) private var dismiss
+    private var messages: [LocalMessage] { store.messages(with: person.id) }
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 HStack(spacing: 6) {
                     ArtButton(asset: "back", label: "Back") { dismiss() }
-                    Avatar(asset: person.portraitArtwork, size: 42)
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(1)
-                    }
-                    Spacer()
-                    ArtButton(asset: "add-video", label: "Video call", size: 24) { store.tell("Video call unavailable", "Video calls are currently unavailable. No call has been placed.") }
-                    NavigationLink(destination: PersonProfileView(person: person)) { Art(name: "profile-button", width: 64, height: 32) }.accessibilityLabel("View profile")
-                }.padding(.horizontal, 6)
-                ScrollView {
-                    VStack(spacing: 18) {
-                        if let draft = store.account.drafts[person.id], !draft.isEmpty {
-                            HStack {
-                                Spacer(minLength: 56)
-                                VStack(alignment: .leading, spacing: 6) { Text(draft).font(.system(size: 14)); Text("Draft · not sent").font(.system(size: 10)) }
-                                    .padding(14).foregroundStyle(.white).background(Color.tatiPink)
-                                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
-                            }
+                    UserProfileLink(userID: person.id) {
+                        HStack(spacing: 7) {
+                            Avatar(asset: person.portraitArtwork, size: 38)
+                            Text(person.name).font(.system(size: 15, weight: .medium)).lineLimit(1)
                         }
-                    }.padding(.horizontal, 18)
+                    }
+                    Spacer(minLength: 0)
+                    ArtButton(asset: "add-video", label: "Video call", size: 24) {
+                        if store.requireMutualFollow(person.id) { showCall = true }
+                    }
+                    ArtButton(asset: "more", label: "Report or block", size: 22) { showSafety = true }
+                }.padding(.horizontal, 6)
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(spacing: 16) {
+                            ForEach(messages) { message in
+                                let mine = message.senderID == nil || message.senderID == store.account.profile.id
+                                HStack(alignment: .top, spacing: 8) {
+                                    if mine { Spacer(minLength: 36) }
+                                    else { UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 32) } }
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        if !mine { UserProfileLink(userID: person.id) { Text(person.name).font(.caption.bold()) } }
+                                        if let file = message.imageFile, let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
+                                            Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 180).clipShape(RoundedRectangle(cornerRadius: 10))
+                                        }
+                                        if !message.text.isEmpty { Text(message.text).font(.system(size: 14)).textSelection(.enabled) }
+                                        HStack {
+                                            Text(message.createdAt, style: .time)
+                                            if mine { Text(message.status) }
+                                        }.font(.system(size: 10)).opacity(0.8)
+                                    }.padding(12).foregroundStyle(mine ? Color.white : Color.tatiInk)
+                                        .background(mine ? Color.tatiPink : .white)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    if !mine {
+                                        ArtButton(asset: "more", label: "Report message", size: 18) { reportedMessage = message }
+                                        Spacer(minLength: 16)
+                                    }
+                                }.id(message.id)
+                            }
+                        }.padding(16)
+                    }.scrollDismissesKeyboard(.interactively)
+                    .onAppear { if let id = messages.last?.id { proxy.scrollTo(id, anchor: .bottom) } }
+                    .onChange(of: messages.map(\.id)) { _, ids in if let id = ids.last { proxy.scrollTo(id, anchor: .bottom) } }
                 }
                 if store.account.draftImages?[person.id] != nil { DraftPhotoAttachment(draftKey: person.id).padding(.horizontal, 12) }
-                // Reflow the same children so an attachment import survives resizing.
                 let inputLayout = geometry.size.width < 350
                     ? AnyLayout(VStackLayout(alignment: .trailing, spacing: 4))
                     : AnyLayout(HStackLayout(spacing: 2))
                 inputLayout {
-                    HStack(spacing: 2) { microphoneButton; composer }
-                    attachmentActions
+                    HStack(spacing: 2) {
+                        ArtButton(asset: "chat-mic", label: "Voice message", size: 32) {
+                            if store.requireMutualFollow(person.id) { store.tell("Voice messaging unavailable", "No recording has started.") }
+                        }
+                        HStack(spacing: 0) {
+                            TextField("Say Hi~", text: $text, axis: .vertical).lineLimit(1...4)
+                                .font(.system(size: 13)).padding(.leading, 12).padding(.vertical, 8).tint(.white)
+                                .onChange(of: text) { _, value in
+                                    let limited = String(value.prefix(2000))
+                                    if limited != value { text = limited }
+                                    _ = store.saveDraft(person.id, text: limited)
+                                }
+                            Button { if store.attemptMessage(to: person.id, text: text) { text = "" } } label: {
+                                SupplementIcon(icon: .send, size: 22, tint: .white).frame(width: 44, height: 44)
+                            }.buttonStyle(.plain).accessibilityLabel("Send message")
+                        }.foregroundStyle(.white).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22))
+                    }
+                    HStack(spacing: 2) {
+                        DraftPhotoAttachment(draftKey: person.id, compact: true)
+                        ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
+                    }
                 }.padding(.horizontal, 8).padding(.vertical, 6).background(Color.tatiLime.opacity(0.7))
             }.frame(width: geometry.size.width, height: geometry.size.height)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
-        .onAppear { text = store.account.drafts[person.id] ?? "" }
+        .onAppear { text = store.account.drafts[person.id] ?? ""; if store.isPersonHidden(person.id) { dismiss() } }
+        .onChange(of: store.account.blocked) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
+        .sheet(isPresented: $showSafety) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
+        .sheet(item: $reportedMessage) { message in SafetyActionsView(subjectID: "message:" + message.id, authorID: person.id, contextID: person.id) }
+        .fullScreenCover(isPresented: $showCall) { VideoCallView(person: person).overlay { NoticeLayer() } }
         .sheet(isPresented: $gifts) { NavigationStack { GiftShopView(recipient: person) }.overlay { NoticeLayer() }.presentationDetents([.height(390), .large]) }
     }
-    private var microphoneButton: some View {
-        ArtButton(asset: "chat-mic", label: "Voice message", size: 32) {
-            store.tell("Voice messaging unavailable", "Voice messages are currently unavailable. No recording has started.")
-        }
-    }
-    private var composer: some View {
-        HStack(spacing: 0) {
-            TextField("Say Hi~", text: $text, axis: .vertical).lineLimit(1...4)
-                .font(.system(size: 13)).padding(.leading, 12).padding(.vertical, 8).tint(.white)
-            Button { store.attemptMessage(to: person.id, text: text) } label: {
-                SupplementIcon(icon: .send, size: 22).frame(width: 40, height: 44)
-            }.buttonStyle(.plain).accessibilityLabel("Send message")
-        }.foregroundStyle(.white).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22))
-    }
-    private var attachmentActions: some View {
-        HStack(spacing: 2) {
-            ArtButton(asset: "chat-speaker", label: "Voice call", size: 32) {
-                store.tell("Voice call unavailable", "Voice calls are currently unavailable. No call has been placed.")
-            }
-            DraftPhotoAttachment(draftKey: person.id, compact: true)
-            ArtButton(asset: "gift-chat", label: "Gifts", size: 32) { gifts = true }
-        }
-    }
-
 }
+
+struct VideoCallView: View {
+    var person: FoodPerson
+    @EnvironmentObject private var store: VisitorStore
+    @EnvironmentObject private var playback: ClipPlayback
+    @EnvironmentObject private var roomSession: RoomPreviewSession
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var camera = CameraPreviewController()
+    @State private var cameraTask: Task<Void, Never>?
+    var body: some View {
+        NavigationStack {
+            TatiPage(title: "Video call", scrolling: false) {
+                VStack(spacing: 16) {
+                    UserProfileLink(userID: person.id) {
+                        HStack { Avatar(asset: person.portraitArtwork, size: 44); Text(person.name).font(.headline) }
+                    }
+                    GeometryReader { geometry in
+                        ZStack {
+                            Color.black
+                            if camera.ready { CameraSurface(session: camera.session) }
+                            else { Text(camera.status).font(.subheadline).foregroundStyle(.white).multilineTextAlignment(.center).padding(24) }
+                        }.frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                    }.clipShape(RoundedRectangle(cornerRadius: 20))
+                    Text("Only you can see your camera. Calls are not connected yet.").font(.caption).foregroundStyle(Color.tatiOlive)
+                    if !camera.ready { TatiButton(title: camera.starting ? "Starting camera…" : "Enable camera", secondary: true, enabled: !camera.starting) { startCamera() } }
+                    TatiButton(title: "Close") { cameraTask?.cancel(); camera.stop(); dismiss() }
+                }
+            }
+        }
+        .onAppear { startCamera() }
+        .onDisappear { cameraTask?.cancel(); camera.stop() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { cameraTask?.cancel(); camera.stop() }
+            else { startCamera() }
+        }
+        .onChange(of: store.account.following) { _, _ in checkPermission() }
+        .onChange(of: store.account.followers) { _, _ in checkPermission() }
+        .onChange(of: store.account.blocked) { _, _ in checkPermission() }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in checkPermission() }
+    }
+    private func checkPermission() {
+        if !store.canCommunicate(with: person.id) { cameraTask?.cancel(); camera.stop(); dismiss() }
+    }
+    private func startCamera() {
+        guard store.requireMutualFollow(person.id) else { dismiss(); return }
+        playback.stop(); roomSession.audio.stop()
+        cameraTask?.cancel()
+        cameraTask = Task { await camera.start(requiresMicrophone: true) }
+    }
+}
+
 struct FoodExpertView: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var question = ""

@@ -13,7 +13,7 @@ struct DiscoverView: View {
     private var sections: [String] { voice ? ["Party", "Food", "Follow"] : ["Hot", "Discover", "Follow"] }
     private var currentSection: String { sections.contains(selected) ? selected : sections[0] }
     var rooms: [FoodRoom] {
-        FoodCatalog.rooms.filter { room in
+        store.visibleRooms.filter { room in
             let host = FoodCatalog.person(room.hostID)
             return room.isVoice == voice && !store.account.blocked.contains(room.hostID)
                 && (currentSection != "Follow" || store.account.following.contains(room.hostID))
@@ -54,10 +54,10 @@ struct DiscoverView: View {
                 if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 if rooms.isEmpty { EmptyContent(title: "No rooms here yet", detail: selected == "Follow" ? "Rooms from profiles you follow appear here." : "Try another topic or clear your filters.") }
                 else if voice {
-                    LazyVStack(spacing: 14) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room, showsHotBanner: currentSection != "Follow") }.buttonStyle(.plain) } }
+                    LazyVStack(spacing: 14) { ForEach(rooms) { room in RoomListCard(room: room, showsHotBanner: currentSection != "Follow") } }
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
-                        ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { LiveRoomCard(room: room) }.buttonStyle(.plain) }
+                        ForEach(rooms) { room in LiveRoomCard(room: room) }
                     }
                 }
             }.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 12).frame(maxWidth: 680).frame(maxWidth: .infinity)
@@ -78,38 +78,43 @@ struct LiveRoomCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             GeometryReader { geometry in
-                ZStack(alignment: .bottomLeading) {
+                NavigationLink(destination: RoomView(room: room)) {
                     ContentPhoto(asset: room.coverArtwork, height: geometry.size.height)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Spacer()
-                        HStack(spacing: 5) {
-                            Avatar(asset: host?.portraitArtwork, size: 24)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(host?.name ?? "Creator").font(.system(size: 12, weight: .semibold)).lineLimit(1)
-                                Text(host?.city ?? "").font(.system(size: 9)).lineLimit(1)
-                            }
+                        .overlay(alignment: .bottom) {
+                            HStack(spacing: 3) {
+                                Text(host?.language ?? "").font(.system(size: 9))
+                                    .padding(.horizontal, 4).padding(.vertical, 2)
+                                    .background(Color.tatiLime).foregroundStyle(Color.tatiOlive)
+                                    .clipShape(RoundedRectangle(cornerRadius: 3))
+                                Spacer(minLength: 0)
+                                RoomTopicTag(topic: room.topic)
+                            }.padding(7)
                         }
-                        HStack(spacing: 3) {
-                            Text(host?.language ?? "").font(.system(size: 9))
-                                .padding(.horizontal, 4).padding(.vertical, 2)
-                                .background(Color.tatiLime).foregroundStyle(Color.tatiOlive)
-                                .clipShape(RoundedRectangle(cornerRadius: 3))
-                            Spacer(minLength: 0)
-                            RoomTopicTag(topic: room.topic)
-                        }
-                    }.padding(7).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2, y: 1)
-                }
-                .overlay(alignment: .topLeading) {
-                    RoomKindBadge(isVoice: false).padding(8)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 18))
+                        .overlay(alignment: .topLeading) { RoomKindBadge(isVoice: false).padding(8) }
+                }.buttonStyle(.plain).accessibilityLabel("Enter " + room.title)
+                    .overlay(alignment: .bottomLeading) {
+                        UserProfileLink(userID: room.hostID) {
+                            HStack(spacing: 5) {
+                                Avatar(asset: host?.portraitArtwork, size: 24)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(host?.name ?? "Creator").font(.system(size: 12, weight: .semibold)).lineLimit(1)
+                                    Text(host?.city ?? "").font(.system(size: 9)).lineLimit(1)
+                                }
+                            }.frame(minHeight: 44, alignment: .bottom)
+                        }.padding(.horizontal, 7).padding(.bottom, 27)
+                            .foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2, y: 1)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 18))
             }.aspectRatio(0.86, contentMode: .fit)
-            VStack(alignment: .leading, spacing: 3) {
-                Text(room.title).font(.system(size: 12, weight: .semibold)).lineLimit(1)
-                Text(host?.bio ?? "").font(.system(size: 9)).foregroundStyle(Color.tatiOlive.opacity(0.6)).lineLimit(1)
-            }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink(destination: RoomView(room: room)) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(room.title).font(.system(size: 12, weight: .semibold)).lineLimit(1)
+                    Text(host?.bio ?? "").font(.system(size: 9)).foregroundStyle(Color.tatiOlive.opacity(0.6)).lineLimit(1)
+                }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: .infinity, alignment: .leading)
+            }.buttonStyle(.plain)
         }.background(.white).clipShape(RoundedRectangle(cornerRadius: 18))
-            .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(Color.tatiOlive.opacity(0.65), lineWidth: 0.6) }.foregroundStyle(Color.tatiInk)
+            .overlay { RoundedRectangle(cornerRadius: 18).strokeBorder(Color.tatiOlive.opacity(0.65), lineWidth: 0.6).allowsHitTesting(false) }
+            .foregroundStyle(Color.tatiInk)
     }
 }
 struct RoomListCard: View {
@@ -131,7 +136,7 @@ struct RoomListCard: View {
             Image("outlined-card").resizable(capInsets: EdgeInsets(top: 26, leading: 30, bottom: 26, trailing: 30))
                 .frame(height: 98).accessibilityHidden(true)
             HStack(alignment: .bottom, spacing: 12) {
-                ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
+                UserProfileLink(userID: room.hostID) { ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90) }
                     .clipShape(RoundedRectangle(cornerRadius: 11))
                     .overlay(alignment: .bottomTrailing) {
                         RoomKindBadge(isVoice: room.isVoice, compact: true).offset(x: 3, y: 3)
@@ -140,11 +145,19 @@ struct RoomListCard: View {
                         if showsHotBanner { Art(name: "hot-room", width: 90, height: 31).offset(y: -16) }
                     }
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(room.title).font(.system(size: 14, weight: .medium)).lineLimit(1)
-                    Text(summary).font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.75)).lineLimit(1)
+                    NavigationLink(destination: RoomView(room: room)) {
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(room.title).font(.system(size: 14, weight: .medium)).lineLimit(1)
+                            Text(summary).font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.75)).lineLimit(1)
+                        }.frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                    }.buttonStyle(.plain)
                     HStack(spacing: 5) {
-                        Avatar(asset: host?.portraitArtwork, size: 18)
-                        Text(host?.name ?? "").font(.system(size: 10)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+                        UserProfileLink(userID: room.hostID) {
+                            HStack(spacing: 5) {
+                                Avatar(asset: host?.portraitArtwork, size: 18)
+                                Text(host?.name ?? "").font(.system(size: 10)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+                            }
+                        }
                         RoomTopicTag(topic: room.topic)
                         Spacer(minLength: 0)
                     }
@@ -306,13 +319,13 @@ struct SearchView: View {
             Text(category == "People" ? "Creators" : category).font(.system(size: 18, weight: .bold, design: .serif))
             if !query.isEmpty { TopicStrip(items: ["People", "Rooms", "Videos"], selected: $category) }
             if category == "People" {
-                let matches = FoodCatalog.people.filter { !store.account.blocked.contains($0.id) && (query.isEmpty || ($0.name + $0.interest).localizedCaseInsensitiveContains(query)) }
+                let matches = store.visiblePeople.filter { !store.account.blocked.contains($0.id) && (query.isEmpty || ($0.name + $0.interest).localizedCaseInsensitiveContains(query)) }
                 if matches.isEmpty { EmptyContent(title: "No people found", detail: "Try a different name or food interest.") }
                 LazyVStack(spacing: 0) { ForEach(matches) { PersonRow(person: $0) } }
             } else if category == "Rooms" {
-                let matches = FoodCatalog.rooms.filter { !store.account.blocked.contains($0.hostID) && (query.isEmpty || ($0.title + $0.topic).localizedCaseInsensitiveContains(query)) }
+                let matches = store.visibleRooms.filter { !store.account.blocked.contains($0.hostID) && (query.isEmpty || ($0.title + $0.topic).localizedCaseInsensitiveContains(query)) }
                 if matches.isEmpty { EmptyContent(title: "No rooms found", detail: "Try another food topic.") }
-                ForEach(matches) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain) }
+                ForEach(matches) { room in RoomListCard(room: room) }
             } else {
                 let matches = store.visibleClips.filter { query.isEmpty || $0.caption.localizedCaseInsensitiveContains(query) }
                 if matches.isEmpty { EmptyContent(title: "No videos found", detail: "Try another phrase.") }
@@ -378,7 +391,7 @@ struct RankingView: View {
         let interval = calendar.dateInterval(of: component, for: Date())
         let gifts = store.account.gifts.filter { interval?.contains($0.date) == true }
         let messages = (store.account.roomMessages ?? []).filter { interval?.contains($0.createdAt) == true }
-        let rooms = FoodCatalog.rooms.filter { !store.account.blocked.contains($0.hostID) }
+        let rooms = store.visibleRooms.filter { !store.account.blocked.contains($0.hostID) }
         let result: [RankingEntry]
         if category == "Rooms" {
             result = rooms.compactMap { room in
@@ -390,7 +403,7 @@ struct RankingView: View {
                                     contentCount: room.videoClip == nil ? 0 : 1, interactions: interactionCount)
             }
         } else {
-            result = FoodCatalog.people.filter { !store.account.blocked.contains($0.id) }.map { person in
+            result = store.visiblePeople.filter { !store.account.blocked.contains($0.id) }.map { person in
                 let hosted = rooms.filter { $0.hostID == person.id }
                 let clipCount = store.visibleClips.filter { $0.authorID == person.id }.count
                 let contentCount = hosted.count + clipCount + (person.portraitArtwork == nil ? 0 : 1)
@@ -499,8 +512,7 @@ struct RankingView: View {
 
     private func rankingLink<Label: View>(_ entry: RankingEntry, @ViewBuilder label: () -> Label) -> some View {
         NavigationLink {
-            if let room = entry.room { RoomView(room: room) }
-            else { PersonProfileView(person: entry.person) }
+            PersonProfileView(person: entry.person)
         } label: { label() }.buttonStyle(.plain)
     }
 }
@@ -511,8 +523,8 @@ struct HotTopicView: View {
         TatiPanel(title: "Hot topic") {
             Art(name: "topic-banner")
             Text("Late-night snack: sweet or savoury?").font(.title3.bold())
-            ForEach(FoodCatalog.rooms.filter { $0.isVoice && $0.foodFocused && !store.account.blocked.contains($0.hostID) }) { room in
-                NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room) }.buttonStyle(.plain)
+            ForEach(store.visibleRooms.filter { $0.isVoice && $0.foodFocused && !store.account.blocked.contains($0.hostID) }) { room in
+                RoomListCard(room: room)
             }
         }
     }

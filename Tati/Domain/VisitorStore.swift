@@ -67,7 +67,7 @@ final class VisitorStore: ObservableObject {
     }
     func deleteVisitor() {
         confirm("Delete profile?", "This permanently removes your Tati profile, imported photos and videos, drafts and rewards from app storage.", button: "Delete", destructive: true) {
-            let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName) + self.account.reports.compactMap(\.imageFile) + Array((self.account.draftImages ?? [:]).values)
+            let files = [self.account.profile.avatarFile, self.account.profile.coverFile].compactMap { $0 } + self.account.clips.compactMap(\.fileName) + self.account.reports.compactMap(\.imageFile) + self.account.messages.compactMap(\.imageFile) + Array((self.account.draftImages ?? [:]).values)
             guard self.change({ $0 = LocalAccount() }) else { return }
             var cleanupFailed = false
             for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {

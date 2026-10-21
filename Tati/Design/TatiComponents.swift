@@ -26,6 +26,19 @@ struct Art: View {
     }
 }
 
+/// A user's identity always opens the same profile, independently of its content card.
+struct UserProfileLink<Label: View>: View {
+    var userID: String
+    @ViewBuilder var label: () -> Label
+    @EnvironmentObject private var store: VisitorStore
+    var body: some View {
+        if let person = FoodCatalog.person(userID), !store.isPersonHidden(userID) {
+            NavigationLink(destination: PersonProfileView(person: person)) { label().contentShape(Rectangle()) }
+                .buttonStyle(.plain).accessibilityLabel("View " + person.name)
+        } else { label() }
+    }
+}
+
 /// Identifies the room category; motion does not represent a connected broadcast
 /// or a participant speaking. Reuses the original Lanhu raster artwork.
 struct RoomKindBadge: View {

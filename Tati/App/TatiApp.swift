@@ -18,9 +18,17 @@ struct TatiApp: App {
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .tint(.tatiPink).preferredColorScheme(.light)
             .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
+            .onChange(of: store.account.blocked) { _, _ in hideUnavailableRoom() }
+            .onChange(of: store.account.hiddenSubjects) { _, _ in hideUnavailableRoom() }
             .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { playback.stop(); roomSession.leave() } }
         }
     }
+    private func hideUnavailableRoom() {
+        if let room = roomSession.room, !store.visibleRooms.contains(where: { $0.id == room.id }) {
+            roomSession.leave(); playback.stop()
+        }
+    }
+
 }
 enum CommunityTab: String, CaseIterable {
     case home = "Home", room = "Room", video = "Video", ai = "AI", me = "Me"

@@ -22,16 +22,16 @@ struct RoomToolsPanel: View {
                     tool("tool-music", "Music", .music)
                     tool("tool-background", "Background", .background)
                     tool("tool-invite", "Invite", .invite)
-                    if !isVoice { tool("feedback", "Report room", .report) }
+                    if !isVoice { tool("feedback", "Report / block", .safety) }
                     tool("tool-leave", "Leave", .leave)
                 }
                 if isVoice {
                     HStack {
                         Spacer(minLength: 0)
-                        Button { select(.report) } label: {
+                        Button { select(.safety) } label: {
                             HStack(spacing: 6) {
                                 Art(name: "feedback", width: 14, height: 16)
-                                Text("Report room").font(.caption)
+                                Text("Report or block").font(.caption)
                             }
                             .padding(.horizontal, 8).frame(minHeight: 44)
                             .contentShape(Rectangle())
@@ -64,7 +64,7 @@ struct RoomToolsPanel: View {
     private func tool(_ art: String, _ title: String, _ destination: RoomPanel) -> some View {
         Button { select(destination) } label: {
             VStack(spacing: 5) {
-                if destination == .report {
+                if destination == .safety {
                     Art(name: art, width: iconSize * 0.6, height: iconSize * 0.6)
                         .frame(width: iconSize, height: iconSize)
                         .background(Color.tatiCream, in: RoundedRectangle(cornerRadius: 12))
@@ -152,13 +152,7 @@ struct RoomActivityFeed: View {
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var revealedSamples = 4
-    private var samples: [RoomActivity] {
-        RoomActivity.samples(for: room).filter { !store.account.blocked.contains($0.authorID) }
-    }
-    private var advancesSamples: Bool { isActive && scenePhase == .active && !reduceMotion }
     private var entries: [RoomActivity] {
-        let sampleEntries = reduceMotion ? samples : Array(samples.prefix(revealedSamples))
         var local: [(Date, RoomActivity)] = (store.account.roomMessages ?? [])
             .filter { $0.roomID == room.id }
             .map { message in
@@ -168,7 +162,7 @@ struct RoomActivityFeed: View {
             (receipt.date, RoomActivity(id: receipt.id, authorID: store.account.profile.id, text: "", giftID: receipt.giftID, quantity: receipt.quantity, isSample: false))
         }
         local.sort { $0.0 == $1.0 ? $0.1.id < $1.1.id : $0.0 < $1.0 }
-        return sampleEntries + local.suffix(100).map { $0.1 }
+        return local.suffix(100).map { $0.1 }.filter { !store.isPersonHidden($0.authorID) && !store.isHidden("roomMessage:" + $0.id) }
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -176,7 +170,7 @@ struct RoomActivityFeed: View {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 7) {
                         ForEach(entries) { entry in
-                            activityRow(entry).id(entry.id)
+                            UserProfileLink(userID: entry.authorID) { activityRow(entry) }.id(entry.id)
                                 .transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))
                         }
                     }.padding(.vertical, 3)
@@ -192,15 +186,7 @@ struct RoomActivityFeed: View {
         }
         .foregroundStyle(.white).frame(maxWidth: maximumWidth, maxHeight: maximumHeight, alignment: .leading)
         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
-        .task(id: room.id + (advancesSamples ? "-active" : "-paused")) {
-            guard advancesSamples else { return }
-            // Finite sample script; never writes receipts, balances or memberships.
-            while revealedSamples < samples.count {
-                do { try await Task.sleep(for: .seconds(5)) } catch { return }
-                guard !Task.isCancelled else { return }
-                withAnimation(.easeOut(duration: 0.25)) { revealedSamples += 1 }
-            }
-        }
+
     }
     @ViewBuilder private func activityRow(_ entry: RoomActivity) -> some View {
         let person = FoodCatalog.person(entry.authorID)
@@ -211,7 +197,7 @@ struct RoomActivityFeed: View {
                 Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 24, isCurrent: current)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiCream).lineLimit(1)
-                    Text(entry.isSample ? "\(gift.name)" : "Saved \(gift.name)")
+                    Text(gift.name)
                         .font(.system(size: 10)).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
@@ -268,11 +254,13 @@ struct RoomPersonPanel: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
         TatiPanel(title: roomMember ? "Room member" : "Host") {
-            VStack(spacing: 10) {
-                Avatar(asset: person.portraitArtwork, size: 60)
-                Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(2).multilineTextAlignment(.center)
-                Text(person.city).font(.system(size: 11))
-            }.frame(maxWidth: .infinity)
+            UserProfileLink(userID: person.id) {
+                VStack(spacing: 10) {
+                    Avatar(asset: person.portraitArtwork, size: 60)
+                    Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(2).multilineTextAlignment(.center)
+                    Text(person.city).font(.system(size: 11))
+                }.frame(maxWidth: .infinity)
+            }
             HStack(spacing: 10) {
                 NavigationLink(destination: PersonProfileView(person: person)) { panelLink("Profile") }
                 if roomMember {
@@ -293,7 +281,7 @@ struct RoomPersonPanel: View {
 struct RoomInvitePanel: View {
     var room: FoodRoom
     @EnvironmentObject private var store: VisitorStore
-    private var following: [FoodPerson] { FoodCatalog.people.filter { store.account.following.contains($0.id) && !store.account.blocked.contains($0.id) } }
+    private var following: [FoodPerson] { store.visiblePeople.filter { store.account.following.contains($0.id) && !store.account.blocked.contains($0.id) } }
     var body: some View {
         TatiPanel(title: "Invite friends") {
             if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Follow a profile to find it here.", artwork: "tool-invite") }

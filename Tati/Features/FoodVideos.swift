@@ -110,7 +110,15 @@ struct ClipDetailView: View {
         .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
         .sheet(isPresented: $showReport) { VideoOptionsView(clip: clip).overlay { NoticeLayer() } }
         .onChange(of: showReport) { _, presented in
-            if !presented && store.account.blocked.contains(clip.authorID) { dismiss() }
+            if !presented && (store.isPersonHidden(clip.authorID) || store.isHidden("video:" + clip.id)) { dismiss() }
+        }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
+        .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
+    }
+    private func closeIfHidden() {
+        if store.isPersonHidden(clip.authorID) || store.isHidden("video:" + clip.id) {
+            if playback.ownerID == playbackOwner { playback.stop() }
+            dismiss()
         }
     }
     private func preparePlayback() {
@@ -135,6 +143,7 @@ struct CommentDraftView: View {
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.dismiss) private var dismiss
     @State private var text = ""
+    @State private var selectedComment: VideoComment?
     private var comments: [VideoComment] { store.comments(for: clip) }
     var body: some View {
         VStack(spacing: 0) {
@@ -154,9 +163,13 @@ struct CommentDraftView: View {
                             let current = comment.authorID == store.account.profile.id
                             let person = FoodCatalog.person(comment.authorID)
                             HStack(alignment: .top, spacing: 10) {
-                                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 38, isCurrent: current)
+                                UserProfileLink(userID: comment.authorID) {
+                                    Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 38, isCurrent: current)
+                                }
                                 VStack(alignment: .leading, spacing: 5) {
-                                    Text(current ? store.account.profile.name : person?.name ?? "Creator").font(.system(size: 14, weight: .medium))
+                                    UserProfileLink(userID: comment.authorID) {
+                                        Text(current ? store.account.profile.name : person?.name ?? "Creator").font(.system(size: 14, weight: .medium))
+                                    }
                                     Text(comment.text).font(.system(size: 13)).fixedSize(horizontal: false, vertical: true)
                                     Text(comment.createdAt, style: .relative).font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
                                 }.frame(maxWidth: .infinity, alignment: .leading)
@@ -165,6 +178,7 @@ struct CommentDraftView: View {
                                         store.confirm("Delete comment?", "This comment will be removed.", button: "Delete", destructive: true) { store.removeComment(comment.id) }
                                     }
                                 }
+                                ArtButton(asset: "more", label: "Report comment", size: 16) { selectedComment = comment }
                             }.id(comment.id)
                         }
                     }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
@@ -190,6 +204,9 @@ struct CommentDraftView: View {
         }.background(Color.tatiCream).foregroundStyle(Color.tatiInk)
             .presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
             .tatiScreen()
+            .sheet(item: $selectedComment) { comment in
+                SafetyActionsView(subjectID: "comment:" + comment.id, authorID: comment.authorID, contextID: clip.id)
+            }
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
             .onDisappear { if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { _ = store.saveDraft("comment:" + clip.id, text: text) } }
     }
