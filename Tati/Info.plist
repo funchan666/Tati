@@ -23,7 +23,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tati uses the camera when you choose to preview yourself for a video call or prepare a live session.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Tati requests microphone access when you start a video call or turn on your microphone.</string>
+	<string>Tati uses your microphone for voice input and when you choose to start a call.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Tati turns your speech into an editable message. Audio may be sent to Apple for recognition when on-device recognition is unavailable.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Choose your own profile photos and food videos for Tati.</string>
 	<key>UIApplicationSceneManifest</key>

@@ -4,6 +4,8 @@ struct FeedVideoCard: View {
     var clip: FoodClip
     @EnvironmentObject private var store: VisitorStore
     @State private var showComments = false
+    @State private var pendingProfile: FoodPerson?
+    @State private var profilePage: FoodPerson?
     @State private var showOptions = false
     var body: some View {
         GeometryReader { geometry in
@@ -57,8 +59,18 @@ struct FeedVideoCard: View {
             }.frame(width: geometry.size.width, height: geometry.size.height)
                 .foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 24))
         }.aspectRatio(1.42, contentMode: .fit)
-        .sheet(isPresented: $showComments) {
+        .background { ProfilePageHandoff(person: $profilePage) }
+        .sheet(isPresented: $showComments, onDismiss: {
+            if let person = pendingProfile {
+                pendingProfile = nil
+                if !store.isPersonHidden(person.id) { profilePage = person }
+            }
+        }) {
             NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large])
+                .environment(\.profileSheetAction, { person in
+                    pendingProfile = person
+                    showComments = false
+                })
         }
         .sheet(isPresented: $showOptions) {
             VideoOptionsView(clip: clip)
@@ -73,12 +85,15 @@ struct VideoAuthor: View {
     var body: some View {
         Group {
             if let person = FoodCatalog.person(clip.authorID) {
-                NavigationLink(destination: PersonProfileView(person: person)) {
-                    HStack(spacing: 7) {
-                        Avatar(asset: person.portraitArtwork, size: size)
-                        Text(person.name).font(.system(size: 14, weight: .semibold)).lineLimit(1)
-                    }.contentShape(Rectangle())
-                }.buttonStyle(.plain).accessibilityLabel("View " + person.name)
+                HStack(spacing: 2) {
+                    NavigationLink(destination: PersonProfileView(person: person)) {
+                        HStack(spacing: 7) {
+                            Avatar(asset: person.portraitArtwork, size: size)
+                            Text(person.name).font(.system(size: 14, weight: .semibold)).lineLimit(1)
+                        }.contentShape(Rectangle())
+                    }.buttonStyle(.plain).accessibilityLabel("View " + person.name)
+                    FollowControl(userID: person.id)
+                }
             } else {
                 HStack(spacing: 7) {
                     Avatar(file: store.account.profile.avatarFile, size: size, isCurrent: true)

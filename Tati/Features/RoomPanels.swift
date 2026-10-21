@@ -1,5 +1,118 @@
 import SwiftUI
 
+/// Always crop the original to the actual container, including wide displays.
+struct VoiceRoomBackgroundArtwork: View {
+    var background: VoiceRoomBackground
+    var body: some View {
+        GeometryReader { geometry in
+            Image(background.rawValue).resizable().scaledToFill()
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .clipped()
+        }.accessibilityHidden(true)
+    }
+}
+
+struct VoiceRoomBackgroundPicker: View {
+    var selected: String
+    var select: (VoiceRoomBackground) -> Void
+    var body: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0, maximum: 180), spacing: 10), count: 3), spacing: 14) {
+            ForEach(VoiceRoomBackground.allCases) { background in
+                Button { select(background) } label: {
+                    VStack(spacing: 8) {
+                        VoiceRoomBackgroundArtwork(background: background)
+                            .aspectRatio(0.58, contentMode: .fit)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 14)
+                                    .strokeBorder(selected == background.rawValue ? Color.tatiPink : .clear, lineWidth: 3)
+                            }
+                            .overlay(alignment: .topTrailing) {
+                                if selected == background.rawValue {
+                                    Art(name: "check-pink", width: 24, height: 24).padding(7)
+                                }
+                            }
+                        Text(background.title).font(.caption.weight(.semibold))
+                            .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    }.frame(maxWidth: .infinity)
+                }.buttonStyle(.plain)
+                    .accessibilityLabel(background.title)
+                    .accessibilityAddTraits(selected == background.rawValue ? .isSelected : [])
+            }
+        }
+    }
+}
+
+struct CreateVoiceRoomView: View {
+    @EnvironmentObject private var store: VisitorStore
+    @State private var title = ""
+    @State private var topic = "Home cooking"
+    @State private var background: VoiceRoomBackground = .blue
+    @State private var loaded = false
+    @State private var showsBackground = false
+
+    var body: some View {
+        TatiEditingForm(title: "Create voice room") {
+            TatiEditingField(label: "Room title", placeholder: "What shall we talk about?", text: $title, limit: 80)
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Food topic").font(.subheadline.weight(.semibold))
+                FilterTagLayout {
+                    ForEach(Array(FoodCatalog.topics.dropFirst()), id: \.self) { value in
+                        BrowseFilterChip(title: value, selected: topic == value) { topic = value }
+                    }
+                }
+            }
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Text("Room atmosphere").font(.subheadline.weight(.semibold))
+                    Spacer(minLength: 8)
+                    Button("View background") { showsBackground = true }
+                        .font(.caption.weight(.semibold)).foregroundStyle(Color.tatiOlive)
+                        .frame(minHeight: 44).buttonStyle(.plain)
+                }
+                VoiceRoomBackgroundPicker(selected: background.rawValue) { background = $0 }
+            }.padding(14).background(.white, in: RoundedRectangle(cornerRadius: 20))
+        } footer: {
+            TatiEditingButton(title: "Create room", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+                guard saveSetup() else { return }
+                // No publishing endpoint/RTC session exists yet; never invent a live room.
+                store.tell("Room creation unavailable", "Your room title, topic and background are saved. Voice room creation is currently unavailable.")
+            }
+        }
+        .onAppear {
+            guard !loaded else { return }
+            title = store.account.drafts["voice-create-title"] ?? ""
+            let savedTopic = store.account.drafts["voice-create-topic"] ?? "Home cooking"
+            topic = FoodCatalog.topics.dropFirst().contains(savedTopic) ? savedTopic : "Home cooking"
+            background = store.account.drafts["voice-create-background"].flatMap(VoiceRoomBackground.init(rawValue:))
+                ?? VoiceRoomBackground.allCases.randomElement() ?? .blue
+            loaded = true
+            _ = saveSetup()
+        }
+        .onChange(of: title) { _, _ in if loaded { _ = saveSetup() } }
+        .onChange(of: topic) { _, _ in if loaded { _ = saveSetup() } }
+        .onChange(of: background) { _, _ in if loaded { _ = saveSetup() } }
+        .fullScreenCover(isPresented: $showsBackground) {
+            ZStack(alignment: .topTrailing) {
+                VoiceRoomBackgroundArtwork(background: background).ignoresSafeArea(.container)
+                ArtButton(asset: "close-light", label: "Close background", size: 26) { showsBackground = false }
+                    .padding(16)
+            }
+        }
+    }
+
+    private func saveSetup() -> Bool {
+        guard store.account.drafts["voice-create-title"] != title
+                || store.account.drafts["voice-create-topic"] != topic
+                || store.account.drafts["voice-create-background"] != background.rawValue else { return true }
+        return store.change {
+            $0.drafts["voice-create-title"] = title
+            $0.drafts["voice-create-topic"] = topic
+            $0.drafts["voice-create-background"] = background.rawValue
+        }
+    }
+}
+
 /// The room menu has two rows of tools; its sheet follows the actual content.
 struct RoomToolsPanel: View {
     var isVoice: Bool
@@ -17,8 +130,12 @@ struct RoomToolsPanel: View {
                     ArtButton(asset: "close-light", label: "Close room tools", size: 22) { dismiss() }
                 }
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 14) {
-                    if isVoice { tool("tool-layout", "Room layout", .layout) }
-                    tool("tool-mic", "Mic queue", .microphone)
+                    if isVoice {
+                        tool("tool-layout", "Room layout", .layout)
+                        tool("tool-mic", "Mic queue", .microphone)
+                    } else {
+                        tool("tool-layout", "Viewing", .viewing)
+                    }
                     tool("tool-music", "Music", .music)
                     tool("tool-background", "Background", .background)
                     tool("tool-invite", "Invite", .invite)
@@ -247,47 +364,16 @@ struct RoomLayoutPanel: View {
         }.buttonStyle(.plain).accessibilityAddTraits(current == name ? .isSelected : [])
     }
 }
-struct RoomPersonPanel: View {
-    var person: FoodPerson
-    var roomMember = false
-    var roomID: String? = nil
-    @EnvironmentObject private var store: VisitorStore
-    var body: some View {
-        TatiPanel(title: roomMember ? "Room member" : "Host") {
-            UserProfileLink(userID: person.id) {
-                VStack(spacing: 10) {
-                    Avatar(asset: person.portraitArtwork, size: 60)
-                    Text(person.name).font(.system(size: 17, weight: .medium)).lineLimit(2).multilineTextAlignment(.center)
-                    Text(person.city).font(.system(size: 11))
-                }.frame(maxWidth: .infinity)
-            }
-            HStack(spacing: 10) {
-                NavigationLink(destination: PersonProfileView(person: person)) { panelLink("Profile") }
-                if roomMember {
-                    NavigationLink(destination: GiftShopView(recipient: person, roomID: roomID)) {
-                        Text("Gifts").font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiPink).foregroundStyle(.white).clipShape(Capsule())
-                    }
-                } else {
-                    NavigationLink(destination: ConversationView(person: person)) { panelLink("Message") }
-                    TatiButton(title: store.account.following.contains(person.id) ? "Following" : "Follow") { store.toggleFollow(person.id) }
-                }
-            }.buttonStyle(.plain).padding(.top, 8)
-        }
-    }
-    private func panelLink(_ text: String) -> some View {
-        Text(text).font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 42).background(Color.tatiOlive.opacity(0.65)).foregroundStyle(.white).clipShape(Capsule())
-    }
-}
 struct RoomInvitePanel: View {
     var room: FoodRoom
     @EnvironmentObject private var store: VisitorStore
-    private var following: [FoodPerson] { store.visiblePeople.filter { store.account.following.contains($0.id) && !store.account.blocked.contains($0.id) } }
+    private var following: [FoodPerson] { store.visiblePeople.filter { store.isFollowing($0.id) } }
     var body: some View {
         TatiPanel(title: "Invite friends") {
             if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Follow a profile to find it here.", artwork: "tool-invite") }
             ForEach(following) { person in
                 HStack {
-                    NavigationLink(destination: PersonProfileView(person: person)) { HStack { Avatar(asset: person.portraitArtwork); Text(person.name).font(.headline) } }.buttonStyle(.plain)
+                    UserProfileLink(userID: person.id) { HStack { Avatar(asset: person.portraitArtwork); Text(person.name).font(.headline) } }.buttonStyle(.plain)
                     Spacer()
                     TatiButton(title: "Invite", secondary: true) { store.tell("Invitation unavailable", "Invitations are currently unavailable. No invitation was sent.") }.frame(width: 100)
                 }
@@ -300,5 +386,63 @@ struct RoomSoundButton: View {
     var body: some View {
         ArtButton(asset: "chat-speaker", label: player.muted ? "Unmute music" : "Mute music", size: 30) { player.toggleMuted() }
             .opacity(player.muted ? 0.45 : 1)
+    }
+}
+
+/// Playback preferences affect only this viewer and never create a broadcast session.
+struct RoomViewingPanel: View {
+    @Binding var fillsVideo: Bool
+    @Binding var muted: Bool
+    @Binding var showsActivity: Bool
+    @Environment(\.dismiss) private var dismiss
+    @State private var contentHeight: CGFloat = 330
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Viewing options").font(.title3.weight(.bold))
+                    Spacer(minLength: 4)
+                    ArtButton(asset: "close-light", label: "Close viewing options") { dismiss() }
+                }
+                option("Video size", detail: fillsVideo ? "Fill the screen; edges may be cropped" : "Show the whole video without cropping",
+                       value: fillsVideo ? "Fill" : "Fit", selected: fillsVideo) { fillsVideo.toggle() }
+                option("Video sound", detail: muted ? "Video audio is muted" : "Play the video's original sound",
+                       value: muted ? "Off" : "On", selected: !muted) { muted.toggle() }
+                option("Room activity", detail: "Messages and gift effects over the video",
+                       value: showsActivity ? "Show" : "Hide", selected: showsActivity) { showsActivity.toggle() }
+            }.padding(.horizontal, 20).padding(.top, 8).padding(.bottom, 16)
+                .frame(maxWidth: 560).frame(maxWidth: .infinity)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
+                    }
+                }
+        }.foregroundStyle(Color.tatiInk).background(Color.tatiCream)
+            .presentationBackground(Color.tatiCream).presentationCornerRadius(24)
+            .presentationDragIndicator(.hidden)
+            .presentationDetents([.height(contentHeight), .large])
+            .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
+                if height > 0, abs(contentHeight - height) > 1 { contentHeight = height }
+            }
+            .accessibilityAction(.escape) { dismiss() }
+    }
+
+    private func option(_ title: String, detail: String, value: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(title).font(.subheadline.weight(.semibold))
+                    Text(detail).font(.caption).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Text(value).font(.caption.weight(.semibold))
+                    .padding(.horizontal, 12).padding(.vertical, 9)
+                    .background(selected ? Color.tatiLime : Color.tatiCream, in: Capsule())
+            }.padding(14).frame(minHeight: 64)
+                .background(.white, in: RoundedRectangle(cornerRadius: 16))
+                .contentShape(Rectangle())
+        }.buttonStyle(.plain).accessibilityLabel(title).accessibilityValue(value)
+            .accessibilityHint("Double tap to change")
     }
 }

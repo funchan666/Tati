@@ -1,5 +1,20 @@
 import Foundation
 
+enum VoiceRoomBackground: String, CaseIterable, Identifiable {
+    case blue = "stage-blue"
+    case gifts = "stage-gifts"
+    case purple = "stage-purple"
+
+    var id: String { rawValue }
+    var title: String {
+        switch self {
+        case .blue: return "Blue stage"
+        case .gifts: return "Party curtain"
+        case .purple: return "Purple lights"
+        }
+    }
+}
+
 struct FoodPerson: Identifiable, Hashable, Codable {
     let id: String
     let name: String
@@ -17,6 +32,8 @@ struct FoodRoom: Identifiable, Hashable {
     let topic: String
     let isVoice: Bool
     let background: String
+    // Presentation configuration, not a realtime presence measurement.
+    let initialAudienceCount: Int
     var coverArtwork: String? { ContentLibrary.shared.roomCovers[id] }
     var videoClip: FoodClip? { ContentLibrary.shared.roomClips?[id] }
     var foodFocused: Bool { topic != "Home cooking" }
@@ -172,16 +189,16 @@ enum FoodCatalog {
         FoodPerson(id: "creator-andre", name: "André", country: "USA", language: "English", interest: "BBQ", bio: "Good food tastes better with good company.")
     ]
     static let rooms = [
-        FoodRoom(id: "pasta-table", hostID: "creator-maria", title: "Homemade Pasta & More", topic: "Italian food", isVoice: false, background: "stage-confetti"),
-        FoodRoom(id: "street-bites", hostID: "creator-chloe", title: "Best Street Food in Town", topic: "Street food", isVoice: false, background: "stage-blue"),
-        FoodRoom(id: "kitchen-stories", hostID: "creator-luna", title: "Big Bites, Happy Vibes", topic: "Home cooking", isVoice: false, background: "stage-purple"),
-        FoodRoom(id: "sweet-evening", hostID: "creator-elowen", title: "Fine Dining at Home", topic: "Dessert", isVoice: false, background: "stage-gifts"),
-        FoodRoom(id: "soup-kitchen", hostID: "creator-andre", title: "Inside the Soup Kitchen", topic: "Home cooking", isVoice: false, background: "stage-blue"),
-        FoodRoom(id: "crepe-station", hostID: "creator-seraphina", title: "Fresh Crepes & Sweet Bites", topic: "Dessert", isVoice: false, background: "stage-gifts"),
-        FoodRoom(id: "dinner-conversation", hostID: "creator-luna", title: "What's cooking tonight?", topic: "Home cooking", isVoice: true, background: "stage-confetti"),
-        FoodRoom(id: "dessert-club", hostID: "creator-elowen", title: "The dessert club", topic: "Dessert", isVoice: true, background: "stage-purple"),
-        FoodRoom(id: "market-table", hostID: "creator-seraphina", title: "Fresh from the market", topic: "Healthy food", isVoice: true, background: "stage-blue"),
-        FoodRoom(id: "weekend-bbq", hostID: "creator-andre", title: "Weekend BBQ stories", topic: "BBQ", isVoice: true, background: "stage-gifts")
+        FoodRoom(id: "pasta-table", hostID: "creator-maria", title: "Homemade Pasta & More", topic: "Italian food", isVoice: false, background: "stage-confetti", initialAudienceCount: 264),
+        FoodRoom(id: "street-bites", hostID: "creator-chloe", title: "Best Street Food in Town", topic: "Street food", isVoice: false, background: "stage-blue", initialAudienceCount: 486),
+        FoodRoom(id: "kitchen-stories", hostID: "creator-luna", title: "Big Bites, Happy Vibes", topic: "Home cooking", isVoice: false, background: "stage-purple", initialAudienceCount: 728),
+        FoodRoom(id: "sweet-evening", hostID: "creator-elowen", title: "Fine Dining at Home", topic: "Dessert", isVoice: false, background: "stage-gifts", initialAudienceCount: 193),
+        FoodRoom(id: "soup-kitchen", hostID: "creator-andre", title: "Inside the Soup Kitchen", topic: "Home cooking", isVoice: false, background: "stage-blue", initialAudienceCount: 351),
+        FoodRoom(id: "crepe-station", hostID: "creator-seraphina", title: "Fresh Crepes & Sweet Bites", topic: "Dessert", isVoice: false, background: "stage-gifts", initialAudienceCount: 612),
+        FoodRoom(id: "dinner-conversation", hostID: "creator-luna", title: "What's cooking tonight?", topic: "Home cooking", isVoice: true, background: "stage-gifts", initialAudienceCount: 86),
+        FoodRoom(id: "dessert-club", hostID: "creator-elowen", title: "The dessert club", topic: "Dessert", isVoice: true, background: "stage-purple", initialAudienceCount: 124),
+        FoodRoom(id: "market-table", hostID: "creator-seraphina", title: "Fresh from the market", topic: "Healthy food", isVoice: true, background: "stage-blue", initialAudienceCount: 59),
+        FoodRoom(id: "weekend-bbq", hostID: "creator-andre", title: "Weekend BBQ stories", topic: "BBQ", isVoice: true, background: "stage-gifts", initialAudienceCount: 97)
     ]
     static let gifts = [
         FoodGift(id: "balloons", name: "Sending love", artwork: "gift-balloons", cost: 50),

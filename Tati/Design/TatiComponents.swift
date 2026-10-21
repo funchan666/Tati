@@ -26,16 +26,44 @@ struct Art: View {
     }
 }
 
-/// A user's identity always opens the same profile, independently of its content card.
+/// Sheet presenters provide a handoff so profile navigation occurs after dismissal.
+private struct ProfileSheetActionKey: EnvironmentKey {
+    static let defaultValue: ((FoodPerson) -> Void)? = nil
+}
+extension EnvironmentValues {
+    var profileSheetAction: ((FoodPerson) -> Void)? {
+        get { self[ProfileSheetActionKey.self] }
+        set { self[ProfileSheetActionKey.self] = newValue }
+    }
+}
+
 struct UserProfileLink<Label: View>: View {
     var userID: String
     @ViewBuilder var label: () -> Label
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.profileSheetAction) private var sheetAction
     var body: some View {
         if let person = FoodCatalog.person(userID), !store.isPersonHidden(userID) {
-            NavigationLink(destination: PersonProfileView(person: person)) { label().contentShape(Rectangle()) }
-                .buttonStyle(.plain).accessibilityLabel("View " + person.name)
+            Group {
+                if let sheetAction {
+                    Button { sheetAction(person) } label: { label().contentShape(Rectangle()) }
+                } else {
+                    NavigationLink(destination: PersonProfileView(person: person)) { label().contentShape(Rectangle()) }
+                }
+            }.buttonStyle(.plain).accessibilityLabel("View " + person.name)
         } else { label() }
+    }
+}
+
+/// A view-based link also works inside feed cards in a lazy container, where
+/// navigationDestination registrations must not be installed.
+struct ProfilePageHandoff: View {
+    @Binding var person: FoodPerson?
+    var body: some View {
+        NavigationLink(isActive: Binding(get: { person != nil }, set: { if !$0 { person = nil } })) {
+            if let person { PersonProfileView(person: person) }
+        } label: { EmptyView() }
+        .hidden().accessibilityHidden(true)
     }
 }
 
@@ -373,5 +401,101 @@ struct TatiPanel<Content: View>: View {
             .presentationCornerRadius(20)
             .tatiScreen()
             .accessibilityAction(.escape) { dismiss() }
+    }
+}
+
+/// Shared editing surfaces keep media, fields and actions consistent.
+struct TatiEditingForm<Content: View, Footer: View>: View {
+    var title: String
+    @ViewBuilder var content: () -> Content
+    @ViewBuilder var footer: () -> Footer
+    var body: some View {
+        VStack(spacing: 0) {
+            TatiHeader(title: title).padding(.vertical, 6)
+                .frame(maxWidth: 600).frame(maxWidth: .infinity)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 22) { content() }
+                    .padding(.horizontal, 18).padding(.top, 12).padding(.bottom, 24)
+                    .frame(maxWidth: 600).frame(maxWidth: .infinity)
+            }.scrollDismissesKeyboard(.interactively)
+            VStack(spacing: 0) { footer() }
+                .padding(.horizontal, 18).padding(.vertical, 12)
+                .frame(maxWidth: 600).frame(maxWidth: .infinity)
+                .background { Color.tatiCream.ignoresSafeArea(.container, edges: .bottom) }
+        }.background { Color.tatiCream.ignoresSafeArea(.container) }
+            .foregroundStyle(Color.tatiInk).tint(.tatiOlive).tatiScreen()
+    }
+}
+
+struct TatiEditingField: View {
+    var label: String
+    var placeholder: String
+    @Binding var text: String
+    var limit: Int? = nil
+    var multiline = false
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(label).font(.subheadline.weight(.semibold))
+                Spacer()
+                if let limit { Text("\(text.count)/\(limit)").font(.caption).monospacedDigit().foregroundStyle(Color.tatiOlive) }
+            }
+            TextField(label, text: $text, prompt: Text(placeholder).foregroundColor(.tatiOlive.opacity(0.8)), axis: .vertical)
+                .font(.body).lineLimit(multiline ? 4...6 : 1...3)
+                .padding(14).frame(maxWidth: .infinity, alignment: .topLeading)
+                .background(.white, in: RoundedRectangle(cornerRadius: 16))
+                .accessibilityLabel(label)
+                .onChange(of: text) { _, value in if let limit, value.count > limit { text = String(value.prefix(limit)) } }
+        }
+    }
+}
+
+struct TatiEditingButton: View {
+    var title: String
+    var enabled: Bool
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Text(title).font(.headline)
+                .foregroundStyle(enabled ? Color.tatiInk : Color.tatiOlive)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .background(enabled ? Color.tatiPink : Color.white.opacity(0.8), in: Capsule())
+        }.buttonStyle(.plain).disabled(!enabled)
+    }
+}
+
+/// Shared relationship control; each instance observes the root VisitorStore directly.
+struct FollowControl: View {
+    enum Style {
+        case compact
+        case artwork(height: CGFloat)
+        case text
+    }
+    let userID: String
+    var style: Style = .compact
+    @EnvironmentObject private var store: VisitorStore
+
+    var body: some View {
+        let following = store.isFollowing(userID)
+        let name = FoodCatalog.person(userID)?.name ?? "user"
+        let label = "\(following ? "Unfollow" : "Follow") \(name)"
+        let action: () -> Void = { _ = store.setFollowing(!following, for: userID) }
+        Group {
+            if store.canChangeFollow(userID) {
+                Group {
+                    switch style {
+                    case .compact:
+                        ArtButton(asset: following ? "check" : "follow-small", label: label, size: 18, action: action)
+                    case .artwork(let height):
+                        ImageAction(asset: following ? "followed-button" : "follow-button", label: label, height: height, action: action)
+                    case .text:
+                        TatiButton(title: following ? "Following" : "Follow", action: action)
+                    }
+                }
+                .accessibilityLabel(label)
+                .accessibilityValue(store.mutualIDs.contains(userID) ? "Following each other" : following ? "Following" : "Not following")
+                .accessibilityAddTraits(following ? .isSelected : [])
+            }
+        }
     }
 }

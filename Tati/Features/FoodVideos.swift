@@ -27,6 +27,8 @@ struct ClipDetailView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     @State private var showComments = false
+    @State private var pendingProfile: FoodPerson?
+    @State private var profilePage: FoodPerson?
     @State private var showReport = false
     @State private var failure: String?
     @State private var playbackOwner = UUID().uuidString
@@ -112,7 +114,17 @@ struct ClipDetailView: View {
             if value != .active { if playback.ownerID == playbackOwner { playback.stop() } }
             else if isVisible { preparePlayback() }
         }
-        .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
+        .background { ProfilePageHandoff(person: $profilePage) }
+        .sheet(isPresented: $showComments, onDismiss: {
+            if let person = pendingProfile {
+                pendingProfile = nil
+                if !store.isPersonHidden(person.id) { profilePage = person }
+            }
+        }) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large])
+                .environment(\.profileSheetAction, { person in
+                    pendingProfile = person
+                    showComments = false
+                }) }
         .sheet(isPresented: $showReport) { VideoOptionsView(clip: clip) }
         .onChange(of: showReport) { _, presented in
             if !presented && (store.isPersonHidden(clip.authorID) || store.isHidden("video:" + clip.id)) { dismiss() }
@@ -263,24 +275,31 @@ struct PublishVideoView: View {
     @State private var importing = false
     @State private var committed = false
     var body: some View {
-        TatiForm(title: "Post") {
+        TatiEditingForm(title: "Post a video") {
             PhotosPicker(selection: $selection, matching: .videos) {
-                ZStack(alignment: .bottom) {
-                    if let localFile {
-                        LocalVideoPoster(url: store.mediaURL(localFile), height: 280)
-                        Art(name: "change-video", height: 30).padding(.bottom, 20)
-                    } else {
-                        VStack(spacing: 22) {
-                            Art(name: "add-video", height: 64)
-                            Text(importing ? "Importing your video…" : "Select your food video").font(.system(size: 12)).multilineTextAlignment(.center)
-                        }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(20)
-                    }
-                }.frame(maxWidth: 250).frame(height: 280).background(Color.tatiLime.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 20)).frame(maxWidth: .infinity)
+                HStack(spacing: 16) {
+                    Group {
+                        if let localFile {
+                            LocalVideoPoster(url: store.mediaURL(localFile), height: 150)
+                        } else {
+                            Art(name: "add-video", width: 42, height: 42)
+                                .frame(maxWidth: .infinity).frame(height: 112)
+                                .background(Color.tatiLime.opacity(0.45))
+                        }
+                    }.frame(width: 112).clipShape(RoundedRectangle(cornerRadius: 14))
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(importing ? "Adding your video…" : localFile == nil ? "Your food moment" : "Video selected")
+                            .font(.headline)
+                        Text(localFile == nil ? "Choose a video from your library" : "Choose another video")
+                            .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        Text("Up to 250 MB").font(.caption).foregroundStyle(Color.tatiOlive)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.padding(12).background(.white, in: RoundedRectangle(cornerRadius: 20))
             }.buttonStyle(.plain).disabled(importing)
-            InputField(title: "Please input your thoughts…", text: $caption, multiline: true, showsLabel: false, minimumHeight: 80, characterLimit: 50)
-                .onChange(of: caption) { _, value in if value.count > 50 { caption = String(value.prefix(50)) } }
+                .accessibilityLabel(localFile == nil ? "Choose a video" : "Change video")
+            TatiEditingField(label: "Caption", placeholder: "What's the story behind this bite?", text: $caption, limit: 50, multiline: true)
         } footer: {
-            TatiButton(title: "Post", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiEditingButton(title: "Post video", enabled: localFile != nil && !importing && !committed && !caption.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard let localFile else { return }
                 let clip = FoodClip(id: UUID().uuidString, authorID: store.account.profile.id, caption: caption.trimmingCharacters(in: .whitespacesAndNewlines), fileName: localFile, createdAt: Date(), isSample: false)
                 if store.submitPost(clip) { committed = true; dismiss(); store.celebrate("Saved for review", "Your post stays private until review is complete and it is approved.", artwork: "chef") }
@@ -317,25 +336,62 @@ struct GoLiveView: View {
     @State private var coverData: Data?
     @State private var previewTask: Task<Void, Never>?
     var body: some View {
-        TatiForm(title: "Go Live") {
+        TatiEditingForm(title: "Go live") {
             PhotosPicker(selection: $cover, matching: .images) {
-                Group {
-                    if let coverData, let ui = UIImage(data: coverData) { Image(uiImage: ui).resizable().scaledToFill().frame(height: 200).clipped() }
-                    else { VStack { Art(name: "add-photo", height: 60); Text("Add a cover").font(.caption) }.frame(maxWidth: .infinity).frame(height: 200).background(Color.tatiLime.opacity(0.4)) }
-                }.clipShape(RoundedRectangle(cornerRadius: 22))
-            }.buttonStyle(.plain)
-            Text("Title").font(.system(size: 14))
-            InputField(title: "What's your room about?", text: $title, showsLabel: false).onChange(of: title) { _, value in title = String(value.prefix(80)) }
-            Text("Label").font(.system(size: 14))
-            ChoiceGrid(items: Array(FoodCatalog.topics.dropFirst()), selected: $topic)
-            if camera.ready { CameraSurface(session: camera.session).frame(height: 260).clipShape(RoundedRectangle(cornerRadius: 20)) }
-            Note(text: camera.status)
-            TatiButton(title: camera.starting ? "Starting camera…" : camera.ready ? "Turn off camera" : "Turn on camera", secondary: true, enabled: !camera.starting) {
-                if camera.ready { previewTask?.cancel(); camera.stop() }
-                else { previewTask?.cancel(); previewTask = Task { await camera.start() } }
+                HStack(spacing: 16) {
+                    GeometryReader { geometry in
+                        if let coverData, let ui = UIImage(data: coverData) {
+                            Image(uiImage: ui).resizable().scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                        } else {
+                            Art(name: "add-photo", width: 40, height: 40)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.tatiLime.opacity(0.45))
+                        }
+                    }.frame(width: 96, height: 112).clipShape(RoundedRectangle(cornerRadius: 14))
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(coverData == nil ? "Room cover" : "Cover selected").font(.headline)
+                        Text("Give your room a little flavour").font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        Text(coverData == nil ? "Choose photo" : "Change photo")
+                            .font(.caption.weight(.semibold)).foregroundStyle(Color.tatiInk)
+                            .padding(.horizontal, 12).padding(.vertical, 7)
+                            .background(Color.tatiLime, in: Capsule())
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                }.padding(12).background(.white, in: RoundedRectangle(cornerRadius: 20))
+            }.buttonStyle(.plain).accessibilityLabel(coverData == nil ? "Add a room cover" : "Change room cover")
+            TatiEditingField(label: "Room title", placeholder: "What's cooking in your room?", text: $title, limit: 80)
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Food topic").font(.subheadline.weight(.semibold)).accessibilityAddTraits(.isHeader)
+                FilterTagLayout {
+                    ForEach(Array(FoodCatalog.topics.dropFirst()), id: \.self) { value in
+                        BrowseFilterChip(title: value, selected: topic == value) { topic = value }
+                    }
+                }
             }
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .top, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Camera").font(.subheadline.weight(.semibold))
+                        Text(camera.status).font(.caption).foregroundStyle(Color.tatiOlive)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    Button {
+                        if camera.ready { previewTask?.cancel(); camera.stop() }
+                        else { previewTask?.cancel(); previewTask = Task { await camera.start() } }
+                    } label: {
+                        Text(camera.starting ? "Starting…" : camera.ready ? "Turn off" : "Enable")
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 14).frame(minHeight: 44)
+                            .background(Color.tatiLime, in: Capsule())
+                    }.buttonStyle(.plain).disabled(camera.starting)
+                        .accessibilityLabel(camera.ready ? "Turn off camera" : "Turn on camera")
+                }
+                if camera.ready {
+                    CameraSurface(session: camera.session).frame(height: 210).clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+            }.padding(14).background(.white, in: RoundedRectangle(cornerRadius: 18))
         } footer: {
-            TatiButton(title: "Start live", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+            TatiEditingButton(title: "Start live", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 store.tell("Broadcast unavailable", "Broadcasting is currently unavailable. No broadcast has started and no coins were charged.")
             }
         }.task(id: cover) {

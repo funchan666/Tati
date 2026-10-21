@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F8D7A0100000000000000001 /* RoomSpeechInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D7A0100000000000000002 /* RoomSpeechInput.swift */; };
 		03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6962CD61D5BD68192E78A4 /* TatiApp.swift */; };
 		0C2CC1875E0D0B56A857E180 /* collection-osaka-sandwich.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8CA711B5E7FE0EF54897B778 /* collection-osaka-sandwich.mp4 */; };
 		19728F11B51710D225A2AA03 /* collection-trail-break.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 13273BC78F544D12626104FB /* collection-trail-break.mp4 */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F8D7A0100000000000000002 /* RoomSpeechInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpeechInput.swift; sourceTree = "<group>"; };
 		01BF3120DFCCCFD99B5294B5 /* ContentMediaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMediaViews.swift; sourceTree = "<group>"; };
 		046E4091CA0791585A0EFCEC /* TatiPurchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiPurchases.swift; sourceTree = "<group>"; };
 		096CCF28CAE4E745C40D03A1 /* collection-dinner-friends.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-dinner-friends.mp4"; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				2682D758CA0DB0EAE418E855 /* LocalMedia.swift */,
+				F8D7A0100000000000000002 /* RoomSpeechInput.swift */,
 				C8AAC952352DCEFCC602AE92 /* RoomPreviewSession.swift */,
 				046E4091CA0791585A0EFCEC /* TatiPurchases.swift */,
 			);
@@ -305,6 +308,7 @@
 				9FB10048135D865A9422CC32 /* FoodRooms.swift in Sources */,
 				C7884F25FCDBB440A8594C21 /* FoodVideos.swift in Sources */,
 				604F1E3D08BA2A7A2552A079 /* LocalMedia.swift in Sources */,
+				F8D7A0100000000000000001 /* RoomSpeechInput.swift in Sources */,
 				25FDB4D20A8C0B7BD7F6B82C /* PeopleAndChat.swift in Sources */,
 				3440E6604010851348552920 /* RechargeOptions.swift in Sources */,
 				721FF2BB2B253373788E1078 /* RoomPanels.swift in Sources */,

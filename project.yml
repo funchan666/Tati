@@ -39,7 +39,8 @@ targets:
         UIUserInterfaceStyle: Light
         UIApplicationSupportsIndirectInputEvents: true
         NSCameraUsageDescription: Tati uses the camera when you choose to preview yourself for a video call or prepare a live session.
-        NSMicrophoneUsageDescription: Tati requests microphone access when you start a video call or turn on your microphone.
+        NSMicrophoneUsageDescription: Tati uses your microphone for voice input and when you choose to start a call.
+        NSSpeechRecognitionUsageDescription: Tati turns your speech into an editable message. Audio may be sent to Apple for recognition when on-device recognition is unavailable.
         NSPhotoLibraryUsageDescription: Choose your own profile photos and food videos for Tati.
 schemes:
   Tati:

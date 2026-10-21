@@ -38,6 +38,31 @@ final class VisitorStore: ObservableObject {
         } catch {
             storageFailure = "Your saved data could not be opened. It has not been replaced. Please check available storage before trying again."
         }
+        prepareVoiceRoomBackgrounds()
+    }
+
+    // Assign once, not during rendering. Keep every valid explicit selection.
+    private func prepareVoiceRoomBackgrounds() {
+        guard storageFailure == nil else { return }
+        let rooms = FoodCatalog.rooms.filter(\.isVoice)
+        var assignments = account.roomBackgrounds
+        var changed = false
+        for room in rooms.shuffled() where assignments[room.id].flatMap(VoiceRoomBackground.init(rawValue:)) == nil {
+            // Randomize among the least-used originals so all three get exposure.
+            let counts = Dictionary(uniqueKeysWithValues: VoiceRoomBackground.allCases.map { background in
+                (background, rooms.filter { assignments[$0.id] == background.rawValue }.count)
+            })
+            let minimum = counts.values.min() ?? 0
+            let candidates = VoiceRoomBackground.allCases.filter { counts[$0] == minimum }
+            assignments[room.id] = (candidates.randomElement() ?? .blue).rawValue
+            changed = true
+        }
+        if changed { _ = change { $0.roomBackgrounds = assignments } }
+    }
+
+    func voiceRoomBackground(for room: FoodRoom) -> VoiceRoomBackground {
+        account.roomBackgrounds[room.id].flatMap(VoiceRoomBackground.init(rawValue:))
+            ?? VoiceRoomBackground(rawValue: room.background) ?? .blue
     }
     @discardableResult
     func change(_ edit: (inout LocalAccount) -> Void) -> Bool {
@@ -71,6 +96,7 @@ final class VisitorStore: ObservableObject {
     var coinBalance: Int { account.demoCoins + account.purchasedCoins }
     var ownsFrame: Bool { account.frameUnlocked == true || account.equippedFrame }
     func signIn() {
+        prepareVoiceRoomBackgrounds()
         _ = change { value in
             value.signedIn = true
             if value.welcomeGranted == false {
@@ -107,10 +133,24 @@ final class VisitorStore: ObservableObject {
             if cleanupFailed { self.tell("Profile deleted", "Some imported files could not be removed. Uninstall Tati to erase the remaining app data.") }
         }
     }
-    func toggleFollow(_ id: String) {
-        guard id != account.profile.id, FoodCatalog.person(id) != nil else { return }
-        guard !isPersonHidden(id) else { tell("Profile unavailable", "This profile is hidden or blocked."); return }
-        _ = change { if $0.following.contains(id) { $0.following.remove(id) } else { $0.following.insert(id) } }
+    // All screens derive relationship state from this persisted account, never view-local flags.
+    var followingIDs: Set<String> { account.following.filter { $0 != account.profile.id && !isPersonHidden($0) } }
+    var followerIDs: Set<String> { (account.followers ?? []).filter { $0 != account.profile.id && !isPersonHidden($0) } }
+    func isFollowing(_ id: String) -> Bool {
+        id != account.profile.id && account.following.contains(id) && !isPersonHidden(id)
+    }
+    func canChangeFollow(_ id: String) -> Bool {
+        account.signedIn && id != account.profile.id && FoodCatalog.person(id) != nil && !isPersonHidden(id)
+    }
+    @discardableResult
+    func setFollowing(_ following: Bool, for id: String) -> Bool {
+        guard canChangeFollow(id) else { return false }
+        guard account.following.contains(id) != following else { return true }
+        // Publish only after the durable write succeeds. Following never creates a follower.
+        return change { value in
+            if following { value.following.insert(id) }
+            else { value.following.remove(id) }
+        }
     }
     func block(_ id: String) {
         guard id != account.profile.id else { return }
@@ -124,7 +164,7 @@ final class VisitorStore: ObservableObject {
     func isPersonHidden(_ id: String) -> Bool { account.blocked.contains(id) || isHidden("person:" + id) }
     var visiblePeople: [FoodPerson] { FoodCatalog.people.filter { !isPersonHidden($0.id) } }
     var visibleRooms: [FoodRoom] { FoodCatalog.rooms.filter { !isPersonHidden($0.hostID) && !isHidden("room:" + $0.id) } }
-    var mutualIDs: Set<String> { account.following.intersection(account.followers ?? []).filter { !isPersonHidden($0) } }
+    var mutualIDs: Set<String> { followingIDs.intersection(followerIDs) }
     func canCommunicate(with id: String) -> Bool {
         account.signedIn && id != account.profile.id && mutualIDs.contains(id)
     }
