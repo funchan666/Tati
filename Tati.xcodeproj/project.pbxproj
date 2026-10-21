@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F8D7A0100000000000000001 /* RoomSpeechInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D7A0100000000000000002 /* RoomSpeechInput.swift */; };
 		03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6962CD61D5BD68192E78A4 /* TatiApp.swift */; };
 		0C2CC1875E0D0B56A857E180 /* collection-osaka-sandwich.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8CA711B5E7FE0EF54897B778 /* collection-osaka-sandwich.mp4 */; };
 		19728F11B51710D225A2AA03 /* collection-trail-break.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 13273BC78F544D12626104FB /* collection-trail-break.mp4 */; };
@@ -46,11 +45,11 @@
 		CA1C2DC84CA7DAED03C7ECBB /* TatiComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD31A6A1F3F5144A5EA5192 /* TatiComponents.swift */; };
 		DBB2D71B1C93346958AD65F6 /* AccountPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B30D0321C5AB735FFFAB55 /* AccountPages.swift */; };
 		E229884E77C037760D678DF4 /* ContentMediaViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF3120DFCCCFD99B5294B5 /* ContentMediaViews.swift */; };
+		F8D7A0100000000000000001 /* RoomSpeechInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D7A0100000000000000002 /* RoomSpeechInput.swift */; };
 		FA6FCE3FB58AA0EC4B0C0490 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F8D7A0100000000000000002 /* RoomSpeechInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpeechInput.swift; sourceTree = "<group>"; };
 		01BF3120DFCCCFD99B5294B5 /* ContentMediaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMediaViews.swift; sourceTree = "<group>"; };
 		046E4091CA0791585A0EFCEC /* TatiPurchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiPurchases.swift; sourceTree = "<group>"; };
 		096CCF28CAE4E745C40D03A1 /* collection-dinner-friends.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-dinner-friends.mp4"; sourceTree = "<group>"; };
@@ -90,6 +89,7 @@
 		E7F9E4CDB665105ECA9BE284 /* collection-crepe-making.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-crepe-making.mp4"; sourceTree = "<group>"; };
 		E8B30D0321C5AB735FFFAB55 /* AccountPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPages.swift; sourceTree = "<group>"; };
 		EEA0E94A8EC53737DACA64E4 /* content-library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "content-library.json"; sourceTree = "<group>"; };
+		F8D7A0100000000000000002 /* RoomSpeechInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpeechInput.swift; sourceTree = "<group>"; };
 		FEE11BB6D03358A4240FE314 /* collection-toasted-sandwich.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-toasted-sandwich.mp4"; sourceTree = "<group>"; };
 		FFD31A6A1F3F5144A5EA5192 /* TatiComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiComponents.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -402,7 +402,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -490,7 +493,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
