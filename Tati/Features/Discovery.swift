@@ -339,7 +339,8 @@ struct SearchView: View {
 }
 struct PersonRow: View {
     var person: FoodPerson
-    private var hasVideoRoom: Bool { FoodCatalog.rooms.contains { !$0.isVoice && $0.hostID == person.id } }
+    @EnvironmentObject private var store: VisitorStore
+    private var hasVideoRoom: Bool { store.visibleRooms.contains { !$0.isVoice && $0.hostID == person.id } }
     var body: some View {
         NavigationLink(destination: PersonProfileView(person: person)) {
             HStack(spacing: 10) {

@@ -150,9 +150,9 @@ final class VisitorStore: ObservableObject {
         }
     }
     func previewGift(_ gift: FoodGift, quantity: Int, recipient: String, roomID: String? = nil) -> Bool {
-        guard (1...99).contains(quantity), FoodCatalog.person(recipient) != nil, !account.blocked.contains(recipient) else { return false }
+        guard (1...99).contains(quantity), FoodCatalog.person(recipient) != nil, !isPersonHidden(recipient) else { return false }
         if let roomID {
-            guard FoodCatalog.rooms.contains(where: { $0.id == roomID && $0.hostID == recipient }) else { return false }
+            guard visibleRooms.contains(where: { $0.id == roomID && $0.hostID == recipient }) else { return false }
         }
         let total = gift.cost * quantity
         guard account.demoCoins >= total else { tell("More reward coins needed", "Visit Check-in to collect reward coins. No purchase is required."); return false }

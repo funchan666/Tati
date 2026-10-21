@@ -144,7 +144,10 @@ struct BlacklistView: View {
             if blocked.isEmpty { EmptyContent(title: "No blocked profiles", detail: "Profiles you block will appear here. Their rooms and videos will be hidden.", artwork: "blacklist") }
             ForEach(blocked) { person in
                 HStack {
-                    Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)); Spacer()
+                    NavigationLink(destination: PersonProfileView(person: person)) {
+                        HStack { Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)) }
+                    }.buttonStyle(.plain)
+                    Spacer()
                     ArtButton(asset: "remove", label: "Unblock \(person.name)", size: 24) { _ = store.change { $0.blocked.remove(person.id) } }
                 }.padding(.horizontal, 12).padding(.vertical, 4).background { Image("outlined-card").resizable() }
             }

@@ -346,7 +346,7 @@ struct GiftShopView: View {
                 Text("\(quantity)").font(.system(size: 13)).monospacedDigit().frame(minWidth: 22)
                 ArtButton(asset: "add", label: "Increase quantity", size: 22) { quantity = min(99, quantity + 1) }
             }.background(Color.tatiOlive.opacity(0.35)).clipShape(Capsule())
-            TatiButton(title: "Use gift", enabled: !store.account.blocked.contains(recipient.id)) {
+            TatiButton(title: "Use gift", enabled: !store.isPersonHidden(recipient.id)) {
                 if store.previewGift(selected, quantity: quantity, recipient: recipient.id, roomID: roomID) {
                     if let onGiftSaved { onGiftSaved() }
                     else { store.tell("Gift saved", "Your reward balance and gift record have been updated. Gift delivery is currently unavailable.") }

@@ -21,9 +21,9 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Tati uses the camera when you turn it on to prepare a live session.</string>
+	<string>Tati uses the camera when you choose to preview yourself for a video call or prepare a live session.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Tati checks microphone permission only when you choose the microphone permission control.</string>
+	<string>Tati requests microphone access when you start a video call or turn on your microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Choose your own profile photos and food videos for Tati.</string>
 	<key>UIApplicationSceneManifest</key>

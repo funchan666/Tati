@@ -85,7 +85,7 @@ struct MyProfileView: View {
                         Text(store.account.profile.bio).font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
                         Text(store.account.profile.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
                         HStack {
-                            NavigationLink(destination: RelationshipView(kind: "Following")) { stat("\(store.account.following.count)", "Following") }
+                            NavigationLink(destination: RelationshipView(kind: "Following")) { stat("\(store.account.following.filter { !store.isPersonHidden($0) }.count)", "Following") }
                             NavigationLink(destination: RelationshipView(kind: "Follower")) { stat("\((store.account.followers ?? []).filter { !store.isPersonHidden($0) }.count)", "Follower") }
                             NavigationLink(destination: RelationshipView(kind: "Friends")) { stat("\(store.mutualIDs.count)", "Friends") }
                         }.buttonStyle(.plain).padding(.vertical, 10).background(Color(red: 1, green: 0.96, blue: 0.24)).clipShape(RoundedRectangle(cornerRadius: 7))
@@ -403,8 +403,10 @@ struct VideoCallView: View {
         .onAppear { startCamera() }
         .onDisappear { cameraTask?.cancel(); camera.stop() }
         .onChange(of: scenePhase) { _, phase in
-            if phase != .active { cameraTask?.cancel(); camera.stop() }
-            else { startCamera() }
+            // Permission sheets temporarily make the scene inactive. Keep their
+            // request alive; only backgrounding should cancel camera startup.
+            if phase == .background { cameraTask?.cancel(); camera.stop() }
+            else if phase == .active, !camera.starting, !camera.ready { startCamera() }
         }
         .onChange(of: store.account.following) { _, _ in checkPermission() }
         .onChange(of: store.account.followers) { _, _ in checkPermission() }

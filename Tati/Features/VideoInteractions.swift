@@ -22,6 +22,7 @@ struct FeedVideoCard: View {
                     HStack(spacing: 8) {
                         VideoAuthor(clip: clip, size: 32)
                         Spacer(minLength: 4)
+                        if store.isClipVisible(clip) {
                         Button { store.toggleLike(clip.id) } label: {
                             HStack(spacing: 3) {
                                 Art(name: store.account.likes.contains(clip.id) ? "heart" : "like-video", width: 22, height: 22)
@@ -35,6 +36,7 @@ struct FeedVideoCard: View {
                                 Text("\(store.comments(for: clip).count)").font(.system(size: 11)).monospacedDigit()
                             }.frame(minWidth: 44, minHeight: 44)
                         }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
+                        }
                     }
                     NavigationLink(destination: ClipDetailView(clip: clip)) {
                         Text(clip.caption).font(.system(size: 12)).lineLimit(2)
@@ -59,7 +61,7 @@ struct FeedVideoCard: View {
             NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showOptions) {
-            VideoOptionsView(clip: clip).overlay { NoticeLayer() }
+            VideoOptionsView(clip: clip)
         }
     }
 }
@@ -101,6 +103,7 @@ struct SafetyActionsView: View {
     var contextID: String? = nil
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var reporting = false
     var body: some View {
         NavigationStack {
@@ -123,7 +126,7 @@ struct SafetyActionsView: View {
                 }
         }
         .presentationBackground(Color.tatiCream).presentationCornerRadius(22)
-        .presentationDetents(reporting ? [.large] : [.height(168)])
+        .presentationDetents(reporting || dynamicTypeSize.isAccessibilitySize ? [.large] : [.height(190), .large])
         .presentationDragIndicator(.hidden)
         .overlay { NoticeLayer() }
         .onChange(of: store.account.blocked) { _, blocked in if blocked.contains(authorID) { dismiss() } }

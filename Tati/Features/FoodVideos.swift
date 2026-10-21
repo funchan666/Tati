@@ -52,8 +52,12 @@ struct ClipDetailView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     VideoAuthor(clip: clip)
                                     Text(clip.caption).font(.subheadline)
+                                    if !store.isClipVisible(clip) {
+                                        Text("Awaiting review · Only you can see this").font(.caption)
+                                    }
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                             }.frame(maxHeight: min(150, geometry.size.height * 0.28))
+                            if store.isClipVisible(clip) {
                             VStack(spacing: 12) {
                                 VStack(spacing: 2) {
                                     ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: store.account.likes.contains(clip.id) ? "Unlike video" : "Like video", size: 33) { store.toggleLike(clip.id) }
@@ -65,6 +69,7 @@ struct ClipDetailView: View {
                                         Text("\(store.comments(for: clip).count)").font(.system(size: 12)).monospacedDigit()
                                     }
                                 }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
+                            }
                             }
                         }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
                     }.padding(.horizontal, 14).foregroundStyle(showsVideo ? Color.white : Color.tatiInk)
@@ -108,7 +113,7 @@ struct ClipDetailView: View {
             else if isVisible { preparePlayback() }
         }
         .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
-        .sheet(isPresented: $showReport) { VideoOptionsView(clip: clip).overlay { NoticeLayer() } }
+        .sheet(isPresented: $showReport) { VideoOptionsView(clip: clip) }
         .onChange(of: showReport) { _, presented in
             if !presented && (store.isPersonHidden(clip.authorID) || store.isHidden("video:" + clip.id)) { dismiss() }
         }
@@ -122,6 +127,7 @@ struct ClipDetailView: View {
         }
     }
     private func preparePlayback() {
+        guard !store.isPersonHidden(clip.authorID), !store.isHidden("video:" + clip.id) else { closeIfHidden(); return }
         failure = nil
         roomSession.audio.stop()
         guard let url = store.videoURL(for: clip) else { failure = "The video file could not be found."; return }
