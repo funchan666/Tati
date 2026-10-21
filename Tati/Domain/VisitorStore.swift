@@ -84,6 +84,26 @@ final class VisitorStore: ObservableObject {
     func toggleLike(_ id: String) {
         _ = change { if $0.likes.contains(id) { $0.likes.remove(id) } else { $0.likes.insert(id) } }
     }
+    func likeCount(for clip: FoodClip) -> Int { account.likes.contains(clip.id) ? 1 : 0 }
+    func comments(for clip: FoodClip) -> [VideoComment] {
+        (account.videoComments ?? []).filter { $0.clipID == clip.id && !account.blocked.contains($0.authorID) }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+    func addComment(to clip: FoodClip, text: String) -> Bool {
+        let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(500))
+        guard !body.isEmpty, visibleClips.contains(where: { $0.id == clip.id }), !account.blocked.contains(clip.authorID) else { return false }
+        return change { value in
+            var comments = value.videoComments ?? []
+            comments.append(VideoComment(clipID: clip.id, authorID: value.profile.id, text: body))
+            value.videoComments = comments
+            value.drafts.removeValue(forKey: "comment:" + clip.id)
+        }
+    }
+    func removeComment(_ id: String) {
+        _ = change { value in
+            value.videoComments?.removeAll { $0.id == id && $0.authorID == account.profile.id }
+        }
+    }
     var dayKey: String {
         // One explicit timezone prevents travel from granting two rewards for one day.
         let formatter = DateFormatter(); formatter.calendar = Calendar(identifier: .gregorian)

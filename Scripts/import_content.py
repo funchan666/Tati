@@ -37,6 +37,9 @@ def image_set(name, source):
 
 def main():
     mapping = json.loads(MANIFEST.read_text())
+    people = {entry["personID"] for entry in mapping["portraits"]}
+    if any(entry.get("authorID") not in people for entry in mapping["videos"]):
+        raise ValueError("Every video must reference an assigned profile.")
     assigned = mapping["portraits"] + mapping["videos"]
     expected = {item["source"] for item in assigned}
     actual = {
@@ -73,7 +76,7 @@ def main():
             "info": {"author": "xcode", "version": 1},
         })
         clip = {
-            "id": entry["id"], "authorID": "tati-collection",
+            "id": entry["id"], "authorID": entry["authorID"],
             "caption": entry["caption"], "createdAt": 0, "isSample": True,
             "bundledFile": entry["resource"], "posterArtwork": entry["posterAsset"],
         }

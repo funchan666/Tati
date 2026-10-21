@@ -411,7 +411,7 @@
   "clips": [
     {
       "id": "sample-clip-0",
-      "authorID": "tati-collection",
+      "authorID": "creator-andre",
       "caption": "A generous sandwich in Osaka",
       "createdAt": 0,
       "isSample": true,
@@ -420,7 +420,7 @@
     },
     {
       "id": "sample-clip-2",
-      "authorID": "tati-collection",
+      "authorID": "portrait-06",
       "caption": "A little cafe break",
       "createdAt": 0,
       "isSample": true,
@@ -429,7 +429,7 @@
     },
     {
       "id": "sample-clip-4",
-      "authorID": "tati-collection",
+      "authorID": "creator-maria",
       "caption": "Noodles at an outdoor table",
       "createdAt": 0,
       "isSample": true,
@@ -438,7 +438,7 @@
     },
     {
       "id": "sample-clip-6",
-      "authorID": "tati-collection",
+      "authorID": "portrait-08",
       "caption": "A creative mixing experiment",
       "createdAt": 0,
       "isSample": true,
@@ -447,7 +447,7 @@
     },
     {
       "id": "sample-clip-9",
-      "authorID": "tati-collection",
+      "authorID": "creator-seraphina",
       "caption": "Folding and cooking homemade dumplings",
       "createdAt": 0,
       "isSample": true,
@@ -456,7 +456,7 @@
     },
     {
       "id": "sample-clip-10",
-      "authorID": "tati-collection",
+      "authorID": "portrait-10",
       "caption": "A lively evening around the dinner table",
       "createdAt": 0,
       "isSample": true,
@@ -465,7 +465,7 @@
     },
     {
       "id": "sample-clip-12",
-      "authorID": "tati-collection",
+      "authorID": "portrait-05",
       "caption": "A quiet break on the trail",
       "createdAt": 0,
       "isSample": true,
@@ -474,7 +474,7 @@
     },
     {
       "id": "sample-clip-13",
-      "authorID": "tati-collection",
+      "authorID": "portrait-13",
       "caption": "Everyday moments with friends",
       "createdAt": 0,
       "isSample": true,
@@ -483,7 +483,7 @@
     },
     {
       "id": "sample-clip-14",
-      "authorID": "tati-collection",
+      "authorID": "portrait-14",
       "caption": "An outdoor noodle tasting",
       "createdAt": 0,
       "isSample": true,
@@ -492,7 +492,7 @@
     },
     {
       "id": "sample-clip-15",
-      "authorID": "tati-collection",
+      "authorID": "portrait-15",
       "caption": "Cooking together in the kitchen",
       "createdAt": 0,
       "isSample": true,
@@ -503,7 +503,7 @@
   "roomClips": {
     "soup-kitchen": {
       "id": "sample-clip-8",
-      "authorID": "tati-collection",
+      "authorID": "creator-andre",
       "caption": "A look inside a busy kitchen",
       "createdAt": 0,
       "isSample": true,
@@ -512,7 +512,7 @@
     },
     "crepe-station": {
       "id": "sample-clip-11",
-      "authorID": "tati-collection",
+      "authorID": "creator-seraphina",
       "caption": "Fresh crepes on the griddle",
       "createdAt": 0,
       "isSample": true,
@@ -521,7 +521,7 @@
     },
     "sweet-evening": {
       "id": "sample-clip-1",
-      "authorID": "tati-collection",
+      "authorID": "creator-elowen",
       "caption": "A sweet bake, from pan to plate",
       "createdAt": 0,
       "isSample": true,
@@ -530,7 +530,7 @@
     },
     "kitchen-stories": {
       "id": "sample-clip-3",
-      "authorID": "tati-collection",
+      "authorID": "creator-luna",
       "caption": "Crunchy bites at the kitchen counter",
       "createdAt": 0,
       "isSample": true,
@@ -539,7 +539,7 @@
     },
     "pasta-table": {
       "id": "sample-clip-5",
-      "authorID": "tati-collection",
+      "authorID": "creator-maria",
       "caption": "A toasted sandwich, packed with flavour",
       "createdAt": 0,
       "isSample": true,
@@ -548,7 +548,7 @@
     },
     "street-bites": {
       "id": "sample-clip-7",
-      "authorID": "tati-collection",
+      "authorID": "creator-chloe",
       "caption": "A table full of street-food flavours",
       "createdAt": 0,
       "isSample": true,

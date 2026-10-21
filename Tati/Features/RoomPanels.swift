@@ -1,9 +1,154 @@
 import SwiftUI
 
+/// The room menu has two rows of tools; its sheet follows the actual content.
+struct RoomToolsPanel: View {
+    var isVoice: Bool
+    var select: (RoomPanel) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @ScaledMetric(relativeTo: .caption) private var iconSize: CGFloat = 40
+    @State private var contentHeight: CGFloat = 260
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 8) {
+                HStack(spacing: 8) {
+                    Text("Room tools").font(.system(size: 18, weight: .bold, design: .serif))
+                    Spacer(minLength: 0)
+                    ArtButton(asset: "close-light", label: "Close room tools", size: 22) { dismiss() }
+                }
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 14) {
+                    if isVoice { tool("tool-layout", "Room layout", .layout) }
+                    tool("tool-mic", "Mic queue", .microphone)
+                    tool("tool-music", "Music", .music)
+                    tool("tool-background", "Background", .background)
+                    tool("tool-invite", "Invite", .invite)
+                    if !isVoice { tool("feedback", "Report room", .report) }
+                    tool("tool-leave", "Leave", .leave)
+                }
+                if isVoice {
+                    HStack {
+                        Spacer(minLength: 0)
+                        Button { select(.report) } label: {
+                            HStack(spacing: 6) {
+                                Art(name: "feedback", width: 14, height: 16)
+                                Text("Report room").font(.caption)
+                            }
+                            .padding(.horizontal, 8).frame(minHeight: 44)
+                            .contentShape(Rectangle())
+                        }.buttonStyle(.plain).foregroundStyle(Color.tatiOlive)
+                    }
+                }
+            }
+            .padding(.horizontal, 20).padding(.top, 6).padding(.bottom, 8)
+            .frame(maxWidth: 520).frame(maxWidth: .infinity)
+            .background {
+                GeometryReader { geometry in
+                    Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
+                }
+            }
+        }
+        .scrollIndicators(.hidden)
+        .foregroundStyle(Color.tatiInk)
+        .background { Color.tatiLime.ignoresSafeArea(.container) }
+        .presentationBackground(Color.tatiLime)
+        .presentationCornerRadius(22)
+        .presentationDragIndicator(.hidden)
+        .presentationDetents([.height(contentHeight)])
+        .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
+            guard height > 0, abs(height - contentHeight) > 1 else { return }
+            contentHeight = height
+        }
+        .accessibilityAction(.escape) { dismiss() }
+    }
+
+    private func tool(_ art: String, _ title: String, _ destination: RoomPanel) -> some View {
+        Button { select(destination) } label: {
+            VStack(spacing: 5) {
+                if destination == .report {
+                    Art(name: art, width: iconSize * 0.6, height: iconSize * 0.6)
+                        .frame(width: iconSize, height: iconSize)
+                        .background(Color.tatiCream, in: RoundedRectangle(cornerRadius: 12))
+                } else {
+                    Art(name: art, width: iconSize, height: iconSize)
+                }
+                Text(title).font(.caption).multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, minHeight: 64)
+            .contentShape(Rectangle())
+        }.buttonStyle(.plain)
+    }
+}
+
+private struct RoomPanelContentHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+/// Lanhu's compact exit actions, sized independently of the taller room tools.
+struct RoomLeavePanel: View {
+    var isVoice: Bool
+    var minimize: () -> Void
+    var leave: () -> Void
+    var stay: () -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var actionFontSize: CGFloat = 14
+    @State private var contentHeight: CGFloat = 220
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 12) {
+                HStack(spacing: 8) {
+                    Text("Leave the room?").font(.system(size: 17, weight: .bold, design: .serif))
+                    Spacer(minLength: 0)
+                    ArtButton(asset: "close-light", label: "Stay in room", size: 20, action: stay)
+                }
+                VStack(spacing: 8) {
+                    if isVoice { action("Keep listening - Minimize", primary: true, perform: minimize) }
+                    action("Leave room", primary: !isVoice, perform: leave)
+                    action("Stay here", primary: false, perform: stay)
+                }
+            }.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 12)
+                .frame(maxWidth: 520).frame(maxWidth: .infinity)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
+                    }
+                }
+        }
+        .scrollIndicators(.hidden)
+        .foregroundStyle(Color.tatiInk)
+        .background { Color.tatiLime.ignoresSafeArea(.container) }
+        .presentationBackground(Color.tatiLime)
+        .presentationDetents([.height(contentHeight)])
+        .presentationCornerRadius(20)
+        .presentationDragIndicator(.hidden)
+        .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
+            guard height > 0, abs(height - contentHeight) > 1 else { return }
+            contentHeight = height
+        }
+        .accessibilityAction(.escape) { stay() }
+    }
+
+    private func action(_ title: String, primary: Bool, perform: @escaping () -> Void) -> some View {
+        Button(action: perform) {
+            Text(title).font(.system(size: actionFontSize, weight: .regular))
+                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 12).padding(.vertical, 10)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .foregroundStyle(.white)
+                .background(primary ? Color.tatiPink : Color.tatiOlive.opacity(0.65))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }.buttonStyle(.plain)
+    }
+}
+
 struct RoomActivityFeed: View {
     var room: FoodRoom
     var isActive: Bool
     var maximumHeight: CGFloat = 160
+    var maximumWidth: CGFloat = 320
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -29,13 +174,13 @@ struct RoomActivityFeed: View {
         VStack(alignment: .leading, spacing: 5) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 6) {
+                    LazyVStack(alignment: .leading, spacing: 7) {
                         ForEach(entries) { entry in
                             activityRow(entry).id(entry.id)
                                 .transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))
                         }
                     }.padding(.vertical, 3)
-                }
+                }.scrollIndicators(.hidden)
                 .onAppear { if let last = entries.last { proxy.scrollTo(last.id, anchor: .bottom) } }
                 .onChange(of: entries.map(\.id)) { _, _ in
                     guard let last = entries.last else { return }
@@ -45,8 +190,8 @@ struct RoomActivityFeed: View {
                 }
             }
         }
-        .foregroundStyle(.white).frame(maxWidth: 430, maxHeight: maximumHeight, alignment: .leading)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 16)
+        .foregroundStyle(.white).frame(maxWidth: maximumWidth, maxHeight: maximumHeight, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
         .task(id: room.id + (advancesSamples ? "-active" : "-paused")) {
             guard advancesSamples else { return }
             // Finite sample script; never writes receipts, balances or memberships.
@@ -63,25 +208,26 @@ struct RoomActivityFeed: View {
         let name = current ? "\(store.account.profile.name) · You" : person?.name ?? "Guest"
         if let giftID = entry.giftID, let gift = FoodCatalog.gift(giftID) {
             HStack(spacing: 7) {
-                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 26, isCurrent: current)
+                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 24, isCurrent: current)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiLime).lineLimit(1)
+                    Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiCream).lineLimit(1)
                     Text(entry.isSample ? "\(gift.name)" : "Saved \(gift.name)")
-                        .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: 10)).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Art(name: gift.artwork, width: 38, height: 38)
-                Text("×\(entry.quantity)").font(.system(size: 17, weight: .bold)).foregroundStyle(Color.tatiLime)
-            }.padding(.horizontal, 9).padding(.vertical, 5)
-                .background(Color.tatiOlive.opacity(0.85)).clipShape(RoundedRectangle(cornerRadius: 12))
+                Art(name: gift.artwork, width: 32, height: 32)
+                Text("×\(entry.quantity)").font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
+            }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: 260)
+                .background(.black.opacity(0.56)).clipShape(RoundedRectangle(cornerRadius: 10))
+                .overlay { RoundedRectangle(cornerRadius: 10).strokeBorder(Color.tatiPink.opacity(0.45), lineWidth: 0.7) }
                 .accessibilityElement(children: .combine)
         } else {
-            HStack(alignment: .top, spacing: 6) {
+            HStack(alignment: .center, spacing: 6) {
                 Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 22, isCurrent: current)
-                (Text(name + ": ").fontWeight(.semibold).foregroundColor(.tatiLime) + Text(entry.text))
-                    .font(.system(size: 12)).fixedSize(horizontal: false, vertical: true)
+                (Text(name + ": ").fontWeight(.medium).foregroundColor(.tatiCream) + Text(entry.text))
+                    .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
             }.padding(.horizontal, 8).padding(.vertical, 5)
-                .background(.black.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 8))
+                .background(.black.opacity(0.52)).clipShape(RoundedRectangle(cornerRadius: 8))
                 .accessibilityElement(children: .combine)
         }
     }

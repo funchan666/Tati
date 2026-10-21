@@ -44,23 +44,27 @@ struct ClipDetailView: View {
                             Spacer()
                             if clip.authorID == store.account.profile.id {
                                 ArtButton(asset: "remove", label: "Delete video") { delete() }
-                            } else { ArtButton(asset: "more", label: "Report video") { showReport = true } }
+                            } else { ArtButton(asset: "more", label: "Video options: report or block") { showReport = true } }
                         }
                         Spacer()
                         HStack(alignment: .bottom, spacing: 16) {
                             ScrollView {
                                 VStack(alignment: .leading, spacing: 8) {
-                                    if let person = FoodCatalog.person(clip.authorID) {
-                                        NavigationLink(destination: PersonProfileView(person: person)) {
-                                            HStack { Avatar(asset: person.portraitArtwork, size: 36); Text(person.name).font(.headline).lineLimit(1) }
-                                        }.buttonStyle(.plain)
-                                    } else { Text(store.authorName(for: clip)).font(.headline) }
+                                    VideoAuthor(clip: clip)
                                     Text(clip.caption).font(.subheadline)
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                             }.frame(maxHeight: min(150, geometry.size.height * 0.28))
                             VStack(spacing: 12) {
-                                ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 33) { store.toggleLike(clip.id) }
-                                Button { showComments = true } label: { SupplementIcon(icon: .comment, size: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Comments")
+                                VStack(spacing: 2) {
+                                    ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: store.account.likes.contains(clip.id) ? "Unlike video" : "Like video", size: 33) { store.toggleLike(clip.id) }
+                                    Text("\(store.likeCount(for: clip))").font(.system(size: 12)).monospacedDigit()
+                                }
+                                Button { showComments = true } label: {
+                                    VStack(spacing: 2) {
+                                        SupplementIcon(icon: .comment, size: 30, tint: showsVideo ? .white : .tatiInk).frame(width: 44, height: 44)
+                                        Text("\(store.comments(for: clip).count)").font(.system(size: 12)).monospacedDigit()
+                                    }
+                                }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
                             }
                         }.padding(.bottom, 18).shadow(color: .black, radius: 3, y: 1)
                     }.padding(.horizontal, 14).foregroundStyle(showsVideo ? Color.white : Color.tatiInk)
@@ -69,8 +73,8 @@ struct ClipDetailView: View {
                     if playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
                         VStack(spacing: 8) {
                             Button { playback.toggle() } label: {
-                                SupplementIcon(icon: playback.wantsToPlay ? .pause : .play, size: 38)
-                                    .frame(width: 54, height: 54).background(.white.opacity(0.4)).clipShape(Circle())
+                                SupplementIcon(icon: playback.wantsToPlay ? .pause : .play, size: 32, tint: .white)
+                                    .frame(width: 54, height: 54).background(.black.opacity(0.3)).clipShape(Circle())
                             }.buttonStyle(.plain).accessibilityLabel(playback.wantsToPlay ? "Pause video" : "Play video")
                             if playback.loading { Text("Loading…").font(.caption).foregroundStyle(.white) }
                         }
@@ -88,7 +92,7 @@ struct ClipDetailView: View {
         .background {
             GeometryReader { geometry in
                 if let player = playback.player, playback.activeID == clip.id, playback.ownerID == playbackOwner, playback.failure == nil {
-                    ClipSurface(player: player).background(Color.black)
+                    ClipSurface(player: player, fillsContainer: true).background(Color.black)
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .allowsHitTesting(false)
                 } else {
@@ -104,19 +108,22 @@ struct ClipDetailView: View {
             else if isVisible { preparePlayback() }
         }
         .sheet(isPresented: $showComments) { NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
-        .sheet(isPresented: $showReport) { NavigationStack { VideoOptionsView(clip: clip) }.overlay { NoticeLayer() } }
+        .sheet(isPresented: $showReport) { VideoOptionsView(clip: clip).overlay { NoticeLayer() } }
+        .onChange(of: showReport) { _, presented in
+            if !presented && store.account.blocked.contains(clip.authorID) { dismiss() }
+        }
     }
     private func preparePlayback() {
         failure = nil
         roomSession.audio.stop()
         guard let url = store.videoURL(for: clip) else { failure = "The video file could not be found."; return }
-        do { try playback.load(id: clip.id, url: url, owner: playbackOwner) }
-        catch { failure = clip.isCollection ? "This video is unavailable." : "This video file is missing. Reimport it from your library." }
+        do { try playback.load(id: clip.id, url: url, owner: playbackOwner, loops: true) }
+        catch { failure = clip.bundledFile != nil ? "This video is unavailable." : "This video file is missing. Reimport it from your library." }
     }
     private func delete() {
         store.confirm("Delete video?", "This removes the imported copy from Tati. The original in Photos is unchanged.", button: "Delete", destructive: true) {
             playback.stop()
-            if store.change({ $0.clips.removeAll { $0.id == clip.id }; $0.likes.remove(clip.id) }) {
+            if store.change({ $0.clips.removeAll { $0.id == clip.id }; $0.likes.remove(clip.id); $0.videoComments?.removeAll { $0.clipID == clip.id } }) {
                 if let file = clip.fileName { store.removeUnusedMedia(file) }
                 dismiss()
             }
@@ -126,33 +133,68 @@ struct ClipDetailView: View {
 struct CommentDraftView: View {
     var clip: FoodClip
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.dismiss) private var dismiss
     @State private var text = ""
+    private var comments: [VideoComment] { store.comments(for: clip) }
     var body: some View {
         VStack(spacing: 0) {
-            HStack { Text("DISCUSS").font(.system(size: 18, weight: .bold, design: .serif)); Spacer() }.padding(18)
-            ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
-                    Text("No comments yet").font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
-                    if let saved = store.account.drafts["comment:" + clip.id], !saved.isEmpty {
-                        HStack(alignment: .top, spacing: 10) {
-                            Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
-                            VStack(alignment: .leading, spacing: 5) { Text(store.account.profile.name).font(.system(size: 14, weight: .medium)); Text(saved).font(.system(size: 13)); Text("Draft · not posted").font(.system(size: 10)).foregroundStyle(Color.tatiOlive) }
+            HStack {
+                Text("Comments · \(comments.count)").font(.system(size: 18, weight: .bold, design: .serif))
+                Spacer()
+                ArtButton(asset: "close-light", label: "Close comments") { dismiss() }
+            }.padding(.horizontal, 18).padding(.top, 8)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 18) {
+                        if comments.isEmpty {
+                            Text("Be the first to comment.").font(.system(size: 13)).foregroundStyle(Color.tatiOlive)
+                                .padding(.vertical, 24)
                         }
-                    }
-                }.frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 18)
+                        ForEach(comments) { comment in
+                            let current = comment.authorID == store.account.profile.id
+                            let person = FoodCatalog.person(comment.authorID)
+                            HStack(alignment: .top, spacing: 10) {
+                                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 38, isCurrent: current)
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text(current ? store.account.profile.name : person?.name ?? "Creator").font(.system(size: 14, weight: .medium))
+                                    Text(comment.text).font(.system(size: 13)).fixedSize(horizontal: false, vertical: true)
+                                    Text(comment.createdAt, style: .relative).font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
+                                }.frame(maxWidth: .infinity, alignment: .leading)
+                                if current {
+                                    ArtButton(asset: "remove", label: "Delete comment", size: 16) {
+                                        store.confirm("Delete comment?", "This comment will be removed.", button: "Delete", destructive: true) { store.removeComment(comment.id) }
+                                    }
+                                }
+                            }.id(comment.id)
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
+                }
+                .onChange(of: comments.map(\.id)) { _, ids in
+                    if let last = ids.last { withAnimation { proxy.scrollTo(last, anchor: .bottom) } }
+                }
             }
             HStack(spacing: 6) {
-                TextField("Tell me your opinion…", text: $text, axis: .vertical).lineLimit(1...4).font(.system(size: 13)).padding(.leading, 14).tint(.white)
+                TextField("Tell me your opinion…", text: $text, axis: .vertical).lineLimit(1...4)
+                    .font(.system(size: 13)).padding(.leading, 14).tint(.white)
+                    .onChange(of: text) { _, value in text = String(value.prefix(500)) }
                 Button {
-                    guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
-                    if store.saveDraft("comment:" + clip.id, text: text) { store.tell("Draft saved", "Your comment draft has been saved. It has not been posted.") }
-                } label: { Text("SAVE").font(.system(size: 13, weight: .bold)).foregroundStyle(Color.tatiInk).padding(.horizontal, 14).padding(.vertical, 9).background(Color.tatiLime).clipShape(Capsule()).frame(minHeight: 44) }.buttonStyle(.plain).accessibilityLabel("Save comment draft")
-            }.padding(.horizontal, 5).padding(.vertical, 4).background(Color.tatiPink).clipShape(RoundedRectangle(cornerRadius: 22)).padding(16)
-        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk).presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
+                    if store.addComment(to: clip, text: text) { text = "" }
+                } label: {
+                    Text("Send").font(.system(size: 13, weight: .semibold)).foregroundStyle(Color.tatiInk)
+                        .padding(.horizontal, 16).padding(.vertical, 9).background(Color.tatiLime)
+                        .clipShape(Capsule()).frame(minHeight: 44)
+                }.buttonStyle(.plain).accessibilityLabel("Add comment")
+                    .disabled(text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }.padding(.horizontal, 5).padding(.vertical, 4).background(Color.tatiPink)
+                .clipShape(RoundedRectangle(cornerRadius: 22)).padding(16)
+        }.background(Color.tatiCream).foregroundStyle(Color.tatiInk)
+            .presentationBackground(Color.tatiCream).presentationCornerRadius(20).presentationDragIndicator(.hidden)
             .tatiScreen()
             .onAppear { text = store.account.drafts["comment:" + clip.id] ?? "" }
+            .onDisappear { if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { _ = store.saveDraft("comment:" + clip.id, text: text) } }
     }
 }
+
 private enum PublishDestination: Hashable { case live, video }
 
 struct PublishSheet: View {

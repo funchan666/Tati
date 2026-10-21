@@ -27,7 +27,7 @@ struct DiscoverView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
-                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 149 : 168, height: voice ? 62 : 48, alignment: .leading)
+                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 140 : 168, height: voice ? 58 : 48, alignment: .leading)
                     Spacer()
                     if voice {
                         ArtButton(asset: "publish", label: "Create a room", size: 32) { showPublish = true }
@@ -49,12 +49,12 @@ struct DiscoverView: View {
                     ArtButton(asset: "filter", label: "Filter rooms", size: 26) { showFilter = true }
                 }
                 if voice {
-                    ImageAction(asset: "topic-banner", label: "Browse food topics", height: 73) { showTopic = true }
+                    ImageAction(asset: "topic-banner", label: "Browse food topics", height: 66) { showTopic = true }
                 }
                 if ContentLibrary.unavailable { Note(text: "Content could not be loaded.") }
                 if rooms.isEmpty { EmptyContent(title: "No rooms here yet", detail: selected == "Follow" ? "Rooms from profiles you follow appear here." : "Try another topic or clear your filters.") }
                 else if voice {
-                    LazyVStack(spacing: 20) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room, showsHotBanner: currentSection != "Follow") }.buttonStyle(.plain) } }
+                    LazyVStack(spacing: 14) { ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { RoomListCard(room: room, showsHotBanner: currentSection != "Follow") }.buttonStyle(.plain) } }
                 } else {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)], spacing: 12) {
                         ForEach(rooms) { room in NavigationLink(destination: RoomView(room: room)) { LiveRoomCard(room: room) }.buttonStyle(.plain) }
@@ -65,8 +65,7 @@ struct DiscoverView: View {
         .onChange(of: voice) { _, _ in selected = voice ? "Party" : "Hot" }
         .sheet(isPresented: $showTopic) { NavigationStack { HotTopicView() }.overlay { NoticeLayer() }.presentationDetents([.medium, .large]) }
         .sheet(isPresented: $showFilter) {
-            NavigationStack { FilterView(topic: $topic, country: $country, language: $language) }
-                .presentationDetents([.height(390), .large]).presentationDragIndicator(.hidden)
+            FilterView(topic: $topic, country: $country, language: $language)
         }
         .sheet(isPresented: $showPublish) {
             PublishSheet()
@@ -117,26 +116,42 @@ struct RoomListCard: View {
     var room: FoodRoom
     var showsHotBanner = true
     private var host: FoodPerson? { FoodCatalog.person(room.hostID) }
+    private var summary: String {
+        switch room.id {
+        case "dessert-club": return "Share cakes, bakes and sweet ideas"
+        case "dinner-conversation": return "What's on your dinner table?"
+        case "market-table": return "Fresh finds and seasonal favourites"
+        case "weekend-bbq": return "Talk grills, spices and weekend plans"
+        default: return host?.bio ?? ""
+        }
+    }
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(alignment: .bottomLeading) { RoomKindBadge(isVoice: room.isVoice).padding(6) }
-                .overlay(alignment: .topLeading) {
-                    if showsHotBanner { Art(name: "hot-room", width: 90, height: 31).offset(y: -18) }
-                }
-                .offset(y: -12)
-            VStack(alignment: .leading, spacing: 5) {
-                Text(room.title).font(.system(size: 15, weight: .medium)).lineLimit(1)
-                Text(host?.bio ?? "").font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.65)).lineLimit(1)
-                HStack(spacing: 5) {
-                    Avatar(asset: host?.portraitArtwork, size: 22)
-                    RoomTopicTag(topic: room.topic)
-                    Spacer(minLength: 0)
-                }
-            }.padding(.top, 8).frame(maxWidth: .infinity, alignment: .leading)
-        }.padding(.horizontal, 12).frame(height: 94, alignment: .top)
-            .background { Image("outlined-card").resizable() }.padding(.top, showsHotBanner ? 30 : 12).foregroundStyle(Color.tatiInk)
+        ZStack(alignment: .bottom) {
+            // Stretch only the middle of the supplied card, keeping its corners intact.
+            Image("outlined-card").resizable(capInsets: EdgeInsets(top: 26, leading: 30, bottom: 26, trailing: 30))
+                .frame(height: 98).accessibilityHidden(true)
+            HStack(alignment: .bottom, spacing: 12) {
+                ContentPhoto(asset: room.coverArtwork, height: 90).frame(width: 90)
+                    .clipShape(RoundedRectangle(cornerRadius: 11))
+                    .overlay(alignment: .bottomTrailing) {
+                        RoomKindBadge(isVoice: room.isVoice, compact: true).offset(x: 3, y: 3)
+                    }
+                    .overlay(alignment: .topLeading) {
+                        if showsHotBanner { Art(name: "hot-room", width: 90, height: 31).offset(y: -16) }
+                    }
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(room.title).font(.system(size: 14, weight: .medium)).lineLimit(1)
+                    Text(summary).font(.system(size: 11)).foregroundStyle(Color.tatiOlive.opacity(0.75)).lineLimit(1)
+                    HStack(spacing: 5) {
+                        Avatar(asset: host?.portraitArtwork, size: 18)
+                        Text(host?.name ?? "").font(.system(size: 10)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+                        RoomTopicTag(topic: room.topic)
+                        Spacer(minLength: 0)
+                    }
+                }.frame(maxWidth: .infinity, alignment: .leading).frame(height: 66, alignment: .top)
+            }.padding(.horizontal, 12).padding(.bottom, 12)
+        }.frame(height: showsHotBanner ? 118 : 108, alignment: .bottom)
+            .foregroundStyle(Color.tatiInk)
     }
 }
 
@@ -165,17 +180,94 @@ struct FilterView: View {
     @State private var draftTopic = "All"
     @State private var draftCity = "All"
     @State private var draftLanguage = "All"
+    @State private var panelHeight: CGFloat = 340
     var body: some View {
-        TatiPanel(title: "Find your people") {
-            Text("Label").font(.system(size: 12))
-            ChoiceGrid(items: FoodCatalog.cities, selected: $draftCity)
-            Text("Language").font(.system(size: 12))
-            ChoiceGrid(items: FoodCatalog.languages, selected: $draftLanguage)
-            HStack {
-                TatiButton(title: "Reset", secondary: true) { draftTopic = "All"; draftCity = "All"; draftLanguage = "All" }.frame(width: 58)
-                TatiButton(title: "Apply") { topic = draftTopic; country = draftCity; language = draftLanguage; dismiss() }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    Text("Find your people").font(.system(size: 19, weight: .bold, design: .serif))
+                    Spacer(minLength: 0)
+                    ArtButton(asset: "close-light", label: "Close") { dismiss() }
+                }
+                options("Label", items: FoodCatalog.cities, selection: $draftCity)
+                options("Language", items: FoodCatalog.languages, selection: $draftLanguage)
+                HStack(spacing: 10) {
+                    TatiButton(title: "Reset", secondary: true) { draftTopic = "All"; draftCity = "All"; draftLanguage = "All" }.frame(width: 64)
+                    TatiButton(title: "Apply") { topic = draftTopic; country = draftCity; language = draftLanguage; dismiss() }
+                }.padding(.top, 10)
+            }.padding(.horizontal, 18).padding(.top, 4).padding(.bottom, 12)
+                .frame(maxWidth: 600).frame(maxWidth: .infinity)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: FilterPanelHeightKey.self, value: geometry.size.height)
+                    }
+                }
+        }
+        .foregroundStyle(Color.tatiInk)
+        .background(Color.tatiLime)
+        .presentationBackground(Color.tatiLime)
+        .presentationCornerRadius(20)
+        .presentationDragIndicator(.hidden)
+        .presentationDetents([.height(panelHeight)])
+        .onPreferenceChange(FilterPanelHeightKey.self) { height in
+            if height > 0, abs(panelHeight - height) > 1 { panelHeight = height }
+        }
+        .accessibilityAction(.escape) { dismiss() }
+        .onAppear { draftTopic = topic; draftCity = country; draftLanguage = language }
+    }
+    private func options(_ title: String, items: [String], selection: Binding<String>) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(title).font(.system(size: 12)).padding(.bottom, 2)
+            FilterTagLayout {
+                ForEach(items, id: \.self) { value in
+                    Button { selection.wrappedValue = value } label: {
+                        Text(value).font(.system(size: 12)).lineLimit(1)
+                            .padding(.horizontal, 9).padding(.vertical, 5)
+                            .foregroundStyle(.white)
+                            .background(selection.wrappedValue == value ? Color.tatiPink : Color.tatiOlive.opacity(0.55))
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .frame(minHeight: 44).contentShape(Rectangle())
+                    }.buttonStyle(.plain)
+                        .accessibilityAddTraits(selection.wrappedValue == value ? .isSelected : [])
+                }
             }
-        }.onAppear { draftTopic = topic; draftCity = country; draftLanguage = language }
+        }
+    }
+}
+private struct FilterPanelHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+}
+
+/// Intrinsic-width tags wrap as whole labels, matching the Lanhu filter rows.
+private struct FilterTagLayout: Layout {
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        arrange(width: proposal.width ?? 354, subviews: subviews).size
+    }
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = arrange(width: bounds.width, subviews: subviews)
+        for (index, frame) in result.frames.enumerated() {
+            subviews[index].place(at: CGPoint(x: bounds.minX + frame.minX, y: bounds.minY + frame.minY),
+                                  anchor: .topLeading, proposal: ProposedViewSize(frame.size))
+        }
+    }
+    private func arrange(width: CGFloat, subviews: Subviews) -> (size: CGSize, frames: [CGRect]) {
+        let available = max(1, width)
+        var x: CGFloat = 0
+        var y: CGFloat = 0
+        var rowHeight: CGFloat = 0
+        var frames: [CGRect] = []
+        for subview in subviews {
+            let ideal = subview.sizeThatFits(.unspecified)
+            let size = subview.sizeThatFits(ProposedViewSize(width: min(ideal.width, available), height: nil))
+            if x > 0, x + size.width > available {
+                x = 0; y += rowHeight; rowHeight = 0
+            }
+            frames.append(CGRect(origin: CGPoint(x: x, y: y), size: size))
+            x += size.width + 6
+            rowHeight = max(rowHeight, size.height)
+        }
+        return (CGSize(width: available, height: y + rowHeight), frames)
     }
 }
 struct ChoiceGrid: View {
@@ -261,39 +353,155 @@ struct PersonRow: View {
         }.buttonStyle(.plain).accessibilityLabel("View \(person.name), \(person.city), \(person.interest)")
     }
 }
+private struct RankingEntry: Identifiable {
+    let id: String
+    let person: FoodPerson
+    let room: FoodRoom?
+    let title: String
+    let detail: String
+    let metric: String
+    let contentCount: Int
+    let interactions: Int
+}
+
 struct RankingView: View {
+    @EnvironmentObject private var store: VisitorStore
     @State private var category = "Activity"
     @State private var period = "Daily"
     @Environment(\.dismiss) private var dismiss
+
+    // The catalogue supplies real content counts. Only saved interactions enter
+    // the selected time window; this is not a server popularity/earnings ranking.
+    private var entries: [RankingEntry] {
+        let calendar = Calendar.current
+        let component: Calendar.Component = period == "Daily" ? .day : .weekOfYear
+        let interval = calendar.dateInterval(of: component, for: Date())
+        let gifts = store.account.gifts.filter { interval?.contains($0.date) == true }
+        let messages = (store.account.roomMessages ?? []).filter { interval?.contains($0.createdAt) == true }
+        let rooms = FoodCatalog.rooms.filter { !store.account.blocked.contains($0.hostID) }
+        let result: [RankingEntry]
+        if category == "Rooms" {
+            result = rooms.compactMap { room in
+                guard let person = FoodCatalog.person(room.hostID) else { return nil }
+                let interactionCount = gifts.filter { $0.roomID == room.id }.reduce(0) { $0 + $1.quantity }
+                    + messages.filter { $0.roomID == room.id }.count
+                return RankingEntry(id: room.id, person: person, room: room, title: room.title,
+                                    detail: person.name, metric: room.isVoice ? "Voice" : "Video",
+                                    contentCount: room.videoClip == nil ? 0 : 1, interactions: interactionCount)
+            }
+        } else {
+            result = FoodCatalog.people.filter { !store.account.blocked.contains($0.id) }.map { person in
+                let hosted = rooms.filter { $0.hostID == person.id }
+                let clipCount = store.visibleClips.filter { $0.authorID == person.id }.count
+                let contentCount = hosted.count + clipCount + (person.portraitArtwork == nil ? 0 : 1)
+                let roomIDs = Set(hosted.map(\.id))
+                let interactionCount = gifts.filter { $0.recipientID == person.id }.reduce(0) { $0 + $1.quantity }
+                    + messages.filter { roomIDs.contains($0.roomID) }.count
+                return RankingEntry(id: person.id, person: person, room: nil, title: person.name,
+                                    detail: person.city, metric: "\(contentCount) \(contentCount == 1 ? "item" : "items")",
+                                    contentCount: contentCount, interactions: interactionCount)
+            }
+        }
+        return result.sorted {
+            if category != "Creators", $0.interactions != $1.interactions { return $0.interactions > $1.interactions }
+            if $0.contentCount != $1.contentCount { return $0.contentCount > $1.contentCount }
+            if $0.interactions != $1.interactions { return $0.interactions > $1.interactions }
+            return $0.id < $1.id
+        }
+    }
+
     var body: some View {
         GeometryReader { geometry in
-            VStack(spacing: 14) {
-                HStack(spacing: 8) {
-                    ArtButton(asset: "back", label: "Back") { dismiss() }
-                    TopicStrip(items: ["Activity", "Creators", "Rooms"], selected: $category)
-                }.padding(.horizontal, 8)
-                HStack(spacing: 0) {
-                    ForEach(["Daily", "Weekly"], id: \.self) { value in
-                        Button { period = value } label: {
-                            Text(value).font(.system(size: 15)).frame(maxWidth: .infinity, minHeight: 40)
-                                .foregroundStyle(period == value ? .white : Color.tatiOlive.opacity(0.5))
-                                .background(period == value ? Color.tatiOlive : .clear).clipShape(RoundedRectangle(cornerRadius: 8))
-                        }.buttonStyle(.plain).accessibilityAddTraits(period == value ? .isSelected : [])
+            let width = min(geometry.size.width, 520)
+            let scale = width / 390
+            let ranked = entries
+            ScrollView {
+                VStack(spacing: 12) {
+                    HStack(spacing: 8) {
+                        ArtButton(asset: "back", label: "Back") { dismiss() }
+                        TopicStrip(items: ["Activity", "Creators", "Rooms"], selected: $category)
+                    }.padding(.horizontal, 8)
+                    HStack(spacing: 0) {
+                        ForEach(["Daily", "Weekly"], id: \.self) { value in
+                            Button { period = value } label: {
+                                Text(value).font(.system(size: 15)).frame(maxWidth: .infinity, minHeight: 36)
+                                    .foregroundStyle(period == value ? .white : Color.tatiOlive.opacity(0.5))
+                                    .background(period == value ? Color.tatiOlive : .clear)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }.buttonStyle(.plain).accessibilityAddTraits(period == value ? .isSelected : [])
+                        }
+                    }.padding(4).background(Color.tatiCream.opacity(0.9))
+                        .clipShape(RoundedRectangle(cornerRadius: 10)).padding(.horizontal, 44)
+                    if ranked.isEmpty {
+                        EmptyContent(title: "No profiles available", detail: "Profiles and rooms will appear here when available.")
+                    } else {
+                        HStack(alignment: .top, spacing: 0) {
+                            podium(ranked, index: 1, scale: scale)
+                                .padding(.top, max(100, 340 * scale - geometry.safeAreaInsets.top - 112))
+                            podium(ranked, index: 0, scale: scale)
+                                .padding(.top, max(24, 256 * scale - geometry.safeAreaInsets.top - 112))
+                            podium(ranked, index: 2, scale: scale)
+                                .padding(.top, max(100, 340 * scale - geometry.safeAreaInsets.top - 112))
+                        }.frame(height: max(300, 500 * scale - geometry.safeAreaInsets.top - 112), alignment: .top)
+                        LazyVStack(spacing: 0) {
+                            ForEach(Array(ranked.dropFirst(3).enumerated()), id: \.element.id) { index, entry in
+                                rankingLink(entry) {
+                                    HStack(spacing: 10) {
+                                        Text("\(index + 4)").font(.system(size: 15, weight: .bold))
+                                            .frame(width: 28, height: 28).background(Color.tatiLime)
+                                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                                        Avatar(asset: entry.person.portraitArtwork, size: 46)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(entry.title).font(.system(size: 15, weight: .medium)).lineLimit(2)
+                                            Text(entry.detail).font(.system(size: 10)).foregroundStyle(Color.tatiOlive).lineLimit(1)
+                                        }
+                                        Spacer(minLength: 4)
+                                        Text(entry.metric).font(.system(size: 14, weight: .medium)).lineLimit(1)
+                                    }.padding(.vertical, 12).contentShape(Rectangle())
+                                        .overlay(alignment: .bottom) { Color.tatiOlive.opacity(0.14).frame(height: 0.5) }
+                                }
+                            }
+                        }.padding(.horizontal, 18)
                     }
-                }.padding(5).background(Color.tatiCream.opacity(0.9)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.horizontal, 42)
-                ScrollView {
-                    VStack(spacing: 8) {
-                        Text("No rankings yet").font(.system(size: 16, weight: .medium))
-                    }.padding(24).frame(maxWidth: .infinity).padding(.top, geometry.size.height * 0.40)
-                }
-            }
-            .background {
-                GeometryReader { backdrop in
-                    Image("rank-background").resizable().scaledToFill()
-                        .frame(width: backdrop.size.width, height: backdrop.size.height).clipped()
-                }.ignoresSafeArea(.container)
-            }
+                }.padding(.top, geometry.safeAreaInsets.top).padding(.bottom, 20)
+                    .frame(width: width).frame(maxWidth: .infinity)
+                    .background(alignment: .top) {
+                        // Keep artwork and podium scrolling together at the
+                        // original width-based scale, independent of screen height.
+                        Image("rank-background").resizable()
+                            .frame(width: width, height: width * 1688 / 780)
+                            .accessibilityHidden(true)
+                    }
+            }.ignoresSafeArea(.container, edges: .top)
+                .background { Color.tatiCream.ignoresSafeArea(.container) }
         }.foregroundStyle(Color.tatiInk).tatiScreen()
+    }
+
+    private func podium(_ ranked: [RankingEntry], index: Int, scale: CGFloat) -> some View {
+        Group {
+            if ranked.indices.contains(index) {
+                let entry = ranked[index]
+                rankingLink(entry) {
+                    VStack(spacing: 5) {
+                        Avatar(asset: entry.person.portraitArtwork, size: (index == 0 ? 56 : 48) * scale)
+                            .overlay { Circle().strokeBorder(.white, lineWidth: 2) }
+                        Text("\(index + 1)").font(.system(size: 11, weight: .bold))
+                            .frame(width: 22, height: 22).background(Color.tatiLime).clipShape(Circle())
+                        Text(entry.title).font(.system(size: 13, weight: .semibold)).lineLimit(2)
+                        Text(entry.detail).font(.system(size: 10)).lineLimit(1)
+                            .padding(.horizontal, 6).padding(.vertical, 3).background(Color.tatiLime)
+                        Text(entry.metric).font(.system(size: 14, weight: .semibold))
+                    }.multilineTextAlignment(.center).padding(.horizontal, 5)
+                }
+            } else { Color.clear.frame(height: 1) }
+        }.frame(maxWidth: .infinity)
+    }
+
+    private func rankingLink<Label: View>(_ entry: RankingEntry, @ViewBuilder label: () -> Label) -> some View {
+        NavigationLink {
+            if let room = entry.room { RoomView(room: room) }
+            else { PersonProfileView(person: entry.person) }
+        } label: { label() }.buttonStyle(.plain)
     }
 }
 

@@ -1059,7 +1059,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "creator-andre"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4",
@@ -1075,7 +1076,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "sweet-evening"
+      "roomID": "sweet-evening",
+      "authorID": "creator-elowen"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
@@ -1090,7 +1092,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-06"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
@@ -1106,7 +1109,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "kitchen-stories"
+      "roomID": "kitchen-stories",
+      "authorID": "creator-luna"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
@@ -1121,7 +1125,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "creator-maria"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
@@ -1137,7 +1142,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "pasta-table"
+      "roomID": "pasta-table",
+      "authorID": "creator-maria"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
@@ -1152,7 +1158,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-08"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
@@ -1168,7 +1175,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "street-bites"
+      "roomID": "street-bites",
+      "authorID": "creator-chloe"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
@@ -1184,7 +1192,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "soup-kitchen"
+      "roomID": "soup-kitchen",
+      "authorID": "creator-andre"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
@@ -1199,7 +1208,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "creator-seraphina"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
@@ -1214,7 +1224,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-10"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
@@ -1230,7 +1241,8 @@
         "room.video-background",
         "search.rooms"
       ],
-      "roomID": "crepe-station"
+      "roomID": "crepe-station",
+      "authorID": "creator-seraphina"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
@@ -1245,7 +1257,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-05"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
@@ -1260,7 +1273,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-13"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
@@ -1275,7 +1289,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-14"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
@@ -1290,7 +1305,8 @@
         "video.feed",
         "video.detail",
         "search.videos"
-      ]
+      ],
+      "authorID": "portrait-15"
     }
   ],
   "note": "Every supplied file has an explicit runtime use. Profile names are fictional samples, not identities inferred from photos. Videos belong to the Tati collection; no photo-to-video identity relationship is inferred. Original files remain unchanged."

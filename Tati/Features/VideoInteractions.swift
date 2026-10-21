@@ -3,87 +3,118 @@ import SwiftUI
 struct FeedVideoCard: View {
     var clip: FoodClip
     @EnvironmentObject private var store: VisitorStore
-    @EnvironmentObject private var playback: ClipPlayback
-    @EnvironmentObject private var roomSession: RoomPreviewSession
-    @State private var playbackOwner = UUID().uuidString
-    private var active: Bool { playback.activeID == clip.id && playback.ownerID == playbackOwner }
+    @State private var showComments = false
+    @State private var showOptions = false
     var body: some View {
-        MediaViewport {
-            GeometryReader { geometry in
-                ZStack(alignment: .bottomLeading) {
-                    if active, let player = playback.player, playback.failure == nil {
-                        ClipSurface(player: player, fillsContainer: true).background(Color.black).allowsHitTesting(false)
-                    } else { ClipPoster(clip: clip, height: geometry.size.height).allowsHitTesting(false) }
-                    NavigationLink(destination: ClipDetailView(clip: clip)) { Color.clear.contentShape(Rectangle()) }
-                        .buttonStyle(.plain).accessibilityLabel("Open video and comments")
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack(spacing: 8) {
-                            if let person = FoodCatalog.person(clip.authorID) {
-                                NavigationLink(destination: PersonProfileView(person: person)) {
-                                    Avatar(asset: person.portraitArtwork, size: 40)
-                                }.buttonStyle(.plain).accessibilityLabel("View author")
-                            } else if clip.isCollection {
-                                Avatar(asset: "brand-icon", size: 40)
-                            } else {
-                                Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
-                            }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(store.authorName(for: clip)).font(.system(size: 14, weight: .medium)).lineLimit(1)
-                                if !clip.isSample { Text(clip.createdAt, style: .date).font(.system(size: 11)) }
-                            }
-                            Spacer()
+        GeometryReader { geometry in
+            ZStack {
+                NavigationLink(destination: ClipDetailView(clip: clip)) {
+                    ClipPoster(clip: clip, height: geometry.size.height)
+                        .overlay {
+                            SupplementIcon(icon: .play, size: 26, tint: .white)
+                                .frame(width: 48, height: 48).background(.black.opacity(0.3)).clipShape(Circle())
+                                .position(x: geometry.size.width / 2, y: geometry.size.height * 0.32)
                         }
-                        HStack(alignment: .bottom, spacing: 8) {
-                            NavigationLink(destination: ClipDetailView(clip: clip)) {
-                                Text(clip.caption).font(.system(size: 13)).lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
-                            }.buttonStyle(.plain)
-                            ArtButton(asset: store.account.likes.contains(clip.id) ? "heart" : "like-video", label: "Like video", size: 21) { store.toggleLike(clip.id) }
-                        }
-                    }.padding(.horizontal, 16).padding(.bottom, 10).foregroundStyle(.white).shadow(color: .black, radius: 3, y: 1)
-                }
-                .overlay {
-                    VStack(spacing: 6) {
-                        Button(action: playOrPause) {
-                            if active && playback.failure != nil {
-                                Text("Retry").font(.system(size: 13, weight: .semibold)).padding(12).background(Color.tatiPink).clipShape(Capsule())
-                            } else {
-                                SupplementIcon(icon: active && playback.wantsToPlay ? .pause : .play, size: 30)
-                                    .frame(width: 44, height: 44).background(.white.opacity(0.45)).clipShape(Circle())
-                            }
-                        }.buttonStyle(.plain)
-                            .accessibilityLabel(active && playback.failure != nil ? "Retry video" : active && playback.wantsToPlay ? "Pause video" : "Play video")
-                        if active && playback.loading { Text("Loading…").font(.caption) }
-                        if active, let failure = playback.failure { Text(failure).font(.caption).multilineTextAlignment(.center).padding(.horizontal, 24) }
-                    }.foregroundStyle(.white).shadow(color: .black, radius: 3)
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 30))
-            }
+                        .contentShape(Rectangle())
+                }.buttonStyle(.plain).accessibilityLabel("Play full screen: " + clip.caption)
+                VStack(alignment: .leading, spacing: 7) {
+                    Spacer(minLength: 0)
+                    HStack(spacing: 8) {
+                        VideoAuthor(clip: clip, size: 32)
+                        Spacer(minLength: 4)
+                        Button { store.toggleLike(clip.id) } label: {
+                            HStack(spacing: 3) {
+                                Art(name: store.account.likes.contains(clip.id) ? "heart" : "like-video", width: 22, height: 22)
+                                Text("\(store.likeCount(for: clip))").font(.system(size: 11)).monospacedDigit()
+                            }.frame(minWidth: 44, minHeight: 44)
+                        }.buttonStyle(.plain).accessibilityLabel("\(store.likeCount(for: clip)) likes")
+                            .accessibilityAddTraits(store.account.likes.contains(clip.id) ? .isSelected : [])
+                        Button { showComments = true } label: {
+                            HStack(spacing: 3) {
+                                SupplementIcon(icon: .comment, size: 21, tint: .white)
+                                Text("\(store.comments(for: clip).count)").font(.system(size: 11)).monospacedDigit()
+                            }.frame(minWidth: 44, minHeight: 44)
+                        }.buttonStyle(.plain).accessibilityLabel("\(store.comments(for: clip).count) comments")
+                    }
+                    NavigationLink(destination: ClipDetailView(clip: clip)) {
+                        Text(clip.caption).font(.system(size: 12)).lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                    }.buttonStyle(.plain)
+                }.padding(.horizontal, 12).padding(.bottom, 14)
+                    .background {
+                        LinearGradient(colors: [.clear, .clear, .black.opacity(0.72)], startPoint: .top, endPoint: .bottom)
+                            .allowsHitTesting(false)
+                    }
+                VStack {
+                    HStack {
+                        Spacer()
+                        ArtButton(asset: "more", label: "Video options: report or block", size: 24) { showOptions = true }
+                    }
+                    Spacer()
+                }.padding(5)
+            }.frame(width: geometry.size.width, height: geometry.size.height)
+                .foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 24))
         }.aspectRatio(1.42, contentMode: .fit)
-        .onDisappear { if active { playback.stop() } }
-    }
-
-    private func playOrPause() {
-        roomSession.audio.stop()
-        do {
-            if !active || playback.failure != nil {
-                guard let url = store.videoURL(for: clip) else { throw CocoaError(.fileNoSuchFile) }
-                try playback.load(id: clip.id, url: url, owner: playbackOwner)
-            } else {
-                playback.toggle()
-            }
-        } catch { store.tell("Video unavailable", "The video file could not be found. Reimport it if it was added from your library.") }
+        .sheet(isPresented: $showComments) {
+            CommentDraftView(clip: clip).overlay { NoticeLayer() }.presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $showOptions) {
+            VideoOptionsView(clip: clip).overlay { NoticeLayer() }
+        }
     }
 }
-struct VideoOptionsView: View {
+
+struct VideoAuthor: View {
     var clip: FoodClip
+    var size: CGFloat = 36
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPanel(title: "Video options") {
-            NavigationLink(destination: ReportView(subjectID: "video:" + clip.id)) { Art(name: "report-button", height: 90).frame(maxWidth: .infinity) }.accessibilityLabel("Report this video")
+        Group {
             if let person = FoodCatalog.person(clip.authorID) {
-                ImageAction(asset: "block-button", label: "Block video author", height: 90) { store.block(person.id) }
-                NavigationLink(destination: PersonProfileView(person: person)) { SettingRow(title: "View author profile", asset: "profile-button") }.buttonStyle(.plain)
+                NavigationLink(destination: PersonProfileView(person: person)) {
+                    HStack(spacing: 7) {
+                        Avatar(asset: person.portraitArtwork, size: size)
+                        Text(person.name).font(.system(size: 14, weight: .semibold)).lineLimit(1)
+                    }.contentShape(Rectangle())
+                }.buttonStyle(.plain).accessibilityLabel("View " + person.name)
+            } else {
+                HStack(spacing: 7) {
+                    Avatar(file: store.account.profile.avatarFile, size: size, isCurrent: true)
+                    Text(store.authorName(for: clip)).font(.system(size: 14, weight: .semibold)).lineLimit(1)
+                }
             }
+        }
+    }
+}
+
+struct VideoOptionsView: View {
+    private enum Destination: Hashable { case report, profile }
+    var clip: FoodClip
+    @EnvironmentObject private var store: VisitorStore
+    @Environment(\.dismiss) private var dismiss
+    @State private var path: [Destination] = []
+    var body: some View {
+        NavigationStack(path: $path) {
+            TatiPanel(title: "Video options") {
+                NavigationLink(value: Destination.report) {
+                    SettingRow(title: "Report video", asset: "feedback")
+                }.buttonStyle(.plain)
+                if let person = FoodCatalog.person(clip.authorID) {
+                    Button { store.block(person.id) } label: { SettingRow(title: "Block " + person.name, asset: "blacklist") }.buttonStyle(.plain)
+                    NavigationLink(value: Destination.profile) { SettingRow(title: "View author profile", asset: "profile-button") }.buttonStyle(.plain)
+                }
+            }
+            .navigationDestination(for: Destination.self) { destination in
+                switch destination {
+                case .report: ReportView(subjectID: "video:" + clip.id)
+                case .profile:
+                    if let person = FoodCatalog.person(clip.authorID) { PersonProfileView(person: person) }
+                }
+            }
+        }
+        .presentationDetents(path.isEmpty ? [.height(250), .large] : [.large])
+        .onChange(of: store.account.blocked) { _, blocked in
+            if blocked.contains(clip.authorID) { dismiss() }
         }
     }
 }

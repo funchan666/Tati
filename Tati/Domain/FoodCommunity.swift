@@ -46,6 +46,13 @@ struct LocalMessage: Identifiable, Codable {
     // A draft is never represented as delivered.
     var status = "Draft · not sent"
 }
+struct VideoComment: Identifiable, Codable {
+    var id = UUID().uuidString
+    var clipID: String
+    var authorID: String
+    var text: String
+    var createdAt = Date()
+}
 struct GiftReceipt: Identifiable, Codable {
     var id = UUID().uuidString
     var giftID: String
@@ -138,6 +145,7 @@ struct LocalAccount: Codable {
     var roomMessages: [LocalRoomMessage]? = nil
     var drafts: [String: String] = [:]
     var messages: [LocalMessage] = []
+    var videoComments: [VideoComment]? = nil
     var reports: [ReportDraft] = []
     var clips: [FoodClip] = []
     var notifications = false

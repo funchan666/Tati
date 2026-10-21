@@ -31,6 +31,7 @@ struct Art: View {
 struct RoomKindBadge: View {
     var isVoice: Bool
     var animates = true
+    var compact = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.scenePhase) private var scenePhase
     @State private var isVisible = false
@@ -40,12 +41,13 @@ struct RoomKindBadge: View {
     var body: some View {
         Group {
             if isVoice {
-                HStack(spacing: 4) {
-                    Art(name: "mic-small", width: 10, height: 14)
-                    Text("Voice").font(.system(size: 10, weight: .semibold))
+                HStack(spacing: compact ? 3 : 4) {
+                    Art(name: "mic-small", width: compact ? 8 : 10, height: compact ? 11 : 14)
+                    Text("Voice").font(.system(size: compact ? 9 : 10, weight: .semibold))
                 }
-                .padding(.horizontal, 7).frame(height: 22)
-                .foregroundStyle(.white).background(Color.tatiOlive).clipShape(Capsule())
+                .padding(.horizontal, compact ? 5 : 7).frame(height: compact ? 18 : 22)
+                .foregroundStyle(.white).background(compact ? Color.tatiPink : Color.tatiOlive)
+                .clipShape(RoundedRectangle(cornerRadius: compact ? 4 : 11))
             } else {
                 Art(name: "live-pink", width: 48, height: 22)
             }
@@ -66,10 +68,12 @@ enum MissingIcon: Int { case send, pause, comment, viewers, toggleOff, play }
 struct SupplementIcon: View {
     var icon: MissingIcon
     var size: CGFloat = 26
+    var tint: Color? = nil
     var body: some View {
         // Display a cell of the generated raster sheet; no vector artwork is drawn in code.
         let cell = size / 0.76
-        Image("missing-icons").resizable().frame(width: cell * 3, height: cell * 2)
+        Image("missing-icons").renderingMode(tint == nil ? .original : .template)
+            .resizable().foregroundStyle(tint ?? .white).frame(width: cell * 3, height: cell * 2)
             .offset(x: -CGFloat(icon.rawValue % 3) * cell, y: -CGFloat(icon.rawValue / 3) * cell)
             .frame(width: cell, height: cell, alignment: .topLeading).clipped()
             .frame(width: size, height: size).accessibilityHidden(true)
@@ -231,6 +235,9 @@ struct MediaPlaceholder: View {
             .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 }
+enum ProfileArtwork {
+    static let defaultPortrait = "portrait-12"
+}
 struct Avatar: View {
     var file: String? = nil
     var asset: String? = nil
@@ -242,6 +249,7 @@ struct Avatar: View {
             if let file, let ui = UIImage(contentsOfFile: store.mediaURL(file).path) {
                 Image(uiImage: ui).resizable().scaledToFill()
             } else if let asset { Image(asset).resizable().scaledToFill() }
+            else if isCurrent { Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill() }
             else { Image("media-placeholder").resizable().scaledToFit().padding(size * 0.15).background(Color.tatiCream) }
         }.frame(width: size, height: size, alignment: asset == nil ? .center : .top).clipShape(Circle()).overlay { if isCurrent && store.account.equippedFrame { Art(name: "host-frame", width: size * 1.3, height: size * 1.3) } }.accessibilityHidden(true)
     }

@@ -65,53 +65,64 @@ struct PersonProfileView: View {
 struct MyProfileView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                ZStack(alignment: .top) {
-                    if let file = store.account.profile.coverFile, let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
-                        GeometryReader { geometry in Image(uiImage: image).resizable().scaledToFill().frame(width: geometry.size.width, height: 230).clipped() }.frame(height: 230)
-                    } else { MediaPlaceholder(title: "Add your cover photo", height: 230) }
-                    HStack(spacing: 2) {
-                        Art(name: "profile-heading", width: 136, height: 48)
-                        Spacer()
-                        NavigationLink(destination: WalletView()) { Art(name: "coin", width: 22).frame(width: 44, height: 44) }.accessibilityLabel("Wallet")
-                        NavigationLink(destination: SettingsView()) { Art(name: "settings", width: 22).frame(width: 44, height: 44) }.accessibilityLabel("Settings")
-                    }.padding(.horizontal, 14).padding(.top, 4)
-                }
-                VStack(alignment: .leading, spacing: 10) {
-                    NavigationLink(destination: EditProfileView()) {
-                        HStack(spacing: 10) {
-                            Avatar(file: store.account.profile.avatarFile, size: 72, isCurrent: true).padding(.top, -24)
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(store.account.profile.name).font(.system(size: 20, weight: .semibold)).lineLimit(2)
-                                Text("Edit profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
+        GeometryReader { viewport in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    ZStack(alignment: .top) {
+                        GeometryReader { geometry in
+                            coverImage.resizable().scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                        }.frame(height: 230 + viewport.safeAreaInsets.top)
+                        HStack(spacing: 2) {
+                            Art(name: "profile-heading", width: 136, height: 48, alignment: .leading)
+                            Spacer()
+                            NavigationLink(destination: WalletView()) { Art(name: "coin", width: 22).frame(width: 44, height: 44) }.accessibilityLabel("Wallet")
+                            NavigationLink(destination: SettingsView()) { Art(name: "settings", width: 22).frame(width: 44, height: 44) }.accessibilityLabel("Settings")
+                        }.padding(.horizontal, 16).padding(.top, viewport.safeAreaInsets.top + 4)
+                    }
+                    VStack(alignment: .leading, spacing: 10) {
+                        NavigationLink(destination: EditProfileView()) {
+                            HStack(spacing: 10) {
+                                Avatar(file: store.account.profile.avatarFile, size: 72, isCurrent: true).padding(.top, -24)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(store.account.profile.name).font(.system(size: 20, weight: .semibold)).lineLimit(2)
+                                    Text("Edit profile").font(.system(size: 11)).foregroundStyle(Color.tatiOlive)
+                                }
+                                Spacer(); Art(name: "chevron", width: 12)
                             }
-                            Spacer(); Art(name: "chevron", width: 12)
-                        }
-                    }.buttonStyle(.plain)
-                    Text(store.account.profile.bio).font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
-                    Text(store.account.profile.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
-                    HStack {
-                        NavigationLink(destination: RelationshipView(kind: "Following")) { stat("\(store.account.following.count)", "Following") }
-                        NavigationLink(destination: RelationshipView(kind: "Follower")) { stat("0", "Follower") }
-                        NavigationLink(destination: RelationshipView(kind: "Friends")) { stat("0", "Friends") }
-                    }.buttonStyle(.plain).padding(.vertical, 10).background(Color(red: 1, green: 0.96, blue: 0.24)).clipShape(RoundedRectangle(cornerRadius: 7))
-                    HStack(spacing: 12) {
-                        NavigationLink(destination: CheckInView()) { Art(name: "checkin-entry") }.accessibilityLabel("Check in")
-                        NavigationLink(destination: WalletView()) { Art(name: "wallet-entry") }.accessibilityLabel("My wallet")
-                    }.padding(.vertical, 3)
-                    VStack(spacing: 0) {
-                        NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", asset: "blacklist") }
-                        NavigationLink(destination: LevelView()) { SettingRow(title: "My level", asset: "level") }
-                        NavigationLink(destination: SupportView()) { SettingRow(title: "Customer Support", asset: "support") }
-                        NavigationLink(destination: InviteView()) { SettingRow(title: "Invite Code", asset: "invite") }
-                        NavigationLink(destination: ReportView(subjectID: "feedback", feedback: true)) { SettingRow(title: "Feedback", asset: "feedback") }
-                        NavigationLink(destination: BackpackView()) { SettingRow(title: "My backpack", asset: "backpack") }
-                        NavigationLink(destination: MyVideosView()) { SettingRow(title: "My videos", asset: "video-off", detail: "\(store.account.clips.count)") }
-                    }.buttonStyle(.plain)
-                }.padding(.horizontal, 16).padding(.bottom, 12)
-            }.frame(maxWidth: 680).frame(maxWidth: .infinity)
-        }.foregroundStyle(Color.tatiInk)
+                        }.buttonStyle(.plain)
+                        Text(store.account.profile.bio).font(.system(size: 12)).foregroundStyle(Color.tatiOlive)
+                        Text(store.account.profile.interest).font(.system(size: 10)).padding(.horizontal, 8).padding(.vertical, 3).background(Color.tatiLime).clipShape(RoundedRectangle(cornerRadius: 3))
+                        HStack {
+                            NavigationLink(destination: RelationshipView(kind: "Following")) { stat("\(store.account.following.count)", "Following") }
+                            NavigationLink(destination: RelationshipView(kind: "Follower")) { stat("0", "Follower") }
+                            NavigationLink(destination: RelationshipView(kind: "Friends")) { stat("0", "Friends") }
+                        }.buttonStyle(.plain).padding(.vertical, 10).background(Color(red: 1, green: 0.96, blue: 0.24)).clipShape(RoundedRectangle(cornerRadius: 7))
+                        HStack(spacing: 12) {
+                            NavigationLink(destination: CheckInView()) { Art(name: "checkin-entry") }.accessibilityLabel("Check in")
+                            NavigationLink(destination: WalletView()) { Art(name: "wallet-entry") }.accessibilityLabel("My wallet")
+                        }.padding(.vertical, 3)
+                        VStack(spacing: 0) {
+                            NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", asset: "blacklist") }
+                            NavigationLink(destination: LevelView()) { SettingRow(title: "My level", asset: "level") }
+                            NavigationLink(destination: SupportView()) { SettingRow(title: "Customer Support", asset: "support") }
+                            NavigationLink(destination: InviteView()) { SettingRow(title: "Invite Code", asset: "invite") }
+                            NavigationLink(destination: ReportView(subjectID: "feedback", feedback: true)) { SettingRow(title: "Feedback", asset: "feedback") }
+                            NavigationLink(destination: BackpackView()) { SettingRow(title: "My backpack", asset: "backpack") }
+                            NavigationLink(destination: MyVideosView()) { SettingRow(title: "My videos", asset: "video-off", detail: "\(store.account.clips.count)") }
+                        }.buttonStyle(.plain)
+                    }.padding(.horizontal, 16).padding(.bottom, 12)
+                }.frame(maxWidth: 680).frame(maxWidth: .infinity)
+            }.ignoresSafeArea(.container, edges: .top)
+        }.background { Color.tatiCream.ignoresSafeArea(.container) }
+            .foregroundStyle(Color.tatiInk)
+    }
+    private var coverImage: Image {
+        if let file = store.account.profile.coverFile,
+           let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
+            return Image(uiImage: image)
+        }
+        return Image(ProfileArtwork.defaultPortrait)
     }
     private func stat(_ value: String, _ title: String) -> some View { VStack(spacing: 4) { Text(value).font(.headline); Text(title).font(.caption) }.frame(maxWidth: .infinity) }
 }
@@ -171,14 +182,19 @@ struct EditProfileView: View {
                                 .frame(width: geometry.size.width, height: geometry.size.height).clipped()
                         }.frame(height: 190)
                     }
-                    else { MediaPlaceholder(title: "Change the background image", height: 190) }
+                    else {
+                        GeometryReader { geometry in
+                            Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill()
+                                .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+                        }.frame(height: 190)
+                    }
                 }.clipShape(RoundedRectangle(cornerRadius: 20))
             }.buttonStyle(.plain)
             InputField(title: "Please enter the name…", text: $name, showsLabel: false).onChange(of: name) { _, value in name = String(value.prefix(32)) }
             PhotosPicker(selection: $avatarItem, matching: .images) {
                 Group {
                     if let image = preview(avatarData, removeAvatar ? nil : store.account.profile.avatarFile) { Image(uiImage: image).resizable().scaledToFill() }
-                    else { Art(name: "add", width: 24, height: 24).frame(maxWidth: .infinity, maxHeight: .infinity).background(Color.tatiLime.opacity(0.55)) }
+                    else { Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill() }
                 }.frame(width: 96, height: 96).clipShape(RoundedRectangle(cornerRadius: 16))
             }.buttonStyle(.plain).accessibilityLabel("Change avatar")
             HStack {

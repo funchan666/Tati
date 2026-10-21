@@ -31,61 +31,44 @@ struct RoomView: View {
             GeometryReader { geometry in
                 VStack(spacing: 8) {
                     HStack(spacing: 0) {
-                        Button { panel = .host } label: {
-                            HStack(spacing: 6) {
-                                Avatar(asset: host.portraitArtwork, size: 42)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(host.name).font(.system(size: 15, weight: .medium)).lineLimit(1)
-                                    Text(host.city).font(.system(size: 10)).opacity(0.8).lineLimit(1)
+                        HStack(spacing: 0) {
+                            Button { panel = .host } label: {
+                                HStack(spacing: 6) {
+                                    Avatar(asset: host.portraitArtwork, size: 38)
+                                        .overlay { Circle().strokeBorder(.white.opacity(0.75), lineWidth: 1) }
+                                        .overlay(alignment: .bottom) {
+                                            if !room.isVoice {
+                                                RoomKindBadge(isVoice: false, animates: ownsPlayback && playback.playing)
+                                                    .scaleEffect(0.62).frame(width: 30, height: 14).offset(y: 5)
+                                            }
+                                        }
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(host.name).font(.system(size: 13, weight: .semibold)).lineLimit(1)
+                                        HStack(spacing: 5) {
+                                            Text(host.city).font(.system(size: 9)).opacity(0.8).lineLimit(1)
+                                            if room.isVoice { RoomKindBadge(isVoice: true, compact: true) }
+                                        }
+                                    }
                                 }
-                            }
-                        }.buttonStyle(.plain)
-                        ArtButton(asset: store.account.following.contains(host.id) ? "check" : "follow-small", label: "Follow host", size: 18) { store.toggleFollow(host.id) }
-                        Spacer(minLength: 0)
+                            }.buttonStyle(.plain)
+                            ArtButton(asset: store.account.following.contains(host.id) ? "check" : "follow-small", label: store.account.following.contains(host.id) ? "Unfollow host" : "Follow host", size: 18) { store.toggleFollow(host.id) }
+                        }.padding(.leading, 3).background { Capsule().fill(.black.opacity(0.20)) }
+                        Spacer(minLength: 6)
                         Button { panel = .members } label: {
-                            HStack(spacing: 3) { SupplementIcon(icon: .viewers, size: 14); Text("0").font(.system(size: 10)) }
+                            HStack(spacing: 3) { SupplementIcon(icon: .viewers, size: 12, tint: .white); Text("0").font(.system(size: 10)) }
                                 .padding(.horizontal, 6).padding(.vertical, 4).background(.black.opacity(0.35)).clipShape(Capsule()).frame(minHeight: 44)
                         }.buttonStyle(.plain).accessibilityLabel("Room members: zero")
                         ArtButton(asset: "more", label: "Room tools", size: 22) { panel = .tools }
                         ArtButton(asset: "close", label: "Leave room", size: 22) { leave() }
                     }.padding(.horizontal, 12)
-                    HStack {
-                        RoomKindBadge(isVoice: room.isVoice, animates: room.isVoice || (ownsPlayback && playback.playing))
-                        Spacer(minLength: 0)
-                    }.padding(.horizontal, 16)
                     if room.isVoice {
-                        ScrollView {
-                            VStack(spacing: 16) {
-                                Button { panel = .host } label: {
-                                    Avatar(asset: host.portraitArtwork, size: 68)
-                                        .overlay { Art(name: "host-frame", width: 96, height: 96) }.frame(height: 100)
-                                }.buttonStyle(.plain).accessibilityLabel("Host details")
-                                if videoSlots > 0 {
-                                    HStack(spacing: 8) {
-                                        ForEach(0..<videoSlots, id: \.self) { slot in MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 150 : 112) }
-                                    }
-                                }
-                                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 18) {
-                                    ForEach(0..<voiceSeats, id: \.self) { index in
-                                        Button { panel = .microphone } label: {
-                                            VStack(spacing: 5) {
-                                                Art(name: "mic-small", width: 18, height: 18)
-                                                    .frame(width: 50, height: 50)
-                                                    .background(.white.opacity(0.18)).clipShape(Circle())
-                                                    .overlay { Circle().strokeBorder(.white.opacity(0.9), lineWidth: 1) }
-                                                Text("\(index + 2)").font(.system(size: 11))
-                                            }
-                                        }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
-                                    }
-                                }
-                            }.padding(.horizontal, 22).padding(.top, 8)
-                        }
+                        voiceStage(containerWidth: geometry.size.width)
                     } else {
                         ScrollView {
                             VStack(spacing: 8) {
                                 HStack {
                                     Spacer()
-                                    Button { panel = .pk } label: { Art(name: "versus", width: 64, height: 64).frame(width: 74, height: 74) }.buttonStyle(.plain).accessibilityLabel("PK layout")
+                                    Button { panel = .pk } label: { Art(name: "versus", width: 52, height: 52).frame(width: 60, height: 60) }.buttonStyle(.plain).accessibilityLabel("PK layout")
                                 }.padding(.horizontal, 18)
                                 if showPK {
                                     HStack(spacing: 8) { MediaPlaceholder(title: "Host camera", height: 200); MediaPlaceholder(title: "Guest camera", height: 200) }.padding(.horizontal, 12)
@@ -102,19 +85,24 @@ struct RoomView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    RoomActivityFeed(room: room, isActive: isVisible && panel == nil, maximumHeight: min(160, geometry.size.height * 0.28))
-                    HStack(spacing: 4) {
+                    RoomActivityFeed(room: room, isActive: isVisible && panel == nil, maximumHeight: min(188, geometry.size.height * 0.28), maximumWidth: min(320, geometry.size.width * 0.82))
+                    HStack(spacing: 8) {
                         if room.isVoice { ArtButton(asset: "chat-mic", label: "Join microphone", size: 32) { panel = .microphone } }
                         HStack(spacing: 0) {
-                            TextField("Say Hi~", text: $message).font(.system(size: 13)).textFieldStyle(.plain).tint(.white).padding(.leading, 14)
+                            TextField("Say Hi~", text: $message, prompt: Text(room.isVoice ? "Say Hi~" : "Tell me your opinion…").foregroundStyle(.white.opacity(0.9)))
+                                .font(.system(size: 13)).foregroundStyle(.white).textFieldStyle(.plain).tint(.white).padding(.leading, 14)
                                 .onChange(of: message) { _, value in message = String(value.prefix(300)) }
                             Button {
                                 if store.saveRoomMessage(roomID: room.id, text: message) { message = "" }
-                            } label: { SupplementIcon(icon: .send, size: 24).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save room message")
-                        }.background(.white.opacity(0.30)).clipShape(Capsule())
+                            } label: { SupplementIcon(icon: .send, size: 22, tint: .white).frame(width: 44, height: 44) }
+                                .buttonStyle(.plain).accessibilityLabel("Save room message")
+                                .disabled(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                                .opacity(message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.55 : 1)
+                        }.background(.black.opacity(0.58)).clipShape(Capsule())
+                            .overlay { Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 0.5) }
                         if room.isVoice { RoomSoundButton(player: music) }
                         ArtButton(asset: "gift-live", label: "Gifts", size: 36) { panel = .gifts }
-                    }.padding(.horizontal, 10).padding(.vertical, 8).background(.black.opacity(0.22))
+                    }.padding(.horizontal, 14).padding(.vertical, 8)
                 }
                 .padding(.top, 4).foregroundStyle(.white)
                 .frame(width: geometry.size.width, height: geometry.size.height)
@@ -128,6 +116,23 @@ struct RoomView: View {
                     if ownsPlayback, let player = playback.player, playback.failure == nil {
                         ClipSurface(player: player, fillsContainer: true)
                             .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                    if room.isVoice {
+                        // The supplied stage includes a white floor. The design's
+                        // full-bleed scrim keeps that floor behind readable controls.
+                        VStack(spacing: 0) {
+                            LinearGradient(colors: [.black.opacity(0.24), .clear], startPoint: .top, endPoint: .bottom)
+                                .frame(height: min(160, geo.size.height * 0.2))
+                            Spacer(minLength: 0)
+                            LinearGradient(stops: [
+                                .init(color: .clear, location: 0),
+                                .init(color: .black.opacity(0.28), location: 0.4),
+                                .init(color: .black.opacity(0.86), location: 0.82),
+                                .init(color: .black.opacity(0.98), location: 1)
+                            ], startPoint: .top, endPoint: .bottom)
+                            .frame(height: geo.size.height * 0.34)
+                        }
+                        .frame(width: geo.size.width, height: geo.size.height)
                     }
                 }.allowsHitTesting(false)
             }.ignoresSafeArea()
@@ -150,33 +155,87 @@ struct RoomView: View {
             } else if isVisible { startRoomVideo() }
         }
         .sheet(item: $panel) { selected in
-            NavigationStack {
-                Group {
-                    switch selected {
-                    case .gifts: GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil })
-                    case .tools: toolsPanel
-                    case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No members yet", detail: "Member information is currently unavailable."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
-                    case .layout: layoutPanel
-                    case .background: backgroundPanel
-                    case .microphone: MicrophonePanel()
-                    case .music: RoomMusicPanel(player: music)
-                    case .invite: RoomInvitePanel(room: room)
-                    case .host: RoomPersonPanel(person: host, roomMember: room.isVoice, roomID: room.id)
-                    case .report: ReportView(subjectID: "room:" + room.id)
-                    case .pk: TatiPanel(title: "PK") {
-                        Art(name: "versus", height: 85).frame(maxWidth: .infinity)
-                        Note(text: "Choose a camera layout. PK matches are currently unavailable.")
-                        TatiButton(title: showPK ? "Return to single camera" : "Split camera layout") { showPK.toggle(); panel = nil }
-                    }
-                    case .leave: TatiPanel(title: "Leave the room?") {
-                        if room.isVoice { TatiButton(title: "Keep listening · Minimize") { roomSession.minimize(); panel = nil; dismiss() } }
-                        TatiButton(title: "Leave room", secondary: true) { roomSession.leave(room.id); panel = nil; dismiss() }
-                        TatiButton(title: "Stay here", secondary: true) { panel = nil }
-                    }
+            if selected == .leave {
+                RoomLeavePanel(isVoice: room.isVoice,
+                               minimize: { roomSession.minimize(); panel = nil; dismiss() },
+                               leave: { roomSession.leave(room.id); panel = nil; dismiss() },
+                               stay: { panel = nil })
+            } else if selected == .tools {
+                RoomToolsPanel(isVoice: room.isVoice) { panel = $0 }
+            } else {
+                NavigationStack {
+                    Group {
+                        switch selected {
+                        case .gifts: GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil })
+                        case .tools: EmptyView() // Uses its own content-sized presentation.
+                        case .members: TatiPanel(title: "In this room") { EmptyContent(title: "No members yet", detail: "Member information is currently unavailable."); NavigationLink(destination: PersonProfileView(person: host)) { SettingRow(title: "View host", asset: "profile-heading") } }
+                        case .layout: layoutPanel
+                        case .background: backgroundPanel
+                        case .microphone: MicrophonePanel()
+                        case .music: RoomMusicPanel(player: music)
+                        case .invite: RoomInvitePanel(room: room)
+                        case .host: RoomPersonPanel(person: host, roomMember: room.isVoice, roomID: room.id)
+                        case .report: ReportView(subjectID: "room:" + room.id)
+                        case .pk: TatiPanel(title: "PK") {
+                            Art(name: "versus", height: 85).frame(maxWidth: .infinity)
+                            Note(text: "Choose a camera layout. PK matches are currently unavailable.")
+                            TatiButton(title: showPK ? "Return to single camera" : "Split camera layout") { showPK.toggle(); panel = nil }
+                        }
+                        case .leave: EmptyView() // Presented separately at its content height.
+                        }
                     }
                 }
-            }.overlay { NoticeLayer() }.presentationDetents([.height(selected == .gifts ? 390 : selected == .tools ? 340 : selected == .leave ? 280 : selected == .microphone ? 220 : selected == .host ? 320 : 420), .large]).presentationDragIndicator(.hidden)
+                .overlay { NoticeLayer() }
+                .presentationDetents(panelDetents(for: selected))
+                .presentationDragIndicator(.hidden)
+            }
         }
+    }
+    private func voiceStage(containerWidth: CGFloat) -> some View {
+        let stageWidth = max(0, min(440, containerWidth - 32))
+        let maximumColumns = max(1, min(5, Int(stageWidth / 62)))
+        let rowCount = (voiceSeats + maximumColumns - 1) / maximumColumns
+        let columns = (voiceSeats + rowCount - 1) / rowCount
+        let cellWidth = min(76, stageWidth / CGFloat(columns))
+        return ScrollView {
+            VStack(spacing: 20) {
+                Button { panel = .host } label: {
+                    Avatar(asset: host.portraitArtwork, size: 68)
+                        .overlay { Art(name: "host-frame", width: 96, height: 96) }
+                        .frame(width: 104, height: 104)
+                }.buttonStyle(.plain).accessibilityLabel("Host details")
+                if videoSlots > 0 {
+                    HStack(spacing: 8) {
+                        ForEach(0..<videoSlots, id: \.self) { slot in
+                            MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 150 : 112)
+                        }
+                    }
+                }
+                VStack(spacing: 18) {
+                    ForEach(0..<rowCount, id: \.self) { row in
+                        HStack(spacing: 0) {
+                            ForEach((row * columns)..<min((row + 1) * columns, voiceSeats), id: \.self) { index in
+                                Button { panel = .microphone } label: {
+                                    VStack(spacing: 7) {
+                                        Art(name: "mic-small", width: 14, height: 20)
+                                            .frame(width: 44, height: 44)
+                                            .background(.white.opacity(0.12), in: Circle())
+                                            .overlay { Circle().strokeBorder(.white.opacity(0.65), lineWidth: 1) }
+                                        Text("\(index + 2)").font(.system(size: 11, weight: .medium))
+                                    }
+                                    .frame(width: cellWidth).frame(minHeight: 68)
+                                    .contentShape(Rectangle())
+                                }.buttonStyle(.plain).accessibilityLabel("Empty microphone seat \(index + 2)")
+                            }
+                        }.frame(maxWidth: .infinity)
+                    }
+                }
+            }
+            .frame(width: stageWidth).padding(.top, 16).padding(.bottom, 12)
+            .frame(maxWidth: .infinity)
+        }
+        .scrollIndicators(.hidden)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
     private func startRoomVideo() {
         videoFailure = nil
@@ -191,21 +250,14 @@ struct RoomView: View {
         catch { videoFailure = "The room video could not be opened." }
     }
     private func leave() { panel = .leave }
-    private var toolsPanel: some View {
-        TatiPanel(title: "Room tools") {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 22) {
-                if room.isVoice { tool("tool-layout", "Room layout", .layout) }
-                tool("tool-mic", "Mic queue", .microphone)
-                tool("tool-music", "Music", .music)
-                tool("tool-background", "Background", .background)
-                tool("tool-invite", "Invite", .invite)
-                Button { panel = .leave } label: { VStack { Art(name: "tool-leave", width: 54, height: 54); Text("Leave").font(.caption) } }.buttonStyle(.plain)
-            }
-            NavigationLink(destination: ReportView(subjectID: "room:" + room.id)) { SettingRow(title: "Report room", asset: "feedback") }
+    private func panelDetents(for selected: RoomPanel) -> Set<PresentationDetent> {
+        switch selected {
+        case .report: return [.large]
+        case .gifts: return [.height(390), .large]
+        case .microphone: return [.height(220), .large]
+        case .host: return [.height(320), .large]
+        default: return [.height(420), .large]
         }
-    }
-    private func tool(_ art: String, _ title: String, _ next: RoomPanel) -> some View {
-        Button { panel = next } label: { VStack(spacing: 8) { Art(name: art, width: 54, height: 54); Text(title).font(.caption) } }.buttonStyle(.plain)
     }
     private var layoutPanel: some View {
         RoomLayoutPanel(current: layout) { chosen in
