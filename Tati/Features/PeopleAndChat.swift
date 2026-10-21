@@ -299,38 +299,43 @@ struct FoodExpertView: View {
     @State private var question = ""
     var body: some View {
         VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 0) {
-                    HStack(alignment: .bottom, spacing: 0) {
+            GeometryReader { viewport in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        HStack(alignment: .bottom, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 16) {
+                                Art(name: "brand-heading", width: 130, height: 44, alignment: .leading)
+                                Text("Hi, I'm your AI Food Expert Yimeng!")
+                                    .font(.system(size: 18, weight: .medium))
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }.frame(maxWidth: .infinity, alignment: .leading).padding(.bottom, 18)
+                            Art(name: "chef", width: min(116, viewport.size.width * 0.29), height: 145, alignment: .bottom)
+                        }.padding(.horizontal, 18).padding(.top, 4)
+                            .frame(maxWidth: 680, minHeight: 160, alignment: .bottom)
                         VStack(alignment: .leading, spacing: 12) {
-                            Art(name: "brand-heading", width: 146, height: 48)
-                            Text("Hi, I'm your AI Food Expert!").font(.system(size: 18, weight: .semibold)).fixedSize(horizontal: false, vertical: true)
-                        }.padding(.bottom, 18)
-                        Spacer(minLength: 0)
-                        Art(name: "chef", width: 116, height: 150)
-                    }.padding(.horizontal, 16).padding(.top, 8).background { TatiBackground() }
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Talk food, flavours and recipes.").font(.system(size: 15)).foregroundStyle(.black.opacity(0.65))
-                        ForEach(["How to get crispy fried food?", "How to make food look delicious?", "How to balance sweet and savory taste?"], id: \.self) { prompt in
-                            Button { question = prompt } label: {
-                                HStack(spacing: 7) { Text(prompt).font(.system(size: 14)).multilineTextAlignment(.leading); Art(name: "food-flame", width: 23, height: 23); Spacer(minLength: 0) }
-                                    .padding(.horizontal, 12).padding(.vertical, 12).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 10))
-                            }.buttonStyle(.plain)
-                        }
-                        if let saved = store.account.drafts["food-expert"], !saved.isEmpty {
-                            HStack(alignment: .top, spacing: 10) {
-                                Spacer(minLength: 20)
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text(saved).font(.system(size: 14))
-                                    Text("Draft · not sent").font(.system(size: 10))
-                                }.padding(16).background(Color.tatiOlive).foregroundStyle(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
-                                Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
-                            }.padding(.top, 20)
-                        }
-                    }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 22, topTrailingRadius: 22))
-                }.background(Color.tatiLime)
-            }.background(.white)
+                            Text("Talk food, flavours and recipes.").font(.system(size: 15)).foregroundStyle(.black.opacity(0.65))
+                            ForEach(["How to get crispy fried food?", "How to make food look delicious?", "How to balance sweet and savory taste?"], id: \.self) { prompt in
+                                Button { question = prompt } label: {
+                                    HStack(spacing: 7) { Text(prompt).font(.system(size: 14)).multilineTextAlignment(.leading); Art(name: "food-flame", width: 23, height: 23); Spacer(minLength: 0) }
+                                        .padding(.horizontal, 12).padding(.vertical, 12).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 10))
+                                }.buttonStyle(.plain)
+                            }
+                            if let saved = store.account.drafts["food-expert"], !saved.isEmpty {
+                                HStack(alignment: .top, spacing: 10) {
+                                    Spacer(minLength: 20)
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text(saved).font(.system(size: 14))
+                                        Text("Draft · not sent").font(.system(size: 10))
+                                    }.padding(16).background(Color.tatiOlive).foregroundStyle(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 12, bottomLeadingRadius: 12, bottomTrailingRadius: 12))
+                                    Avatar(file: store.account.profile.avatarFile, size: 40, isCurrent: true)
+                                }.padding(.top, 20)
+                            }
+                        }.padding(18).frame(maxWidth: 680, alignment: .leading)
+                            .frame(maxWidth: .infinity, minHeight: max(0, viewport.size.height - 160), alignment: .top)
+                            .background(.white).clipShape(UnevenRoundedRectangle(topLeadingRadius: 22, topTrailingRadius: 22))
+                    }
+                }.scrollDismissesKeyboard(.interactively)
+            }
             HStack(spacing: 8) {
                 TextField("Ask about food…", text: $question, axis: .vertical).lineLimit(1...4).font(.system(size: 14)).padding(12).background(Color.tatiCream).clipShape(RoundedRectangle(cornerRadius: 22))
                 Button {
@@ -340,7 +345,17 @@ struct FoodExpertView: View {
                         store.tell("Question saved", "AI replies are currently unavailable. Your question is saved as a draft.")
                     }
                 } label: { Art(name: "ai-off", width: 30, height: 30).frame(width: 44, height: 44) }.buttonStyle(.plain).accessibilityLabel("Save food question")
-            }.padding(.horizontal, 18).padding(.vertical, 8).background(.white)
-        }.frame(maxWidth: 680).frame(maxWidth: .infinity).foregroundStyle(Color.tatiInk)
+            }.padding(.horizontal, 18).padding(.vertical, 8)
+                .frame(maxWidth: 680).frame(maxWidth: .infinity).background(.white)
+        }.frame(maxWidth: .infinity)
+            // Keep the original full-page gradient at screen scale. Only the
+            // artwork extends beneath the status bar; text remains in the safe area.
+            .background {
+                GeometryReader { backdrop in
+                    Image("page-background").resizable()
+                        .frame(width: backdrop.size.width, height: backdrop.size.height)
+                }.ignoresSafeArea(.container).accessibilityHidden(true)
+            }
+            .foregroundStyle(Color.tatiInk)
     }
 }

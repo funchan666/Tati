@@ -55,7 +55,7 @@ struct CommunityRoot: View {
                     UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28)
                         .fill(Color.tatiPink).ignoresSafeArea(edges: .bottom)
                 }
-            }.background(Color.tatiCream).tatiScreen()
+            }.background(selected == .ai ? Color.white : Color.tatiCream).tatiScreen()
         }
     }
 }

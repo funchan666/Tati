@@ -27,7 +27,7 @@ struct DiscoverView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
-                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 149 : 168, height: voice ? 62 : 48)
+                    Art(name: voice ? "chat-heading" : "brand-heading", width: voice ? 149 : 168, height: voice ? 62 : 48, alignment: .leading)
                     Spacer()
                     if voice {
                         ArtButton(asset: "publish", label: "Create a room", size: 32) { showPublish = true }

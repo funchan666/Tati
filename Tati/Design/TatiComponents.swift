@@ -20,8 +20,9 @@ struct Art: View {
     var name: String
     var width: CGFloat? = nil
     var height: CGFloat? = nil
+    var alignment: Alignment = .center
     var body: some View {
-        Image(name).resizable().scaledToFit().frame(width: width, height: height).accessibilityHidden(true)
+        Image(name).resizable().scaledToFit().frame(width: width, height: height, alignment: alignment).accessibilityHidden(true)
     }
 }
 
