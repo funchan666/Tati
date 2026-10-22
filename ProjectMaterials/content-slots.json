@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "assigned-local-bundle",
+  "status": "assigned-hosted-media",
   "portraits": [
     {
       "source": "ProjectMaterials/ContentImages/828776562_18110484950019933_1274418079164789390_n.jpg",
@@ -14,7 +14,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/828776562_18110484950019933_1274418079164789390_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/829054808_18157222810512696_1511540759907490784_n.jpg",
@@ -36,7 +37,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "The snack stall with the longest queue usually gets my vote."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/829054808_18157222810512696_1511540759907490784_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/829310825_18627363997010758_4506985276544211277_n.jpg",
@@ -58,7 +60,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "Pasta water saved, parmesan grated, dinner nearly there."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/829310825_18627363997010758_4506985276544211277_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/829602854_18637273639035454_7863518920919092101_n.jpg",
@@ -72,7 +75,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/829602854_18637273639035454_7863518920919092101_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/829711039_18587777635069401_6858970808061207273_n.jpg",
@@ -94,7 +98,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "We pack the picnic before we pick the walking route."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/829711039_18587777635069401_6858970808061207273_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/829973023_18633178075060794_6462288533902213791_n.jpg",
@@ -116,7 +121,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "A slow grill, a sharp sauce and enough for seconds."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/829973023_18633178075060794_6462288533902213791_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/830272061_18655744786032706_2790915464625276229_n.jpg",
@@ -138,7 +144,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "Most weeknights start with onions in a pan."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/830272061_18655744786032706_2790915464625276229_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/831424277_18490614706105805_849108897253351104_n.jpg",
@@ -160,7 +167,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "I will cross town for a properly toasted sandwich."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/831424277_18490614706105805_849108897253351104_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/834317533_18132112789784995_6704606860262801293_n.jpg",
@@ -182,7 +190,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "Learning which pasta shape catches the most sauce."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/834317533_18132112789784995_6704606860262801293_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/836248660_18393126976167387_8090635735672246557_n.jpg",
@@ -204,7 +213,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "Coffee first. There might be a slice of cake after."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/836248660_18393126976167387_8090635735672246557_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/836787533_18033720395890693_6120712375957738863_n.jpg",
@@ -226,7 +236,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "Fruit in the bag, sandwiches wrapped, lunch by the water."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/836787533_18033720395890693_6120712375957738863_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/837632427_18632650270011107_4403921076513325941_n.jpg",
@@ -240,7 +251,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/837632427_18632650270011107_4403921076513325941_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/838658775_18646835638060210_5169025348299645935_n.jpg",
@@ -262,7 +274,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "Trying to make a decent dinner from what is left in the fridge."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/838658775_18646835638060210_5169025348299645935_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/838985333_18107305592192461_2116322463346817209_n.jpg",
@@ -284,7 +297,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "Noodles from a paper bowl, preferably eaten outside."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/838985333_18107305592192461_2116322463346817209_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/839179549_18641471329031914_5481253250148838365_n.jpg",
@@ -306,7 +320,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "A pot of tomato sauce rarely lasts the whole weekend here."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/839179549_18641471329031914_5481253250148838365_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
@@ -328,7 +343,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "My cake slices are uneven. Nobody has complained yet."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/839589735_18435631513194537_5962308028115092182_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
@@ -350,7 +366,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "Roasted vegetables, lemon dressing, something crunchy on top."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/839617909_18636140752036257_2098987833378784333_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/840900763_18629218363016458_6769438208836358437_n.jpg",
@@ -372,7 +389,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "The corn goes on the grill before anything else."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/840900763_18629218363016458_6769438208836358437_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/841865648_18565415170078011_7354168267474431641_n.jpg",
@@ -394,7 +412,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "Cooking one extra portion for tomorrow is the plan, at least."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/841865648_18565415170078011_7354168267474431641_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/843116921_18637496905042936_171745215508899891_n.jpg",
@@ -416,7 +435,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "I usually order the snack I have never tried before."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/843116921_18637496905042936_171745215508899891_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/843205753_18632792290036679_8602263243103834282_n.jpg",
@@ -438,7 +458,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "Homemade gnocchi when there is time. Shop-bought when there is not."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/843205753_18632792290036679_8602263243103834282_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/843838416_18120983045289691_4899054224201084247_n.jpg",
@@ -460,7 +481,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "Testing whether a little salt makes every chocolate bake better."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/843838416_18120983045289691_4899054224201084247_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/844190190_18636426934039263_6884579072562259791_n.jpg",
@@ -482,7 +504,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "Seasonal fruit never makes it home without a taste test."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/844190190_18636426934039263_6884579072562259791_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/844340780_18638813539054188_3830060607232740863_n.jpg",
@@ -504,7 +527,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "Still working out the right balance of smoke and spice."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/844340780_18638813539054188_3830060607232740863_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/844394608_18634550761055018_7929487706353879535_n.jpg",
@@ -526,7 +550,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "A fried egg has rescued more than a few dinners."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/844394608_18634550761055018_7929487706353879535_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/844417632_18635528491056541_3211862696628029101_n.jpg",
@@ -548,7 +573,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "Finding the dumpling stall is my first job at any market."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/844417632_18635528491056541_3211862696628029101_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/845426207_18030181799887168_6154182754476216077_n.jpg",
@@ -570,7 +596,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "Basil on the windowsill, a pan of sauce on the stove."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/845426207_18030181799887168_6154182754476216077_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/846612204_18468348052140978_4703040474988332638_n.jpg",
@@ -592,7 +619,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "I bake the biscuit edges a little darker on purpose."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/846612204_18468348052140978_4703040474988332638_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/846809318_18638088085046648_7081383790175278758_n.jpg",
@@ -614,7 +642,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "Lunch is usually a big bowl with whatever greens look good."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/846809318_18638088085046648_7081383790175278758_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
@@ -636,7 +665,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "Grilled mushrooms deserve more space on the plate."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/847939309_18497838286108045_8543151347112222288_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848186636_18634657000034456_1849772215626504826_n.jpg",
@@ -658,7 +688,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "Soups, stews and bread for the last bit in the bowl."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848186636_18634657000034456_1849772215626504826_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
@@ -680,7 +711,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "The best part of a new neighbourhood is finding lunch."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848196762_18596616184067882_5040749258115402944_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848350979_18117800251966463_4246244980606132227_n.jpg",
@@ -694,7 +726,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848350979_18117800251966463_4246244980606132227_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848455291_18632687518006554_3359078306032398090_n.jpg",
@@ -716,7 +749,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "A cup of tea buys just enough time for the cake to cool."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848455291_18632687518006554_3359078306032398090_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848570268_18640427161053528_7037236695005080667_n.jpg",
@@ -738,7 +772,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "Fresh herbs go in at the end. Usually a few more than planned."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848570268_18640427161053528_7037236695005080667_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848787245_18641211943061805_9184416787013129240_n.jpg",
@@ -760,7 +795,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "Making room on the barbecue for peaches this summer."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848787245_18641211943061805_9184416787013129240_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/848993977_18648226450040978_509925620388878282_n.jpeg",
@@ -774,7 +810,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/848993977_18648226450040978_509925620388878282_n.jpeg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849249060_18491159053111288_3983019166277374001_n.jpg",
@@ -796,7 +833,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "Hot noodles, cold drink, a seat in the shade."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849249060_18491159053111288_3983019166277374001_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849379197_18634841125034320_7118850056566480884_n.jpg",
@@ -818,7 +856,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "The lasagne corners are spoken for before it leaves the oven."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849379197_18634841125034320_7118850056566480884_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849477563_18644804980020391_7819057180524614658_n.jpg",
@@ -840,7 +879,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "Custard, fruit and a spoon. Dessert need not be complicated."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849477563_18644804980020391_7819057180524614658_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849550952_18647420800054373_7823618734353762798_n.jpg",
@@ -862,7 +902,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "A good walk ends with the packed lunch coming out."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849550952_18647420800054373_7823618734353762798_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849772940_18633906298015460_6434628501364025450_n.jpg",
@@ -876,7 +917,8 @@
         "chat.avatar",
         "following.avatar",
         "blacklist.avatar"
-      ]
+      ],
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849772940_18633906298015460_6434628501364025450_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849773126_18639655996046648_3371346672247127660_n.jpg",
@@ -898,7 +940,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "Dinners from one pan, with plenty of bread for sharing."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849773126_18639655996046648_3371346672247127660_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849891055_18637263916055018_725435053853064446_n.jpg",
@@ -920,7 +963,8 @@
         "language": "English",
         "interest": "Street food",
         "bio": "I keep a list of street snacks to find on the next trip."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849891055_18637263916055018_725435053853064446_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/849951132_18645365749035248_82605801469605953_n.jpg",
@@ -942,7 +986,8 @@
         "language": "English",
         "interest": "Italian food",
         "bio": "Two forks, one pasta order. We always order another."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/849951132_18645365749035248_82605801469605953_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/851150067_18452401138123730_8650624205739965452_n.jpg",
@@ -964,7 +1009,8 @@
         "language": "English",
         "interest": "Dessert",
         "bio": "Lemon zest goes into more of my bakes than the recipe asks."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/851150067_18452401138123730_8650624205739965452_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
@@ -986,7 +1032,8 @@
         "language": "English",
         "interest": "Healthy food",
         "bio": "A warm grain bowl is how I use up the market haul."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/851150069_18644948692026015_1961800893533170202_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/856125458_18634475317010758_476292385336594519_n.jpg",
@@ -1008,7 +1055,8 @@
         "language": "English",
         "interest": "BBQ",
         "bio": "Trying a different marinade every time the grill comes out."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/856125458_18634475317010758_476292385336594519_n.jpg"
     },
     {
       "source": "ProjectMaterials/ContentImages/858594027_18637182445035158_2943445897430238107_n.jpg",
@@ -1030,7 +1078,8 @@
         "language": "English",
         "interest": "Home cooking",
         "bio": "A quiet kitchen, the radio on, something bubbling in a pot."
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/858594027_18637182445035158_2943445897430238107_n.jpg"
     }
   ],
   "roomCovers": {
@@ -1129,7 +1178,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQM73a4ipCmrxlpBnWBRJ1SNQLiLaqVlF-MBchpBH2r1NCWOi8Pa5eztLFXyz7hh9oT2SG6WijaBM14veix6l00jT03UGG2dguoG8TM.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4",
@@ -1146,7 +1196,8 @@
         "search.rooms"
       ],
       "roomID": "sweet-evening",
-      "authorID": "creator-elowen"
+      "authorID": "creator-elowen",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
@@ -1207,7 +1258,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
@@ -1224,7 +1276,8 @@
         "search.rooms"
       ],
       "roomID": "kitchen-stories",
-      "authorID": "creator-luna"
+      "authorID": "creator-luna",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
@@ -1325,7 +1378,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
@@ -1342,7 +1396,8 @@
         "search.rooms"
       ],
       "roomID": "pasta-table",
-      "authorID": "creator-maria"
+      "authorID": "creator-maria",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
@@ -1397,7 +1452,8 @@
         ]
       },
       "excludedFromApp": true,
-      "reviewNote": "Cigarette-shaped material is unsuitable for the food feed; keep the original for review."
+      "reviewNote": "Cigarette-shaped material is unsuitable for the food feed; keep the original for review.",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
@@ -1414,7 +1470,8 @@
         "search.rooms"
       ],
       "roomID": "street-bites",
-      "authorID": "creator-chloe"
+      "authorID": "creator-chloe",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
@@ -1431,7 +1488,8 @@
         "search.rooms"
       ],
       "roomID": "soup-kitchen",
-      "authorID": "creator-andre"
+      "authorID": "creator-andre",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
@@ -1548,7 +1606,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
@@ -1625,7 +1684,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
@@ -1642,7 +1702,8 @@
         "search.rooms"
       ],
       "roomID": "crepe-station",
-      "authorID": "creator-seraphina"
+      "authorID": "creator-seraphina",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
@@ -1687,7 +1748,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
@@ -1758,7 +1820,8 @@
         ]
       },
       "excludedFromApp": true,
-      "reviewNote": "The reviewed frames are unrelated to food; keep the original for review."
+      "reviewNote": "The reviewed frames are unrelated to food; keep the original for review.",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
@@ -1851,7 +1914,8 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4"
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
@@ -1962,7 +2026,8 @@
         ]
       },
       "excludedFromApp": true,
-      "reviewNote": "人物亲密互动占据画面主体，烹饪过程不是重点；本轮按美食主题与保守内容边界暂停展示。"
+      "reviewNote": "人物亲密互动占据画面主体，烹饪过程不是重点；本轮按美食主题与保守内容边界暂停展示。",
+      "remoteURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4"
     }
   ],
   "note": "Every supplied file has an explicit runtime use. Profile names are fictional samples, not identities inferred from photos. Videos belong to the Tati collection; no photo-to-video identity relationship is inferred. Original files remain unchanged.",
@@ -2987,5 +3052,9 @@
         "giftID": "box"
       }
     ]
+  },
+  "delivery": {
+    "photoBaseURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/",
+    "movieBaseURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/"
   }
 }

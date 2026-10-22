@@ -1,12 +1,17 @@
 import Foundation
 
-/// Editorial interaction content for bundled videos, not server engagement statistics.
+/// Authored interaction content, not server engagement statistics.
 struct CuratedClipEngagement: Decodable {
     let likes: Int
     let comments: [FilmDiscussionReply]
 }
 
-/// Read-only bundled media is separate from the visitor's editable local files.
+struct EditorialFilmPoster: Decodable {
+    let movieURL: String
+    let seconds: Double
+}
+
+/// Stable content identifiers resolve to hosted media; member imports remain separate.
 struct KitchenEditorialLibrary: Decodable {
     let portraits: [String: String]
     let additionalPeople: [TableMember]
@@ -15,6 +20,33 @@ struct KitchenEditorialLibrary: Decodable {
     let roomClips: [String: FoodFilm]?
     let curatedEngagement: [String: CuratedClipEngagement]?
     let curatedRoomActivity: [String: [RoomConversationCue]]?
+    let imageSources: [String: String]?
+    let movieSources: [String: String]?
+    let posterSources: [String: EditorialFilmPoster]?
+
+    static func photographURL(for artwork: String) -> URL? {
+        hostedURL(shared.imageSources?[artwork], folder: "photo")
+    }
+
+    static func movieURL(for resource: String) -> URL? {
+        let name = movieResourceAliases[resource] ?? resource
+        return hostedURL(shared.movieSources?[name], folder: "videos")
+    }
+
+    static func posterMovie(for artwork: String) -> (url: URL, seconds: Double)? {
+        guard let poster = shared.posterSources?[artwork],
+              let url = hostedURL(poster.movieURL, folder: "videos"),
+              poster.seconds.isFinite, poster.seconds >= 0 else { return nil }
+        return (url, poster.seconds)
+    }
+
+    private static func hostedURL(_ value: String?, folder: String) -> URL? {
+        guard let value, let url = URL(string: value),
+              url.scheme == "https", url.host == "pub-d00704a92e07453dbab85506699e0218.r2.dev",
+              url.user == nil, url.password == nil,
+              url.path.hasPrefix("/" + folder + "/") else { return nil }
+        return url
+    }
 
     static let movieResourceAliases: [String: String] = [
         "collection-osaka-sandwich.mp4": "osaka-beef-sandwich.mp4",
@@ -37,7 +69,7 @@ struct KitchenEditorialLibrary: Decodable {
         guard let url = Bundle.main.url(forResource: "table-editorial-content", withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let library = try? JSONDecoder().decode(KitchenEditorialLibrary.self, from: data) else {
-            return KitchenEditorialLibrary(portraits: [:], additionalPeople: [], roomCovers: [:], clips: [], roomClips: nil, curatedEngagement: nil, curatedRoomActivity: nil)
+            return KitchenEditorialLibrary(portraits: [:], additionalPeople: [], roomCovers: [:], clips: [], roomClips: nil, curatedEngagement: nil, curatedRoomActivity: nil, imageSources: nil, movieSources: nil, posterSources: nil)
         }
         return library
     }()

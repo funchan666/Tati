@@ -1,19 +1,21 @@
-"""Import the explicitly assigned media; never modify source images or videos.
+"""Generate hosted media mappings; retain original sources outside the app target.
 
-Run from any directory with Python 3 and ffmpeg installed. This prepares resources,
-not an application build. Unassigned inputs stop the import instead of being lost.
+Unassigned or changed inputs stop the import instead of being silently replaced.
+This prepares metadata only, not an application build or a media download.
 """
 from pathlib import Path
 import hashlib
 import json
 import shutil
-import subprocess
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "ProjectMaterials/content-slots.json"
 RESOURCES = ROOT / "Tati/Resources"
 CATALOG = RESOURCES / "KitchenMedia.xcassets"
 MOVIES = RESOURCES / "FoodFilms"
+ARCHIVE = ROOT / "ProjectMaterials/PackagedMediaArchive"
+HOST = "https://pub-d00704a92e07453dbab85506699e0218.r2.dev"
 
 
 def digest(path):
@@ -24,15 +26,8 @@ def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
 
 
-def image_set(name, source):
-    target = CATALOG / (name + ".imageset")
-    target.mkdir(parents=True, exist_ok=True)
-    destination = target / (name + source.suffix.lower())
-    shutil.copyfile(source, destination)
-    write_json(target / "Contents.json", {
-        "images": [{"filename": destination.name, "idiom": "universal"}],
-        "info": {"author": "xcode", "version": 1},
-    })
+def remote_url(entry, folder):
+    return HOST + "/" + folder + "/" + quote(Path(entry["source"]).name)
 
 
 def main():
@@ -54,30 +49,26 @@ def main():
         if digest(ROOT / entry["source"]) != entry["sha256"]:
             raise ValueError(f"Source changed; review its mapping first: {entry['source']}")
 
-    CATALOG.mkdir(parents=True, exist_ok=True)
-    MOVIES.mkdir(parents=True, exist_ok=True)
-    write_json(CATALOG / "Contents.json", {"info": {"author": "xcode", "version": 1}})
+    # Preserve the old app copies for recovery without packaging them in the app.
+    for folder in [CATALOG, MOVIES]:
+        if folder.exists() and (ARCHIVE / folder.name).exists():
+            raise ValueError("Archive already exists; refusing to overwrite: " + str(folder))
+    for folder in [CATALOG, MOVIES]:
+        if folder.exists():
+            ARCHIVE.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(folder), str(ARCHIVE / folder.name))
     for entry in mapping["portraits"]:
-        image_set(entry["asset"], ROOT / entry["source"])
+        entry["remoteURL"] = remote_url(entry, "photo")
+    for entry in mapping["videos"]:
+        entry["remoteURL"] = remote_url(entry, "videos")
+    mapping["status"] = "assigned-hosted-media"
+    mapping["delivery"] = {"photoBaseURL": HOST + "/photo/", "movieBaseURL": HOST + "/videos/"}
     clips = []
     room_clips = {}
     for entry in mapping["videos"]:
         # Review holds stay assigned for provenance but must not re-enter app resources.
         if entry.get("excludedFromApp"):
             continue
-        source = ROOT / entry["source"]
-        shutil.copyfile(source, MOVIES / entry["resource"])
-        target = CATALOG / (entry["posterAsset"] + ".imageset")
-        target.mkdir(parents=True, exist_ok=True)
-        poster = target / (entry["posterAsset"] + ".jpg")
-        subprocess.run([
-            "ffmpeg", "-v", "error", "-ss", str(entry["posterSeconds"]),
-            "-i", str(source), "-frames:v", "1", "-q:v", "2", "-y", str(poster)
-        ], check=True)
-        write_json(target / "Contents.json", {
-            "images": [{"filename": poster.name, "idiom": "universal"}],
-            "info": {"author": "xcode", "version": 1},
-        })
         clip = {
             "id": entry["id"], "authorID": entry["authorID"],
             "caption": entry["caption"], "createdAt": 0, "isSample": True,
@@ -95,6 +86,12 @@ def main():
         "roomCovers": mapping["roomCovers"],
         "clips": clips,
         "roomClips": room_clips,
+        "imageSources": {p["asset"]: p["remoteURL"] for p in mapping["portraits"]},
+        "movieSources": {v["resource"]: v["remoteURL"] for v in mapping["videos"] if not v.get("excludedFromApp")},
+        "posterSources": {
+            v["posterAsset"]: {"movieURL": v["remoteURL"], "seconds": v["posterSeconds"]}
+            for v in mapping["videos"] if not v.get("excludedFromApp")
+        },
         "curatedRoomActivity": mapping.get("curatedRoomActivity", {}),
         # Keep explicitly authored display interactions across media re-imports.
         "curatedEngagement": {
@@ -103,9 +100,8 @@ def main():
             if not entry.get("excludedFromApp") and not entry.get("roomID") and "curatedEngagement" in entry
         },
     })
-    total = sum(p.stat().st_size for folder in [CATALOG, MOVIES] for p in folder.rglob("*") if p.is_file())
-    print(f"Imported {len(mapping['portraits'])} portraits, {len(clips)} feed videos and {len(room_clips)} room videos, with original-frame posters.")
-    print(f"Content resource source size: {total / 2**20:.2f} MiB; not an IPA measurement.")
+    write_json(MANIFEST, mapping)
+    print(f"Mapped {len(mapping['portraits'])} hosted portraits, {len(mapping['videos'])} video URLs ({len(clips)} feed / {len(room_clips)} room active); originals retained.")
 
 
 if __name__ == "__main__":

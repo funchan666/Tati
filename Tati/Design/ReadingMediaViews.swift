@@ -17,7 +17,7 @@ struct ContentPhoto: View {
     }
 }
 
-/// Imported files use unique names; bundled artwork is immutable for this app version.
+/// Imported files use unique names; content artwork resolves through the hosted manifest.
 /// Cache display-sized pixels, never mutate the original photo or attachment.
 enum PhotoSource: Hashable {
     case asset(String)
@@ -34,6 +34,16 @@ private struct PhotoRequest: Hashable {
 
 private actor PhotoPixelCache {
     static let shared = PhotoPixelCache()
+    private let session: URLSession = {
+        let configuration = URLSessionConfiguration.default
+        configuration.urlCache = URLCache(memoryCapacity: 8 * 1_024 * 1_024, diskCapacity: 64 * 1_024 * 1_024, diskPath: "tati.editorial.photos")
+        configuration.timeoutIntervalForRequest = 15
+        configuration.timeoutIntervalForResource = 30
+        configuration.httpMaximumConnectionsPerHost = 4
+        configuration.httpShouldSetCookies = false
+        return URLSession(configuration: configuration)
+    }()
+    private var downloads: [URL: Task<Data?, Never>] = [:]
     private let images: NSCache<NSString, UIImage> = {
         let cache = NSCache<NSString, UIImage>()
         cache.countLimit = 96
@@ -41,7 +51,7 @@ private actor PhotoPixelCache {
         return cache
     }()
 
-    func image(for request: PhotoRequest) -> UIImage? {
+    func image(for request: PhotoRequest) async -> UIImage? {
         guard !Task.isCancelled else { return nil }
         let sourceKey: String
         switch request.source {
@@ -52,15 +62,46 @@ private actor PhotoPixelCache {
         if let image = images.object(forKey: key) { return image }
         let image: UIImage?
         switch request.source {
-        case .asset(let name): image = assetImage(name, request: request)
+        case .asset(let name): image = await artworkImage(name, request: request)
         case .file(let url):
-            image = fileImage(url, request: request)
-                ?? request.fallback.flatMap { assetImage($0, request: request) }
+            if let local = fileImage(url, request: request) { image = local }
+            else if let fallback = request.fallback { image = await artworkImage(fallback, request: request) }
+            else { image = nil }
         }
         guard let image, !Task.isCancelled else { return nil }
         let cost = (image.cgImage?.bytesPerRow ?? request.width * 4) * (image.cgImage?.height ?? request.height)
         images.setObject(image, forKey: key, cost: cost)
         return image
+    }
+
+    private func artworkImage(_ name: String, request: PhotoRequest) async -> UIImage? {
+        if let url = KitchenEditorialLibrary.photographURL(for: name) {
+            guard let data = await photographData(at: url), !Task.isCancelled,
+                  let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary) else { return nil }
+            return thumbnail(source, request: request)
+        }
+        if let poster = KitchenEditorialLibrary.posterMovie(for: name) {
+            return await VideoPosterCache.shared.image(at: poster.url, seconds: poster.seconds)
+        }
+        return assetImage(name, request: request)
+    }
+
+    private func photographData(at url: URL) async -> Data? {
+        if let transfer = downloads[url] { return await transfer.value }
+        // Avatars and full photos share a transfer; cancellation still prevents stale display.
+        let transfer = Task { [session] () -> Data? in
+            do {
+                let (data, response) = try await session.data(from: url)
+                guard let response = response as? HTTPURLResponse, response.statusCode == 200,
+                      response.mimeType?.hasPrefix("image/") == true,
+                      !data.isEmpty, data.count <= 25 * 1_024 * 1_024 else { return nil }
+                return data
+            } catch { return nil }
+        }
+        downloads[url] = transfer
+        let data = await transfer.value
+        downloads[url] = nil
+        return data
     }
 
     func preview(data: Data, maxPixels: Int) -> UIImage? {
@@ -90,8 +131,12 @@ private actor PhotoPixelCache {
     }
 
     private func fileImage(_ url: URL, request: PhotoRequest) -> UIImage? {
-        guard let source = CGImageSourceCreateWithURL(url as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary),
-              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+        guard let source = CGImageSourceCreateWithURL(url as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) else { return nil }
+        return thumbnail(source, request: request)
+    }
+
+    private func thumbnail(_ source: CGImageSource, request: PhotoRequest) -> UIImage? {
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
               let width = properties[kCGImagePropertyPixelWidth] as? NSNumber,
               let height = properties[kCGImagePropertyPixelHeight] as? NSNumber,
               width.doubleValue > 0, height.doubleValue > 0 else { return nil }
@@ -136,6 +181,8 @@ private struct PreparedPhotoPixels: View {
     let alignment: Alignment
     @State private var image: UIImage?
     @State private var loaded: PhotoRequest?
+    @Environment(\.scenePhase) private var scenePhase
+    private struct LoadKey: Hashable { let request: PhotoRequest; let active: Bool }
     var body: some View {
         GeometryReader { geometry in
             Group {
@@ -154,8 +201,8 @@ private struct PreparedPhotoPixels: View {
             }
             .frame(width: geometry.size.width, height: geometry.size.height, alignment: alignment).clipped()
         }
-        .task(id: request) {
-            guard loaded != request else { return }
+        .task(id: LoadKey(request: request, active: scenePhase == .active)) {
+            guard scenePhase == .active, loaded != request || image == nil else { return }
             let prepared = await PhotoPixelCache.shared.image(for: request)
             guard !Task.isCancelled else { return }
             image = prepared
@@ -211,7 +258,7 @@ struct PortraitPhotoView: View {
         TatiPage(title: person.name, scrolling: false) {
             MediaViewport {
                 if let asset = person.portraitArtwork {
-                    Image(asset).resizable().scaledToFit()
+                    PreparedPhoto(source: .asset(asset), fills: false)
                         .accessibilityLabel("Photo of " + person.name)
                 } else {
                     EmptyContent(title: "Photo unavailable", detail: "This photo could not be loaded.")

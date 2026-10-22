@@ -492,9 +492,8 @@ final class MemberKitchenStore: ObservableObject {
         return name
     }
     func videoURL(for clip: FoodFilm) -> URL? {
-        if let bundled = clip.packagedMovieName {
-            let file = URL(fileURLWithPath: KitchenEditorialLibrary.movieResourceAliases[bundled] ?? bundled)
-            return Bundle.main.url(forResource: file.deletingPathExtension().lastPathComponent, withExtension: file.pathExtension)
+        if let resource = clip.packagedMovieName {
+            return KitchenEditorialLibrary.movieURL(for: resource)
         }
         if let local = clip.recordedMovieFile { return mediaURL(local) }
         return nil

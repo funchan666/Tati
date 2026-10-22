@@ -9,7 +9,7 @@ struct PersonProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var more = false
     private var clips: [FoodFilm] { store.visibleClips.filter { $0.authorID == person.id } }
-    private let paper = Color(red: 1, green: 0.91, blue: 0.82)
+    private let paper = Color.tatiProfilePaper
     private var location: String { person.locationLabel ?? "" }
 
     var body: some View {
@@ -37,7 +37,7 @@ struct PersonProfileView: View {
         .overlay(alignment: .top) {
             profileNavigation.padding(.horizontal, 16).padding(.top, 4)
         }
-        .background { Color.tatiInk.ignoresSafeArea(.container) }
+        .background { Color.tatiProfileSage.ignoresSafeArea(.container) }
         .foregroundStyle(Color.tatiInk).tatiScreen()
         .profileNavigationHost()
         .sheet(isPresented: $more) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
@@ -87,11 +87,11 @@ struct PersonProfileView: View {
             HStack(alignment: .firstTextBaseline) {
                 Text("Food moments")
                     .font(.tati(.title2, design: .serif, weight: .bold))
-                    .foregroundStyle(Color.tatiCream).accessibilityAddTraits(.isHeader)
+                    .foregroundStyle(Color.tatiInk).accessibilityAddTraits(.isHeader)
                 Spacer(minLength: 12)
                 Text(clips.count.formatted())
                     .font(.tati(.largeTitle, design: .serif, weight: .bold)).monospacedDigit()
-                    .foregroundStyle(Color.tatiPink)
+                    .foregroundStyle(Color.tatiOlive)
                     .accessibilityLabel("Videos").accessibilityValue(clips.count.formatted())
             }
             if clips.isEmpty {
@@ -103,7 +103,7 @@ struct PersonProfileView: View {
                         Text("No videos yet").font(.tati(.headline))
                         Text("New videos will appear here.").font(.tati(.subheadline))
                             .fixedSize(horizontal: false, vertical: true)
-                    }.foregroundStyle(Color.tatiCream)
+                    }.foregroundStyle(Color.tatiInk)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }.padding(.vertical, 10)
             } else {
@@ -116,17 +116,15 @@ struct PersonProfileView: View {
         }
         .padding(.horizontal, 22).padding(.top, 24).padding(.bottom, 32)
         .frame(maxWidth: 680).frame(maxWidth: .infinity, alignment: .center)
-        .background(Color.tatiInk)
+        .background(Color.tatiProfileSage)
     }
 
     // Controls stay in the safe area while the photograph remains edge to edge.
     private var profileNavigation: some View {
         HStack {
-            ArtButton(asset: "back", label: "Back", size: 24) { dismiss() }
-                .background(Color.tatiCream.opacity(0.96), in: RoundedRectangle(cornerRadius: 16))
+            ArtButton(asset: "back", label: "Back", size: 28) { dismiss() }
             Spacer()
-            ArtButton(asset: "more", label: "Report or block", size: 26) { more = true }
-                .background(Color.tatiCream.opacity(0.96), in: RoundedRectangle(cornerRadius: 16))
+            ArtButton(asset: "more", label: "Report or block", size: 28) { more = true }
         }
     }
     private var followAction: some View {
@@ -141,15 +139,15 @@ struct PersonProfileView: View {
             }
             .foregroundStyle(Color.tatiInk).padding(.horizontal, 18).padding(.vertical, 14)
             .frame(maxWidth: .infinity, minHeight: 56)
-            .background(Color.tatiPink, in: Capsule())
+            .background(Color.tatiProfileRose, in: Capsule())
         }.buttonStyle(.plain).accessibilityLabel("Chat with " + person.name)
     }
     private func profileTag(_ text: String, highlighted: Bool) -> some View {
         Text(LocalizedStringKey(text)).font(.tati(.caption).weight(.semibold))
             .fixedSize(horizontal: false, vertical: true)
-            .foregroundStyle(highlighted ? Color.tatiCream : Color.tatiInk)
+            .foregroundStyle(highlighted ? Color.tatiInk : Color.tatiOlive)
             .padding(.horizontal, 13).padding(.vertical, 8)
-            .background(highlighted ? Color.tatiInk : Color.white.opacity(0.6), in: Capsule())
+            .background(highlighted ? Color.tatiProfileSage : Color.tatiProfilePaper, in: Capsule())
     }
     private func closeIfHidden() { if store.isPersonHidden(person.id) { dismiss() } }
 }
@@ -171,9 +169,7 @@ private struct ProfileMomentTile: View {
                     NavigationLink(destination: ClipDetailView(clip: clip)) {
                         ClipPoster(clip: clip, height: geometry.size.height)
                             .overlay {
-                                SupplementIcon(icon: .play, size: 24, tint: .white)
-                                    .frame(width: 48, height: 48)
-                                    .background(Color.black.opacity(0.38), in: Circle())
+                                Art(name: "film-porcelain-play", width: 48, height: 48)
                             }
                             .frame(width: geometry.size.width, height: geometry.size.height).clipped()
                             .contentShape(Rectangle())
@@ -189,9 +185,9 @@ private struct ProfileMomentTile: View {
                     .lineLimit(2, reservesSpace: !featured)
                     .frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
             }.buttonStyle(.plain)
-            VideoEngagementActions(clip: clip, tint: .tatiCream) { showComments = true }
+            VideoEngagementActions(clip: clip, tint: .tatiInk) { showComments = true }
         }
-        .foregroundStyle(Color.tatiCream)
+        .foregroundStyle(Color.tatiInk)
         .sheet(isPresented: $showComments, onDismiss: {
             if let person = pendingProfile {
                 pendingProfile = nil

@@ -144,7 +144,7 @@ struct RoomView: View {
                     if room.isVoice {
                         VoiceRoomBackgroundArtwork(background: store.voiceRoomBackground(for: room))
                     } else {
-                        Image(room.coverArtwork ?? "media-placeholder").resizable().scaledToFill()
+                        ContentPhoto(asset: room.coverArtwork, height: geo.size.height, alignment: .top)
                             .frame(width: geo.size.width, height: geo.size.height, alignment: .top).clipped()
                     }
                     if !room.isVoice && !fillsVideo { Color.black }

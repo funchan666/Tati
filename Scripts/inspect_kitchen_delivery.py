@@ -49,12 +49,17 @@ def main():
     require(expected == {v['id'] for v in films}, 'Active film assignment mismatch')
     holds = {v['id'] for v in manifest['videos'] if v.get('excludedFromApp')}
     require(not holds.intersection(expected), 'Review hold re-entered active content')
+    hosted_images = library.get('imageSources', {})
+    hosted_movies = library.get('movieSources', {})
+    hosted_posters = library.get('posterSources', {})
+    require(hosted_images == {p['asset']: p['remoteURL'] for p in manifest['portraits']}, 'Hosted image import drift')
+    require(hosted_movies == {v['resource']: v['remoteURL'] for v in manifest['videos'] if not v.get('excludedFromApp')}, 'Hosted movie import drift')
     for film in films:
-        require((RESOURCES / 'FoodFilms' / film['bundledFile']).is_file(), 'Missing film: ' + film['id'])
-        require(film['posterArtwork'] in assets, 'Missing poster: ' + film['id'])
-    require(len(list((RESOURCES / 'FoodFilms').glob('*.mp4'))) == len(films), 'Unexpected packaged film')
+        require(film['bundledFile'] in hosted_movies, 'Missing hosted film: ' + film['id'])
+        require(film['posterArtwork'] in hosted_posters, 'Missing hosted poster: ' + film['id'])
+    require(not (RESOURCES / 'FoodFilms').exists() and not (RESOURCES / 'KitchenMedia.xcassets').exists(), 'Editorial media repackaged in app')
     for name in list(library['portraits'].values()) + list(library['roomCovers'].values()):
-        require(name in assets, 'Missing editorial image: ' + name)
+        require(name in hosted_images or name in hosted_posters, 'Missing hosted editorial image: ' + name)
     require(library['roomCovers'] == manifest['roomCovers'], 'Room cover import drift')
     require(library['portraits'] == {p['personID']: p['asset'] for p in manifest['portraits']}, 'Portrait import drift')
     require(library['additionalPeople'] == [p['person'] for p in manifest['portraits'] if 'person' in p], 'Profile import drift')
@@ -101,7 +106,10 @@ def main():
     require('Image(systemName:' not in source and 'systemImage:' not in source, 'Unexpected system artwork')
     require('UIScreen.main' not in source, 'Global screen geometry introduced')
     # Verify the purchase contract was not changed by the semantic source rename.
-    old_purchase = subprocess.check_output(['git', 'show', 'HEAD:Tati/Services/TatiPurchases.swift'], cwd=ROOT, text=True)
+    historical_purchase = 'Tati/Services/TatiPurchases.swift'
+    if subprocess.run(['git', 'cat-file', '-e', 'HEAD:' + historical_purchase], cwd=ROOT, capture_output=True).returncode:
+        historical_purchase = 'Tati/Services/KitchenCoinPurchases.swift'
+    old_purchase = subprocess.check_output(['git', 'show', 'HEAD:' + historical_purchase], cwd=ROOT, text=True)
     new_purchase = (APP / 'Services/KitchenCoinPurchases.swift').read_text()
     offers = lambda text: re.findall(r'\.init\(id: "([^"]+)", coins: (\d+), usdPrice: "([^"]+)"\)', text)
     require(offers(old_purchase) == offers(new_purchase), 'StoreKit offer contract changed')
@@ -118,6 +126,7 @@ def main():
         'scope': 'Static source, project, resource and import-contract inspection only',
         'swiftSourceFiles': len(swift_files), 'editorialProfiles': len(library['portraits']),
         'activeFeedFilms': len(library['clips']), 'activeRoomFilms': len(library['roomClips']),
+        'hostedPhotos': len(hosted_images), 'hostedMovies': len(hosted_movies), 'hostedPosters': len(hosted_posters),
         'reviewHoldIDs': sorted(holds), 'originalInputHashesChecked': len(all_media),
         'fontFamilies': 2, 'fontCuts': len(expected_faces), 'fontBytes': sum((RESOURCES / 'Typography' / f).stat().st_size for f in expected_faces),
         'catalogEntries': counts, 'supportEmail': 'hudden.serudiv22@gmail.com',

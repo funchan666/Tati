@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,28 +13,17 @@
 		176E5CDB67E79D5BAA5791E7 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */; };
 		1AB0950F2EFF9063AD735907 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */; };
 		1E1315BB065CB02E798EAAA7 /* KitchenNotebookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFB80DCB2CA6099BFD67D15 /* KitchenNotebookView.swift */; };
-		2AD35BF99CC52B9ED9EBE627 /* KitchenMedia.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18AF14E65B6FB9CE0EA6DD72 /* KitchenMedia.xcassets */; };
-		2C2B559787A79C62BDB3E2C8 /* french-toast-pan.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0441AF2555708554063B87E7 /* french-toast-pan.mp4 */; };
 		35FE368FDA5D5B5864BD16D8 /* CookingRoomSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956530E4E3D31473F7B68130 /* CookingRoomSession.swift */; };
 		43260D32975DB4B4DA93F3FA /* MemberSupportScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE380D469D0457CF58082C3 /* MemberSupportScenes.swift */; };
 		4783B6C4D85E9C4B081F79E6 /* table-editorial-content.json in Resources */ = {isa = PBXBuildFile; fileRef = C45121998D70613E5A34FAE8 /* table-editorial-content.json */; };
 		4B26B2E1DE6F95805508EBE6 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */; };
-		4CB9A2A5FC8084B8A9FB4B24 /* osaka-beef-sandwich.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 709D28026FB310563F7BEFFF /* osaka-beef-sandwich.mp4 */; };
-		4F9D0E107043B251C0DBBB25 /* fruit-on-the-trail.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = BF686D6828D6A0F1255614FA /* fruit-on-the-trail.mp4 */; };
 		51C3DCC0285913131CB131AB /* KitchenNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC33E52D30307817112BEF99 /* KitchenNotebook.swift */; };
-		599837DA63369C0D51C44708 /* toasted-bread-story.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 91B6395FAC88CF0BB37E3A3D /* toasted-bread-story.mp4 */; };
-		5BB86D011EC8A9374298B401 /* soup-counter.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0E1416D103532155B3BEB251 /* soup-counter.mp4 */; };
 		5DDFCB1A380369E9635BCD2F /* dmsans-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 115D3B615518A0DF1DA71E3C /* dmsans-OFL.txt */; };
 		6B1240BE3FB6F1F24DEF50D1 /* RoomDictationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */; };
 		6B3AF2CA2F5CE4BA98D22CA0 /* FoodFilmScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB92B8DA889C9488D061647 /* FoodFilmScenes.swift */; };
-		6D95A9FEEFECDB6607112A51 /* bakery-finish.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 3A6E4E9D81C3C116F515FECB /* bakery-finish.mp4 */; };
 		6DB4A67E7A2D0287CE0AFB1C /* CookingRoomScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05344DB54AB5E682A3BBCD6 /* CookingRoomScenes.swift */; };
 		732DBA3A0BEB220506CEE525 /* TableArtwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFB56815E6B4D1DD2F2D982F /* TableArtwork.xcassets */; };
 		75B5784119BBF97DC6E2C4A7 /* Fraunces-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 706A7DC351CE7A754173DB06 /* Fraunces-SemiBold.ttf */; };
-		77610528CD5746D5B884AF9D /* matcha-cafe-break.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 33E146CE145BBE69D391DE68 /* matcha-cafe-break.mp4 */; };
-		7BC1787A643B6BEF3ED6EC00 /* dumpling-table.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 09CD2439783E6C3B76E517BD /* dumpling-table.mp4 */; };
-		7FEB6047FAFD644FE0249081 /* crispy-snack-pan.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0D440FE4CADC7526EC0D3C94 /* crispy-snack-pan.mp4 */; };
-		89B6F15F2CFFCB79830256DD /* noodle-tasting-table.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 51F0761B39D4E6A829BD7EC0 /* noodle-tasting-table.mp4 */; };
 		8AFDFCABEBCE3F02E4284632 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33E86211EA26F735021586D1 /* DMSans-Regular.ttf */; };
 		8B22FCC9B04D9FC39E7E4544 /* KitchenCoinOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641ED27EE3BEF272B5298FD3 /* KitchenCoinOffers.swift */; };
 		9CFA872414314F54B61FFE9D /* SupportMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80F3781B8DFC91E8C87E3C1 /* SupportMailbox.swift */; };
@@ -51,9 +40,6 @@
 		DE0338A8A94F6CEB8974CB3D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */; };
 		E15853F205476CB098715A68 /* KitchenCoinPurchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9154FA5869CE06463C08E6 /* KitchenCoinPurchases.swift */; };
 		E605DFCD3DCC3446B393DC90 /* TableCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CBAB74A0324523EADE1465 /* TableCommunity.swift */; };
-		E71274CAEAE42ECFF48E6F96 /* market-spicy-snacks.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E0524B6F0156FE280C6C3FB2 /* market-spicy-snacks.mp4 */; };
-		E7D74613CBA3A8A0E1608570 /* noodles-outdoors.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 89BBE144B3DEA6A6F9A2ED0D /* noodles-outdoors.mp4 */; };
-		EF615528C0BC2CD27D7682B3 /* coffee-with-friends.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 2983B678B489757001F54196 /* coffee-with-friends.mp4 */; };
 		F598284DFCCFF273ACC5579D /* MemberConversationScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537E3B35C7170B56BEEFA6C5 /* MemberConversationScenes.swift */; };
 		F8A0E951ADBDB322A71A6684 /* CommunityPostingRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C81DFA30D9CE48C7AA02E /* CommunityPostingRules.swift */; };
 		F99DCB3FDB13AD379A852B9C /* FoodDiscoveryScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1043A83EA9EADA3D6F2674 /* FoodDiscoveryScenes.swift */; };
@@ -62,28 +48,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0441AF2555708554063B87E7 /* french-toast-pan.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "french-toast-pan.mp4"; sourceTree = "<group>"; };
-		09CD2439783E6C3B76E517BD /* dumpling-table.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dumpling-table.mp4"; sourceTree = "<group>"; };
 		0B1043A83EA9EADA3D6F2674 /* FoodDiscoveryScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDiscoveryScenes.swift; sourceTree = "<group>"; };
-		0D440FE4CADC7526EC0D3C94 /* crispy-snack-pan.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "crispy-snack-pan.mp4"; sourceTree = "<group>"; };
-		0E1416D103532155B3BEB251 /* soup-counter.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "soup-counter.mp4"; sourceTree = "<group>"; };
 		0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		115D3B615518A0DF1DA71E3C /* dmsans-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "dmsans-OFL.txt"; sourceTree = "<group>"; };
 		173C81DFA30D9CE48C7AA02E /* CommunityPostingRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostingRules.swift; sourceTree = "<group>"; };
 		17E50722100B6FBD668AC686 /* MemberAccountScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAccountScenes.swift; sourceTree = "<group>"; };
-		18AF14E65B6FB9CE0EA6DD72 /* KitchenMedia.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = KitchenMedia.xcassets; sourceTree = "<group>"; };
 		1968447A94CA06FE05785D71 /* FilmDiscussionScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDiscussionScenes.swift; sourceTree = "<group>"; };
 		288CB79BCBC0D24B43ABD25A /* TableInterfaceComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableInterfaceComponents.swift; sourceTree = "<group>"; };
-		2983B678B489757001F54196 /* coffee-with-friends.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "coffee-with-friends.mp4"; sourceTree = "<group>"; };
 		2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B972787ACE26040325084F2 /* TableGuidelinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGuidelinesView.swift; sourceTree = "<group>"; };
 		31CBAB74A0324523EADE1465 /* TableCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCommunity.swift; sourceTree = "<group>"; };
-		33E146CE145BBE69D391DE68 /* matcha-cafe-break.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "matcha-cafe-break.mp4"; sourceTree = "<group>"; };
 		33E86211EA26F735021586D1 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
-		3A6E4E9D81C3C116F515FECB /* bakery-finish.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "bakery-finish.mp4"; sourceTree = "<group>"; };
 		3B60C9F786A2A872556BF8F6 /* DMSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		4DC85813925CBF4934802217 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
-		51F0761B39D4E6A829BD7EC0 /* noodle-tasting-table.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "noodle-tasting-table.mp4"; sourceTree = "<group>"; };
 		537E3B35C7170B56BEEFA6C5 /* MemberConversationScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberConversationScenes.swift; sourceTree = "<group>"; };
 		5AB92B8DA889C9488D061647 /* FoodFilmScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodFilmScenes.swift; sourceTree = "<group>"; };
 		5B9154FA5869CE06463C08E6 /* KitchenCoinPurchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenCoinPurchases.swift; sourceTree = "<group>"; };
@@ -91,27 +68,22 @@
 		641ED27EE3BEF272B5298FD3 /* KitchenCoinOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenCoinOffers.swift; sourceTree = "<group>"; };
 		6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
 		706A7DC351CE7A754173DB06 /* Fraunces-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Fraunces-SemiBold.ttf"; sourceTree = "<group>"; };
-		709D28026FB310563F7BEFFF /* osaka-beef-sandwich.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "osaka-beef-sandwich.mp4"; sourceTree = "<group>"; };
-		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDictationSession.swift; sourceTree = "<group>"; };
 		74300FD37C4CFF643F8E4BB5 /* RoomToolPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomToolPanels.swift; sourceTree = "<group>"; };
 		7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		85DC37DBE08E928F770B39A2 /* KitchenTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenTypography.swift; sourceTree = "<group>"; };
-		89BBE144B3DEA6A6F9A2ED0D /* noodles-outdoors.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "noodles-outdoors.mp4"; sourceTree = "<group>"; };
-		91B6395FAC88CF0BB37E3A3D /* toasted-bread-story.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "toasted-bread-story.mp4"; sourceTree = "<group>"; };
 		956530E4E3D31473F7B68130 /* CookingRoomSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingRoomSession.swift; sourceTree = "<group>"; };
 		A05344DB54AB5E682A3BBCD6 /* CookingRoomScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingRoomScenes.swift; sourceTree = "<group>"; };
 		A787BFAC7195B92C6D536760 /* KitchenEditorialLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenEditorialLibrary.swift; sourceTree = "<group>"; };
 		AC33E52D30307817112BEF99 /* KitchenNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebook.swift; sourceTree = "<group>"; };
 		B62A9684779A3EAE8E954196 /* ReadingMediaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingMediaViews.swift; sourceTree = "<group>"; };
-		B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		BF686D6828D6A0F1255614FA /* fruit-on-the-trail.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "fruit-on-the-trail.mp4"; sourceTree = "<group>"; };
+		B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C156986643D3A6265105F7FD /* KitchenMediaServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenMediaServices.swift; sourceTree = "<group>"; };
 		C45121998D70613E5A34FAE8 /* table-editorial-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "table-editorial-content.json"; sourceTree = "<group>"; };
 		CCFB80DCB2CA6099BFD67D15 /* KitchenNotebookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebookView.swift; sourceTree = "<group>"; };
 		CF92C03CAB9AEE52C584C033 /* fraunces-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "fraunces-OFL.txt"; sourceTree = "<group>"; };
 		D7F7AB18617A4185851313EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		E0524B6F0156FE280C6C3FB2 /* market-spicy-snacks.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "market-spicy-snacks.mp4"; sourceTree = "<group>"; };
 		E2E6819AA6AEB195D2830E18 /* MemberKitchenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberKitchenStore.swift; sourceTree = "<group>"; };
 		E80F3781B8DFC91E8C87E3C1 /* SupportMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportMailbox.swift; sourceTree = "<group>"; };
 		FDE380D469D0457CF58082C3 /* MemberSupportScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberSupportScenes.swift; sourceTree = "<group>"; };
@@ -210,13 +182,11 @@
 			isa = PBXGroup;
 			children = (
 				7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */,
-				18AF14E65B6FB9CE0EA6DD72 /* KitchenMedia.xcassets */,
 				2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */,
 				0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */,
 				B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */,
 				C45121998D70613E5A34FAE8 /* table-editorial-content.json */,
 				FFB56815E6B4D1DD2F2D982F /* TableArtwork.xcassets */,
-				C1AEDD55D88C0BE1E3DAC632 /* FoodFilms */,
 				0713A9B6FC916D95F5281068 /* Typography */,
 			);
 			name = Resources;
@@ -238,26 +208,6 @@
 				5F6962CD61D5BD68192E78A4 /* TatiApp.swift */,
 			);
 			path = App;
-			sourceTree = "<group>";
-		};
-		C1AEDD55D88C0BE1E3DAC632 /* FoodFilms */ = {
-			isa = PBXGroup;
-			children = (
-				3A6E4E9D81C3C116F515FECB /* bakery-finish.mp4 */,
-				2983B678B489757001F54196 /* coffee-with-friends.mp4 */,
-				0D440FE4CADC7526EC0D3C94 /* crispy-snack-pan.mp4 */,
-				09CD2439783E6C3B76E517BD /* dumpling-table.mp4 */,
-				0441AF2555708554063B87E7 /* french-toast-pan.mp4 */,
-				BF686D6828D6A0F1255614FA /* fruit-on-the-trail.mp4 */,
-				E0524B6F0156FE280C6C3FB2 /* market-spicy-snacks.mp4 */,
-				33E146CE145BBE69D391DE68 /* matcha-cafe-break.mp4 */,
-				51F0761B39D4E6A829BD7EC0 /* noodle-tasting-table.mp4 */,
-				89BBE144B3DEA6A6F9A2ED0D /* noodles-outdoors.mp4 */,
-				709D28026FB310563F7BEFFF /* osaka-beef-sandwich.mp4 */,
-				0E1416D103532155B3BEB251 /* soup-counter.mp4 */,
-				91B6395FAC88CF0BB37E3A3D /* toasted-bread-story.mp4 */,
-			);
-			path = FoodFilms;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,7 +238,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2710;
+				LastUpgradeCheck = 1430;
 			};
 			buildConfigurationList = 97314D64732023B452953708 /* Build configuration list for PBXProject "Tati" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -305,6 +255,7 @@
 			);
 			mainGroup = 9768900894F0AEDBEA9A3D66;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -322,27 +273,13 @@
 				FA2259FBD165F377C9F266B2 /* DMSans-SemiBold.ttf in Resources */,
 				75B5784119BBF97DC6E2C4A7 /* Fraunces-SemiBold.ttf in Resources */,
 				176E5CDB67E79D5BAA5791E7 /* InfoPlist.xcstrings in Resources */,
-				2AD35BF99CC52B9ED9EBE627 /* KitchenMedia.xcassets in Resources */,
 				1AB0950F2EFF9063AD735907 /* LaunchScreen.storyboard in Resources */,
 				DE0338A8A94F6CEB8974CB3D /* Localizable.xcstrings in Resources */,
 				FA6FCE3FB58AA0EC4B0C0490 /* PrivacyInfo.xcprivacy in Resources */,
 				732DBA3A0BEB220506CEE525 /* TableArtwork.xcassets in Resources */,
-				6D95A9FEEFECDB6607112A51 /* bakery-finish.mp4 in Resources */,
-				EF615528C0BC2CD27D7682B3 /* coffee-with-friends.mp4 in Resources */,
-				7FEB6047FAFD644FE0249081 /* crispy-snack-pan.mp4 in Resources */,
 				5DDFCB1A380369E9635BCD2F /* dmsans-OFL.txt in Resources */,
-				7BC1787A643B6BEF3ED6EC00 /* dumpling-table.mp4 in Resources */,
 				C88B30A9122B1627C8EDDD1B /* fraunces-OFL.txt in Resources */,
-				2C2B559787A79C62BDB3E2C8 /* french-toast-pan.mp4 in Resources */,
-				4F9D0E107043B251C0DBBB25 /* fruit-on-the-trail.mp4 in Resources */,
-				E71274CAEAE42ECFF48E6F96 /* market-spicy-snacks.mp4 in Resources */,
-				77610528CD5746D5B884AF9D /* matcha-cafe-break.mp4 in Resources */,
-				89B6F15F2CFFCB79830256DD /* noodle-tasting-table.mp4 in Resources */,
-				E7D74613CBA3A8A0E1608570 /* noodles-outdoors.mp4 in Resources */,
-				4CB9A2A5FC8084B8A9FB4B24 /* osaka-beef-sandwich.mp4 in Resources */,
-				5BB86D011EC8A9374298B401 /* soup-counter.mp4 in Resources */,
 				4783B6C4D85E9C4B081F79E6 /* table-editorial-content.json in Resources */,
-				599837DA63369C0D51C44708 /* toasted-bread-story.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,7 +327,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -425,7 +361,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -463,10 +398,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -474,7 +406,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -509,7 +440,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -554,10 +484,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};

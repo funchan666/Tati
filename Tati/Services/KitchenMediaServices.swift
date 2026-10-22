@@ -84,9 +84,14 @@ final class CameraPhotoJPEG: @unchecked Sendable {
     private var audioReady = false
     func load(id: String, url: URL, owner: String, loops: Bool = false) throws {
         stop()
-        guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
+        if url.isFileURL {
+            guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
+        } else {
+            guard url.scheme == "https", url.host != nil else { throw URLError(.unsupportedURL) }
+        }
         let request = generation
         let item = AVPlayerItem(url: url)
+        if !url.isFileURL { item.preferredForwardBufferDuration = 8 }
         let nextPlayer = AVPlayer(playerItem: item)
         player = nextPlayer; activeID = id; ownerID = owner
         wantsToPlay = true; loading = true
@@ -262,29 +267,30 @@ struct CameraSurface: UIViewRepresentable {
     static func dismantleUIView(_ view: CameraLayerView, coordinator: ()) { view.cameraLayer.session = nil }
 }
 
-private actor VideoPosterCache {
+actor VideoPosterCache {
     static let shared = VideoPosterCache()
-    private let images: NSCache<NSURL, UIImage> = {
-        let cache = NSCache<NSURL, UIImage>()
+    private let images: NSCache<NSString, UIImage> = {
+        let cache = NSCache<NSString, UIImage>()
         cache.countLimit = 24
         cache.totalCostLimit = 24 * 1_024 * 1_024
         return cache
     }()
-    func image(at url: URL) async -> UIImage? {
+    func image(at url: URL, seconds: Double = 0) async -> UIImage? {
         guard !Task.isCancelled else { return nil }
-        if let image = images.object(forKey: url as NSURL) { return image }
+        let key = (url.absoluteString + "|" + String(seconds)) as NSString
+        if let image = images.object(forKey: key) { return image }
         let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))
         generator.appliesPreferredTrackTransform = true
         generator.maximumSize = CGSize(width: 800, height: 800)
         do {
             let (frame, _) = try await withTaskCancellationHandler {
-                try await generator.image(at: .zero)
+                try await generator.image(at: CMTime(seconds: seconds, preferredTimescale: 600))
             } onCancel: {
                 generator.cancelAllCGImageGeneration()
             }
             guard !Task.isCancelled else { return nil }
             let image = UIImage(cgImage: frame)
-            images.setObject(image, forKey: url as NSURL, cost: frame.bytesPerRow * frame.height)
+            images.setObject(image, forKey: key, cost: frame.bytesPerRow * frame.height)
             return image
         } catch { return nil }
     }

@@ -15,6 +15,9 @@ extension Color {
     static let tatiPink = Color(red: 254 / 255, green: 104 / 255, blue: 185 / 255)
     static let tatiLime = Color(red: 211 / 255, green: 254 / 255, blue: 46 / 255)
     static let tatiCream = Color(red: 244 / 255, green: 1, blue: 199 / 255)
+    static let tatiProfilePaper = Color(red: 1, green: 248 / 255, blue: 239 / 255)
+    static let tatiProfileSage = Color(red: 238 / 255, green: 242 / 255, blue: 228 / 255)
+    static let tatiProfileRose = Color(red: 243 / 255, green: 207 / 255, blue: 216 / 255)
 }
 struct Art: View {
     var name: String
@@ -597,16 +600,14 @@ struct FollowControl: View {
                         ImageAction(asset: following ? "followed-button" : "follow-button", label: label, height: height, action: action)
                     case .profile:
                         Button(action: action) {
-                            HStack(spacing: 9) {
-                                Art(name: following ? "check" : "follow-small", width: 20, height: 20)
-                                Text(LocalizedStringKey(following ? "Following" : "Follow"))
-                                    .font(.tati(.subheadline).weight(.bold))
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                            .foregroundStyle(following ? Color.tatiInk : Color.tatiCream)
-                            .padding(.horizontal, 18).padding(.vertical, 14)
-                            .frame(maxWidth: .infinity, minHeight: 56)
-                            .background(following ? Color.tatiCream : Color.tatiInk, in: Capsule())
+                            Text(LocalizedStringKey(following ? "Following" : "Follow"))
+                                .font(.tati(.subheadline).weight(.bold))
+                                .fixedSize(horizontal: false, vertical: true)
+                                .foregroundStyle(Color.tatiInk)
+                                .padding(.horizontal, 18).padding(.vertical, 14)
+                                .frame(maxWidth: .infinity, minHeight: 56)
+                                .background(Color.tatiProfileSage, in: Capsule())
+                                .overlay { Capsule().strokeBorder(Color.tatiOlive.opacity(0.22), lineWidth: 1).allowsHitTesting(false) }
                         }.buttonStyle(.plain)
                     case .film:
                         Button(action: action) {
