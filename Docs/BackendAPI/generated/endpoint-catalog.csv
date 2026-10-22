@@ -1,0 +1,6 @@
+﻿role,method,path,response_file,note,response_chars,response_utf8_bytes
+authenticate,POST,/tati/table/pantry-welcome,responses/auth-response.json,explicit configured response; backend capability is separate,164,164
+confirmPurchase,POST,/tati/coins/settle-receipt,responses/purchase-response.json,explicit configured response; backend capability is separate,25,25
+tableCatalog,POST,/tati/table/catalog,responses/table-catalog.json,JSON request body {}; content file relative to BackendAPI,63797,63806
+cookingNotebook,POST,/tati/notebook/chapters,responses/cooking-notebook.json,JSON request body {}; content file relative to BackendAPI,4555,4556
+kitchenOffers,POST,/tati/pantry/offers,responses/kitchen-offers.json,JSON request body {}; content file relative to BackendAPI,4666,4834

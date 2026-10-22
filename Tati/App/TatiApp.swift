@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct TatiApp: App {
+    @UIApplicationDelegateAdaptor(TableApplicationDelegate.self) private var appDelegate
+    @StateObject private var session = TableSessionCoordinator()
     @StateObject private var store = MemberKitchenStore()
     @StateObject private var playback = FoodFilmPlayback()
     @StateObject private var purchases = KitchenCoinPurchases()
@@ -11,21 +13,26 @@ struct TatiApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if store.account.signedIn { CommunityRoot().id(store.account.profile.id) }
-                else { WelcomeView() }
-                if store.account.signedIn && store.account.welcomeGranted == true && store.account.welcomeAcknowledged == false {
-                    WelcomeCoinsView()
+                Group {
+                    if session.route == .showingA {
+                        CommunityRoot(content: session.content).id(store.account.profile.id)
+                    } else if session.route != .showingB {
+                        WelcomeView()
+                    }
                 }
+                TableWebLayer(owner: session.web, visible: session.route == .showingB)
                 NoticeLayer(isRoot: true)
             }
             .background { Color.tatiCream.ignoresSafeArea(.container) }
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
-            .environmentObject(notifications)
+            .environmentObject(notifications).environmentObject(session)
             .environment(\.locale, AppLanguage.preference(store.account.preferredLanguage).locale)
             .font(.tati(.body))
             .tint(.tatiPink).preferredColorScheme(.light)
-            .task { purchases.start(store: store); notifications.refresh(store: store) }
+            .task { session.install(store: store, purchases: purchases, playback: playback, roomSession: roomSession); notifications.refresh(store: store) }
+            .onOpenURL { session.wake($0) }
             .onChange(of: scenePhase) { _, phase in
+                session.becameActive(phase == .active)
                 if phase != .active { store.flushDrafts() }
                 if phase == .background { roomSession.audio.stop(); playback.stop() }
                 if phase == .active { notifications.refresh(store: store) }
@@ -33,9 +40,10 @@ struct TatiApp: App {
             .onChange(of: store.account.notifications) { _, _ in notifications.refresh(store: store) }
             .onChange(of: store.account.preferredLanguage) { _, _ in notifications.refresh(store: store) }
             .onChange(of: store.account.blocked) { _, _ in hideUnavailableRoom() }
+            .onChange(of: store.account.tableSyncState?.hiddenFilmIDs) { _, _ in hideUnavailableRoom() }
             .onChange(of: store.account.hiddenSubjects) { _, _ in hideUnavailableRoom() }
             .onChange(of: store.account.signedIn) { _, signedIn in
-                if !signedIn { playback.stop(); roomSession.leave() }
+                if !signedIn { playback.stop(); roomSession.leave(); session.signedOut() }
                 notifications.refresh(store: store)
             }
         }
@@ -52,19 +60,21 @@ enum TatiSection: String, CaseIterable {
     var assetPrefix: String { self == .notes ? "notes" : rawValue.lowercased() }
 }
 struct CommunityRoot: View {
+    @ObservedObject var content: KitchenContentRepository
     @EnvironmentObject private var playback: FoodFilmPlayback
     @State private var selected = TatiSection.home
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 Group {
-                    switch selected {
+                    if !content.loaded && selected != .me { KitchenContentStatus(content: content) }
+                    else { switch selected {
                     case .home: DiscoverView(voice: false)
                     case .room: DiscoverView(voice: true)
                     case .video: VideoFeedView()
                     case .notes: CookingNotesView()
                     case .me: MyProfileView()
-                    }
+                    } }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 MinimizedRoomBar()
                 HStack(spacing: 0) {
@@ -87,22 +97,30 @@ struct CommunityRoot: View {
 }
 struct WelcomeView: View {
     @EnvironmentObject private var store: MemberKitchenStore
-    @Environment(\.scenePhase) private var scenePhase
+    @EnvironmentObject private var session: TableSessionCoordinator
     @State private var consent = false
-    @State private var entering = false
+    @State private var manualConsent = false
+    private var entering: Bool { session.entering }
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
+                ScrollView {
                 VStack(spacing: 0) {
                     Spacer(minLength: 0)
                     VStack(spacing: 14) {
                         if let error = store.storageFailure { Text(error).font(.tati(.footnote)).foregroundStyle(Color.tatiInk) }
-                        WelcomeEntryButton(loading: entering, enabled: consent && store.storageFailure == nil) {
-                            guard !entering, consent, store.storageFailure == nil else { return }
-                            entering = true
+                        if let error = session.errorText { Text(error).font(.tati(.footnote)).foregroundStyle(Color.tatiInk).multilineTextAlignment(.center) }
+                        if session.route == .webFailure {
+                            TatiButton(title: "Try again", enabled: !entering) { session.retryWeb() }
+                            Button("Return to welcome") { session.returnToWelcome() }.buttonStyle(.plain).frame(minHeight: 44)
+                        } else {
+                            WelcomeEntryButton(loading: entering, enabled: consent && store.storageFailure == nil) {
+                                guard !entering, consent, store.storageFailure == nil else { return }
+                                session.begin()
+                            }
                         }
                         HStack(alignment: .center, spacing: 8) {
-                            Button { consent.toggle() } label: {
+                            Button { manualConsent = true; consent.toggle() } label: {
                                 if consent { Art(name: "check-pink", width: 24, height: 24) }
                                 else { SupplementIcon(icon: .toggleOff, size: 28) }
                             }.buttonStyle(.plain).frame(width: 44, height: 44).accessibilityLabel(consent ? "Agreement accepted" : "Accept agreement").accessibilityAddTraits(consent ? .isSelected : [])
@@ -116,7 +134,8 @@ struct WelcomeView: View {
                             }
                         }.foregroundStyle(Color.tatiInk).disabled(entering)
                     }.frame(maxWidth: 460).padding(.horizontal, 26).padding(.bottom, 12)
-                }.frame(width: geo.size.width, height: geo.size.height)
+                }.frame(maxWidth: .infinity, minHeight: geo.size.height, alignment: .bottom)
+                }
                     .background {
                         GeometryReader { backdrop in
                             Image("welcome").resizable().scaledToFill()
@@ -125,21 +144,11 @@ struct WelcomeView: View {
                     }
             }.tatiScreen()
         }
-        .task(id: entering) {
-            guard entering else { return }
-            // A brief acknowledgment lets the loading state render before the existing
-            // synchronous local sign-in transaction. This is not a network progress meter.
-            do { try await Task.sleep(for: .milliseconds(350)) }
-            catch { return }
-            guard !Task.isCancelled, entering, consent, scenePhase == .active else { return }
-            store.signIn()
-            entering = false
+        .onChange(of: session.route, initial: true) { _, route in
+            guard !manualConsent else { return }
+            if route == .preparingB || route == .showingB { consent = true }
+            else if route == .undecided { consent = false }
         }
-        .onChange(of: scenePhase) { _, phase in
-            if phase != .active { entering = false }
-        }
-        .onDisappear { entering = false }
-    }
 }
 
 private struct WelcomeEntryButton: View {
@@ -172,5 +181,28 @@ private struct WelcomeEntryButton: View {
         .buttonStyle(.plain).disabled(!enabled || loading)
         .accessibilityLabel(loading ? Text("Entering Tati…") : Text("Enter Tati"))
         .onChange(of: reduceMotion) { _, reduced in breathing = loading && !reduced }
+    }
+}
+
+private struct TableWebLayer: View {
+    @ObservedObject var owner: SupperWebOwner
+    let visible: Bool
+    var body: some View {
+        Group {
+            if let view = owner.webView {
+                SupperWebSurface(view: view).ignoresSafeArea(.container)
+                    .opacity(visible ? 1 : 0).allowsHitTesting(visible).accessibilityHidden(!visible)
+            }
+        }
+    }
+}
+private struct KitchenContentStatus: View {
+    @ObservedObject var content: KitchenContentRepository
+    var body: some View {
+        VStack(spacing: 18) {
+                Art(name: "brand-heading", width: 132, height: 62)
+                EmptyContent(title: content.failure ? "The kitchen couldn't load" : "Setting your table…", detail: content.failure ? "Check your connection, then try again." : "Bringing food stories and cooking notes to your table.")
+                if content.failure { TatiButton(title: "Try again") { content.reload() }.frame(maxWidth: 280) }
+        }.padding(24).frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

@@ -18,7 +18,7 @@ HOST = "https://pub-d00704a92e07453dbab85506699e0218.r2.dev"
 
 def inspect():
     manifest = json.loads((ROOT / "ProjectMaterials/content-slots.json").read_text())
-    library = json.loads((ROOT / "Tati/Resources/table-editorial-content.json").read_text())
+    library = json.loads((ROOT / "Docs/BackendAPI/responses/table-catalog.json").read_text())["data"]["editorial"]
     all_entries = manifest["portraits"] + manifest["videos"]
     for entry in all_entries:
         name = entry["originalFilename"]

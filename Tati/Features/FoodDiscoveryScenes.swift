@@ -11,7 +11,7 @@ struct DiscoverView: View {
     @State private var showSearch = false
     @State private var showRankings = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    // Food topics share the same filter on both feeds, rather than a competing Food tab.
+
     private var sections: [String] { voice ? ["Party", "Follow"] : ["Hot", "Discover", "Follow"] }
     private var currentSection: String { sections.contains(selection.section) ? selection.section : sections[0] }
     private var availableRooms: [CookingRoom] {
@@ -230,7 +230,7 @@ struct DiscoverView: View {
                         }
                     }.padding(.vertical, 3)
                 }
-                // Sheet selections remain visible without resetting the feed or its filters.
+
                 .onChange(of: selection.topic) { _, value in proxy.scrollTo(value, anchor: .center) }
                 .onAppear { proxy.scrollTo(selection.topic, anchor: .center) }
             }
@@ -290,7 +290,6 @@ private struct VoiceTopicRoomsView: View {
     }
 }
 
-/// An illustrated food menu, with labels kept native and fully localizable.
 struct FoodTopicTile: View {
     var topic: String
     var selected: Bool
@@ -372,17 +371,11 @@ struct RoomListCard: View {
     var showsHotBanner = true
     private var host: TableMember? { TableCommunity.person(room.hostID) }
     private var summary: String {
-        switch room.id {
-        case "dessert-club": return "Share cakes, bakes and sweet ideas"
-        case "dinner-conversation": return "What's on your dinner table?"
-        case "market-table": return "Fresh finds and seasonal favourites"
-        case "weekend-bbq": return "Talk grills, spices and weekend plans"
-        default: return host?.bio ?? ""
-        }
+        room.summaryText.isEmpty ? host?.bio ?? "" : room.summaryText
     }
     var body: some View {
         HStack(spacing: 0) {
-            // The cover receives the full row height, including taller wrapped copy.
+
             GeometryReader { geometry in
                 UserProfileLink(userID: room.hostID) {
                     ContentPhoto(asset: room.coverArtwork, height: geometry.size.height)
@@ -422,7 +415,7 @@ struct RoomListCard: View {
         }
         .fixedSize(horizontal: false, vertical: true)
         .background {
-            // Reuse the supplied gradient artwork; one outer edge encloses photo and text.
+
             Image("outlined-card").resizable(capInsets: EdgeInsets(top: 26, leading: 30, bottom: 26, trailing: 30))
                 .padding(-8).accessibilityHidden(true)
         }
@@ -590,7 +583,6 @@ private struct FilterView: View {
     }
 }
 
-/// Intrinsic-width tags wrap as whole labels, matching the Lanhu filter rows.
 struct FilterTagLayout: Layout {
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         arrange(width: proposal.width ?? 354, subviews: subviews).size
@@ -645,7 +637,7 @@ struct SearchView: View {
     }
 
     var body: some View {
-        // Calculate visibility once per update, rather than scanning rooms from every row.
+
         let terms = searchTerms
         let rooms = store.visibleRooms
         let liveHosts = Set(rooms.filter { !$0.isVoice }.map(\.hostID))
@@ -826,8 +818,6 @@ struct RankingView: View {
     @State private var controlsHeight: CGFloat = 0
     @Environment(\.dismiss) private var dismiss
 
-    // The catalogue supplies real content counts. Only saved interactions enter
-    // the selected time window; this is not a server popularity/earnings ranking.
     private var entries: [RankingEntry] {
         let calendar = Calendar.current
         let component: Calendar.Component = period == "Daily" ? .day : .weekOfYear
@@ -872,10 +862,9 @@ struct RankingView: View {
             let ranked = entries
             let topInset = geometry.safeAreaInsets.top
             let fullHeight = geometry.size.height + topInset + geometry.safeAreaInsets.bottom
-            // The original artwork and all three portraits share one aspect-fill transform.
+
             let scale = max(width / 780, fullHeight / 1688)
-            // Long translations and accessibility type may increase the floating controls.
-            // Move artwork and portraits together if they need more clearance.
+
             let artShift = max(0, controlsHeight + 12 - (514 * scale - topInset))
             ScrollView {
                 VStack(spacing: 12) {
@@ -908,8 +897,7 @@ struct RankingView: View {
                 }.padding(.bottom, 20)
                     .frame(width: width)
                     .background(alignment: .topLeading) {
-                        // Background drawing never participates in hit testing. Clipping an
-                        // oversized Image alone does not constrain its interactive bounds.
+
                         GeometryReader { _ in
                             Image("rank-background").resizable()
                                 .frame(width: 780 * scale, height: 1688 * scale)
@@ -994,8 +982,7 @@ struct RankingView: View {
     }
 
     private func podiumStage(_ ranked: [RankingEntry], width: CGFloat, scale: CGFloat, topInset: CGFloat, artShift: CGFloat) -> some View {
-        // Anchors are in the original 780 × 1688 artwork. The image lives behind
-        // the whole scroll content, rather than inside this clipped foreground stage.
+
         let originX = (width - 780 * scale) / 2
         return ZStack(alignment: .topLeading) {
             Color.clear.allowsHitTesting(false)
@@ -1030,8 +1017,7 @@ struct RankingView: View {
     }
 
     private func podiumDetails(_ ranked: [RankingEntry]) -> some View {
-        // Text takes its natural height below the artwork; large type and long
-        // room titles must never move the portraits out of their heart frames.
+
         HStack(alignment: .top, spacing: 8) {
             ForEach([1, 0, 2], id: \.self) { index in
                 if ranked.indices.contains(index) {

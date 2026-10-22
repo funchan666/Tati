@@ -1,0 +1,22 @@
+{
+  "scope": "Offline source, DTO fields, import payloads and project references; not Swift type-checking or service validation",
+  "baseURL": "https://api.afterhou.top",
+  "sourceAppId": "48859669",
+  "interfaces": 5,
+  "configurationEntries": 14,
+  "sourceCounts": {
+    "members": 49,
+    "rooms": 10,
+    "feedFilms": 10,
+    "roomFilms": 6,
+    "photographs": 49,
+    "movies": 16,
+    "gifts": 8,
+    "recipes": 6,
+    "chapters": 2,
+    "coinPacks": 9,
+    "cookingAnswers": 8
+  },
+  "swiftTargetMembers": 40,
+  "buildTestsAppOrBusinessRequestsPerformed": false
+}

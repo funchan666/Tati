@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Always crop the original to the actual container, including wide displays.
 struct VoiceRoomBackgroundArtwork: View {
     var background: ConversationBackdrop
     var body: some View {
@@ -75,7 +74,7 @@ struct CreateVoiceRoomView: View {
         } footer: {
             TatiEditingButton(title: "Create room", enabled: !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
                 guard saveSetup() else { return }
-                // No publishing endpoint/RTC session exists yet; never invent a live room.
+
                 store.tell("Room creation unavailable", "Your room title, topic and background are saved. Voice room creation is currently unavailable.")
             }
         }
@@ -113,7 +112,6 @@ struct CreateVoiceRoomView: View {
     }
 }
 
-/// A shared presentation shell; room capabilities and state remain separate.
 struct RoomControlSheet<Content: View>: View {
     var title: String
     var subtitle: String? = nil
@@ -250,7 +248,6 @@ struct RoomActivityFeed: View {
     @State private var knownLocalIDs: Set<String> = []
     @State private var readingHistory = false
 
-    // Authored room presentation never enters account messages, receipts or balances.
     private var script: [RoomConversationCue] {
         KitchenEditorialLibrary.shared.curatedRoomActivity?[room.id] ?? []
     }
@@ -306,7 +303,7 @@ struct RoomActivityFeed: View {
         .task(id: playbackKey) {
             prepareTimeline()
             guard isActive, scenePhase == .active, !readingHistory, !script.isEmpty else { return }
-            // The view owns this task: leaving, opening a panel or backgrounding cancels it.
+
             while !Task.isCancelled {
                 let entry = script[nextScriptIndex % script.count]
                 do { try await Task.sleep(for: .seconds(min(8, max(2, entry.delaySeconds ?? 4)))) }
@@ -337,7 +334,7 @@ struct RoomActivityFeed: View {
         nextScriptIndex = opening.last.flatMap { last in script.firstIndex(where: { $0.id == last.id }) }.map { $0 + 1 } ?? 0
     }
     private func append(_ entry: RoomConversationCue) {
-        // Replaying a script moves its stable event; it never duplicates receipt IDs.
+
         timeline.removeAll { $0.id == entry.id }
         timeline.append(entry)
         timeline = Array(timeline.suffix(30))
@@ -390,7 +387,6 @@ struct RoomSoundButton: View {
     }
 }
 
-/// Playback preferences affect only this viewer and never create a broadcast session.
 struct RoomViewingPanel: View {
     @Binding var fillsVideo: Bool
     @Binding var muted: Bool

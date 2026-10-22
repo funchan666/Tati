@@ -1,0 +1,6 @@
+{
+  "course": "SupperTableReady",
+  "table": {
+    "destination": "#{h5Url}"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "course": "MenuLinkOpened",
+  "menu": {
+    "destination": "#{openUrl}"
+  }
+}

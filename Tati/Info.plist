@@ -27,12 +27,23 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.tati.app</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Tati uses the camera to take your profile photo and show a camera preview when you prepare a food live room or video call.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Speak a message in a food room and review the text before sending.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose a photo or food video to share in Tati.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Tati turns spoken food-room messages into editable text. If speech cannot be processed on your device, audio is sent to Apple for recognition.</string>
 	<key>UIAppFonts</key>

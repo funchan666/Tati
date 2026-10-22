@@ -156,7 +156,6 @@ struct VideoOptionsView: View {
     }
 }
 
-/// Shared report/block surface for profiles, posts, comments, messages and rooms.
 struct SafetyActionsView: View {
     var subjectID: String
     var authorID: String

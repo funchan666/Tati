@@ -1,7 +1,6 @@
 import SwiftUI
 import ImageIO
 
-/// Photos follow the current container, without imposing a device-sized width.
 struct ContentPhoto: View {
     var asset: String?
     var height: CGFloat
@@ -17,8 +16,6 @@ struct ContentPhoto: View {
     }
 }
 
-/// Imported files use unique names; content artwork resolves through the hosted manifest.
-/// Cache display-sized pixels, never mutate the original photo or attachment.
 enum PhotoSource: Hashable {
     case asset(String)
     case file(URL)
@@ -88,7 +85,7 @@ private actor PhotoPixelCache {
 
     private func photographData(at url: URL) async -> Data? {
         if let transfer = downloads[url] { return await transfer.value }
-        // Avatars and full photos share a transfer; cancellation still prevents stale display.
+
         let transfer = Task { [session] () -> Data? in
             do {
                 let (data, response) = try await session.data(from: url)
@@ -120,7 +117,7 @@ private actor PhotoPixelCache {
         let x = CGFloat(request.width) / width
         let y = CGFloat(request.height) / height
         let scale = request.fills ? max(x, y) : min(x, y)
-        // Extremely panoramic photos must not produce an unbounded decode.
+
         let bounded = min(scale, 2_560 / max(width, height))
         return CGSize(width: max(1, width * bounded), height: max(1, height * bounded))
     }
@@ -155,7 +152,6 @@ private actor PhotoPixelCache {
     }
 }
 
-/// Shared by avatars, covers and attachments. Layout stays stable while pixels load.
 struct PreparedPhoto: View {
     let source: PhotoSource
     var fallbackAsset: String? = nil
@@ -186,7 +182,7 @@ private struct PreparedPhotoPixels: View {
     var body: some View {
         GeometryReader { geometry in
             Group {
-                // Keep the old size during resizing, but never show a previous person's photo.
+
                 if let image, loaded?.source == request.source, loaded?.fallback == request.fallback {
                     Image(uiImage: image).resizable()
                         .aspectRatio(contentMode: request.fills ? .fill : .fit)
@@ -211,7 +207,6 @@ private struct PreparedPhotoPixels: View {
     }
 }
 
-/// A selected photo is decoded once per selection, not again while typing form fields.
 struct PreparedDataPhoto: View {
     let data: Data
     var maxPixels = 1_200
@@ -268,8 +263,6 @@ struct PortraitPhotoView: View {
     }
 }
 
-/// Independent media and player controls avoid active folds and camera occlusions.
-/// Full-screen backdrops are rendered separately and may extend to every edge.
 struct MediaViewport<Content: View>: View {
     @ViewBuilder var content: () -> Content
     var body: some View {

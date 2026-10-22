@@ -9,26 +9,35 @@
 /* Begin PBXBuildFile section */
 		03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6962CD61D5BD68192E78A4 /* TatiApp.swift */; };
 		03A662B1EB51CB94A87C05EE /* FilmDiscussionScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1968447A94CA06FE05785D71 /* FilmDiscussionScenes.swift */; };
+		0C877067EC607146CEA607AB /* ConfiguredThemeEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7497D620486B3C3FCFF222C /* ConfiguredThemeEvents.swift */; };
 		1068714EE865871900259189 /* KitchenMediaServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = C156986643D3A6265105F7FD /* KitchenMediaServices.swift */; };
+		13FE942F18767906A388D976 /* TableBusinessReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B7123322816D4CE4B4771E /* TableBusinessReceiver.swift */; };
 		176E5CDB67E79D5BAA5791E7 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */; };
 		1AB0950F2EFF9063AD735907 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */; };
 		1E1315BB065CB02E798EAAA7 /* KitchenNotebookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFB80DCB2CA6099BFD67D15 /* KitchenNotebookView.swift */; };
+		35780E9C27DD6BF0A03BDF9A /* IntegrationContract.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F92EFFBAC7DF96DC5D60531 /* IntegrationContract.generated.swift */; };
 		35FE368FDA5D5B5864BD16D8 /* CookingRoomSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956530E4E3D31473F7B68130 /* CookingRoomSession.swift */; };
+		38D810A193C07F9508029A9D /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D2F5D93D46DC6B99658BBB26 /* Alamofire */; };
 		43260D32975DB4B4DA93F3FA /* MemberSupportScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE380D469D0457CF58082C3 /* MemberSupportScenes.swift */; };
-		4783B6C4D85E9C4B081F79E6 /* table-editorial-content.json in Resources */ = {isa = PBXBuildFile; fileRef = C45121998D70613E5A34FAE8 /* table-editorial-content.json */; };
 		4B26B2E1DE6F95805508EBE6 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */; };
 		51C3DCC0285913131CB131AB /* KitchenNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC33E52D30307817112BEF99 /* KitchenNotebook.swift */; };
+		573985EF166EA8BD13244CDF /* KitchenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01F065D7ACDB5970D49D8A5 /* KitchenAPI.swift */; };
 		5DDFCB1A380369E9635BCD2F /* dmsans-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 115D3B615518A0DF1DA71E3C /* dmsans-OFL.txt */; };
+		5DE22E530E00A1935378663A /* SupperWebContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74015A6ED906F16855D977F0 /* SupperWebContainer.swift */; };
 		6B1240BE3FB6F1F24DEF50D1 /* RoomDictationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */; };
 		6B3AF2CA2F5CE4BA98D22CA0 /* FoodFilmScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB92B8DA889C9488D061647 /* FoodFilmScenes.swift */; };
 		6DB4A67E7A2D0287CE0AFB1C /* CookingRoomScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05344DB54AB5E682A3BBCD6 /* CookingRoomScenes.swift */; };
 		732DBA3A0BEB220506CEE525 /* TableArtwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFB56815E6B4D1DD2F2D982F /* TableArtwork.xcassets */; };
 		75B5784119BBF97DC6E2C4A7 /* Fraunces-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 706A7DC351CE7A754173DB06 /* Fraunces-SemiBold.ttf */; };
+		7F47DFE88E2E715B8C895268 /* TableMessageEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBE449EBB35C8B94263F250 /* TableMessageEnvelope.swift */; };
 		8AFDFCABEBCE3F02E4284632 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33E86211EA26F735021586D1 /* DMSans-Regular.ttf */; };
 		8B22FCC9B04D9FC39E7E4544 /* KitchenCoinOffers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641ED27EE3BEF272B5298FD3 /* KitchenCoinOffers.swift */; };
 		9CFA872414314F54B61FFE9D /* SupportMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80F3781B8DFC91E8C87E3C1 /* SupportMailbox.swift */; };
 		9E74CEED3BD6F739F08C006A /* KitchenTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85DC37DBE08E928F770B39A2 /* KitchenTypography.swift */; };
+		AC18C4E325F86186A3F34DDD /* TableSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F531F2104A1D966EBB1CD9 /* TableSessionCoordinator.swift */; };
+		ADEC31A1133FEF27A2613CA7 /* ConfiguredRealtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D095544F7FE3E31C800B323F /* ConfiguredRealtime.swift */; };
 		B207AA68BCD07BE8A08E6D3B /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DC85813925CBF4934802217 /* AppLanguage.swift */; };
+		B59E682717D7DAAC697FF24C /* ConfiguredEventDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E43C8BB9D8ECBE871AC54919 /* ConfiguredEventDecoder.swift */; };
 		B978846BCC74928288E9D300 /* RoomToolPanels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74300FD37C4CFF643F8E4BB5 /* RoomToolPanels.swift */; };
 		BA85BE433275D3BC28E01CA1 /* KitchenEditorialLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A787BFAC7195B92C6D536760 /* KitchenEditorialLibrary.swift */; };
 		C88B30A9122B1627C8EDDD1B /* fraunces-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = CF92C03CAB9AEE52C584C033 /* fraunces-OFL.txt */; };
@@ -37,17 +46,23 @@
 		CC701CECB5F2D30FBAD05A61 /* MemberAccountScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E50722100B6FBD668AC686 /* MemberAccountScenes.swift */; };
 		D5CC20735436F32F88A10FC9 /* MemberKitchenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E6819AA6AEB195D2830E18 /* MemberKitchenStore.swift */; };
 		D6EB232B9EAC23B4E91D25F6 /* ReadingMediaViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A9684779A3EAE8E954196 /* ReadingMediaViews.swift */; };
+		DCA38F53BA74C423D29A0A2B /* KitchenThemeInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F70E125DAA3E22E8506103 /* KitchenThemeInbox.swift */; };
 		DE0338A8A94F6CEB8974CB3D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */; };
+		E132D6A1F9A47B84B094A33C /* TableConnectionGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046FA9CC330C8CC12D2FF81C /* TableConnectionGate.swift */; };
 		E15853F205476CB098715A68 /* KitchenCoinPurchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9154FA5869CE06463C08E6 /* KitchenCoinPurchases.swift */; };
 		E605DFCD3DCC3446B393DC90 /* TableCommunity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CBAB74A0324523EADE1465 /* TableCommunity.swift */; };
+		E70A89B105A90065524D6847 /* KitchenContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621421DE611B4B416814882D /* KitchenContentRepository.swift */; };
 		F598284DFCCFF273ACC5579D /* MemberConversationScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537E3B35C7170B56BEEFA6C5 /* MemberConversationScenes.swift */; };
 		F8A0E951ADBDB322A71A6684 /* CommunityPostingRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173C81DFA30D9CE48C7AA02E /* CommunityPostingRules.swift */; };
 		F99DCB3FDB13AD379A852B9C /* FoodDiscoveryScenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1043A83EA9EADA3D6F2674 /* FoodDiscoveryScenes.swift */; };
 		FA2259FBD165F377C9F266B2 /* DMSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B60C9F786A2A872556BF8F6 /* DMSans-SemiBold.ttf */; };
 		FA6FCE3FB58AA0EC4B0C0490 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */; };
+		FAB6CF4E91FEF1E5900DC2E7 /* ConfiguredThemeContract.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37DB5EE838E08FBEC759991C /* ConfiguredThemeContract.generated.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		046FA9CC330C8CC12D2FF81C /* TableConnectionGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableConnectionGate.swift; sourceTree = "<group>"; };
+		07F70E125DAA3E22E8506103 /* KitchenThemeInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenThemeInbox.swift; sourceTree = "<group>"; };
 		0B1043A83EA9EADA3D6F2674 /* FoodDiscoveryScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDiscoveryScenes.swift; sourceTree = "<group>"; };
 		0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		115D3B615518A0DF1DA71E3C /* dmsans-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "dmsans-OFL.txt"; sourceTree = "<group>"; };
@@ -59,36 +74,58 @@
 		2B972787ACE26040325084F2 /* TableGuidelinesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableGuidelinesView.swift; sourceTree = "<group>"; };
 		31CBAB74A0324523EADE1465 /* TableCommunity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCommunity.swift; sourceTree = "<group>"; };
 		33E86211EA26F735021586D1 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
+		37DB5EE838E08FBEC759991C /* ConfiguredThemeContract.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredThemeContract.generated.swift; sourceTree = "<group>"; };
 		3B60C9F786A2A872556BF8F6 /* DMSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		40F531F2104A1D966EBB1CD9 /* TableSessionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSessionCoordinator.swift; sourceTree = "<group>"; };
 		4DC85813925CBF4934802217 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		537E3B35C7170B56BEEFA6C5 /* MemberConversationScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberConversationScenes.swift; sourceTree = "<group>"; };
 		5AB92B8DA889C9488D061647 /* FoodFilmScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodFilmScenes.swift; sourceTree = "<group>"; };
 		5B9154FA5869CE06463C08E6 /* KitchenCoinPurchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenCoinPurchases.swift; sourceTree = "<group>"; };
 		5F6962CD61D5BD68192E78A4 /* TatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TatiApp.swift; sourceTree = "<group>"; };
+		5F92EFFBAC7DF96DC5D60531 /* IntegrationContract.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationContract.generated.swift; sourceTree = "<group>"; };
+		621421DE611B4B416814882D /* KitchenContentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenContentRepository.swift; sourceTree = "<group>"; };
 		641ED27EE3BEF272B5298FD3 /* KitchenCoinOffers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenCoinOffers.swift; sourceTree = "<group>"; };
+		66BB6B3F41478410963D8E85 /* Tati.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tati.entitlements; sourceTree = "<group>"; };
 		6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
 		706A7DC351CE7A754173DB06 /* Fraunces-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Fraunces-SemiBold.ttf"; sourceTree = "<group>"; };
 		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDictationSession.swift; sourceTree = "<group>"; };
+		74015A6ED906F16855D977F0 /* SupperWebContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupperWebContainer.swift; sourceTree = "<group>"; };
 		74300FD37C4CFF643F8E4BB5 /* RoomToolPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomToolPanels.swift; sourceTree = "<group>"; };
+		7EBE449EBB35C8B94263F250 /* TableMessageEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableMessageEnvelope.swift; sourceTree = "<group>"; };
 		7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		85DC37DBE08E928F770B39A2 /* KitchenTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenTypography.swift; sourceTree = "<group>"; };
 		956530E4E3D31473F7B68130 /* CookingRoomSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingRoomSession.swift; sourceTree = "<group>"; };
+		98B7123322816D4CE4B4771E /* TableBusinessReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableBusinessReceiver.swift; sourceTree = "<group>"; };
+		A01F065D7ACDB5970D49D8A5 /* KitchenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenAPI.swift; sourceTree = "<group>"; };
 		A05344DB54AB5E682A3BBCD6 /* CookingRoomScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingRoomScenes.swift; sourceTree = "<group>"; };
 		A787BFAC7195B92C6D536760 /* KitchenEditorialLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenEditorialLibrary.swift; sourceTree = "<group>"; };
 		AC33E52D30307817112BEF99 /* KitchenNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebook.swift; sourceTree = "<group>"; };
 		B62A9684779A3EAE8E954196 /* ReadingMediaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingMediaViews.swift; sourceTree = "<group>"; };
 		B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C156986643D3A6265105F7FD /* KitchenMediaServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenMediaServices.swift; sourceTree = "<group>"; };
-		C45121998D70613E5A34FAE8 /* table-editorial-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "table-editorial-content.json"; sourceTree = "<group>"; };
+		C7497D620486B3C3FCFF222C /* ConfiguredThemeEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredThemeEvents.swift; sourceTree = "<group>"; };
 		CCFB80DCB2CA6099BFD67D15 /* KitchenNotebookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebookView.swift; sourceTree = "<group>"; };
 		CF92C03CAB9AEE52C584C033 /* fraunces-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "fraunces-OFL.txt"; sourceTree = "<group>"; };
+		D095544F7FE3E31C800B323F /* ConfiguredRealtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredRealtime.swift; sourceTree = "<group>"; };
 		D7F7AB18617A4185851313EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E2E6819AA6AEB195D2830E18 /* MemberKitchenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberKitchenStore.swift; sourceTree = "<group>"; };
+		E43C8BB9D8ECBE871AC54919 /* ConfiguredEventDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredEventDecoder.swift; sourceTree = "<group>"; };
 		E80F3781B8DFC91E8C87E3C1 /* SupportMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportMailbox.swift; sourceTree = "<group>"; };
 		FDE380D469D0457CF58082C3 /* MemberSupportScenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberSupportScenes.swift; sourceTree = "<group>"; };
 		FFB56815E6B4D1DD2F2D982F /* TableArtwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TableArtwork.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		722A0FAED9FE8C191B1BF7C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38D810A193C07F9508029A9D /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0713A9B6FC916D95F5281068 /* Typography */ = {
@@ -143,6 +180,26 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4EF4AFCBBF548D013F126F2B /* Integration */ = {
+			isa = PBXGroup;
+			children = (
+				E43C8BB9D8ECBE871AC54919 /* ConfiguredEventDecoder.swift */,
+				D095544F7FE3E31C800B323F /* ConfiguredRealtime.swift */,
+				37DB5EE838E08FBEC759991C /* ConfiguredThemeContract.generated.swift */,
+				C7497D620486B3C3FCFF222C /* ConfiguredThemeEvents.swift */,
+				5F92EFFBAC7DF96DC5D60531 /* IntegrationContract.generated.swift */,
+				A01F065D7ACDB5970D49D8A5 /* KitchenAPI.swift */,
+				621421DE611B4B416814882D /* KitchenContentRepository.swift */,
+				07F70E125DAA3E22E8506103 /* KitchenThemeInbox.swift */,
+				74015A6ED906F16855D977F0 /* SupperWebContainer.swift */,
+				98B7123322816D4CE4B4771E /* TableBusinessReceiver.swift */,
+				046FA9CC330C8CC12D2FF81C /* TableConnectionGate.swift */,
+				7EBE449EBB35C8B94263F250 /* TableMessageEnvelope.swift */,
+				40F531F2104A1D966EBB1CD9 /* TableSessionCoordinator.swift */,
+			);
+			path = Integration;
+			sourceTree = "<group>";
+		};
 		744757A75182A747F0CBDF8C /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -159,10 +216,12 @@
 			isa = PBXGroup;
 			children = (
 				D7F7AB18617A4185851313EC /* Info.plist */,
+				66BB6B3F41478410963D8E85 /* Tati.entitlements */,
 				A286A82D4F4D3EBDE9E61858 /* App */,
 				83267AA535BD8A6168C44939 /* Design */,
 				744757A75182A747F0CBDF8C /* Domain */,
 				2A647D5D57D90E7E08DCD9D1 /* Features */,
+				4EF4AFCBBF548D013F126F2B /* Integration */,
 				08E0E257DF9BC7C62200B989 /* Services */,
 			);
 			path = Tati;
@@ -185,7 +244,6 @@
 				2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */,
 				0FFDF5A1245589E0FF86B55D /* Localizable.xcstrings */,
 				B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */,
-				C45121998D70613E5A34FAE8 /* table-editorial-content.json */,
 				FFB56815E6B4D1DD2F2D982F /* TableArtwork.xcassets */,
 				0713A9B6FC916D95F5281068 /* Typography */,
 			);
@@ -219,6 +277,7 @@
 			buildPhases = (
 				FD6F054E545E2A6ED93A6259 /* Sources */,
 				77A21B15D7B02FB9D3F6F5A6 /* Resources */,
+				722A0FAED9FE8C191B1BF7C5 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -226,6 +285,7 @@
 			);
 			name = Tati;
 			packageProductDependencies = (
+				D2F5D93D46DC6B99658BBB26 /* Alamofire */,
 			);
 			productName = Tati;
 			productReference = 710E5BB98E81D2FD71B71E7D /* Tati.app */;
@@ -255,6 +315,9 @@
 			);
 			mainGroup = 9768900894F0AEDBEA9A3D66;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8450B044F48AD13EDF896D18 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
@@ -279,7 +342,6 @@
 				732DBA3A0BEB220506CEE525 /* TableArtwork.xcassets in Resources */,
 				5DDFCB1A380369E9635BCD2F /* dmsans-OFL.txt in Resources */,
 				C88B30A9122B1627C8EDDD1B /* fraunces-OFL.txt in Resources */,
-				4783B6C4D85E9C4B081F79E6 /* table-editorial-content.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,17 +354,25 @@
 			files = (
 				B207AA68BCD07BE8A08E6D3B /* AppLanguage.swift in Sources */,
 				F8A0E951ADBDB322A71A6684 /* CommunityPostingRules.swift in Sources */,
+				B59E682717D7DAAC697FF24C /* ConfiguredEventDecoder.swift in Sources */,
+				ADEC31A1133FEF27A2613CA7 /* ConfiguredRealtime.swift in Sources */,
+				FAB6CF4E91FEF1E5900DC2E7 /* ConfiguredThemeContract.generated.swift in Sources */,
+				0C877067EC607146CEA607AB /* ConfiguredThemeEvents.swift in Sources */,
 				6DB4A67E7A2D0287CE0AFB1C /* CookingRoomScenes.swift in Sources */,
 				35FE368FDA5D5B5864BD16D8 /* CookingRoomSession.swift in Sources */,
 				03A662B1EB51CB94A87C05EE /* FilmDiscussionScenes.swift in Sources */,
 				F99DCB3FDB13AD379A852B9C /* FoodDiscoveryScenes.swift in Sources */,
 				6B3AF2CA2F5CE4BA98D22CA0 /* FoodFilmScenes.swift in Sources */,
+				35780E9C27DD6BF0A03BDF9A /* IntegrationContract.generated.swift in Sources */,
+				573985EF166EA8BD13244CDF /* KitchenAPI.swift in Sources */,
 				8B22FCC9B04D9FC39E7E4544 /* KitchenCoinOffers.swift in Sources */,
 				E15853F205476CB098715A68 /* KitchenCoinPurchases.swift in Sources */,
+				E70A89B105A90065524D6847 /* KitchenContentRepository.swift in Sources */,
 				BA85BE433275D3BC28E01CA1 /* KitchenEditorialLibrary.swift in Sources */,
 				1068714EE865871900259189 /* KitchenMediaServices.swift in Sources */,
 				51C3DCC0285913131CB131AB /* KitchenNotebook.swift in Sources */,
 				1E1315BB065CB02E798EAAA7 /* KitchenNotebookView.swift in Sources */,
+				DCA38F53BA74C423D29A0A2B /* KitchenThemeInbox.swift in Sources */,
 				9E74CEED3BD6F739F08C006A /* KitchenTypography.swift in Sources */,
 				CC701CECB5F2D30FBAD05A61 /* MemberAccountScenes.swift in Sources */,
 				F598284DFCCFF273ACC5579D /* MemberConversationScenes.swift in Sources */,
@@ -312,10 +382,15 @@
 				D6EB232B9EAC23B4E91D25F6 /* ReadingMediaViews.swift in Sources */,
 				6B1240BE3FB6F1F24DEF50D1 /* RoomDictationSession.swift in Sources */,
 				B978846BCC74928288E9D300 /* RoomToolPanels.swift in Sources */,
+				5DE22E530E00A1935378663A /* SupperWebContainer.swift in Sources */,
 				9CFA872414314F54B61FFE9D /* SupportMailbox.swift in Sources */,
+				13FE942F18767906A388D976 /* TableBusinessReceiver.swift in Sources */,
 				E605DFCD3DCC3446B393DC90 /* TableCommunity.swift in Sources */,
+				E132D6A1F9A47B84B094A33C /* TableConnectionGate.swift in Sources */,
 				C8C84E1334F5DE13FAED4DFA /* TableGuidelinesView.swift in Sources */,
 				CB658C0114F3D07559B79144 /* TableInterfaceComponents.swift in Sources */,
+				7F47DFE88E2E715B8C895268 /* TableMessageEnvelope.swift in Sources */,
+				AC18C4E325F86186A3F34DDD /* TableSessionCoordinator.swift in Sources */,
 				03276D0DDFCAEA0162B383B8 /* TatiApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -389,6 +464,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tati/Tati.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Tati/Info.plist;
@@ -398,6 +474,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				SDKROOT = iphoneos;
+				TABLE_PUSH_ENVIRONMENT = production;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -475,6 +552,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tati/Tati.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Tati/Info.plist;
@@ -484,6 +562,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				SDKROOT = iphoneos;
+				TABLE_PUSH_ENVIRONMENT = development;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -510,6 +589,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8450B044F48AD13EDF896D18 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D2F5D93D46DC6B99658BBB26 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8450B044F48AD13EDF896D18 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B378602AACD4E42EAC5ADB8D /* Project object */;
 }

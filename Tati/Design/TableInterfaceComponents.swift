@@ -1,8 +1,7 @@
 import SwiftUI
 
 extension View {
-    /// Foreground follows its navigation/sheet container's safe area and keyboard.
-    /// Apply edge extension to backgrounds only, never to the screen's controls.
+
     func tatiScreen() -> some View {
         toolbar(.hidden, for: .navigationBar)
     }
@@ -11,7 +10,7 @@ extension View {
 extension Color {
     static let tatiInk = Color(red: 0.23, green: 0.29, blue: 0.03)
     static let tatiOlive = Color(red: 0.36, green: 0.45, blue: 0.02)
-    // Flat fills sampled from the supplied Lanhu boards 44, 06 and 16.
+
     static let tatiPink = Color(red: 254 / 255, green: 104 / 255, blue: 185 / 255)
     static let tatiLime = Color(red: 211 / 255, green: 254 / 255, blue: 46 / 255)
     static let tatiCream = Color(red: 244 / 255, green: 1, blue: 199 / 255)
@@ -29,7 +28,6 @@ struct Art: View {
     }
 }
 
-/// Sheet presenters provide a handoff so profile navigation occurs after dismissal.
 private struct ProfileSheetActionKey: EnvironmentKey {
     static let defaultValue: ((TableMember) -> Void)? = nil
 }
@@ -58,8 +56,6 @@ struct UserProfileLink<Label: View>: View {
     }
 }
 
-/// Installed on the screen outside its lazy rows, so a dismissed comment sheet
-/// can push a profile without a deprecated hidden NavigationLink.
 private struct ProfilePageActionKey: EnvironmentKey {
     static let defaultValue: ((TableMember) -> Void)? = nil
 }
@@ -81,8 +77,6 @@ extension View {
     func profileNavigationHost() -> some View { modifier(ProfileNavigationHost()) }
 }
 
-/// Identifies the room category; motion does not represent a connected broadcast
-/// or a participant speaking. Reuses the original Lanhu raster artwork.
 struct RoomKindBadge: View {
     var isVoice: Bool
     var animates = true
@@ -111,15 +105,14 @@ struct RoomKindBadge: View {
                     shouldAnimate ? .easeInOut(duration: 1.2) : nil
                 }
             } else {
-                // Animate the original raster, not a replacement icon. Transforms leave
-                // the badge's layout footprint fixed and do not move neighbouring text.
+
                 Art(name: "live-pink", width: compact ? 34 : 48, height: compact ? 16.15 : 22.8)
                     .phaseAnimator(shouldAnimate ? LivePhase.allCases : [.rest]) { content, phase in
                         let bright = shouldAnimate && phase == .brighten
                         content
                             .scaleEffect(bright ? 1.09 : 1, anchor: .center)
                             .opacity(shouldAnimate && phase == .settle ? 0.8 : 1)
-                            // Keep the live pulse without animating a blur on every visible card.
+
                     } animation: { phase in
                         guard shouldAnimate else { return nil }
                         switch phase {
@@ -142,7 +135,7 @@ struct SupplementIcon: View {
     var size: CGFloat = 26
     var tint: Color? = nil
     var body: some View {
-        // Display a cell of the generated raster sheet; no vector artwork is drawn in code.
+
         let cell = size / 0.76
         Image("missing-icons").renderingMode(tint == nil ? .original : .template)
             .resizable().foregroundStyle(tint ?? .white).frame(width: cell * 3, height: cell * 2)
@@ -250,7 +243,7 @@ struct Chip: View {
         }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
-/// Forms fill the screen and keep their primary action above the keyboard.
+
 struct TatiForm<Content: View, Footer: View>: View {
     var title: String
     @ViewBuilder var content: () -> Content
@@ -316,7 +309,7 @@ struct MediaPlaceholder: View {
 enum ProfileArtwork {
     static let defaultPortrait = "member-chloe-portrait"
 }
-/// One cell of Tati's original six-food raster atlas, with no interaction implied.
+
 struct FoodTopicArtwork: View {
     let topic: String
     var side: CGFloat = 52
@@ -437,8 +430,7 @@ struct NoticeLayer: View {
             }
         }
         .zIndex(100)
-        // Keep registration alive even when there is no notice. A sheet becomes
-        // the sole owner before a button in that sheet creates a confirmation.
+
         .onAppear { store.registerNoticeHost(hostID, isRoot: isRoot) }
         .onDisappear { store.unregisterNoticeHost(hostID) }
     }
@@ -490,7 +482,6 @@ struct NoticeLayer: View {
     }
 }
 
-/// Shared bright bottom panel used by the Lanhu room and filter artboards.
 struct TatiPanel<Content: View>: View {
     var title: String
     var showsHeader = true
@@ -512,7 +503,6 @@ struct TatiPanel<Content: View>: View {
     }
 }
 
-/// Shared editing surfaces keep media, fields and actions consistent.
 struct TatiEditingForm<Content: View, Footer: View>: View {
     var title: String
     @ViewBuilder var content: () -> Content
@@ -572,7 +562,6 @@ struct TatiEditingButton: View {
     }
 }
 
-/// Shared relationship control; each instance observes the root MemberKitchenStore directly.
 struct FollowControl: View {
     enum Style {
         case compact

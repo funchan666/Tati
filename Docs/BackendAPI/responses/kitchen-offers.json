@@ -1,0 +1,241 @@
+{
+  "code": 0,
+  "message": "ok",
+  "data": {
+    "coinPacks": [
+      {
+        "id": "eokulidmyylccexu",
+        "coins": 450,
+        "usdPrice": "0.99"
+      },
+      {
+        "id": "odaldmdjpwzbtkiz",
+        "coins": 950,
+        "usdPrice": "1.99"
+      },
+      {
+        "id": "nvqpshrkctazlme",
+        "coins": 1500,
+        "usdPrice": "2.99"
+      },
+      {
+        "id": "ozeeyhaxgaggmtoi",
+        "coins": 2700,
+        "usdPrice": "4.99"
+      },
+      {
+        "id": "kqlydmhtgbargefh",
+        "coins": 5800,
+        "usdPrice": "9.99"
+      },
+      {
+        "id": "hoakgbrbmsuzzbyt",
+        "coins": 12400,
+        "usdPrice": "19.99"
+      },
+      {
+        "id": "bzrktwqmnvslhya",
+        "coins": 19200,
+        "usdPrice": "29.99"
+      },
+      {
+        "id": "wdhsgsoedizvlozy",
+        "coins": 32500,
+        "usdPrice": "49.99"
+      },
+      {
+        "id": "enaomwjnhhidlyby",
+        "coins": 70000,
+        "usdPrice": "99.99"
+      }
+    ],
+    "answers": {
+      "crispy": "Pat ingredients dry and add a light coating of flour or starch. Fry in small batches so the oil stays hot, then drain on a wire rack. Add wet sauces just before serving.",
+      "plating": "Choose a plate that leaves a little space around the food. Build a small amount of height, add one contrasting colour, and wipe the rim. Soft light from a window makes a lovely finishing touch.",
+      "balance": "Taste a small spoonful first. If it is too sweet, try a little lemon juice or vinegar; if it is too salty, add more unsalted ingredients. Make one small adjustment at a time and taste again.",
+      "pasta": "Cook pasta in salted water and check the texture before the packet time is up. Save a cup of the cooking water. Toss the pasta with your sauce and a splash of that water until the sauce coats it.",
+      "dinner": "Try a quick bowl: rice or noodles, a protein you enjoy, and two vegetables. Use lemon, olive oil and herbs for a simple dressing. Start with whatever is already in your kitchen.",
+      "baking": "Weigh your ingredients and preheat the oven before you begin. Once flour goes into a cake batter, mix only until combined. Let baked goods cool before decorating so the topping stays in place.",
+      "vegetables": "Dry vegetables well, cut them into similar sizes and give them space on the tray. Roast until the edges colour, turning as needed. Finish with lemon and herbs for a brighter flavour.",
+      "clarify": "Try a question about crispy food, plating, flavour balance, pasta, quick dinners, baking or vegetables."
+    },
+    "answerRules": [
+      {
+        "topic": "crispy",
+        "keywords": [
+          "crispy",
+          "crunch",
+          "fried",
+          "frying",
+          "酥",
+          "脆",
+          "油炸",
+          "crujiente",
+          "frit",
+          "croustill",
+          "knuspr",
+          "fritt",
+          "サク",
+          "揚げ"
+        ]
+      },
+      {
+        "topic": "plating",
+        "keywords": [
+          "plating",
+          "plate",
+          "look delicious",
+          "presentation",
+          "photo",
+          "摆盘",
+          "好看",
+          "拍照",
+          "看起来",
+          "emplat",
+          "presentacion",
+          "se vea deliciosa",
+          "appetissant",
+          "anrichten",
+          "anrichtet",
+          "appetitlich",
+          "lecker aus",
+          "盛り付け",
+          "おいしそう"
+        ]
+      },
+      {
+        "topic": "balance",
+        "keywords": [
+          "balance",
+          "too sweet",
+          "too salty",
+          "sweet and savory",
+          "sweet and savoury",
+          "平衡",
+          "太甜",
+          "太咸",
+          "甜咸",
+          "equilibr",
+          "sucre et sale",
+          "suss und herzhaft",
+          "susse und wurze",
+          "ausgleich",
+          "甘味と塩味",
+          "バランス"
+        ]
+      },
+      {
+        "topic": "pasta",
+        "keywords": [
+          "pasta",
+          "spaghetti",
+          "意面",
+          "意大利面",
+          "pates",
+          "nudeln",
+          "パスタ"
+        ]
+      },
+      {
+        "topic": "dinner",
+        "keywords": [
+          "dinner",
+          "quick meal",
+          "lunch",
+          "晚餐",
+          "午餐",
+          "快手",
+          "cena",
+          "rapida",
+          "diner",
+          "repas rapide",
+          "abendessen",
+          "schnelles essen",
+          "夕食",
+          "時短"
+        ]
+      },
+      {
+        "topic": "baking",
+        "keywords": [
+          "baking",
+          "bake",
+          "cake",
+          "cookie",
+          "烘焙",
+          "蛋糕",
+          "饼干",
+          "hornear",
+          "pastel",
+          "gateau",
+          "patisserie",
+          "backen",
+          "kuchen",
+          "ケーキ",
+          "クッキー"
+        ]
+      },
+      {
+        "topic": "vegetables",
+        "keywords": [
+          "vegetable",
+          "salad",
+          "蔬菜",
+          "沙拉",
+          "verdura",
+          "ensalada",
+          "legume",
+          "salade",
+          "gemuse",
+          "salat",
+          "野菜",
+          "サラダ"
+        ]
+      }
+    ],
+    "prompts": [
+      {
+        "title": "Make it crispy",
+        "question": "How to get crispy fried food?"
+      },
+      {
+        "title": "Plate it beautifully",
+        "question": "How to make food look delicious?"
+      },
+      {
+        "title": "Find the perfect balance",
+        "question": "How to balance sweet and savory taste?"
+      }
+    ],
+    "supportArticles": [
+      {
+        "question": "Where can I get more coins?",
+        "answer": "Open My wallet from your profile for coin packs and Apple prices. Daily check-ins also add reward coins."
+      },
+      {
+        "question": "My coins have not arrived",
+        "answer": "If Apple shows Pending, wait for approval. If a completed payment has no coins, contact support with your Apple order details. Check your balance before buying again."
+      },
+      {
+        "question": "What can I do on the call screen?",
+        "answer": "Voice calls are unavailable and do not request microphone access. The video screen can show your camera after you tap Enable camera. It does not connect to another person."
+      },
+      {
+        "question": "How can I change my language?",
+        "answer": "Open Settings, then Language. Choose English, Chinese, Spanish, French, German or Japanese. Your choice updates the interface immediately and is saved for your next visit."
+      },
+      {
+        "question": "Where is my saved content?",
+        "answer": "Your profile holds your videos, rewards and room-effect history. Logging out keeps them. Deleting your profile removes its records and imported files from Tati."
+      }
+    ],
+    "welcomeCoins": 300,
+    "frameCost": 300,
+    "profileDefaults": {
+      "name": "Tati Guest",
+      "bio": "",
+      "country": "Not set",
+      "interest": "Home cooking"
+    }
+  }
+}

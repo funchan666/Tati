@@ -1,0 +1,11 @@
+﻿scope,semantic_key,actual_field
+requestFields,appVersion,kitchen_edition
+requestFields,pushToken,table_chime
+requestFields,deviceNo,apron_identity
+requestFields,transactionId,apple_docket
+requestFields,payload,receipt_fold
+requestFields,callbackResult,pantry_order
+requestFields,roomPushMsgType,table_delivery
+h5Fields,orderCode,pantryOrder
+h5Fields,batchNo,coinOffer
+h5Fields,openUrl,menuDestination

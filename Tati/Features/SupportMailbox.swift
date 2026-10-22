@@ -29,7 +29,7 @@ struct SupportMailboxButton: View {
                     store.tell("Mail is unavailable", "Email hudden.serudiv22@gmail.com from your mail app. You can copy the address below. Your report text has been kept.")
                     return
                 }
-                // Evidence leaves the app only if the person chooses Send in Apple's composer.
+
                 mailDraft = SupportMailDraft(subject: subject, body: message, evidenceData: evidence)
             }
             Text(TatiSupportMailbox.address).font(.tati(.caption)).textSelection(.enabled)

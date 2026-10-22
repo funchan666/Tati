@@ -119,7 +119,6 @@ struct PersonProfileView: View {
         .background(Color.tatiProfileSage)
     }
 
-    // Controls stay in the safe area while the photograph remains edge to edge.
     private var profileNavigation: some View {
         HStack {
             ArtButton(asset: "back", label: "Back", size: 28) { dismiss() }
@@ -152,7 +151,6 @@ struct PersonProfileView: View {
     private func closeIfHidden() { if store.isPersonHidden(person.id) { dismiss() } }
 }
 
-/// A profile portfolio omits the repeated author/avatar; interactions use the same store.
 private struct ProfileMomentTile: View {
     let clip: FoodFilm
     let featured: Bool
@@ -431,8 +429,7 @@ struct EditProfileView: View {
             requestingCamera = true
             defer {
                 requestingCamera = false
-                // Consume the request: returning from the full-screen camera must
-                // not restart authorization and immediately reopen capture.
+
                 if cameraRequestID == request { cameraRequestID = nil }
             }
             guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
@@ -448,7 +445,7 @@ struct EditProfileView: View {
             let authorized = await AVCaptureDevice.requestAccess(for: .video)
             guard !Task.isCancelled, cameraRequestID == request, ownsEdits else { return }
             if authorized { cameraReady = true; presentCameraIfReady() }
-            // A first refusal ends this tap without a follow-up alert.
+
         }
         .onChange(of: scenePhase) { _, phase in if phase == .active { presentCameraIfReady() } }
         .onChange(of: store.account.profile.id) { _, _ in if !ownsEdits { dismiss() } }
@@ -577,8 +574,7 @@ struct EditProfileView: View {
         guard let item else { return }
         if avatar { loadingAvatar = true } else { loadingCover = true }
         defer {
-            // Clear the selection so choosing the same image again can retry a failed
-            // iCloud download or replace a later camera photo. Stale loads own no UI.
+
             if avatar, avatarItem == item { loadingAvatar = false; avatarItem = nil }
             if !avatar, coverItem == item { loadingCover = false; coverItem = nil }
         }
@@ -643,7 +639,7 @@ struct EditProfileView: View {
         }
     }
 }
-// Every entry uses the same destination and the same persisted conversation state.
+
 struct MessagesToolbarEntry: View {
     var body: some View {
         NavigationLink(destination: ConversationsView()) {
@@ -840,7 +836,6 @@ private enum ConversationCallKind: String, Identifiable {
     var title: String { self == .voice ? "Voice call" : "Video call" }
 }
 
-/// Crop either object from the original two-cell raster atlas.
 private struct ConversationCallArt: View {
     var kind: ConversationCallKind
     var side: CGFloat = 40
@@ -983,7 +978,7 @@ struct ConversationView: View {
             else { UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 32) } }
             VStack(alignment: mine ? .trailing : .leading, spacing: 7) {
                 VStack(alignment: .leading, spacing: 8) {
-                    // Existing photo messages remain readable; this composer only sends text.
+
                     if let file = message.imageFile {
                         PreparedPhoto(source: .file(store.mediaURL(file)), fills: false)
                             .frame(maxWidth: 220).frame(height: 180)
@@ -1093,8 +1088,7 @@ struct VideoCallView: View {
         .onAppear { ownerID = store.account.profile.id }
         .onDisappear { cameraTask?.cancel(); camera.stop() }
         .onChange(of: scenePhase) { _, phase in
-            // Permission sheets temporarily make the scene inactive. Keep their
-            // request alive; only backgrounding should cancel camera startup.
+
             if phase == .background { cameraTask?.cancel(); camera.stop() }
         }
         .onChange(of: store.account.following) { _, _ in checkPermission() }
@@ -1131,6 +1125,7 @@ struct CookingNotesView: View {
     private var canAsk: Bool {
         !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && pending == nil && store.storageFailure == nil
+            && KitchenContentSnapshot.current?.offers.answers.isEmpty == false
     }
     private var replyTaskID: String {
         "\(store.account.profile.id):\(pending?.id ?? ""):\(scenePhase == .active)"
@@ -1139,11 +1134,7 @@ struct CookingNotesView: View {
         guard let last = exchanges.last else { return "" }
         return last.id + (last.reply?.rawValue ?? "pending")
     }
-    private let prompts = [
-        (title: "Make it crispy", question: "How to get crispy fried food?"),
-        (title: "Plate it beautifully", question: "How to make food look delicious?"),
-        (title: "Find the perfect balance", question: "How to balance sweet and savory taste?")
-    ]
+    private var prompts: [CookingPrompt] { KitchenContentSnapshot.current?.offers.prompts ?? [] }
 
     var body: some View {
         VStack(spacing: 0) {

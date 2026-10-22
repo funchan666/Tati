@@ -1,21 +1,21 @@
 {
   "scope": "Static source, project, resource and import-contract inspection only",
-  "swiftSourceFiles": 27,
+  "swiftSourceFiles": 40,
   "editorialProfiles": 49,
-  "activeFeedFilms": 7,
+  "activeFeedFilms": 10,
   "activeRoomFilms": 6,
-  "reviewHoldIDs": [
-    "sample-clip-13",
-    "sample-clip-15",
-    "sample-clip-6"
-  ],
-  "originalInputHashesChecked": 65,
+  "hostedPhotos": 49,
+  "hostedMovies": 16,
+  "hostedPosters": 16,
+  "reviewHoldIDs": [],
+  "hostedSourceRecordsChecked": 65,
+  "originalInputHashesChecked": 0,
   "fontFamilies": 2,
   "fontCuts": 3,
   "fontBytes": 186516,
   "catalogEntries": {
-    "Localizable.xcstrings": 571,
-    "InfoPlist.xcstrings": 3
+    "Localizable.xcstrings": 576,
+    "InfoPlist.xcstrings": 6
   },
   "supportEmail": "hudden.serudiv22@gmail.com",
   "recipeCount": 6,
@@ -23,7 +23,7 @@
   "chapterCoins": [
     120
   ],
-  "currentAppResourceBytes": 158434745,
+  "currentAppResourceBytes": 27220020,
   "storeKitOffersUnchanged": true,
   "legacyStoredKeysRetained": true,
   "buildTestsOrAppRunPerformed": false

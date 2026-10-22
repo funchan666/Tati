@@ -14,7 +14,6 @@ struct ImportedMovie: Transferable {
     }
 }
 
-/// UIKit owns the genuine camera controls and tears capture down on dismissal.
 @MainActor struct ProfileStillCamera: UIViewControllerRepresentable {
     var complete: @MainActor (UIImage?) -> Void
 
@@ -51,8 +50,6 @@ struct ImportedMovie: Transferable {
     }
 }
 
-/// The captured UIImage is immutable and only encoded on this serial worker.
-/// This avoids sending a raw UIKit object through an unowned Sendable closure.
 final class CameraPhotoJPEG: @unchecked Sendable {
     private let image: UIImage
     private let queue = DispatchQueue(label: "tati.profile.photo.encoding", qos: .userInitiated)
@@ -135,8 +132,7 @@ final class CameraPhotoJPEG: @unchecked Sendable {
                 }
             }
         }
-        // Wait behind queued music/dictation cleanup before starting video audio.
-        // A stopped or replaced video must not resume from a late activation.
+
         audioOwner = request
         audioActivation = Task { [weak self] in
             do {
@@ -199,8 +195,7 @@ struct ClipSurface: UIViewRepresentable {
     }
     static func dismantleUIView(_ view: ClipLayerView, coordinator: ()) { view.videoLayer.player = nil }
 }
-/// All capture configuration and start/stop calls are confined to this queue.
-/// The immutable session reference is exposed only for the UIKit preview layer.
+
 private final class CameraCaptureWorker: @unchecked Sendable {
     let session = AVCaptureSession()
     private let queue = DispatchQueue(label: "tati.camera.preview", qos: .userInitiated)
@@ -323,8 +318,6 @@ struct LocalVideoPoster: View {
     }
 }
 
-/// Serializes potentially blocking AVAudioSession operations off the UI thread.
-/// Mutable ownership is queue-confined. A stale release cannot stop a newer owner.
 final class MediaAudioSession: @unchecked Sendable {
     static let shared = MediaAudioSession()
     private let queue = DispatchQueue(label: "tati.audio.session", qos: .userInitiated)
@@ -346,7 +339,7 @@ final class MediaAudioSession: @unchecked Sendable {
                     self.recording = recording
                     continuation.resume()
                 } catch {
-                    // Failed activation must not leave the app configured to record.
+
                     try? session.setActive(false, options: .notifyOthersOnDeactivation)
                     try? session.setCategory(.playback, mode: .default)
                     owner = nil
@@ -357,6 +350,12 @@ final class MediaAudioSession: @unchecked Sendable {
         }
     }
 
+    @MainActor
+    func awaitNativeRelease() async {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            queue.async { continuation.resume() }
+        }
+    }
     func release(owner token: UUID) {
         queue.async { [self] in
             guard owner == token else { return }
@@ -370,7 +369,7 @@ final class MediaAudioSession: @unchecked Sendable {
 }
 
 @MainActor extension MemberKitchenStore {
-    /// Called only after an explicit camera action, never from a denial callback.
+
     func explainCameraAvailability(_ outcome: KitchenCameraController.StartOutcome) {
         switch outcome {
         case .settingsRequired:

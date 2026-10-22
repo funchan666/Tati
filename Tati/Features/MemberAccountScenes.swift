@@ -16,7 +16,7 @@ struct CheckInView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         let topInset = geometry.safeAreaInsets.top
-                        // Extend only the supplied banner behind the status area.
+
                         Color.clear.frame(height: max(120, width * 0.64 - topInset))
                             .background(alignment: .top) {
                                 Image("checkin-copy").resizable().scaledToFill()
@@ -94,8 +94,8 @@ private struct CheckInRewardTile: View {
 struct WalletView: View {
     @EnvironmentObject private var store: MemberKitchenStore
     @EnvironmentObject private var purchases: KitchenCoinPurchases
-    @State private var selected = KitchenCoinPack.all[0].id
-    private var package: KitchenCoinPack { KitchenCoinPack.all.first { $0.id == selected } ?? KitchenCoinPack.all[0] }
+    @State private var selected = KitchenCoinPack.all.first?.id ?? ""
+    private var package: KitchenCoinPack? { KitchenCoinPack.all.first { $0.id == selected } ?? KitchenCoinPack.all.first }
     var body: some View {
         TatiForm(title: "Recharge") {
             HStack(alignment: .center, spacing: 8) {
@@ -133,11 +133,11 @@ struct WalletView: View {
                 }
             }
         } footer: {
-            TatiButton(title: purchases.busyProductID != nil ? "Waiting for Apple…" : "Buy \(package.coins.formatted()) coins", enabled: !purchases.busy && store.storageFailure == nil) {
-                let offer = package
+            TatiButton(title: purchases.busyProductID != nil ? "Waiting for Apple…" : "Buy \((package?.coins ?? 0).formatted()) coins", enabled: package != nil && !purchases.busy && store.storageFailure == nil) {
+                guard let offer = package else { return }
                 Task { await purchases.buy(offer) }
             }
-            Button(purchases.recovering ? "Checking purchases…" : "Recover purchases") {
+            Button(purchases.recovering ? "Checking purchases…" : "Purchase help") {
                 Task { await purchases.recover() }
             }.font(.tati(.caption)).buttonStyle(.plain).frame(minHeight: 44).disabled(purchases.busy)
         }
@@ -463,7 +463,7 @@ private struct PolicyWebView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.parent = self
-        // Layout and state updates must preserve the document and its reading position.
+
         context.coordinator.loadIfNeeded(webView)
     }
 

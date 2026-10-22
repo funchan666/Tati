@@ -1,0 +1,49 @@
+{
+  "linkSuccessMessage": {
+    "name": "SupperTableReady",
+    "discriminator": [
+      "course"
+    ],
+    "values": {
+      "h5Url": [
+        "table",
+        "destination"
+      ]
+    }
+  },
+  "pay": {
+    "name": "PantryCoinCheckout",
+    "discriminator": [
+      "course"
+    ],
+    "values": {
+      "orderCode": [
+        "purchase",
+        "docket"
+      ],
+      "batchNo": [
+        "purchase",
+        "offer"
+      ]
+    }
+  },
+  "logout": {
+    "name": "ApronSessionEnded",
+    "discriminator": [
+      "course"
+    ],
+    "values": {}
+  },
+  "openBrowser": {
+    "name": "MenuLinkOpened",
+    "discriminator": [
+      "course"
+    ],
+    "values": {
+      "openUrl": [
+        "menu",
+        "destination"
+      ]
+    }
+  }
+}

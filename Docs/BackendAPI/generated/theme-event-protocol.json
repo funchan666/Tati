@@ -1,0 +1,213 @@
+{
+  "events": [
+    {
+      "key": "tableFollow",
+      "name": "TableFollowerChanged",
+      "direction": "inbound",
+      "discriminator": [
+        "course"
+      ],
+      "template": {
+        "course": "TableFollowerChanged",
+        "serving": {
+          "changeID": "sample-follow-change",
+          "memberID": "creator-maria",
+          "followsYou": true,
+          "revision": 1
+        }
+      },
+      "bindings": {
+        "changeID": {
+          "path": [
+            "serving",
+            "changeID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "memberID": {
+          "path": [
+            "serving",
+            "memberID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "followsYou": {
+          "path": [
+            "serving",
+            "followsYou"
+          ],
+          "type": "boolean",
+          "required": true
+        },
+        "revision": {
+          "path": [
+            "serving",
+            "revision"
+          ],
+          "type": "integer",
+          "required": true
+        }
+      },
+      "action": "KitchenThemeInbox applies authenticated follower state to MemberKitchenStore.account.followers, persists revision/dedup and stable receipt atomically before publish."
+    },
+    {
+      "key": "filmSafety",
+      "name": "FoodFilmSafetyChanged",
+      "direction": "inbound",
+      "discriminator": [
+        "course"
+      ],
+      "template": {
+        "course": "FoodFilmSafetyChanged",
+        "serving": {
+          "changeID": "sample-film-change",
+          "filmID": "sample-clip-1",
+          "hidden": true,
+          "revision": 1
+        }
+      },
+      "bindings": {
+        "changeID": {
+          "path": [
+            "serving",
+            "changeID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "filmID": {
+          "path": [
+            "serving",
+            "filmID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "hidden": {
+          "path": [
+            "serving",
+            "hidden"
+          ],
+          "type": "boolean",
+          "required": true
+        },
+        "revision": {
+          "path": [
+            "serving",
+            "revision"
+          ],
+          "type": "integer",
+          "required": true
+        }
+      },
+      "action": "KitchenThemeInbox persists film visibility in MemberKitchenStore.account.hiddenSubjects; film feeds and room visibility derive the same state. Persist revision and receipt with state."
+    },
+    {
+      "key": "tableReceipt",
+      "name": "TableChangeReceipt",
+      "direction": "outbound",
+      "discriminator": [
+        "course"
+      ],
+      "template": {
+        "course": "TableChangeReceipt",
+        "serving": {
+          "receiptID": "sample-receipt",
+          "changeID": "sample-follow-change",
+          "stage": "applied"
+        }
+      },
+      "bindings": {
+        "receiptID": {
+          "path": [
+            "serving",
+            "receiptID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "changeID": {
+          "path": [
+            "serving",
+            "changeID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "stage": {
+          "path": [
+            "serving",
+            "stage"
+          ],
+          "type": "string",
+          "required": true
+        }
+      },
+      "action": "KitchenThemeInbox retries stable receipts on current ready/foreground until explicit TableReceiptAccepted; transport ACK alone never removes receipt."
+    },
+    {
+      "key": "tableReceiptAccepted",
+      "name": "TableReceiptAccepted",
+      "direction": "inbound",
+      "discriminator": [
+        "course"
+      ],
+      "template": {
+        "course": "TableReceiptAccepted",
+        "serving": {
+          "receiptID": "sample-receipt"
+        }
+      },
+      "bindings": {
+        "receiptID": {
+          "path": [
+            "serving",
+            "receiptID"
+          ],
+          "type": "string",
+          "required": true
+        }
+      },
+      "action": "KitchenThemeInbox removes only matching persisted receipt for this profile; ack never generates another ack."
+    },
+    {
+      "key": "tableSync",
+      "name": "TableChangesRequested",
+      "direction": "outbound",
+      "discriminator": [
+        "course"
+      ],
+      "template": {
+        "course": "TableChangesRequested",
+        "serving": {
+          "profileID": "sample-profile",
+          "revisions": {
+            "follow:creator-maria": 1
+          }
+        }
+      },
+      "bindings": {
+        "profileID": {
+          "path": [
+            "serving",
+            "profileID"
+          ],
+          "type": "string",
+          "required": true
+        },
+        "revisions": {
+          "path": [
+            "serving",
+            "revisions"
+          ],
+          "type": "object",
+          "required": true
+        }
+      },
+      "action": "KitchenThemeInbox requests replay using per-entity revisions after reconnect/foreground. The publisher scopes replay to the authenticated profile; missing revisions start at zero."
+    }
+  ],
+  "consoleImport": "not supported: four fixed core slots only"
+}

@@ -3,7 +3,6 @@ import Speech
 import AVFoundation
 import UIKit
 
-/// Owns one explicitly requested dictation session. Never sends room messages.
 @MainActor final class RoomDictationSession: ObservableObject {
     enum Phase { case idle, authorizing, listening, finishing }
     @Published private(set) var phase: Phase = .idle
@@ -69,8 +68,7 @@ import UIKit
                 self.cancel()
                 return
             }
-            // System permission alerts temporarily make the scene inactive.
-            // Wait for their dismissal, but never start recording in the background.
+
             for _ in 0..<15 {
                 guard self.generation == token, !Task.isCancelled else { return }
                 if UIApplication.shared.applicationState == .active { break }
@@ -148,7 +146,6 @@ import UIKit
         }
     }
 
-    /// Stop capture now, briefly allowing the recognizer to finalize the last words.
     func finish() {
         guard phase == .listening else { cancel(); return }
         phase = .finishing
@@ -165,7 +162,6 @@ import UIKit
         }
     }
 
-    /// Invalidates permission/recognition callbacks before changing or sending a draft.
     func cancel() {
         generation = UUID()
         permissionTask?.cancel(); permissionTask = nil
@@ -201,7 +197,7 @@ import UIKit
                 if notification.name == AVAudioSession.routeChangeNotification {
                     let raw = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt ?? 0
                     let reason = AVAudioSession.RouteChangeReason(rawValue: raw)
-                    // Our own record/playback category changes are expected.
+
                     guard reason == .oldDeviceUnavailable || reason == .newDeviceAvailable || reason == .noSuitableRouteForCategory else { return }
                 }
                 if notification.name == AVAudioSession.interruptionNotification {

@@ -9,7 +9,7 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "ProjectMaterials/content-slots.json"
-RESOURCES = ROOT / "Tati/Resources"
+CATALOG = ROOT / "Docs/BackendAPI/responses/table-catalog.json"
 HOST = "https://pub-d00704a92e07453dbab85506699e0218.r2.dev"
 
 
@@ -57,7 +57,8 @@ def main():
             room_clips[room_id] = clip
         else:
             clips.append(clip)
-    write_json(RESOURCES / "table-editorial-content.json", {
+    catalog = json.loads(CATALOG.read_text())
+    catalog["data"]["editorial"] = {
         "portraits": {p["personID"]: p["asset"] for p in mapping["portraits"]},
         "additionalPeople": [p["person"] for p in mapping["portraits"] if "person" in p],
         "roomCovers": mapping["roomCovers"],
@@ -76,7 +77,15 @@ def main():
             for entry in mapping["videos"]
             if not entry.get("excludedFromApp") and not entry.get("roomID") and "curatedEngagement" in entry
         },
-    })
+    }
+    catalog["data"]["editorial"]["additionalPeople"] = []
+    by_id = {p["id"]: p for p in catalog["data"]["members"]}
+    for portrait in mapping["portraits"]:
+        if "person" in portrait:
+            member = dict(portrait["person"]); member["cityName"] = member["country"]
+            by_id[member["id"]] = member
+    catalog["data"]["members"] = list(by_id.values())
+    write_json(CATALOG, catalog)
     write_json(MANIFEST, mapping)
     print(f"Mapped {len(mapping['portraits'])} hosted portraits, {len(mapping['videos'])} video URLs ({len(clips)} feed / {len(room_clips)} room active); no local media required.")
 

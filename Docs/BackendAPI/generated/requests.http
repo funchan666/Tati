@@ -1,0 +1,59 @@
+# Synthetic request values only; do not send as a real purchase.
+### authenticate
+POST https://api.afterhou.top/tati/table/pantry-welcome
+Accept: application/json
+Content-Type: application/json
+
+{
+  "kitchen_edition": "1.0",
+  "table_chime": "",
+  "apron_identity": "fixture-installation-id",
+  "table_delivery": 2
+}
+
+### confirmPurchase
+POST https://api.afterhou.top/tati/coins/settle-receipt
+Accept: application/json
+Content-Type: application/json
+
+{
+  "kitchen_edition": "1.0",
+  "apron_identity": "fixture-installation-id",
+  "apple_docket": "fixture-apple-transaction",
+  "receipt_fold": "SYNTHETIC_RECEIPT_NOT_VALID_FOR_PAYMENT",
+  "pantry_order": "fixture-backend-order"
+}
+
+### confirmPurchaseWithoutReference
+POST https://api.afterhou.top/tati/coins/settle-receipt
+Accept: application/json
+Content-Type: application/json
+
+{
+  "kitchen_edition": "1.0",
+  "apron_identity": "fixture-installation-id",
+  "apple_docket": "fixture-apple-transaction",
+  "receipt_fold": "SYNTHETIC_RECEIPT_NOT_VALID_FOR_PAYMENT"
+}
+
+### tableCatalog
+POST https://api.afterhou.top/tati/table/catalog
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+### cookingNotebook
+POST https://api.afterhou.top/tati/notebook/chapters
+Accept: application/json
+Content-Type: application/json
+
+{}
+
+### kitchenOffers
+POST https://api.afterhou.top/tati/pantry/offers
+Accept: application/json
+Content-Type: application/json
+
+{}
+

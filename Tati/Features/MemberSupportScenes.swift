@@ -70,7 +70,7 @@ struct DraftPhotoAttachment: View {
         }
     }
 }
-struct HelpArticle: Identifiable {
+struct HelpArticle: Identifiable, Decodable, Sendable {
     var id: String { question }
     var question: String
     var answer: String
@@ -79,13 +79,7 @@ struct SupportView: View {
     @EnvironmentObject private var store: MemberKitchenStore
     @State private var query = ""
     @State private var expanded: Set<String> = []
-    private let articles = [
-        HelpArticle(question: "Where can I get more coins?", answer: "Open My wallet from your profile for coin packs and Apple prices. Daily check-ins also add reward coins."),
-        HelpArticle(question: "My coins have not arrived", answer: "If Apple shows Pending, wait for approval. For an interrupted purchase, open My wallet and choose Recover purchases. Check your balance before buying again."),
-        HelpArticle(question: "What can I do on the call screen?", answer: "Voice calls are unavailable and do not request microphone access. The video screen can show your camera after you tap Enable camera. It does not connect to another person."),
-        HelpArticle(question: "How can I change my language?", answer: "Open Settings, then Language. Choose English, Chinese, Spanish, French, German or Japanese. Your choice updates the interface immediately and is saved for your next visit."),
-        HelpArticle(question: "Where is my saved content?", answer: "Your profile holds your videos, rewards and room-effect history. Logging out keeps them. Deleting your profile removes its records and imported files from Tati.")
-    ]
+    private var articles: [HelpArticle] { KitchenContentSnapshot.current?.offers.supportArticles ?? [] }
     private var matches: [HelpArticle] {
         let language = AppLanguage.preference(store.account.preferredLanguage)
         return articles.filter {

@@ -1,18 +1,16 @@
 import Foundation
 
-/// Authored interaction content, not server engagement statistics.
-struct CuratedClipEngagement: Decodable {
+struct CuratedClipEngagement: Decodable, Sendable {
     let likes: Int
     let comments: [FilmDiscussionReply]
 }
 
-struct EditorialFilmPoster: Decodable {
+struct EditorialFilmPoster: Decodable, Sendable {
     let movieURL: String
     let seconds: Double
 }
 
-/// Stable content identifiers resolve to hosted media; member imports remain separate.
-struct KitchenEditorialLibrary: Decodable {
+struct KitchenEditorialLibrary: Decodable, Sendable {
     let portraits: [String: String]
     let additionalPeople: [TableMember]
     let roomCovers: [String: String]
@@ -65,15 +63,10 @@ struct KitchenEditorialLibrary: Decodable {
         "collection-cooking-together.mp4": "cooking-at-home.mp4",
     ]
 
-    static let shared: KitchenEditorialLibrary = {
-        guard let url = Bundle.main.url(forResource: "table-editorial-content", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let library = try? JSONDecoder().decode(KitchenEditorialLibrary.self, from: data) else {
-            return KitchenEditorialLibrary(portraits: [:], additionalPeople: [], roomCovers: [:], clips: [], roomClips: nil, curatedEngagement: nil, curatedRoomActivity: nil, imageSources: nil, movieSources: nil, posterSources: nil)
-        }
-        return library
-    }()
+    static var shared: KitchenEditorialLibrary {
+        KitchenContentSnapshot.current?.catalog.editorial ?? KitchenEditorialLibrary(portraits: [:], additionalPeople: [], roomCovers: [:], clips: [], roomClips: nil, curatedEngagement: nil, curatedRoomActivity: nil, imageSources: nil, movieSources: nil, posterSources: nil)
+    }
 
     static var unavailable: Bool { shared.portraits.isEmpty || shared.clips.isEmpty }
-    static let activeFilmIDs = Set(shared.clips.map(\.id) + Array((shared.roomClips ?? [:]).values).map(\.id))
+    static var activeFilmIDs: Set<String> { Set(shared.clips.map(\.id) + Array((shared.roomClips ?? [:]).values).map(\.id)) }
 }

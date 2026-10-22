@@ -12,8 +12,18 @@ settings:
     SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
     MARKETING_VERSION: 1.0.0
     CURRENT_PROJECT_VERSION: 1
+packages:
+  Alamofire:
+    url: https://github.com/Alamofire/Alamofire.git
+    from: 5.10.0
 targets:
   Tati:
+    dependencies:
+      - package: Alamofire
+    entitlements:
+      path: Tati/Tati.entitlements
+      properties:
+        aps-environment: $(TABLE_PUSH_ENVIRONMENT)
     type: application
     platform: iOS
     sources:
@@ -24,14 +34,21 @@ targets:
         buildPhase: resources
     settings:
       base:
+        TABLE_PUSH_ENVIRONMENT: development
         PRODUCT_BUNDLE_IDENTIFIER: com.tati.app
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
+      configs:
+        Release:
+          TABLE_PUSH_ENVIRONMENT: production
     info:
       path: Tati/Info.plist
       properties:
         CFBundleLocalizations: [en, zh-Hans, es, fr, de, ja]
         UIAppFonts: [DMSans-Regular.ttf, DMSans-SemiBold.ttf, Fraunces-SemiBold.ttf]
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [com.tati.app]
+        NSPhotoLibraryUsageDescription: Choose a photo or food video to share in Tati.
         CFBundleDisplayName: Tati
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)

@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Three bundled cuts keep reading and recipe headings consistent without a network font request.
 extension Font {
     static func tati(size: CGFloat, weight: Font.Weight = .regular, design: Font.Design = .default) -> Font {
         custom(kitchenFace(weight: weight, design: design), size: size, relativeTo: .body).weight(weight)

@@ -1,0 +1,106 @@
+{
+  "sources": [
+    {
+      "path": "Tati/Domain/TableCommunity.swift",
+      "sha256": "0755399178329d28c0632c37f11fa4be247b593fefe53e3f9cf27558ec2f8619"
+    },
+    {
+      "path": "Tati/Domain/KitchenNotebook.swift",
+      "sha256": "5b620805dc7853565c7c3fc56f1f07de360617f48ad928a8d7e3fdaee62a10c7"
+    },
+    {
+      "path": "Tati/Services/KitchenCoinPurchases.swift",
+      "sha256": "bb99c977f0ee84b97fee344fcc70e176fd0c2d85dd15118df4e9665365d8cedc"
+    },
+    {
+      "path": "Tati/Features/MemberConversationScenes.swift",
+      "sha256": "7c235661680be6ae697d869226c60f730632833dcc4f0ab9ff4d0d72d3408a5a"
+    },
+    {
+      "path": "Tati/Features/MemberSupportScenes.swift",
+      "sha256": "fc914547f44d26925bd34cba60c9cfb1009566f83373f221de6999c9e10d0393"
+    }
+  ],
+  "counts": {
+    "members": 49,
+    "rooms": 10,
+    "feedFilms": 10,
+    "roomFilms": 6,
+    "photographs": 49,
+    "movies": 16,
+    "gifts": 8,
+    "recipes": 6,
+    "chapters": 2,
+    "coinPacks": 9,
+    "cookingAnswers": 8
+  },
+  "memberIDs": [
+    "creator-luna",
+    "creator-chloe",
+    "creator-maria",
+    "creator-elowen",
+    "creator-seraphina",
+    "creator-andre",
+    "portrait-02",
+    "portrait-03",
+    "portrait-05",
+    "portrait-06",
+    "portrait-07",
+    "portrait-08",
+    "portrait-09",
+    "portrait-10",
+    "portrait-11",
+    "portrait-13",
+    "portrait-14",
+    "portrait-15",
+    "portrait-16",
+    "portrait-17",
+    "portrait-18",
+    "portrait-19",
+    "portrait-20",
+    "portrait-21",
+    "portrait-22",
+    "portrait-23",
+    "portrait-24",
+    "portrait-25",
+    "portrait-26",
+    "portrait-27",
+    "portrait-28",
+    "portrait-29",
+    "portrait-30",
+    "portrait-31",
+    "portrait-32",
+    "portrait-34",
+    "portrait-35",
+    "portrait-36",
+    "portrait-38",
+    "portrait-39",
+    "portrait-40",
+    "portrait-41",
+    "portrait-43",
+    "portrait-44",
+    "portrait-45",
+    "portrait-46",
+    "portrait-47",
+    "portrait-48",
+    "portrait-49"
+  ],
+  "filmIDs": [
+    "sample-clip-0",
+    "sample-clip-2",
+    "sample-clip-4",
+    "sample-clip-6",
+    "sample-clip-9",
+    "sample-clip-10",
+    "sample-clip-12",
+    "sample-clip-13",
+    "sample-clip-14",
+    "sample-clip-15",
+    "sample-clip-1",
+    "sample-clip-3",
+    "sample-clip-5",
+    "sample-clip-7",
+    "sample-clip-8",
+    "sample-clip-11"
+  ]
+}

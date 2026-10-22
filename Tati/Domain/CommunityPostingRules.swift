@@ -1,7 +1,5 @@
 import Foundation
 
-/// A narrow preflight for obvious abuse, not a substitute for service-side review.
-/// Reports intentionally bypass this filter so evidence can be described accurately.
 enum CommunityPostingRules {
     static func permits(_ submittedText: String) -> Bool {
         let readable = submittedText

@@ -1,0 +1,7 @@
+{
+  "course": "PantryCoinCheckout",
+  "purchase": {
+    "docket": "#{orderCode}",
+    "offer": "#{batchNo}"
+  }
+}

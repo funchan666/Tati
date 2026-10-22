@@ -9,7 +9,6 @@ final class NotificationPreferences: ObservableObject {
     private let reminderID = "tati.daily-check-in"
     private var refreshTask: Task<Void, Never>?
 
-    /// Serialize reconciliation so an older language/account request cannot overwrite a newer one.
     func refresh(store: MemberKitchenStore) {
         let previous = refreshTask
         previous?.cancel()
@@ -20,7 +19,7 @@ final class NotificationPreferences: ObservableObject {
             guard !Task.isCancelled else { return }
             authorized = Self.permitsAlerts(settings.authorizationStatus)
             center.removePendingNotificationRequests(withIdentifiers: [reminderID])
-            // A revoked system permission must not leave an apparently enabled preference.
+
             if !authorized && store.account.notifications { _ = store.change { $0.notifications = false } }
             guard store.account.signedIn, store.account.notifications, authorized else {
                 center.removeDeliveredNotifications(withIdentifiers: [reminderID])
@@ -60,16 +59,10 @@ final class NotificationPreferences: ObservableObject {
             }
             return
         }
-        do {
-            let granted = try await center.requestAuthorization(options: [.alert, .sound])
-            guard store.account.signedIn, store.account.profile.id == owner else { return }
-            authorized = granted
-            if granted { _ = store.change { $0.notifications = true } }
-            // Respect the first refusal without a second prompt.
-        } catch {
-            guard store.account.signedIn, store.account.profile.id == owner else { return }
-            store.tell("Notifications unavailable", "The permission request could not finish. Please try again.")
-        }
+        let granted = await TablePushToken.shared.requestPermission()
+        guard store.account.signedIn, store.account.profile.id == owner else { return }
+        authorized = granted
+        if granted { _ = store.change { $0.notifications = true } }
     }
 
     private static func permitsAlerts(_ status: UNAuthorizationStatus) -> Bool {

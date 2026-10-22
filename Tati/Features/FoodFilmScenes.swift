@@ -254,8 +254,7 @@ struct CommentDraftView: View {
                     }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
                 }
                 .onChange(of: comments.map(\.id)) { previousIDs, ids in
-                    // Removing a reported comment or blocking its author must
-                    // keep the reader's position, rather than jumping to the end.
+
                     if let last = ids.last, !previousIDs.contains(last) {
                         withAnimation { proxy.scrollTo(last, anchor: .bottom) }
                     }
@@ -306,7 +305,7 @@ struct PublishSheet: View {
                 }
         }
         .overlay { NoticeLayer() }
-        // A form must not inherit the 210-point chooser height after navigation.
+
         .presentationDetents(path.isEmpty ? [.height(210), .large] : [.large])
         .presentationDragIndicator(.hidden)
     }
@@ -430,7 +429,7 @@ struct PublishVideoView: View {
         importing = true
         defer {
             importing = false
-            // Permit selecting the same library item again after removal or a failed import.
+
             if self.selection == selection { self.selection = nil }
         }
         do {
@@ -450,7 +449,7 @@ struct PublishVideoView: View {
             guard owner == store.account.profile.id, store.account.signedIn else { return }
             let name = UUID().uuidString + "." + movie.url.pathExtension
             let destination = store.mediaURL(name)
-            // A large file copy must not block typing, navigation, or the picker dismissal.
+
             try await Task.detached(priority: .userInitiated) { [source = movie.url, destination] in
                 do { try FileManager.default.copyItem(at: source, to: destination) }
                 catch { try? FileManager.default.removeItem(at: destination); throw error }
@@ -472,7 +471,6 @@ struct PublishVideoView: View {
     }
 }
 
-/// A poster is enough to confirm the selection; this editor never creates another player.
 private struct PublisherMediaCard: View {
     let url: URL?
     let details: String

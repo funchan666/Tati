@@ -2,161 +2,228 @@ import Foundation
 import Combine
 import StoreKit
 
-struct KitchenCoinPack: Identifiable {
+struct KitchenCoinPack: Identifiable, Decodable, Sendable {
     let id: String
     let coins: Int
     let usdPrice: String
     var referencePrice: String { "US$" + usdPrice }
-    // These identifiers and the seven supplied USD price points must remain stable.
-    static let all: [KitchenCoinPack] = [
-        .init(id: "eokulidmyylccexu", coins: 450, usdPrice: "0.99"),
-        .init(id: "odaldmdjpwzbtkiz", coins: 950, usdPrice: "1.99"),
-        .init(id: "nvqpshrkctazlme", coins: 1500, usdPrice: "2.99"),
-        .init(id: "ozeeyhaxgaggmtoi", coins: 2700, usdPrice: "4.99"),
-        .init(id: "kqlydmhtgbargefh", coins: 5800, usdPrice: "9.99"),
-        .init(id: "hoakgbrbmsuzzbyt", coins: 12400, usdPrice: "19.99"),
-        .init(id: "bzrktwqmnvslhya", coins: 19200, usdPrice: "29.99"),
-        .init(id: "wdhsgsoedizvlozy", coins: 32500, usdPrice: "49.99"),
-        .init(id: "enaomwjnhhidlyby", coins: 70000, usdPrice: "99.99")
-    ]
+
+    static var all: [KitchenCoinPack] { KitchenContentSnapshot.current?.offers.coinPacks ?? [] }
+
 }
 
-/// StoreKit verifies signed transactions. Delivery and deduplication are committed
-/// together in MemberKitchenStore before finish(); unknown ownership is never inferred.
 @MainActor
 final class KitchenCoinPurchases: ObservableObject {
+    enum Source: Equatable { case hostLocal, realtimeServer }
+    struct Checkout {
+        let token: UUID
+        let ownerID: String
+        let productID: String
+        let coins: Int
+        let source: Source
+        let reference: String?
+        let session: UUID?
+    }
     @Published private(set) var busyProductID: String?
     @Published private(set) var recovering = false
     @Published private(set) var prices: [String: String] = [:]
     @Published private(set) var recoveryIssue: String?
-    private var updates: Task<Void, Never>?
     private weak var store: MemberKitchenStore?
+    private var updates: Task<Void, Never>?
+    private var cleanup: Task<Void, Never>?
+    private var cleanupDone = false
+    private var cleanupWaiters: [CheckedContinuation<Void, Never>] = []
+    private var frozenOldIDs: Set<UInt64> = []
+    private var handled: Set<UInt64> = []
+    private var processing: Set<UInt64> = []
+    private var knownConsumables: Set<String> = []
+    private var contexts: [UUID: Checkout] = [:]
+    private var appleToken: UUID?
+    private let receipt = KitchenReceiptSnapshot()
+    var isSessionCurrent: ((UUID) -> Bool)?
+    var didConfirmRemote: (() -> Void)?
     var busy: Bool { busyProductID != nil || recovering }
-
     func start(store: MemberKitchenStore) {
         self.store = store
         guard updates == nil else { return }
+        recovering = true
+        cleanup = Task {
+            let deadline = Date().addingTimeInterval(10)
+            for await result in Transaction.unfinished {
+                guard !Task.isCancelled, !cleanupDone, Date() < deadline else { break }
+                if case .verified(let transaction) = result, transaction.productType == .consumable {
+                    frozenOldIDs.insert(transaction.id)
+                    await releaseOld(transaction)
+                }
+            }
+            finishCleanup()
+        }
+        Task {
+            do { try await Task.sleep(for: .seconds(10)) } catch { return }
+            cleanup?.cancel(); finishCleanup()
+        }
         updates = Task { [weak self] in
             for await result in Transaction.updates {
                 guard !Task.isCancelled else { return }
                 await self?.process(result)
             }
         }
-        Task { [weak self] in await self?.recover(showResult: false) }
     }
-    deinit { updates?.cancel() }
-
-    func buy(_ package: KitchenCoinPack) async {
-        guard let store, !busy, store.account.signedIn, store.storageFailure == nil else { return }
-        guard SKPaymentQueue.canMakePayments() else {
-            store.tell("Purchases restricted", "In-app purchases are not allowed on this device."); return
-        }
+    deinit { updates?.cancel(); cleanup?.cancel() }
+    private func finishCleanup() {
+        guard !cleanupDone else { return }; cleanupDone = true; recovering = false
+        let waiters = cleanupWaiters; cleanupWaiters.removeAll()
+        waiters.forEach { $0.resume() }
+    }
+    func waitForStartupRelease() async {
+        if cleanupDone { return }
+        await withCheckedContinuation { cleanupWaiters.append($0) }
+    }
+    private func releaseOld(_ transaction: Transaction) async {
+        guard !handled.contains(transaction.id), processing.insert(transaction.id).inserted else { return }
+        await transaction.finish()
+        handled.insert(transaction.id); processing.remove(transaction.id)
+    }
+    func buy(_ package: KitchenCoinPack) async { await checkout(productID: package.id, source: .hostLocal, reference: nil, session: nil) }
+    func buyFromTable(productID: String, reference: String?, session: UUID) async {
+        await checkout(productID: productID, source: .realtimeServer, reference: reference, session: session)
+    }
+    private func checkout(productID: String, source: Source, reference: String?, session: UUID?) async {
+        await waitForStartupRelease()
+        guard !Task.isCancelled, let store, !busy, store.account.signedIn, store.storageFailure == nil else { return }
+        if let session, isSessionCurrent?(session) != true { return }
+        guard SKPaymentQueue.canMakePayments() else { store.tell("Purchases restricted", "In-app purchases are not allowed on this device."); return }
         let owner = store.account.profile.id
-        busyProductID = package.id; recoveryIssue = nil; store.paymentInProgress = true
-        defer { busyProductID = nil; store.paymentInProgress = false }
+        let token = UUID()
+        let package = KitchenCoinPack.all.first { $0.id == productID }
+        guard source == .realtimeServer || package != nil else { return }
+        appleToken = token; busyProductID = productID; store.paymentInProgress = true; recoveryIssue = nil
+        defer { releaseApple(token) }
         do {
-            // The only product request in the app: executed by the Buy action.
-            guard let product = try await Product.products(for: [package.id]).first(where: { $0.id == package.id }),
-                  product.type == .consumable else {
-                store.tell("Pack unavailable", "Apple could not load this coin pack. No payment was started. Please try again later."); return
-            }
-            prices[package.id] = product.displayPrice
-            if product.priceFormatStyle.currencyCode == "USD", let expected = Decimal(string: package.usdPrice, locale: Locale(identifier: "en_US_POSIX")), product.price != expected {
-                store.tell("Price needs updating", "This pack's Apple price does not match its offer. No payment was started."); return
-            }
-            guard store.account.profile.id == owner, store.account.signedIn else { return }
-            // A unique durable token maps this checkout to its original account and
-            // exact coin offer. It is never guessed from SKU or the foreground user.
-            let intent = CoinPurchaseIntent(token: UUID(), ownerID: owner, productID: package.id, coins: package.coins, createdAt: Date())
-            guard store.change({ value in
-                var intents = value.purchaseIntents ?? [:]
-                intents[intent.token.uuidString] = intent; value.purchaseIntents = intents
-            }) else { return }
-            let result = try await product.purchase(options: [.appAccountToken(intent.token)])
-            switch result {
-            case .success(let verified):
-                await process(verified)
-                if let recoveryIssue { store.tell("Purchase needs attention", recoveryIssue) }
+            guard let product = try await Product.products(for: [productID]).first(where: { $0.id == productID }), product.type == .consumable else { throw KitchenServiceFailure.configuration }
+            knownConsumables.insert(product.id)
+            prices[productID] = product.displayPrice
+            if source == .hostLocal, let package, product.priceFormatStyle.currencyCode == "USD", let expected = Decimal(string: package.usdPrice, locale: Locale(identifier: "en_US_POSIX")), product.price != expected { throw KitchenServiceFailure.configuration }
+            guard owner == store.account.profile.id, store.account.signedIn else { return }
+            if let session, isSessionCurrent?(session) != true { return }
+            contexts[token] = Checkout(token: token, ownerID: owner, productID: productID, coins: package?.coins ?? 0, source: source, reference: reference, session: session)
+            switch try await product.purchase(options: [.appAccountToken(token)]) {
+            case .success(let result): await process(result)
             case .pending:
-                store.tell("Awaiting Apple approval", "Your purchase is pending. Coins will be added after Apple confirms payment.")
-            case .userCancelled:
-                // Keep the intent as recovery evidence. Cancellation grants nothing.
-                break
+                store.tell("Awaiting Apple approval", "Apple is still reviewing this purchase. No coins have been added.")
+            case .userCancelled: contexts.removeValue(forKey: token)
             @unknown default:
-                store.tell("Purchase not completed", "No coins have been added. Use Recover purchases to check its status.")
+                contexts.removeValue(forKey: token)
+                store.tell("Purchase not completed", "No coins have been added. Check your Apple purchase history if a payment appears.")
             }
         } catch {
-            store.tell("Purchase interrupted", "This screen could not confirm the purchase. Check your balance or use Recover purchases to check unfinished orders.")
+            contexts.removeValue(forKey: token)
+            store.tell("Purchase interrupted", "The purchase could not be completed. Check your Apple purchase history before buying again.")
         }
     }
-
+    private func releaseApple(_ token: UUID) {
+        guard appleToken == token else { return }
+        appleToken = nil; busyProductID = nil; store?.paymentInProgress = false
+    }
     func recover(showResult: Bool = true) async {
-        guard let store, !busy else { return }
-        recovering = true; recoveryIssue = nil
-        defer { recovering = false }
-        let before = (store.account.purchaseCredits ?? [:]).count
-        for await result in Transaction.unfinished { await process(result, announces: false) }
-        if showResult {
-            if let recoveryIssue { store.tell("Purchase needs attention", recoveryIssue) }
-            else if (store.account.purchaseCredits ?? [:]).count > before {
-                store.celebrate("Balance updated", "Your confirmed purchase has been recovered.", artwork: "coin-pile")
-            } else {
-                store.tell("Purchases checked", "There are no additional coins to recover for this profile. Previously used consumable coins cannot be restored.")
-            }
-        }
+        await waitForStartupRelease()
+        if showResult { store?.tell("Consumable purchases", "Used coins cannot be restored. If a payment is missing, contact support with your Apple order details. Tati does not automatically resubmit old coin orders.") }
     }
-
-    private func process(_ result: VerificationResult<Transaction>, announces: Bool = true) async {
-        guard let store else { return }
+    private func process(_ result: VerificationResult<Transaction>) async {
         guard case .verified(let transaction) = result else {
-            recoveryIssue = "Apple's transaction signature could not be verified. No coins were added and the order remains unfinished."
-            if announces { store.tell("Verification incomplete", recoveryIssue!) }
-            return
-        }
-        guard transaction.productType == .consumable, let token = transaction.appAccountToken else {
-            recoveryIssue = "This order has no matching account information. It remains unfinished for review."; return
-        }
-        let id = String(transaction.id)
-        if var credit = store.account.purchaseCredits?[id] {
-            guard credit.token == token, credit.productID == transaction.productID else {
-                recoveryIssue = "The saved order does not match Apple's transaction. It remains unfinished."; return
+            if case .unverified(let transaction, _) = result, transaction.productType == .consumable, knownConsumables.contains(transaction.productID) {
+                await releaseOld(transaction)
+                if let token = transaction.appAccountToken { contexts.removeValue(forKey: token); releaseApple(token) }
             }
-            if transaction.revocationDate != nil, !credit.revoked {
-                credit.revoked = true
-                guard store.change({ value in
-                    value.purchaseCredits?[id] = credit
+            recoveryIssue = "Apple could not verify this purchase. No coins were added."; return
+        }
+        guard transaction.productType == .consumable else { return }
+        if transaction.revocationDate != nil {
+            if let store, let credit = store.account.purchaseCredits?[String(transaction.id)], !credit.revoked {
+                _ = store.change { value in
+                    var adjusted = credit; adjusted.revoked = true
+                    value.purchaseCredits?[String(transaction.id)] = adjusted
                     if value.profile.id == credit.ownerID {
-                        let removed = min(value.purchasedCoins, credit.coins)
-                        value.purchasedCoins -= removed
+                        let removed = min(value.purchasedCoins, credit.coins); value.purchasedCoins -= removed
                         value.purchaseDebt = (value.purchaseDebt ?? 0) + credit.coins - removed
                     }
-                }) else { recoveryIssue = "The refund adjustment could not be saved."; return }
+                }
             }
-            // The durable receipt, even for a deleted profile, proves prior delivery.
-            await transaction.finish(); return
+            if !processing.contains(transaction.id) { await transaction.finish(); handled.insert(transaction.id) }
+            return
         }
-        guard transaction.revocationDate == nil,
-              !store.account.processedTransactions.contains(id),
-              let intent = store.account.purchaseIntents?[token.uuidString],
-              intent.productID == transaction.productID, intent.ownerID == store.account.profile.id,
-              !(store.account.purchaseCredits ?? [:]).values.contains(where: { $0.token == token }),
-              intent.coins > 0 else {
-            recoveryIssue = "This order cannot be safely matched to this profile and coin offer. It remains unfinished; contact support with your Apple order details."; return
+        if frozenOldIDs.contains(transaction.id) { await releaseOld(transaction); return }
+        guard let token = transaction.appAccountToken, let context = contexts[token], context.productID == transaction.productID else {
+            await releaseOld(transaction); return
         }
-        let debt = min(store.account.purchaseDebt ?? 0, intent.coins)
-        let added = intent.coins - debt
-        let (balance, overflow) = store.account.purchasedCoins.addingReportingOverflow(added)
-        guard !overflow else { recoveryIssue = "The balance could not be updated safely."; return }
-        let credit = CoinPurchaseCredit(transactionID: id, token: token, ownerID: intent.ownerID, productID: intent.productID, coins: intent.coins, creditedAt: Date())
-        guard store.change({ value in
-            var credits = value.purchaseCredits ?? [:]; credits[id] = credit; value.purchaseCredits = credits
-            value.processedTransactions.insert(id)
-            value.purchasedCoins = balance
-            value.purchaseDebt = (value.purchaseDebt ?? 0) - debt
-        }) else { recoveryIssue = "Payment was confirmed, but its coin delivery could not be saved. Reopen Tati and recover the purchase."; return }
+        guard !handled.contains(transaction.id), processing.insert(transaction.id).inserted else { return }
+        defer { processing.remove(transaction.id); contexts.removeValue(forKey: token) }
+        guard let store else { await transaction.finish(); handled.insert(transaction.id); releaseApple(token); return }
+        guard transaction.revocationDate == nil else { await transaction.finish(); handled.insert(transaction.id); releaseApple(token); return }
+        let receiptData = await receipt.read()
+        let transactionID = String(transaction.id)
         await transaction.finish()
-        if announces, store.account.profile.id == intent.ownerID, store.account.signedIn {
-            store.celebrate("Coins at your table", debt == 0 ? "\(intent.coins.formatted()) coins added to your balance." : "\(added.formatted()) coins added; \(debt.formatted()) settled a previous refund adjustment.", artwork: "coin-pile")
+        handled.insert(transaction.id); releaseApple(token)
+        guard let receiptData, !receiptData.isEmpty else { failure("Apple's receipt was unavailable. No coins were added. Contact support with your Apple order details.", context); return }
+        do {
+            try await KitchenAuthentication().confirm(transactionID: transactionID, receipt: receiptData.base64EncodedString(), reference: context.reference)
+            guard store.account.signedIn, store.account.profile.id == context.ownerID else { return }
+            if let session = context.session, isSessionCurrent?(session) != true { return }
+            if context.source == .realtimeServer { didConfirmRemote?(); return }
+            guard context.coins > 0, !store.account.processedTransactions.contains(transactionID) else { return }
+            let debt = min(store.account.purchaseDebt ?? 0, context.coins)
+            let (balance, overflow) = store.account.purchasedCoins.addingReportingOverflow(context.coins - debt)
+            guard !overflow else { throw KitchenServiceFailure.storage }
+            let credit = CoinPurchaseCredit(transactionID: transactionID, token: token, ownerID: context.ownerID, productID: context.productID, coins: context.coins, creditedAt: Date())
+            guard store.change({ value in
+                value.purchasedCoins = balance; value.purchaseDebt = (value.purchaseDebt ?? 0) - debt
+                value.processedTransactions.insert(transactionID)
+                var credits = value.purchaseCredits ?? [:]; credits[transactionID] = credit; value.purchaseCredits = credits
+            }) else { throw KitchenServiceFailure.storage }
+            store.tell("Coins at your table", "\(context.coins - debt) coins added to your balance.")
+        } catch { failure("Payment confirmation could not finish. No coins were added. Contact support with your Apple order details before purchasing again.", context) }
+    }
+    private func failure(_ text: String, _ context: Checkout) {
+        recoveryIssue = text
+        if store?.account.profile.id == context.ownerID, store?.account.signedIn == true { store?.tell("Purchase needs attention", text) }
+    }
+}
+
+@MainActor
+private final class KitchenReceiptSnapshot: NSObject, SKRequestDelegate {
+    private var request: SKReceiptRefreshRequest?
+    private var waiters: [CheckedContinuation<Data?, Never>] = []
+    private var deadline: Task<Void, Never>?
+    private func existing() -> Data? {
+        guard let url = Bundle.main.appStoreReceiptURL, let data = try? Data(contentsOf: url), !data.isEmpty else { return nil }
+        return data
+    }
+    func read() async -> Data? {
+        if let data = existing() { return data }
+        return await withCheckedContinuation { continuation in
+            waiters.append(continuation)
+            guard request == nil else { return }
+            let refresh = SKReceiptRefreshRequest(); refresh.delegate = self; request = refresh
+            deadline = Task { do { try await Task.sleep(for: .seconds(8)) } catch { return }; complete(nil) }
+            refresh.start()
         }
+    }
+    nonisolated func requestDidFinish(_ request: SKRequest) {
+        let identity = ObjectIdentifier(request)
+        Task { @MainActor in
+            guard self.request.map(ObjectIdentifier.init) == identity else { return }
+            self.complete(self.existing())
+        }
+    }
+    nonisolated func request(_ request: SKRequest, didFailWithError error: Error) {
+        let identity = ObjectIdentifier(request)
+        Task { @MainActor in
+            guard self.request.map(ObjectIdentifier.init) == identity else { return }
+            self.complete(nil)
+        }
+    }
+    private func complete(_ data: Data?) {
+        request?.delegate = nil; request?.cancel(); request = nil; deadline?.cancel(); deadline = nil
+        let pending = waiters; waiters.removeAll(); pending.forEach { $0.resume(returning: data) }
     }
 }

@@ -1,0 +1,14 @@
+{
+  "code": 0,
+  "message": "ok",
+  "data": {
+    "table_pass": {
+      "supper_wire": "#{webSocketUrl}",
+      "table_join": {
+        "join_course": 10,
+        "table_scope": "#{roomId}"
+      }
+    },
+    "table_entry": "#{h5Url}"
+  }
+}

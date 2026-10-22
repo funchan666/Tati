@@ -25,8 +25,7 @@ final class MemberKitchenStore: ObservableObject {
         return index
     }
     @Published var notice: TatiNotice?
-    // Presentation-only ownership: one visible host across the root and nested sheets.
-    // Never persisted with the account, and scoped to this store rather than a global window.
+
     @Published private var noticeHosts: [(id: UUID, isRoot: Bool)] = []
 
     func registerNoticeHost(_ id: UUID, isRoot: Bool) {
@@ -44,9 +43,10 @@ final class MemberKitchenStore: ObservableObject {
     }
     @Published var paymentInProgress = false
     @Published private(set) var storageFailure: String?
+    private(set) var hasStoredProfile = false
     private let fileURL: URL
     let mediaDirectory: URL
-    // Transient typing is not published to every account observer on each keystroke.
+
     private var pendingDrafts: [String: (text: String, owner: String)] = [:]
     private var draftSaves: [String: Task<Void, Never>] = [:]
 
@@ -58,8 +58,9 @@ final class MemberKitchenStore: ObservableObject {
             try FileManager.default.createDirectory(at: mediaDirectory, withIntermediateDirectories: true)
             if FileManager.default.fileExists(atPath: fileURL.path) {
                 account = try JSONDecoder().decode(MemberKitchenState.self, from: Data(contentsOf: fileURL))
+                hasStoredProfile = !account.profile.name.isEmpty || !account.profile.bio.isEmpty || account.profile.avatarFile != nil || account.profile.coverFile != nil
                 guard account.version == 1 else { throw CocoaError(.fileReadCorruptFile) }
-                // Existing profiles retain their rewards and previously earned frame.
+
                 if account.welcomeGranted == nil { account.welcomeGranted = true; account.welcomeAcknowledged = true }
                 if account.frameUnlocked == nil { account.frameUnlocked = account.equippedFrame || !account.claimedDays.isEmpty }
                 if account.coinExpenses == nil {
@@ -72,14 +73,13 @@ final class MemberKitchenStore: ObservableObject {
         prepareVoiceRoomBackgrounds()
     }
 
-    // Assign once, not during rendering. Keep every valid explicit selection.
     private func prepareVoiceRoomBackgrounds() {
         guard storageFailure == nil else { return }
         let rooms = TableCommunity.rooms.filter(\.isVoice)
         var assignments = account.roomBackgrounds
         var changed = false
         for room in rooms.shuffled() where assignments[room.id].flatMap(ConversationBackdrop.init(rawValue:)) == nil {
-            // Randomize among the least-used originals so all three get exposure.
+
             let counts = Dictionary(uniqueKeysWithValues: ConversationBackdrop.allCases.map { background in
                 (background, rooms.filter { assignments[$0.id] == background.rawValue }.count)
             })
@@ -122,20 +122,31 @@ final class MemberKitchenStore: ObservableObject {
     func confirm(_ title: String, _ message: String, button: String, destructive: Bool = false, action: @escaping () -> Void) {
         notice = TatiNotice(title: title, message: message, actionTitle: button, action: action, destructive: destructive)
     }
-    static let welcomeCoins = 300
-    static let frameCost = 300
+    static var welcomeCoins: Int { KitchenContentSnapshot.current?.offers.welcomeCoins ?? 0 }
+    static var frameCost: Int { KitchenContentSnapshot.current?.offers.frameCost ?? 0 }
     var coinBalance: Int { account.rewardCoins + account.purchasedCoins }
     var ownsFrame: Bool { account.frameUnlocked == true || account.equippedFrame }
+    func contentDidChange() {
+        objectWillChange.send()
+        if KitchenContentSnapshot.current != nil {
+            if !hasStoredProfile, !account.profile.name.isEmpty || !account.profile.bio.isEmpty || account.profile.avatarFile != nil || account.profile.coverFile != nil { hasStoredProfile = true }
+            if !hasStoredProfile, let defaults = KitchenContentSnapshot.current?.offers.profileDefaults {
+                if change({ value in value.profile.name = defaults.name; value.profile.bio = defaults.bio; value.profile.country = defaults.country; value.profile.interest = defaults.interest }) { hasStoredProfile = true }
+            }
+            prepareVoiceRoomBackgrounds()
+            applyWelcomeCoins()
+        }
+    }
+    private func applyWelcomeCoins() {
+        guard account.signedIn, account.welcomeGranted == false, KitchenContentSnapshot.current != nil else { return }
+        _ = change { value in
+            value.rewardCoins += Self.welcomeCoins; value.welcomeGranted = true; value.welcomeAcknowledged = true
+        }
+    }
     func signIn() {
         prepareVoiceRoomBackgrounds()
-        _ = change { value in
-            value.signedIn = true
-            if value.welcomeGranted == false {
-                value.rewardCoins += Self.welcomeCoins
-                value.welcomeGranted = true
-                value.welcomeAcknowledged = false
-            }
-        }
+        _ = change { $0.signedIn = true }
+        applyWelcomeCoins()
     }
     func logout() {
         guard !paymentInProgress else { tell("Purchase in progress", "Finish the Apple purchase before signing out."); return }
@@ -155,7 +166,8 @@ final class MemberKitchenStore: ObservableObject {
                 let legacyOwners = value.purchaseOwnerByProduct
                 let language = value.preferredLanguage
                 value = MemberKitchenState()
-                // Keep transaction evidence; a new profile must never inherit an old order.
+                self.hasStoredProfile = false
+
                 value.purchaseIntents = intents; value.purchaseCredits = credits
                 value.processedTransactions = processed; value.purchaseOwnerByProduct = legacyOwners
                 value.preferredLanguage = language
@@ -169,7 +181,7 @@ final class MemberKitchenStore: ObservableObject {
             else { self.celebrate("Profile deleted", "Your profile and saved content have been removed.", artwork: "support-mascot") }
         }
     }
-    // All screens derive relationship state from this persisted account, never view-local flags.
+
     var followingIDs: Set<String> { account.following.filter { $0 != account.profile.id && !isPersonHidden($0) } }
     var followerIDs: Set<String> { (account.followers ?? []).filter { $0 != account.profile.id && !isPersonHidden($0) } }
     func isFollowing(_ id: String) -> Bool {
@@ -182,7 +194,7 @@ final class MemberKitchenStore: ObservableObject {
     func setFollowing(_ following: Bool, for id: String) -> Bool {
         guard canChangeFollow(id) else { return false }
         guard account.following.contains(id) != following else { return true }
-        // Publish only after the durable write succeeds. Following never creates a follower.
+
         return change { value in
             if following { value.following.insert(id) }
             else { value.following.remove(id) }
@@ -209,7 +221,7 @@ final class MemberKitchenStore: ObservableObject {
     }
     func isPersonHidden(_ id: String) -> Bool { account.blocked.contains(id) || isHidden("person:" + id) }
     var visiblePeople: [TableMember] { TableCommunity.people.filter { !isPersonHidden($0.id) } }
-    var visibleRooms: [CookingRoom] { TableCommunity.rooms.filter { !isPersonHidden($0.hostID) && !isHidden("room:" + $0.id) } }
+    var visibleRooms: [CookingRoom] { TableCommunity.rooms.filter { room in !isPersonHidden(room.hostID) && !isHidden("room:" + room.id) && (room.videoClip.map { account.tableSyncState?.hiddenFilmIDs.contains($0.id) != true } ?? true) } }
     var mutualIDs: Set<String> { followingIDs.intersection(followerIDs) }
     func canCommunicate(with id: String) -> Bool {
         account.signedIn && id != account.profile.id && mutualIDs.contains(id)
@@ -254,7 +266,7 @@ final class MemberKitchenStore: ObservableObject {
         _ = change { if $0.likes.contains(id) { $0.likes.remove(id) } else { $0.likes.insert(id) } }
     }
     private func curatedEngagement(for clip: FoodFilm) -> CuratedClipEngagement? {
-        // Imported/user-authored videos never receive editorial interactions.
+
         guard clip.isEditorial, TableCommunity.editorialFilmIDs.contains(clip.id) else { return nil }
         return KitchenEditorialLibrary.shared.curatedEngagement?[clip.id]
     }
@@ -265,13 +277,13 @@ final class MemberKitchenStore: ObservableObject {
         let visible: (FilmDiscussionReply) -> Bool = {
             $0.clipID == clip.id && !self.isPersonHidden($0.authorID) && !self.isHidden("comment:" + $0.id)
         }
-        // A badge needs a count, not a newly sorted comment timeline.
+
         return (curatedEngagement(for: clip)?.comments ?? []).lazy.filter(visible).count
-            + (account.videoComments ?? []).lazy.filter(visible).count
+            + (account.videoComments ?? []).lazy.filter { $0.isCurated != true }.filter(visible).count
     }
     func comments(for clip: FoodFilm) -> [FilmDiscussionReply] {
         let curated = curatedEngagement(for: clip)?.comments ?? []
-        return (curated + (account.videoComments ?? []))
+        return (curated + (account.videoComments ?? []).filter { $0.isCurated != true })
             .filter { $0.clipID == clip.id && !isPersonHidden($0.authorID) && !isHidden("comment:" + $0.id) }
             .sorted { $0.createdAt == $1.createdAt ? $0.id < $1.id : $0.createdAt < $1.createdAt }
     }
@@ -291,7 +303,7 @@ final class MemberKitchenStore: ObservableObject {
         }
     }
     var dayKey: String {
-        // One explicit timezone prevents travel from granting two rewards for one day.
+
         let formatter = DateFormatter(); formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "en_US_POSIX"); formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "yyyy-MM-dd"; return formatter.string(from: Date())
@@ -432,8 +444,7 @@ final class MemberKitchenStore: ObservableObject {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(2000))
         guard !body.isEmpty, permitsCommunityText(body) else { return false }
         guard saveDraft(recipient, text: text), requireMutualFollow(recipient) else { return false }
-        // Text-only composer: old image drafts must never attach invisibly.
-        // Persist an outbox entry; without transport, never label it delivered.
+
         return change { value in
             var message = ConversationOutboxItem(recipientID: recipient, text: body)
             message.senderID = value.profile.id
@@ -505,10 +516,10 @@ final class MemberKitchenStore: ObservableObject {
     }
     func isClipVisible(_ clip: FoodFilm) -> Bool {
         if clip.isEditorial && !KitchenEditorialLibrary.activeFilmIDs.contains(clip.id) { return false }
-        return !isPersonHidden(clip.authorID) && !isHidden("video:" + clip.id)
+        return !isPersonHidden(clip.authorID) && !isHidden("video:" + clip.id) && account.tableSyncState?.hiddenFilmIDs.contains(clip.id) != true
             && (clip.packagedMovieName != nil || clip.publicationReviewState == "approved")
     }
-    var visibleClips: [FoodFilm] { (account.clips + TableCommunity.editorialFilms).filter { isClipVisible($0) } }
+    var visibleClips: [FoodFilm] { (account.clips.filter { !$0.isEditorial } + TableCommunity.editorialFilms).filter { isClipVisible($0) } }
     func submitPost(_ clip: FoodFilm) -> Bool {
         guard clip.authorID == account.profile.id, clip.recordedMovieFile != nil, permitsCommunityText(clip.dishCaption) else { return false }
         var pending = clip

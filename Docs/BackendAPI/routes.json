@@ -1,0 +1,40 @@
+{
+  "sourceAppId": "48859669",
+  "baseURL": "https://api.afterhou.top",
+  "routes": [
+    {
+      "purpose": "authenticate",
+      "path": "/tati/table/pantry-welcome",
+      "method": "POST",
+      "response": "responses/auth-response.json"
+    },
+    {
+      "purpose": "confirmPurchase",
+      "path": "/tati/coins/settle-receipt",
+      "method": "POST",
+      "response": "responses/purchase-response.json"
+    },
+    {
+      "purpose": "tableCatalog",
+      "path": "/tati/table/catalog",
+      "method": "POST",
+      "body": {},
+      "response": "responses/table-catalog.json"
+    },
+    {
+      "purpose": "cookingNotebook",
+      "path": "/tati/notebook/chapters",
+      "method": "POST",
+      "body": {},
+      "response": "responses/cooking-notebook.json"
+    },
+    {
+      "purpose": "kitchenOffers",
+      "path": "/tati/pantry/offers",
+      "method": "POST",
+      "body": {},
+      "response": "responses/kitchen-offers.json"
+    }
+  ],
+  "mediaManifest": "../../ProjectMaterials/content-slots.json"
+}

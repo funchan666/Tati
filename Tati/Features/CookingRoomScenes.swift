@@ -35,7 +35,7 @@ struct RoomView: View {
     @State private var videoMuted = false
     @State private var showsActivity = true
     private var music: LocalRoomAudio { roomSession.audio }
-    private var host: TableMember { TableCommunity.person(room.hostID) ?? TableCommunity.people[0] }
+    private var host: TableMember? { TableCommunity.person(room.hostID) }
     private var background: String { store.voiceRoomBackground(for: room).rawValue }
     private let voiceSeats = 9
     private var ownsPlayback: Bool { playback.ownerID == playbackOwner }
@@ -45,9 +45,9 @@ struct RoomView: View {
                 VStack(spacing: 8) {
                     HStack(spacing: 0) {
                         HStack(spacing: 0) {
-                            NavigationLink(destination: PersonProfileView(person: host)) {
+                            UserProfileLink(userID: room.hostID) {
                                 HStack(spacing: 6) {
-                                    Avatar(asset: host.portraitArtwork, size: 38)
+                                    Avatar(asset: host?.portraitArtwork, size: 38)
                                         .overlay { Circle().strokeBorder(.white.opacity(0.75), lineWidth: 1) }
                                         .overlay(alignment: .bottom) {
                                             if !room.isVoice {
@@ -56,15 +56,15 @@ struct RoomView: View {
                                             }
                                         }
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text(host.name).font(.tati(size: 13, weight: .semibold)).lineLimit(1)
+                                        Text(host?.name ?? "").font(.tati(size: 13, weight: .semibold)).lineLimit(1)
                                         HStack(spacing: 5) {
-                                            Text(host.city).font(.tati(size: 9)).opacity(0.8).lineLimit(1)
+                                            Text(host?.city ?? "").font(.tati(size: 9)).opacity(0.8).lineLimit(1)
                                             if room.isVoice { RoomKindBadge(isVoice: true, compact: true) }
                                         }
                                     }
                                 }
                             }.buttonStyle(.plain)
-                            FollowControl(userID: host.id)
+                            FollowControl(userID: room.hostID)
                         }.padding(.leading, 3).background { Capsule().fill(.black.opacity(0.20)) }
                         Spacer(minLength: 6)
                         Button { panel = .members } label: {
@@ -153,7 +153,7 @@ struct RoomView: View {
                             .frame(width: geo.size.width, height: geo.size.height)
                     }
                     if room.isVoice {
-                        // Keep controls readable without hiding the supplied stage floor.
+
                         VStack(spacing: 0) {
                             LinearGradient(colors: [.black.opacity(0.24), .clear], startPoint: .top, endPoint: .bottom)
                                 .frame(height: min(160, geo.size.height * 0.2))
@@ -240,7 +240,10 @@ struct RoomView: View {
                     panel = destination
                 }
             } else if selected == .gifts {
-                NavigationStack { GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil }) }
+                NavigationStack {
+                    if let host { GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil }) }
+                    else { EmptyContent(title: "Host unavailable", detail: "Return to the room list and try again.") }
+                }
                     .overlay { NoticeLayer() }
 
             } else if selected == .dictation {
@@ -256,8 +259,8 @@ struct RoomView: View {
                 NavigationStack {
                     Group {
                         switch selected {
-                        case .gifts, .tools, .safety, .viewing, .dictation: EmptyView() // Uses its own content-sized presentation.
-                        case .members: TatiPanel(title: "In this room") { EmptyContent(title: "Member list unavailable", detail: "Member information is currently unavailable."); UserProfileLink(userID: host.id) { SettingRow(title: "View host", asset: "profile-heading") } }
+                        case .gifts, .tools, .safety, .viewing, .dictation: EmptyView()
+                        case .members: TatiPanel(title: "In this room") { EmptyContent(title: "Member list unavailable", detail: "Member information is currently unavailable."); UserProfileLink(userID: room.hostID) { SettingRow(title: "View host", asset: "profile-heading") } }
                         case .background: backgroundPanel
                         case .microphone:
                             RoomControlSheet(title: "Voice seats", subtitle: "Speaking seats are unavailable.") {
@@ -272,7 +275,7 @@ struct RoomView: View {
                             isVisible && room.isVoice && roomSession.room?.id == room.id && scenePhase == .active
                         })
                         case .report: ReportView(subjectID: "room:" + room.id)
-                        case .leave: EmptyView() // Presented separately at its content height.
+                        case .leave: EmptyView()
                         }
                     }
                 }
@@ -325,8 +328,8 @@ struct RoomView: View {
         let cellWidth = min(76, stageWidth / CGFloat(columns))
         return ScrollView {
             VStack(spacing: 20) {
-                NavigationLink(destination: PersonProfileView(person: host)) {
-                    Avatar(asset: host.portraitArtwork, size: 68)
+                UserProfileLink(userID: room.hostID) {
+                    Avatar(asset: host?.portraitArtwork, size: 68)
                         .overlay { Art(name: "host-frame", width: 96, height: 96) }
                         .frame(width: 104, height: 104)
                 }.buttonStyle(.plain).accessibilityLabel("Host details")
@@ -409,14 +412,14 @@ struct GiftShopView: View {
     @EnvironmentObject private var store: MemberKitchenStore
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @State private var selected = TableCommunity.gifts[0]
+    @State private var selected: TableCelebration? = TableCommunity.gifts.first
     @State private var quantityText = "1"
     @State private var showRecharge = false
     @FocusState private var editingQuantity: Bool
 
     private var quantity: Int { Int(quantityText) ?? 0 }
-    private var total: Int { selected.cost * quantity }
-    private var canPlay: Bool { (1...99).contains(quantity) && !store.isPersonHidden(recipient.id) }
+    private var total: Int { (selected?.cost ?? 0) * quantity }
+    private var canPlay: Bool { selected != nil && (1...99).contains(quantity) && !store.isPersonHidden(recipient.id) }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -458,7 +461,7 @@ struct GiftShopView: View {
     }
 
     private func giftCard(_ gift: TableCelebration) -> some View {
-        let isSelected = selected.id == gift.id
+        let isSelected = selected?.id == gift.id
         return Button {
             editingQuantity = false
             selected = gift
@@ -511,18 +514,18 @@ struct GiftShopView: View {
             Button(action: playGift) {
                 ViewThatFits(in: .horizontal) {
                     HStack(spacing: 12) {
-                        Text("Play \(selected.name)").font(.tati(.subheadline).weight(.semibold))
+                        Text("Play \(selected?.name ?? "gift effect")").font(.tati(.subheadline).weight(.semibold))
                         Spacer(minLength: 0)
                         costLabel
                     }
                     VStack(spacing: 5) {
-                        Text("Play \(selected.name)").font(.tati(.subheadline).weight(.semibold))
+                        Text("Play \(selected?.name ?? "gift effect")").font(.tati(.subheadline).weight(.semibold))
                         costLabel
                     }
                 }.padding(.horizontal, 16).padding(.vertical, 13).frame(maxWidth: .infinity, minHeight: 50)
                     .background(canPlay ? Color.tatiPink : Color.tatiPink.opacity(0.25), in: RoundedRectangle(cornerRadius: 18))
             }.buttonStyle(.plain).disabled(!canPlay)
-                .accessibilityLabel("Play \(selected.name), quantity \(quantity), \(total) coins")
+                .accessibilityLabel("Play \(selected?.name ?? "gift effect"), quantity \(quantity), \(total) coins")
             Text("For your room view only · No coins sent to the host")
                 .font(.tati(.caption2)).foregroundStyle(Color.tatiOlive)
                 .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
@@ -561,6 +564,7 @@ struct GiftShopView: View {
     }
 
     private func playGift() {
+        guard let selected else { return }
         editingQuantity = false
         let gift = selected
         store.requestGift(gift, quantity: quantity, recipient: recipient.id, roomID: roomID,
@@ -586,7 +590,7 @@ struct GiftShopView: View {
         let bytes = try Data(contentsOf: url, options: .mappedIfSafe)
         guard bytes.count <= limit else { throw CocoaError(.fileReadTooLarge) }
         let replacement = try AVAudioPlayer(data: bytes)
-        // Validate first: an invalid new file must not erase the previous selection.
+
         stop()
         player = replacement
         replacement.delegate = self
@@ -664,7 +668,7 @@ struct RoomMusicPanel: View {
             }
         }.onAppear { sessionRevision = player.revision }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.audio]) { result in
-            // A late Files callback cannot load audio into a different room session.
+
             guard isCurrentRoom(), sessionRevision == player.revision else { return }
             do {
                 let url = try result.get()
