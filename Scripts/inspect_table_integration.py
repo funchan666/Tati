@@ -61,7 +61,7 @@ def main():
         assert normalize((DOCS / 'generated' / generated).read_text()) == normalize((ROOT / 'Tati/Integration' / generated).read_text())
     info = plistlib.loads((ROOT / 'Tati/Info.plist').read_bytes())
     assert all(info.get(k) for k in ['NSCameraUsageDescription', 'NSPhotoLibraryUsageDescription', 'NSMicrophoneUsageDescription'])
-    assert any('com.tati.app' in t.get('CFBundleURLSchemes', []) for t in info['CFBundleURLTypes'])
+    assert any('com.tatifood.kitchennotes' in t.get('CFBundleURLSchemes', []) for t in info['CFBundleURLTypes'])
     assert 'TABLE_PUSH_ENVIRONMENT = production;' in pbx
     assert 'Alamofire in Frameworks' in pbx
     report = {'scope':'Offline source, DTO fields, import payloads and project references; not Swift type-checking or service validation', 'baseURL':contract['baseURL'], 'sourceAppId':contract['sourceAppId'], 'interfaces':len(routes), 'configurationEntries':14, 'sourceCounts':counts, 'swiftTargetMembers':len(swift), 'buildTestsAppOrBusinessRequestsPerformed':False}

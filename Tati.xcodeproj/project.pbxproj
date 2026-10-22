@@ -482,7 +482,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -debug-prefix-map \"$(SRCROOT)=.\" -file-prefix-map \"$(SRCROOT)=.\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tatifood.kitchennotes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -579,7 +579,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tatifood.kitchennotes;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

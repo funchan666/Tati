@@ -1,9 +1,5 @@
 Bundle ID
-Current project: com.tati.app
-Alternative candidates:
-com.tati.kitchennotes
-app.tati.foodjournal
-com.tati.tablemoments
+com.tatifood.kitchennotes
 
 App name
 Tati Food Stories and Notes

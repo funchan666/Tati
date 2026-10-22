@@ -1,6 +1,6 @@
 # Tati Prada integration — 2026-10-22
 
-Current source of truth: `contract.json`. App ID **48859669**, API origin **https://api.afterhou.top**, Bundle ID **com.tati.app**. This work uses the installed Prada skill, the existing SwiftUI architecture, original Tati artwork, and static Duo layout/state review. No audit/device/time-based feature filtering was added.
+Current source of truth: `contract.json`. App ID **48859669**, API origin **https://api.afterhou.top**, Bundle ID **com.tatifood.kitchennotes**. This work uses the installed Prada skill, the existing SwiftUI architecture, original Tati artwork, and static Duo layout/state review. No audit/device/time-based feature filtering was added.
 
 ## Import
 
@@ -42,7 +42,7 @@ Set `PRADA_SKILL_DIR` to the installed Prada skill directory before running this
 | F10 theme | `KitchenThemeInbox.accept/drain/reconnect/flush` | Authenticated follower changes update followers; film safety updates a separate server-hidden set, preserving user hiding/blocking. Pending data, revisions, dedup and receipts persist atomically with account state. Stable receipt retries survive reconnect/foreground; transport ACK does not delete them, explicit backend ack does. Per-entity replay cursors avoid a guessed global revision. |
 | F11 lifecycle | `signedOut/clearSession`, `becameActive`, `onOpenURL` | Session identity invalidates before cleanup. Device Keychain and historical wallet evidence retained. Bundle scheme only wakes the same owner, never asserts payment/auth success. WK callbacks, timers and notification consumers are isolated across sessions. |
 
-Permission purpose declarations preserve valid existing camera/microphone copy and add the missing photo selection purpose in six languages. This does not add broad photo authorization requests. The Release URL scheme is `com.tati.app`; APNs entitlements use development in Debug and production in Release. Actual Team/provisioning/APNs registration are not validated by source inspection.
+Permission purpose declarations preserve valid existing camera/microphone copy and add the missing photo selection purpose in six languages. This does not add broad photo authorization requests. The Release URL scheme is `com.tatifood.kitchennotes`; APNs entitlements use development in Debug and production in Release. Actual Team/provisioning/APNs registration are not validated by source inspection.
 
 ## Backend and purchase boundaries
 

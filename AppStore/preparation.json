@@ -7,5 +7,6 @@
   "resourceSourceBytes": 27349863,
   "ipaMeasured": false,
   "realPurchasesVerified": false,
-  "reviewCredentialsRequired": false
+  "reviewCredentialsRequired": false,
+  "bundleIdentifier": "com.tatifood.kitchennotes"
 }

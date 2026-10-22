@@ -32,7 +32,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.tati.app</string>
+				<string>com.tatifood.kitchennotes</string>
 			</array>
 		</dict>
 	</array>
