@@ -56,7 +56,7 @@ targets:
           STRIP_INSTALLED_PRODUCT: YES
           ENABLE_TESTABILITY: NO
           DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-          OTHER_SWIFT_FLAGS: '$(inherited) -debug-prefix-map $(SRCROOT)=. -file-prefix-map $(SRCROOT)=.'
+          OTHER_SWIFT_FLAGS: '$(inherited) -debug-prefix-map "$(SRCROOT)=." -file-prefix-map "$(SRCROOT)=."'
     info:
       path: Tati/Info.plist
       properties:

@@ -24,7 +24,7 @@ For future media edits, `python3 Scripts/import_content.py` updates the deployme
 python3 "$PRADA_SKILL_DIR/scripts/render_contract.py" Docs/BackendAPI/contract.json --out Docs/BackendAPI/generated --replace
 ```
 
-If the contract changes, copy both generated Swift constant files to `Tati/Integration`; preserve the project's ordinary-comment cleanup. Content-only edits do not change runtime constants.
+Set `PRADA_SKILL_DIR` to the installed Prada skill directory before running this maintenance command. If the contract changes, copy both generated Swift constant files to `Tati/Integration`; preserve the project's ordinary-comment cleanup. Content-only edits do not change runtime constants.
 
 ## Call-chain inspection
 

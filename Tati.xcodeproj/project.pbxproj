@@ -476,7 +476,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited) -debug-prefix-map $(SRCROOT)=. -file-prefix-map $(SRCROOT)=.";
+				OTHER_SWIFT_FLAGS = "$(inherited) -debug-prefix-map \"$(SRCROOT)=.\" -file-prefix-map \"$(SRCROOT)=.\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
