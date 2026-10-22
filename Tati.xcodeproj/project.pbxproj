@@ -22,6 +22,7 @@
 		4B26B2E1DE6F95805508EBE6 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */; };
 		51C3DCC0285913131CB131AB /* KitchenNotebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC33E52D30307817112BEF99 /* KitchenNotebook.swift */; };
 		573985EF166EA8BD13244CDF /* KitchenAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01F065D7ACDB5970D49D8A5 /* KitchenAPI.swift */; };
+		57F1160165D9859D1AE1827F /* TableCallPreparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D3B262112A9E5FD034AF3FC /* TableCallPreparation.swift */; };
 		5DDFCB1A380369E9635BCD2F /* dmsans-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 115D3B615518A0DF1DA71E3C /* dmsans-OFL.txt */; };
 		5DE22E530E00A1935378663A /* SupperWebContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74015A6ED906F16855D977F0 /* SupperWebContainer.swift */; };
 		6B1240BE3FB6F1F24DEF50D1 /* RoomDictationSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */; };
@@ -95,6 +96,7 @@
 		7EBE449EBB35C8B94263F250 /* TableMessageEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableMessageEnvelope.swift; sourceTree = "<group>"; };
 		7F8A8A774812B7EEC3E2BC98 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		85DC37DBE08E928F770B39A2 /* KitchenTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenTypography.swift; sourceTree = "<group>"; };
+		8D3B262112A9E5FD034AF3FC /* TableCallPreparation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCallPreparation.swift; sourceTree = "<group>"; };
 		956530E4E3D31473F7B68130 /* CookingRoomSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingRoomSession.swift; sourceTree = "<group>"; };
 		98B7123322816D4CE4B4771E /* TableBusinessReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableBusinessReceiver.swift; sourceTree = "<group>"; };
 		A01F065D7ACDB5970D49D8A5 /* KitchenAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenAPI.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				FDE380D469D0457CF58082C3 /* MemberSupportScenes.swift */,
 				74300FD37C4CFF643F8E4BB5 /* RoomToolPanels.swift */,
 				E80F3781B8DFC91E8C87E3C1 /* SupportMailbox.swift */,
+				8D3B262112A9E5FD034AF3FC /* TableCallPreparation.swift */,
 				2B972787ACE26040325084F2 /* TableGuidelinesView.swift */,
 			);
 			path = Features;
@@ -385,6 +388,7 @@
 				5DE22E530E00A1935378663A /* SupperWebContainer.swift in Sources */,
 				9CFA872414314F54B61FFE9D /* SupportMailbox.swift in Sources */,
 				13FE942F18767906A388D976 /* TableBusinessReceiver.swift in Sources */,
+				57F1160165D9859D1AE1827F /* TableCallPreparation.swift in Sources */,
 				E605DFCD3DCC3446B393DC90 /* TableCommunity.swift in Sources */,
 				E132D6A1F9A47B84B094A33C /* TableConnectionGate.swift in Sources */,
 				C8C84E1334F5DE13FAED4DFA /* TableGuidelinesView.swift in Sources */,

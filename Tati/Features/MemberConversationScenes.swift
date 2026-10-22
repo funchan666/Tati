@@ -855,11 +855,12 @@ struct ConversationView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var text = ""
     @State private var call: ConversationCallKind?
+    @State private var conversationOwner: String?
     @State private var showSafety = false
     @State private var reportedMessage: ConversationOutboxItem?
     @FocusState private var inputFocused: Bool
     private var messages: [ConversationOutboxItem] { store.messages(with: person.id) }
-    private var canSend: Bool { store.canCommunicate(with: person.id) && !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && store.storageFailure == nil }
+    private var canSend: Bool { conversationOwner == store.account.profile.id && store.canCommunicate(with: person.id) && !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && store.storageFailure == nil }
     private let paper = Color(red: 1, green: 0.96, blue: 0.90)
 
     var body: some View {
@@ -889,7 +890,7 @@ struct ConversationView: View {
         }
         .background { paper.ignoresSafeArea(.container) }
         .foregroundStyle(Color.tatiInk).tatiScreen()
-        .onAppear { text = store.account.drafts[person.id] ?? ""; if store.isPersonHidden(person.id) { dismiss() } }
+        .onAppear { conversationOwner = store.account.profile.id; text = store.account.drafts[person.id] ?? ""; if store.isPersonHidden(person.id) { dismiss() } }
         .onDisappear { store.flushDraft(person.id) }
         .onChange(of: store.account.blocked) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
         .onChange(of: store.account.hiddenSubjects) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
@@ -950,6 +951,7 @@ struct ConversationView: View {
         Button {
             inputFocused = false
             store.flushDraft(person.id)
+            guard conversationOwner == store.account.profile.id else { return }
             if store.requireMutualFollow(person.id) { call = kind }
         } label: {
             HStack(spacing: 8) {
@@ -962,7 +964,7 @@ struct ConversationView: View {
             .foregroundStyle(kind == .voice ? Color.tatiCream : Color.tatiInk)
             .background(kind == .voice ? Color.tatiInk : Color.tatiPink, in: RoundedRectangle(cornerRadius: 18))
         }.buttonStyle(.plain).accessibilityLabel(LocalizedStringKey(kind.title))
-            .disabled(!store.canCommunicate(with: person.id))
+            .disabled(conversationOwner != store.account.profile.id || !store.canCommunicate(with: person.id))
             .opacity(store.canCommunicate(with: person.id) ? 1 : 0.45)
     }
 
@@ -1044,84 +1046,12 @@ struct ConversationView: View {
 
 struct VoiceCallView: View {
     var person: TableMember
-    @Environment(\.dismiss) private var dismiss
-    var body: some View {
-        NavigationStack {
-            TatiPage(title: "Voice call", scrolling: true) {
-                VStack(spacing: 22) {
-                    ConversationCallArt(kind: .voice, side: 136)
-                    Avatar(asset: person.portraitArtwork, size: 104)
-                    Text(person.name).font(.tati(.title, design: .serif, weight: .bold))
-                    Text("Voice calls are unavailable. No microphone access is needed.")
-                        .font(.tati(.subheadline)).foregroundStyle(Color.tatiOlive)
-                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                    TatiButton(title: "Close", secondary: true) { dismiss() }
-                }.padding(.vertical, 20)
-            }
-        }
-    }
+    var body: some View { TableCallPreparationView(person: person, kind: .voice) }
 }
 
 struct VideoCallView: View {
     var person: TableMember
-    @EnvironmentObject private var store: MemberKitchenStore
-    @EnvironmentObject private var playback: FoodFilmPlayback
-    @EnvironmentObject private var roomSession: CookingRoomSession
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
-    @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var camera = KitchenCameraController()
-    @State private var cameraTask: Task<Void, Never>?
-    @State private var ownerID: String?
-    var body: some View {
-        NavigationStack {
-            TatiPage(title: "Video call", scrolling: false) {
-                VStack(spacing: 16) {
-                    UserProfileLink(userID: person.id) {
-                        HStack { Avatar(asset: person.portraitArtwork, size: 44); Text(person.name).font(.tati(.headline)) }
-                    }
-                    GeometryReader { geometry in
-                        ZStack {
-                            Color.black
-                            if camera.ready { CameraSurface(session: camera.session) }
-                            else { Text(LocalizedStringKey(camera.status)).font(.tati(.subheadline)).foregroundStyle(.white).multilineTextAlignment(.center).padding(24) }
-                        }.frame(width: geometry.size.width, height: geometry.size.height).clipped()
-                    }.clipShape(RoundedRectangle(cornerRadius: 20))
-                    Text("Your camera is not shared. Video calls are unavailable.").font(.tati(.caption)).foregroundStyle(Color.tatiOlive)
-                    if !camera.ready {
-                        TatiButton(title: camera.starting ? "Starting camera…" : "Enable camera", secondary: true, enabled: !camera.starting) { startCamera() }
-                    }
-                    TatiButton(title: "Close") { cameraTask?.cancel(); camera.stop(); dismiss() }
-                }
-            }
-        }
-        .onAppear { ownerID = store.account.profile.id }
-        .onDisappear { cameraTask?.cancel(); camera.stop() }
-        .onChange(of: scenePhase) { _, phase in
-
-            if phase == .background { cameraTask?.cancel(); camera.stop() }
-        }
-        .onChange(of: store.account.following) { _, _ in checkPermission() }
-        .onChange(of: store.account.followers) { _, _ in checkPermission() }
-        .onChange(of: store.account.blocked) { _, _ in checkPermission() }
-        .onChange(of: store.account.hiddenSubjects) { _, _ in checkPermission() }
-        .onChange(of: store.account.profile.id) { _, _ in checkPermission() }
-        .onChange(of: store.account.signedIn) { _, _ in checkPermission() }
-    }
-    private func checkPermission() {
-        if ownerID != store.account.profile.id || !store.canCommunicate(with: person.id) { cameraTask?.cancel(); camera.stop(); dismiss() }
-    }
-    private func startCamera() {
-        guard ownerID == store.account.profile.id, store.requireMutualFollow(person.id) else { dismiss(); return }
-        playback.stop(); roomSession.audio.stop()
-        cameraTask?.cancel()
-        cameraTask = Task {
-            let outcome = await camera.start()
-            guard !Task.isCancelled, ownerID == store.account.profile.id else { return }
-            if outcome == .declined { dismiss() }
-            else { store.explainCameraAvailability(outcome) }
-        }
-    }
+    var body: some View { TableCallPreparationView(person: person, kind: .video) }
 }
 
 struct CookingNotesView: View {

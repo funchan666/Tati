@@ -1,0 +1,28 @@
+{
+  "generation": "Host-Native built-in image generation, Garden Image 2 prompt guidance",
+  "promptFile": "art-direction.txt",
+  "originalsRetained": true,
+  "runtimeCompression": "Lossless PNG; pixel and color profile signatures verified",
+  "assets": [
+    {
+      "asset": "table-call-backdrop",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "beforeBytes": 2877519,
+      "afterBytes": 2346213,
+      "decodedRGBA256": "67b003e3567145278fa411ebf3c618a11b9e51451326dd6b6a19afbd0d8c5a1d"
+    },
+    {
+      "asset": "table-call-controls",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "beforeBytes": 1586997,
+      "afterBytes": 1327394,
+      "decodedRGBA256": "ee5e40cc8e7dcbc274c0b22a761e63c2e68a8f4d42ec07b2d509e7592b6707f9"
+    }
+  ]
+}

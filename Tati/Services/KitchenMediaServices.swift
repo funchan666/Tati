@@ -245,7 +245,9 @@ private final class CameraCaptureWorker: @unchecked Sendable {
         let authorization = AVCaptureDevice.authorizationStatus(for: .video)
         if authorization == .denied { return .settingsRequired }
         if authorization == .restricted { return .restricted }
-        let authorized = await AVCaptureDevice.requestAccess(for: .video)
+        let authorized: Bool
+        if authorization == .authorized { authorized = true }
+        else { authorized = await AVCaptureDevice.requestAccess(for: .video) }
         guard generation == requestID, !Task.isCancelled else { return .cancelled }
         guard authorized else { status = "Camera is off"; return .declined }
         let nextFront = front ?? frontFacing

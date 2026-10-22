@@ -1,0 +1,22 @@
+{
+  "scope": "Static source, source artwork and resource-reference inspection; no build, app run, real permission prompt or RTC validation",
+  "nativeMessagingGate": "Signed in, not hidden or blocked, mutually following; draft retained when locked",
+  "nativeCallGate": "Checked before presentation, before permissions and after asynchronous results; invalidated on follow loss, hidden or blocked profile, sign-out or account switch",
+  "voicePermissions": [
+    "microphone"
+  ],
+  "videoPermissions": [
+    "camera",
+    "microphone"
+  ],
+  "firstPermissionDenial": "Close the current preparation without further prompts",
+  "previouslyDeniedPermission": "Inline neutral explanation with an optional user-tapped Settings button",
+  "cameraPreview": "Front camera initially, mirrored self-preview, camera off and front/back switch, no uploads",
+  "captureLifetime": "Stops on exit, background, interrupted capture or lost mutual follow; explicit action required to resume",
+  "connectionBoundary": "No RTC transport or remote answering is implemented; interface always says Not connected",
+  "artwork": "Original Host-Native generation, source PNGs and prompts in ProjectMaterials/TableCalls; two runtime PNGs in TableArtwork.xcassets",
+  "helpDeployment": "Updated source and interface import artifact only; existing remote help requires re-importing the interface template",
+  "buildTestsOrAppRunPerformed": false,
+  "currentResourceSourceBytes": 27349863,
+  "staticReferenceChecksPassed": true
+}

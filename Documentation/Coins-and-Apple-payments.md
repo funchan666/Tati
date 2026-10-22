@@ -4,7 +4,7 @@
 
 保留宿主 StoreKit 2 和唯一 Transaction.updates 消费者。九档商品 ID、币数及 USD 价格保持不变；目录来自服务器 kitchen offers。App Store Connect 商品创建、可售状态、签名和真实交易没有验证。
 
-钱包进入时通过 Product.products 读取 Apple 的真实消耗型商品及当地价格。加载期间和不可用的商品均不可购买；失败保留提示和主动重试入口，不使用参考美元价格替代商品价格。退出页面不取消已共享的商品查询；购买仍重新核对具体商品并调用 Apple 原生购买界面，不增加模拟成功或直接发币路径。
+钱包进入时显示接口目录提供的九档金币数和 USD 参考价格，固定每排三个；页面进入、选择套餐均不向 Apple 预先取商品。用户点击购买后才通过 Product.products 获取所选商品，核对消耗型与原有金额条件，再调用 Apple 原生购买界面；当地币种及最终价格以 Apple 购买界面为准。获取失败不会模拟成功或直接发币。交易归属、唯一交易观察者、先 finish 后单次服务器确认的流程保持不变。
 
 九档商品的名称、描述、商品 ID、币数及 USD 参考价格汇总在 `Tati-IAP-products.csv`。参考价格不等于已在 App Store Connect 设置或可售的价格。当前共享 scheme 未指定本地 StoreKit Configuration，Archive 使用 Release；仓库不含 `.storekit` 商品文件。App Review 使用 Apple 沙盒测试正式配置的商品，不会产生实际扣款；沙盒不是应用自行模拟购买。提交前需在 App Store Connect 配齐商品、价格、地区、审核截图及付费协议，并用 TestFlight/沙盒确认取商品、Apple 交易、后台验单与到账完整链路。当前仅检查源码，未完成这些外部验证。
 

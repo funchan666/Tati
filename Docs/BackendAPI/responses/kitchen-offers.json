@@ -218,7 +218,7 @@
       },
       {
         "question": "What can I do on the call screen?",
-        "answer": "Voice calls are unavailable and do not request microphone access. The video screen can show your camera after you tap Enable camera. It does not connect to another person."
+        "answer": "Messages and call preparation require mutual follows. Voice calls request microphone access; video calls request camera and microphone access and show your own camera preview. No call connects to another person yet, and your camera and microphone are not shared."
       },
       {
         "question": "How can I change my language?",

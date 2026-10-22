@@ -130,37 +130,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diktiere eine Nachricht in einem Kochraum und prüfe den Text vor dem Senden."
+            "value" : "Tati prüft den Mikrofonzugriff beim Vorbereiten eines Sprach- oder Videoanrufs und wandelt gesprochene Nachrichten in Kochräumen in Text um, den du prüfen kannst."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Speak a message in a food room and review the text before sending."
+            "value" : "Tati checks microphone access when you prepare a voice or video call, and uses it to turn food-room speech into text you can review."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dicta un mensaje en una sala de comida y revisa el texto antes de enviarlo."
+            "value" : "Tati comprueba el acceso al micrófono al preparar una llamada de voz o vídeo y lo usa para convertir tus palabras en las salas de comida en texto que puedes revisar."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dictez un message dans un salon culinaire et vérifiez le texte avant de l’envoyer."
+            "value" : "Tati vérifie l’accès au microphone lors de la préparation d’un appel audio ou vidéo et l’utilise pour convertir vos paroles dans les salons culinaires en texte que vous pouvez relire."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "料理ルームのメッセージを音声で入力し、送信前にテキストを確認できます。"
+            "value" : "Tati は音声通話やビデオ通話の準備時にマイクへのアクセスを確認し、料理ルームでの発言を確認可能なテキストに変換する際にもマイクを使用します。"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "将美食房间中的语音转为文字，发送前可查看和编辑。"
+            "value" : "Tati 在准备语音或视频通话时检查麦克风访问权限，也使用麦克风将美食房间中的语音转为可查看的文字。"
           }
         }
       }

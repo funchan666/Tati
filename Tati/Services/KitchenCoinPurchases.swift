@@ -26,14 +26,10 @@ final class KitchenCoinPurchases: ObservableObject {
     }
     @Published private(set) var busyProductID: String?
     @Published private(set) var recovering = false
-    @Published private(set) var prices: [String: String] = [:]
-    @Published private(set) var loadingOffers = false
-    @Published private(set) var offerIssue: String?
     @Published private(set) var recoveryIssue: String?
     private weak var store: MemberKitchenStore?
     private var updates: Task<Void, Never>?
     private var cleanup: Task<Void, Never>?
-    private var catalogTask: Task<Void, Never>?
     private var cleanupDone = false
     private var cleanupWaiters: [CheckedContinuation<Void, Never>] = []
     private var frozenOldIDs: Set<UInt64> = []
@@ -72,36 +68,7 @@ final class KitchenCoinPurchases: ObservableObject {
             }
         }
     }
-    deinit { updates?.cancel(); cleanup?.cancel(); catalogTask?.cancel() }
-    func loadOffers() async {
-        if let catalogTask { await catalogTask.value; return }
-        guard !Task.isCancelled else { return }
-        let identifiers = Set(KitchenCoinPack.all.map(\.id))
-        loadingOffers = true; offerIssue = nil; prices = [:]
-        let task = Task { @MainActor [weak self] in
-            guard let self else { return }
-            defer { self.loadingOffers = false }
-            guard !identifiers.isEmpty else {
-                self.offerIssue = "Coin packs are unavailable. Please try again."; return
-            }
-            do {
-                let products = try await Product.products(for: Array(identifiers))
-                guard !Task.isCancelled else { return }
-                let consumables = products.filter { identifiers.contains($0.id) && $0.type == .consumable }
-                self.prices = Dictionary(uniqueKeysWithValues: consumables.map { ($0.id, $0.displayPrice) })
-                self.knownConsumables.formUnion(consumables.map(\.id))
-                if Set(self.prices.keys) != identifiers {
-                    self.offerIssue = "Some coin packs are unavailable. Please try again."
-                }
-            } catch {
-                self.offerIssue = "Apple prices could not be loaded. Please try again."
-            }
-        }
-        catalogTask = task
-        await task.value
-        catalogTask = nil
-        if identifiers != Set(KitchenCoinPack.all.map(\.id)) { await loadOffers() }
-    }
+    deinit { updates?.cancel(); cleanup?.cancel() }
     private func finishCleanup() {
         guard !cleanupDone else { return }; cleanupDone = true; recovering = false
         let waiters = cleanupWaiters; cleanupWaiters.removeAll()
@@ -134,7 +101,6 @@ final class KitchenCoinPurchases: ObservableObject {
         do {
             guard let product = try await Product.products(for: [productID]).first(where: { $0.id == productID }), product.type == .consumable else { throw KitchenServiceFailure.configuration }
             knownConsumables.insert(product.id)
-            prices[productID] = product.displayPrice
             if source == .hostLocal, let package, product.priceFormatStyle.currencyCode == "USD", let expected = Decimal(string: package.usdPrice, locale: Locale(identifier: "en_US_POSIX")), product.price != expected { throw KitchenServiceFailure.configuration }
             guard owner == store.account.profile.id, store.account.signedIn else { return }
             if let session, isSessionCurrent?(session) != true { return }

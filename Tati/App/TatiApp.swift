@@ -114,8 +114,12 @@ struct WelcomeView: View {
                             TatiButton(title: "Try again", enabled: !entering) { session.retryWeb() }
                             Button("Return to welcome") { session.returnToWelcome() }.buttonStyle(.plain).frame(minHeight: 44)
                         } else {
-                            WelcomeEntryButton(loading: entering, enabled: consent && store.storageFailure == nil) {
-                                guard !entering, consent, store.storageFailure == nil else { return }
+                            WelcomeEntryButton(loading: entering, enabled: store.storageFailure == nil) {
+                                guard !entering, store.storageFailure == nil else { return }
+                                guard consent else {
+                                    store.tell("Agreement required", "Please read and agree to the User Agreement and Privacy Policy before signing in.")
+                                    return
+                                }
                                 session.begin()
                             }
                         }

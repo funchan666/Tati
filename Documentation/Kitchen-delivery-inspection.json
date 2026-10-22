@@ -1,6 +1,6 @@
 {
   "scope": "Static source, project, resource and import-contract inspection only",
-  "swiftSourceFiles": 40,
+  "swiftSourceFiles": 41,
   "editorialProfiles": 49,
   "activeFeedFilms": 10,
   "activeRoomFilms": 6,
@@ -14,7 +14,7 @@
   "fontCuts": 3,
   "fontBytes": 186516,
   "catalogEntries": {
-    "Localizable.xcstrings": 583,
+    "Localizable.xcstrings": 607,
     "InfoPlist.xcstrings": 6
   },
   "supportEmail": "hudden.serudiv22@gmail.com",
@@ -23,7 +23,7 @@
   "chapterCoins": [
     120
   ],
-  "currentAppResourceBytes": 23652947,
+  "currentAppResourceBytes": 27352914,
   "storeKitOffersUnchanged": true,
   "legacyStoredKeysRetained": true,
   "buildTestsOrAppRunPerformed": false

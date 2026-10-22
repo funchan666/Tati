@@ -75,7 +75,7 @@ targets:
         UIUserInterfaceStyle: Light
         UIApplicationSupportsIndirectInputEvents: true
         NSCameraUsageDescription: Tati uses the camera to take your profile photo and show a camera preview when you prepare a food live room or video call.
-        NSMicrophoneUsageDescription: Speak a message in a food room and review the text before sending.
+        NSMicrophoneUsageDescription: Tati checks microphone access when you prepare a voice or video call, and uses it to turn food-room speech into text you can review.
         NSSpeechRecognitionUsageDescription: Tati turns spoken food-room messages into editable text. If speech cannot be processed on your device, audio is sent to Apple for recognition.
 schemes:
   Tati:

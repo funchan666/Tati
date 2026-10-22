@@ -41,7 +41,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Tati uses the camera to take your profile photo and show a camera preview when you prepare a food live room or video call.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Speak a message in a food room and review the text before sending.</string>
+	<string>Tati checks microphone access when you prepare a voice or video call, and uses it to turn food-room speech into text you can review.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Choose a photo or food video to share in Tati.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
