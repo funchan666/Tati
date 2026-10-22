@@ -1,25 +1,16 @@
-"""Generate hosted media mappings; retain original sources outside the app target.
+"""Generate hosted media mappings without local content image/video files.
 
-Unassigned or changed inputs stop the import instead of being silently replaced.
+Invalid or duplicate hosted records stop the import instead of being silently replaced.
 This prepares metadata only, not an application build or a media download.
 """
 from pathlib import Path
-import hashlib
 import json
-import shutil
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "ProjectMaterials/content-slots.json"
 RESOURCES = ROOT / "Tati/Resources"
-CATALOG = RESOURCES / "KitchenMedia.xcassets"
-MOVIES = RESOURCES / "FoodFilms"
-ARCHIVE = ROOT / "ProjectMaterials/PackagedMediaArchive"
 HOST = "https://pub-d00704a92e07453dbab85506699e0218.r2.dev"
-
-
-def digest(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def write_json(path, value):
@@ -27,7 +18,10 @@ def write_json(path, value):
 
 
 def remote_url(entry, folder):
-    return HOST + "/" + folder + "/" + quote(Path(entry["source"]).name)
+    name = entry["originalFilename"]
+    if not name or Path(name).name != name or "\\" in name:
+        raise ValueError("Expected a filename, not a local path: " + name)
+    return HOST + "/" + folder + "/" + quote(name)
 
 
 def main():
@@ -36,37 +30,20 @@ def main():
     if any(entry.get("authorID") not in people for entry in mapping["videos"]):
         raise ValueError("Every video must reference an assigned profile.")
     assigned = mapping["portraits"] + mapping["videos"]
-    expected = {item["source"] for item in assigned}
-    actual = {
-        str(p.relative_to(ROOT))
-        for folder in ["ContentImages", "ContentVideos"]
-        for p in (ROOT / "ProjectMaterials" / folder).rglob("*")
-        if p.is_file() and not p.name.startswith(".")
-    }
-    if expected != actual or len(expected) != len(assigned):
-        raise ValueError(f"Media mapping mismatch: unassigned={actual - expected}, missing={expected - actual}")
-    for entry in assigned:
-        if digest(ROOT / entry["source"]) != entry["sha256"]:
-            raise ValueError(f"Source changed; review its mapping first: {entry['source']}")
-
-    # Preserve the old app copies for recovery without packaging them in the app.
-    for folder in [CATALOG, MOVIES]:
-        if folder.exists() and (ARCHIVE / folder.name).exists():
-            raise ValueError("Archive already exists; refusing to overwrite: " + str(folder))
-    for folder in [CATALOG, MOVIES]:
-        if folder.exists():
-            ARCHIVE.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(folder), str(ARCHIVE / folder.name))
+    if len({item["originalFilename"] for item in assigned}) != len(assigned):
+        raise ValueError("Duplicate hosted source filename")
     for entry in mapping["portraits"]:
-        entry["remoteURL"] = remote_url(entry, "photo")
+        if entry["remoteURL"] != remote_url(entry, "photo"):
+            raise ValueError("Photo URL does not match its original filename")
     for entry in mapping["videos"]:
-        entry["remoteURL"] = remote_url(entry, "videos")
-    mapping["status"] = "assigned-hosted-media"
-    mapping["delivery"] = {"photoBaseURL": HOST + "/photo/", "movieBaseURL": HOST + "/videos/"}
+        if entry["remoteURL"] != remote_url(entry, "videos"):
+            raise ValueError("Movie URL does not match its original filename")
+    mapping["status"] = "hosted-media-only"
+    mapping["delivery"] = {"photoBaseURL": HOST + "/photo/", "movieBaseURL": HOST + "/videos/", "localSourceFilesRemoved": True}
     clips = []
     room_clips = {}
     for entry in mapping["videos"]:
-        # Review holds stay assigned for provenance but must not re-enter app resources.
+        # Only current explicit exclusions are skipped; historical review notes do not hide content.
         if entry.get("excludedFromApp"):
             continue
         clip = {
@@ -101,7 +78,7 @@ def main():
         },
     })
     write_json(MANIFEST, mapping)
-    print(f"Mapped {len(mapping['portraits'])} hosted portraits, {len(mapping['videos'])} video URLs ({len(clips)} feed / {len(room_clips)} room active); originals retained.")
+    print(f"Mapped {len(mapping['portraits'])} hosted portraits, {len(mapping['videos'])} video URLs ({len(clips)} feed / {len(room_clips)} room active); no local media required.")
 
 
 if __name__ == "__main__":

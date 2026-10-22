@@ -2,12 +2,14 @@
 
 ## Scope and mapping
 
-The 49 source photographs and 16 source movies under `ProjectMaterials/ContentImages` and `ContentVideos` resolve by their original filenames against:
+The 49 photographs and 16 movies resolve by their recorded original filenames against:
 
 - Photos: `https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/`
 - Movies: `https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/`
 
-Every original entry has an explicit `remoteURL` in `ProjectMaterials/content-slots.json`. Existing member IDs, authored copy, film IDs, engagement, room assignments and review holds are unchanged. The runtime manifest adds `imageSources`, `movieSources` and `posterSources` while preserving its existing content fields byte-for-value. It includes all 49 photographs and the existing 13 active movies (7 feed, 6 room). The 3 previously held movies retain URL mappings in the source manifest and remain excluded from display.
+Every original entry has an explicit `remoteURL` in `ProjectMaterials/content-slots.json`. The runtime manifest adds `imageSources`, `movieSources` and `posterSources`, preserving existing member IDs, film IDs and room assignments. Following the user's subsequent request to use every video, all 16 movies are now active: 10 feed movies and 6 room movies. All 49 photographs remain assigned. The former exclusions for `sample-clip-6`, `sample-clip-13` and `sample-clip-15` are explicitly false; prior notes are retained as historical `previousReviewNote` metadata and do not control visibility. The everyday-moment video's caption and comments were made consistent with the visible personal update.
+
+The restored feed entries retain their existing authors and distinct editorial engagement: 458 likes / 4 comments, 652 likes / 6 comments and 1,189 likes / 11 comments. They use the same remote-poster, playback, profile navigation and comment report/block paths as the other feed entries. Individual user hide/block choices still apply.
 
 Historical `bundledFile` coding keys and aliases remain for persisted-record compatibility. They now resolve through the hosted movie dictionary; the player does not fall back to a packaged editorial movie. User-imported photos and movies still resolve to their own local files. Original UI artwork, fonts and voice-room stage backgrounds remain packaged, since they are outside the two requested folders.
 
@@ -23,15 +25,15 @@ Video posters are extracted with AVAssetImageGenerator from the matching HTTPS m
 
 ## App packaging and recovery
 
-The former `Tati/Resources/KitchenMedia.xcassets` and `FoodFilms` directories were moved to `ProjectMaterials/PackagedMediaArchive/`. Originals remain in their original source directories with all 65 SHA-256 hashes unchanged. The archived app copies occupy 131,286,343 bytes (125.20 MiB) and are outside the app target. They are retained for recovery, with no runtime fallback to them.
+Following the user's explicit request to remove local copies, `ContentImages`, `ContentVideos`, `PackagedMediaArchive` and `ContentReviewHold` were deleted. Derived content-audit images were also deleted. This removed 268 files totalling 295,006,288 bytes (281.34 MiB of working-tree file contents). UI artwork, fonts, text/JSON audit records, and user-imported application data were not deleted. The removal inventory is in `Local-content-cleanup.json`.
 
-`Scripts/import_content.py` now emits metadata and URL mappings only. It cannot silently restore bundled content or overwrite an existing recovery archive. The generated Xcode project has been refreshed to remove obsolete resource references. Current app resource sources are about 26.02 MiB; this is not an IPA or App Store download measurement.
+`content-slots.json` retains each `remoteURL`, `originalFilename`, `originalSHA256` and `originalByteCount`. Hashes are historical provenance, not a claim that deleted files were rehashed. `Scripts/import_content.py` emits metadata and URL mappings without opening local source files, downloading replacements or recreating archives. The generated Xcode project already excludes content media. App resource sources remain about 26.02 MiB; this is not an IPA or App Store download measurement.
 
 ## Verification and boundaries
 
-- `Scripts/inspect_hosted_media.py`: all original hashes, per-file URL mappings, active/held separation, covers, poster mappings and removal from the generated app target checked.
+- Before cleanup, all 65 originals matched their recorded hashes. After cleanup, `Scripts/inspect_hosted_media.py` checks hosted records, per-file URL mappings, inclusion of all 16 movies, covers, poster mappings, removal from the generated app target and absence of local source/backup folders. It validates historical hash format without reading deleted files.
 - `Scripts/inspect_hosted_media.py --check-links`: HTTPS HEAD only, with certificate verification enabled. All 65 endpoints returned HTTP 200 after one transient connection failure was retried. All 16 videos advertise byte-range support. Full results are in `Remote-media-availability.json`; no media bodies were downloaded for this check.
-- Prior content values compared to Git HEAD: unchanged. Plist/project syntax, referenced resources and touched-source whitespace checked.
+- The initial hosting migration preserved prior content values against Git HEAD. Subsequent changes enabled the three former exclusions and revised the personal-update copy described above. Local cleanup changes only the source manifest/provenance and tooling; runtime content, remote URLs and the 10-feed/6-room allocation remain intact. The generator and hosted-record checker run successfully without the deleted source files.
 - The older whole-delivery inspector was updated for hosted mappings but stopped at an existing missing Chinese translation for `About %@ min · Serves %@`. That unrelated catalog issue was not changed or presented as a passed whole-app audit.
 - No Swift compilation, tests, app launch, native UI rendering, simulator/device/Duo posture, offline playback or actual streaming/seek playback was performed. HTTP reachability and range headers do not establish device playback success.
 

@@ -437,6 +437,15 @@
       "posterArtwork": "noodles-outdoors-cover"
     },
     {
+      "id": "sample-clip-6",
+      "authorID": "portrait-08",
+      "caption": "A creative mixing experiment",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-creative-mix.mp4",
+      "posterArtwork": "poster-creative-mix"
+    },
+    {
       "id": "sample-clip-9",
       "authorID": "creator-seraphina",
       "caption": "Folding dumplings for the next hungry crowd.",
@@ -464,6 +473,15 @@
       "posterArtwork": "fruit-on-the-trail-cover"
     },
     {
+      "id": "sample-clip-13",
+      "authorID": "portrait-13",
+      "caption": "A little moment between plans.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "collection-everyday-moments.mp4",
+      "posterArtwork": "poster-everyday-moments"
+    },
+    {
       "id": "sample-clip-14",
       "authorID": "portrait-14",
       "caption": "Picking a favourite from the noodle lineup.",
@@ -471,6 +489,15 @@
       "isSample": true,
       "bundledFile": "noodle-tasting-table.mp4",
       "posterArtwork": "noodle-tasting-table-cover"
+    },
+    {
+      "id": "sample-clip-15",
+      "authorID": "portrait-15",
+      "caption": "Dinner prep, with a little kitchen chaos.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "cooking-at-home.mp4",
+      "posterArtwork": "cooking-at-home-cover"
     }
   ],
   "roomClips": {
@@ -587,13 +614,16 @@
     "crispy-snack-pan.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
     "noodles-outdoors.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
     "toasted-bread-story.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
+    "collection-creative-mix.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
     "market-spicy-snacks.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
     "soup-counter.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
     "dumpling-table.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
     "coffee-with-friends.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
     "french-toast-pan.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
     "fruit-on-the-trail.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
-    "noodle-tasting-table.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4"
+    "collection-everyday-moments.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
+    "noodle-tasting-table.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
+    "cooking-at-home.mp4": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4"
   },
   "posterSources": {
     "osaka-beef-sandwich-cover": {
@@ -620,6 +650,10 @@
       "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
       "seconds": 3.223
     },
+    "poster-creative-mix": {
+      "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNCLASeDpda_O7J_E0frwSy07Kgr5MDPrXRW3y71PvBXSvR0W8sZA5i267WbXD34DYkarZsVbnZCg33VRqW6CzIRtEBb50tSHhgFQw.mp4",
+      "seconds": 1.43
+    },
     "market-spicy-snacks-cover": {
       "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
       "seconds": 7.718
@@ -644,9 +678,17 @@
       "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
       "seconds": 1.481
     },
+    "poster-everyday-moments": {
+      "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPHKGz6UJ3NdDyONtlk2-u-6SCMWCib7o3MOgeHuptj3cfWJn_PmFdXReFIGKRX64aPTkMBVBsu4wg4d8IClDOryxXxHrMnifWSWtE.mp4",
+      "seconds": 1.312
+    },
     "noodle-tasting-table-cover": {
       "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
       "seconds": 6.861
+    },
+    "cooking-at-home-cover": {
+      "movieURL": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/videos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
+      "seconds": 1.045
     }
   },
   "curatedRoomActivity": {
@@ -1871,6 +1913,43 @@
         }
       ]
     },
+    "sample-clip-6": {
+      "likes": 458,
+      "comments": [
+        {
+          "id": "curated-sample-clip-6-comment-01",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-25",
+          "text": "I did not expect those ingredients together.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-02",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-26",
+          "text": "The texture changes so much as it mixes.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-03",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-27",
+          "text": "What inspired this combination?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-6-comment-04",
+          "clipID": "sample-clip-6",
+          "authorID": "portrait-28",
+          "text": "I would love to see how the final batch turns out.",
+          "createdAt": 3,
+          "isCurated": true
+        }
+      ]
+    },
     "sample-clip-9": {
       "likes": 3261,
       "comments": [
@@ -2062,6 +2141,59 @@
         }
       ]
     },
+    "sample-clip-13": {
+      "likes": 652,
+      "comments": [
+        {
+          "id": "curated-sample-clip-13-comment-01",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-39",
+          "text": "A quick hello before the next stop.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-02",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-40",
+          "text": "What was the rest of your day like?",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-03",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-41",
+          "text": "Good to see the little moments in between.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-04",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-43",
+          "text": "A small break from a busy day.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-05",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-44",
+          "text": "Sometimes a short update is all you need.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-13-comment-06",
+          "clipID": "sample-clip-13",
+          "authorID": "portrait-45",
+          "text": "What happened after this?",
+          "createdAt": 5,
+          "isCurated": true
+        }
+      ]
+    },
     "sample-clip-14": {
       "likes": 1673,
       "comments": [
@@ -2135,6 +2267,99 @@
           "authorID": "portrait-17",
           "text": "Now I want to compare noodles from a few different places.",
           "createdAt": 8,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-15": {
+      "likes": 1189,
+      "comments": [
+        {
+          "id": "curated-sample-clip-15-comment-01",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-46",
+          "text": "The pan still needs stirring, even when the kitchen gets lively.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-02",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-47",
+          "text": "One person cooks, one person distracts. I know this arrangement.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-03",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-48",
+          "text": "That is a very busy spot next to the stove.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-04",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-49",
+          "text": "What is in the pan tonight?",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-05",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-16",
+          "text": "We never make it through dinner prep without laughing.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-06",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-17",
+          "text": "The kitchen is always where everybody ends up.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-07",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-18",
+          "text": "I would volunteer to keep an eye on the pan.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-08",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-19",
+          "text": "A quiet recipe, a slightly less quiet kitchen.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-09",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-20",
+          "text": "Do you cook together or take turns?",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-10",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-21",
+          "text": "The cook has definitely earned the first plate.",
+          "createdAt": 9,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-15-comment-11",
+          "clipID": "sample-clip-15",
+          "authorID": "portrait-22",
+          "text": "Save some for the person doing the washing-up.",
+          "createdAt": 10,
           "isCurated": true
         }
       ]

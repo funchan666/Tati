@@ -1,7 +1,6 @@
 """Read-only source/configuration/resource inspection. Does not compile or run Tati."""
 from pathlib import Path
 import ast
-import hashlib
 import json
 import re
 import subprocess
@@ -43,7 +42,8 @@ def main():
                 require((entry.parent / image['filename']).is_file(), 'Missing image: ' + str(entry))
     all_media = manifest['portraits'] + manifest['videos']
     for item in all_media:
-        require(hashlib.sha256((ROOT / item['source']).read_bytes()).hexdigest() == item['sha256'], 'Original changed: ' + item['source'])
+        require(bool(re.fullmatch(r'[0-9a-f]{64}', item['originalSHA256'])), 'Invalid historical source hash')
+        require(item['originalByteCount'] > 0 and bool(item['remoteURL']), 'Incomplete hosted source record')
     films = library['clips'] + list(library['roomClips'].values())
     expected = {v['id'] for v in manifest['videos'] if not v.get('excludedFromApp')}
     require(expected == {v['id'] for v in films}, 'Active film assignment mismatch')
@@ -127,7 +127,7 @@ def main():
         'swiftSourceFiles': len(swift_files), 'editorialProfiles': len(library['portraits']),
         'activeFeedFilms': len(library['clips']), 'activeRoomFilms': len(library['roomClips']),
         'hostedPhotos': len(hosted_images), 'hostedMovies': len(hosted_movies), 'hostedPosters': len(hosted_posters),
-        'reviewHoldIDs': sorted(holds), 'originalInputHashesChecked': len(all_media),
+        'reviewHoldIDs': sorted(holds), 'hostedSourceRecordsChecked': len(all_media), 'originalInputHashesChecked': 0,
         'fontFamilies': 2, 'fontCuts': len(expected_faces), 'fontBytes': sum((RESOURCES / 'Typography' / f).stat().st_size for f in expected_faces),
         'catalogEntries': counts, 'supportEmail': 'hudden.serudiv22@gmail.com',
         'recipeCount': len(re.findall(r'\.init\(id:', (APP / 'Domain/KitchenNotebook.swift').read_text())),

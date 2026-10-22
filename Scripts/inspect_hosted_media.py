@@ -8,7 +8,7 @@ from urllib.parse import quote
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import argparse
-import hashlib
+import re
 import json
 import subprocess
 
@@ -21,10 +21,12 @@ def inspect():
     library = json.loads((ROOT / "Tati/Resources/table-editorial-content.json").read_text())
     all_entries = manifest["portraits"] + manifest["videos"]
     for entry in all_entries:
-        source = ROOT / entry["source"]
-        assert hashlib.sha256(source.read_bytes()).hexdigest() == entry["sha256"], source
+        name = entry["originalFilename"]
+        assert name and Path(name).name == name and "\\" not in name
+        assert re.fullmatch(r"[0-9a-f]{64}", entry["originalSHA256"])
+        assert entry["originalByteCount"] > 0
         folder = "photo" if entry in manifest["portraits"] else "videos"
-        assert entry["remoteURL"] == HOST + "/" + folder + "/" + quote(source.name)
+        assert entry["remoteURL"] == HOST + "/" + folder + "/" + quote(name)
     active = [v for v in manifest["videos"] if not v.get("excludedFromApp")]
     assert library["imageSources"] == {p["asset"]: p["remoteURL"] for p in manifest["portraits"]}
     assert library["movieSources"] == {v["resource"]: v["remoteURL"] for v in active}
@@ -40,8 +42,10 @@ def inspect():
         assert film["posterArtwork"] in library["posterSources"]
     for directory in ["KitchenMedia.xcassets", "FoodFilms"]:
         assert not (ROOT / "Tati/Resources" / directory).exists()
-        assert (ROOT / "ProjectMaterials/PackagedMediaArchive" / directory).is_dir()
         assert directory not in (ROOT / "Tati.xcodeproj/project.pbxproj").read_text()
+    assert manifest["delivery"]["localSourceFilesRemoved"]
+    for directory in ["ContentImages", "ContentVideos", "PackagedMediaArchive", "ContentReviewHold"]:
+        assert not (ROOT / "ProjectMaterials" / directory).exists()
     return manifest, all_entries
 
 
@@ -57,7 +61,7 @@ def head(entry):
         if ":" in line:
             name, value = line.split(":", 1)
             fields[name.lower()] = value.strip()
-    row = {"source": entry["source"], "url": entry["remoteURL"], "status": int(code or 0),
+    row = {"originalFilename": entry["originalFilename"], "url": entry["remoteURL"], "status": int(code or 0),
            "contentType": fields.get("content-type"), "contentLength": fields.get("content-length"),
            "acceptRanges": fields.get("accept-ranges")}
     if result.returncode:
@@ -70,7 +74,7 @@ def main():
     parser.add_argument("--check-links", action="store_true")
     args = parser.parse_args()
     manifest, entries = inspect()
-    print(f"Source hashes and URL mappings checked: {len(manifest['portraits'])} photos / {len(manifest['videos'])} movies.")
+    print(f"Hosted records and URL mappings checked: {len(manifest['portraits'])} photos / {len(manifest['videos'])} movies; no local files required.")
     if args.check_links:
         with ThreadPoolExecutor(max_workers=6) as pool:
             rows = list(pool.map(head, entries))
@@ -80,7 +84,7 @@ def main():
         failures = [r for r in rows if r["status"] != 200 or "error" in r]
         print(f"HTTP 200: {len(rows) - len(failures)}/{len(rows)}. Failures: {len(failures)}.")
         for row in failures:
-            print(row["status"], row["source"], row.get("error", ""))
+            print(row["status"], row["originalFilename"], row.get("error", ""))
         if failures:
             raise SystemExit(1)
 

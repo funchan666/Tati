@@ -1,6 +1,6 @@
 # Tati
 
-内容素材加载更新（2026-10-22）：`ContentImages` 与 `ContentVideos` 已按原文件名映射到指定 R2 链接；头像、封面与视频播放共用该映射。旧打包副本保留在 `ProjectMaterials/PackagedMediaArchive`，不进入 App。重新生成映射使用 `python3 Scripts/import_content.py`，静态核对使用 `python3 Scripts/inspect_hosted_media.py`；加 `--check-links` 仅执行 HTTPS HEAD 可达性检查。详见 [链接资源说明](Documentation/Hosted-content-media.md)。
+内容素材加载更新（2026-10-22）：49 张图片、16 条视频全部通过指定 R2 链接加载，本地原件、旧打包副本及审查副本已按用户要求删除。`ProjectMaterials/content-slots.json` 保留链接、原文件名与历史校验信息；无需本地媒体即可用 `python3 Scripts/import_content.py` 重新生成配置。静态核对使用 `python3 Scripts/inspect_hosted_media.py`；加 `--check-links` 仅执行 HTTPS HEAD 可达性检查。详见 [链接资源说明](Documentation/Hosted-content-media.md)。
 
 根据提供的蓝湖美食社交设计实现的原生 SwiftUI iPhone 应用。最低 iOS 17；当前新增 Duo API 使用 Xcode 27.1 SDK 声明并带运行时可用性保护。品牌 Tati，五个入口 Home / Room / Video / AI / Me。本轮交付本地访客版本，保留礼物，不自动关注。
 

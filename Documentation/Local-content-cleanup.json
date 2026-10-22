@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-22",
+  "scope": "User-authorized removal of migrated content sources, duplicates and derived audit pictures; UI artwork, fonts and user-imported app data retained.",
+  "removed": [
+    {
+      "path": "ProjectMaterials/ContentImages",
+      "files": 50,
+      "bytes": 7711055
+    },
+    {
+      "path": "ProjectMaterials/ContentVideos",
+      "files": 17,
+      "bytes": 146631645
+    },
+    {
+      "path": "ProjectMaterials/PackagedMediaArchive",
+      "files": 138,
+      "bytes": 131286343
+    },
+    {
+      "path": "ProjectMaterials/ContentReviewHold",
+      "files": 10,
+      "bytes": 8064961
+    },
+    {
+      "path": "ProjectMaterials/DesignReferences/ContentAudit (derived media only)",
+      "files": 53,
+      "bytes": 1312284
+    }
+  ],
+  "removedFiles": 268,
+  "removedBytes": 295006288
+}
