@@ -594,6 +594,7 @@ struct SearchView: View {
         }
         .background { Color.tatiCream.ignoresSafeArea(.container) }
         .foregroundStyle(Color.tatiInk).tatiScreen()
+        .profileNavigationHost()
     }
 
     private var searchHeader: some View {

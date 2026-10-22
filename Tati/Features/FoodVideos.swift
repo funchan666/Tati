@@ -16,7 +16,7 @@ struct VideoFeedView: View {
                 ForEach(store.visibleClips) { clip in FeedVideoCard(clip: clip) }
                 if store.visibleClips.isEmpty { EmptyContent(title: "A little taste of your world", detail: "Add a food video to your collection.") }
             }.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 12).frame(maxWidth: 680).frame(maxWidth: .infinity)
-        }
+        }.profileNavigationHost()
     }
 }
 struct ClipDetailView: View {
@@ -105,7 +105,7 @@ struct ClipDetailView: View {
             if value != .active { if playback.ownerID == playbackOwner { playback.stop() } }
             else if isVisible { preparePlayback() }
         }
-        .background { ProfilePageHandoff(person: $profilePage) }
+        .navigationDestination(item: $profilePage) { PersonProfileView(person: $0) }
         .sheet(isPresented: $showComments, onDismiss: {
             if let person = pendingProfile {
                 pendingProfile = nil

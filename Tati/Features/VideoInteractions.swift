@@ -5,7 +5,7 @@ struct FeedVideoCard: View {
     @EnvironmentObject private var store: VisitorStore
     @State private var showComments = false
     @State private var pendingProfile: FoodPerson?
-    @State private var profilePage: FoodPerson?
+    @Environment(\.profilePageAction) private var openProfile
     @State private var showOptions = false
     var body: some View {
         GeometryReader { geometry in
@@ -52,11 +52,10 @@ struct FeedVideoCard: View {
             }.frame(width: geometry.size.width, height: geometry.size.height)
                 .foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 24))
         }.aspectRatio(1.42, contentMode: .fit)
-        .background { ProfilePageHandoff(person: $profilePage) }
         .sheet(isPresented: $showComments, onDismiss: {
             if let person = pendingProfile {
                 pendingProfile = nil
-                if !store.isPersonHidden(person.id) { profilePage = person }
+                if !store.isPersonHidden(person.id) { openProfile?(person) }
             }
         }) {
             NavigationStack { CommentDraftView(clip: clip) }.overlay { NoticeLayer() }.presentationDetents([.medium, .large])

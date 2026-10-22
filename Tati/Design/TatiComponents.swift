@@ -55,16 +55,27 @@ struct UserProfileLink<Label: View>: View {
     }
 }
 
-/// A view-based link also works inside feed cards in a lazy container, where
-/// navigationDestination registrations must not be installed.
-struct ProfilePageHandoff: View {
-    @Binding var person: FoodPerson?
-    var body: some View {
-        NavigationLink(isActive: Binding(get: { person != nil }, set: { if !$0 { person = nil } })) {
-            if let person { PersonProfileView(person: person) }
-        } label: { EmptyView() }
-        .hidden().accessibilityHidden(true)
+/// Installed on the screen outside its lazy rows, so a dismissed comment sheet
+/// can push a profile without a deprecated hidden NavigationLink.
+private struct ProfilePageActionKey: EnvironmentKey {
+    static let defaultValue: ((FoodPerson) -> Void)? = nil
+}
+extension EnvironmentValues {
+    var profilePageAction: ((FoodPerson) -> Void)? {
+        get { self[ProfilePageActionKey.self] }
+        set { self[ProfilePageActionKey.self] = newValue }
     }
+}
+private struct ProfileNavigationHost: ViewModifier {
+    @State private var person: FoodPerson?
+    func body(content: Content) -> some View {
+        content
+            .environment(\.profilePageAction, { person = $0 })
+            .navigationDestination(item: $person) { PersonProfileView(person: $0) }
+    }
+}
+extension View {
+    func profileNavigationHost() -> some View { modifier(ProfileNavigationHost()) }
 }
 
 /// Identifies the room category; motion does not represent a connected broadcast

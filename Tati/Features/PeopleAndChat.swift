@@ -88,6 +88,7 @@ struct PersonProfileView: View {
         }
         .background { Color.white.ignoresSafeArea(.container) }
         .foregroundStyle(Color.tatiInk).tatiScreen()
+        .profileNavigationHost()
         .sheet(isPresented: $more) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
         .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
         .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
@@ -214,7 +215,7 @@ struct MyVideosView: View {
                     FeedVideoCard(clip: clip)
                 }
             }
-        }
+        }.profileNavigationHost()
     }
 }
 struct EditProfileView: View {

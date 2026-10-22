@@ -213,7 +213,7 @@ struct RoomView: View {
         }
         .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
         .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
-        .background { ProfilePageHandoff(person: $profilePage) }
+        .navigationDestination(item: $profilePage) { PersonProfileView(person: $0) }
         .sheet(item: $panel, onDismiss: {
             if pendingVoiceInput {
                 pendingVoiceInput = false
