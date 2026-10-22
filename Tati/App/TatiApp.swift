@@ -6,6 +6,7 @@ struct TatiApp: App {
     @StateObject private var playback = ClipPlayback()
     @StateObject private var purchases = TatiPurchases()
     @StateObject private var roomSession = RoomPreviewSession()
+    @StateObject private var notifications = NotificationPreferences()
     @Environment(\.scenePhase) private var scenePhase
     var body: some Scene {
         WindowGroup {
@@ -15,16 +16,27 @@ struct TatiApp: App {
                 if store.account.signedIn && store.account.welcomeGranted == true && store.account.welcomeAcknowledged == false {
                     WelcomeCoinsView()
                 }
-                NoticeLayer()
+                NoticeLayer(isRoot: true)
             }
             .background { Color.tatiCream.ignoresSafeArea(.container) }
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
+            .environmentObject(notifications)
+            .environment(\.locale, AppLanguage.preference(store.account.preferredLanguage).locale)
             .tint(.tatiPink).preferredColorScheme(.light)
-            .task { purchases.start(store: store) }
-            .onChange(of: scenePhase) { _, phase in if phase == .background { roomSession.audio.stop(); playback.stop() } }
+            .task { purchases.start(store: store); notifications.refresh(store: store) }
+            .onChange(of: scenePhase) { _, phase in
+                if phase != .active { store.flushDrafts() }
+                if phase == .background { roomSession.audio.stop(); playback.stop() }
+                if phase == .active { notifications.refresh(store: store) }
+            }
+            .onChange(of: store.account.notifications) { _, _ in notifications.refresh(store: store) }
+            .onChange(of: store.account.preferredLanguage) { _, _ in notifications.refresh(store: store) }
             .onChange(of: store.account.blocked) { _, _ in hideUnavailableRoom() }
             .onChange(of: store.account.hiddenSubjects) { _, _ in hideUnavailableRoom() }
-            .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { playback.stop(); roomSession.leave() } }
+            .onChange(of: store.account.signedIn) { _, signedIn in
+                if !signedIn { playback.stop(); roomSession.leave() }
+                notifications.refresh(store: store)
+            }
         }
     }
     private func hideUnavailableRoom() {
@@ -57,17 +69,18 @@ struct CommunityRoot: View {
                 HStack(spacing: 0) {
                     ForEach(CommunityTab.allCases, id: \.self) { tab in
                         Button {
+                            guard selected != tab else { return }
                             playback.stop(); selected = tab
                         } label: {
                             Art(name: "\(tab.assetPrefix)-\(tab == selected ? "on" : "off")", width: 27, height: 27)
                                 .frame(maxWidth: .infinity, minHeight: 54)
-                        }.buttonStyle(.plain).accessibilityLabel(tab.rawValue).accessibilityAddTraits(tab == selected ? .isSelected : [])
+                        }.buttonStyle(.plain).accessibilityLabel(LocalizedStringKey(tab.rawValue)).accessibilityAddTraits(tab == selected ? .isSelected : [])
                     }
                 }.padding(.top, 4).padding(.bottom, 6).background {
                     UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28)
                         .fill(Color.tatiPink).ignoresSafeArea(edges: .bottom)
                 }
-            }.background(selected == .ai ? Color.white : Color.tatiCream).tatiScreen()
+            }.background { Color.tatiCream.ignoresSafeArea(.container) }.tatiScreen()
         }
     }
 }

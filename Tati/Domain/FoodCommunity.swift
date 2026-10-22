@@ -90,14 +90,15 @@ struct LocalRoomMessage: Identifiable, Codable {
     var text: String
     var createdAt = Date()
 }
-struct RoomActivity: Identifiable {
+struct RoomActivity: Identifiable, Codable {
     var id: String
     var authorID: String
     var text: String
     var giftID: String? = nil
     var quantity = 1
     var isSample = true
-
+    // Authored playback timing applies only to bundled room presentation.
+    var delaySeconds: Double? = nil
 }
 
 struct ReportDraft: Identifiable, Codable {
@@ -216,6 +217,9 @@ enum FoodCatalog {
     static let popularTopics = [("Italian food", "category-italian"), ("Sushi", "category-sushi"), ("Street food", "category-street"), ("Dessert", "category-dessert"), ("Healthy food", "category-healthy"), ("BBQ", "category-bbq")]
     static let topics = ["All", "Home cooking", "Italian food", "Street food", "Dessert", "Healthy food", "BBQ"]
     static let sampleClips: [FoodClip] = ContentLibrary.shared.clips
-    static func person(_ id: String) -> FoodPerson? { people.first { $0.id == id } }
-    static func gift(_ id: String) -> FoodGift? { gifts.first { $0.id == id } }
+    private static let peopleByID = Dictionary(people.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+    private static let giftsByID = Dictionary(gifts.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+    static let sampleClipIDs = Set(sampleClips.map(\.id))
+    static func person(_ id: String) -> FoodPerson? { peopleByID[id] }
+    static func gift(_ id: String) -> FoodGift? { giftsByID[id] }
 }

@@ -113,86 +113,92 @@ struct CreateVoiceRoomView: View {
     }
 }
 
-/// The room menu has two rows of tools; its sheet follows the actual content.
+/// A shared presentation shell; room capabilities and state remain separate.
+struct RoomControlSheet<Content: View>: View {
+    var title: String
+    var subtitle: String? = nil
+    @ViewBuilder var content: () -> Content
+    @Environment(\.dismiss) private var dismiss
+    @State private var contentHeight: CGFloat = 360
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 18) {
+                HStack(alignment: .top, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(LocalizedStringKey(title)).font(.title3.weight(.bold))
+                            .fixedSize(horizontal: false, vertical: true)
+                        if let subtitle {
+                            Text(LocalizedStringKey(subtitle)).font(.subheadline).foregroundStyle(Color.tatiOlive)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    ArtButton(asset: "close-light", label: "Close", size: 22) { dismiss() }
+                }
+                content()
+            }.padding(20).frame(maxWidth: 560).frame(maxWidth: .infinity)
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
+                    }
+                }
+        }.scrollIndicators(.hidden).foregroundStyle(Color.tatiInk)
+            .background { Color.tatiCream.ignoresSafeArea(.container) }
+            .presentationBackground(Color.tatiCream).presentationCornerRadius(26)
+            .presentationDragIndicator(.hidden)
+            .presentationDetents([.height(min(560, contentHeight)), .large])
+            .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
+                if height > 0, abs(height - contentHeight) > 1 { contentHeight = height }
+            }
+            .accessibilityAction(.escape) { dismiss() }
+    }
+}
+
 struct RoomToolsPanel: View {
     var isVoice: Bool
     var select: (RoomPanel) -> Void
-    @Environment(\.dismiss) private var dismiss
-    @ScaledMetric(relativeTo: .caption) private var iconSize: CGFloat = 40
-    @State private var contentHeight: CGFloat = 260
-
     var body: some View {
-        ScrollView {
-            VStack(spacing: 8) {
-                HStack(spacing: 8) {
-                    Text("Room tools").font(.system(size: 18, weight: .bold, design: .serif))
-                    Spacer(minLength: 0)
-                    ArtButton(asset: "close-light", label: "Close room tools", size: 22) { dismiss() }
-                }
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 14) {
-                    if isVoice {
-                        tool("tool-layout", "Room layout", .layout)
-                        tool("tool-mic", "Mic queue", .microphone)
-                    } else {
-                        tool("tool-layout", "Viewing", .viewing)
-                    }
-                    tool("tool-music", "Music", .music)
-                    tool("tool-background", "Background", .background)
-                    tool("tool-invite", "Invite", .invite)
-                    if !isVoice { tool("feedback", "Report / block", .safety) }
-                    tool("tool-leave", "Leave", .leave)
-                }
+        RoomControlSheet(title: isVoice ? "Voice room tools" : "Live viewing",
+                         subtitle: "These settings change only your experience.") {
+            VStack(spacing: 10) {
                 if isVoice {
-                    HStack {
-                        Spacer(minLength: 0)
-                        Button { select(.safety) } label: {
-                            HStack(spacing: 6) {
-                                Art(name: "feedback", width: 14, height: 16)
-                                Text("Report or block").font(.caption)
-                            }
-                            .padding(.horizontal, 8).frame(minHeight: 44)
-                            .contentShape(Rectangle())
-                        }.buttonStyle(.plain).foregroundStyle(Color.tatiOlive)
-                    }
-                }
-            }
-            .padding(.horizontal, 20).padding(.top, 6).padding(.bottom, 8)
-            .frame(maxWidth: 520).frame(maxWidth: .infinity)
-            .background {
-                GeometryReader { geometry in
-                    Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
-                }
-            }
-        }
-        .scrollIndicators(.hidden)
-        .foregroundStyle(Color.tatiInk)
-        .background { Color.tatiLime.ignoresSafeArea(.container) }
-        .presentationBackground(Color.tatiLime)
-        .presentationCornerRadius(22)
-        .presentationDragIndicator(.hidden)
-        .presentationDetents([.height(contentHeight)])
-        .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
-            guard height > 0, abs(height - contentHeight) > 1 else { return }
-            contentHeight = height
-        }
-        .accessibilityAction(.escape) { dismiss() }
-    }
-
-    private func tool(_ art: String, _ title: String, _ destination: RoomPanel) -> some View {
-        Button { select(destination) } label: {
-            VStack(spacing: 5) {
-                if destination == .safety {
-                    Art(name: art, width: iconSize * 0.6, height: iconSize * 0.6)
-                        .frame(width: iconSize, height: iconSize)
-                        .background(Color.tatiCream, in: RoundedRectangle(cornerRadius: 12))
+                    tool("tool-mic", "Voice input", "Turn your words into a message", .dictation)
+                    tool("tool-background", "Background", "Choose your room atmosphere", .background)
+                    tool("tool-music", "Listening music", "Play an audio file just for you", .music)
                 } else {
-                    Art(name: art, width: iconSize, height: iconSize)
+                    tool("tool-layout", "Viewing options", "Picture size, original sound and activity", .viewing)
                 }
-                Text(title).font(.caption).multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
             }
-            .frame(maxWidth: .infinity, minHeight: 64)
-            .contentShape(Rectangle())
+            VStack(spacing: 0) {
+                secondary("feedback", "Report or block", .safety)
+                Rectangle().fill(Color.tatiOlive.opacity(0.12)).frame(height: 0.5).padding(.horizontal, 14)
+                secondary("tool-leave", "Leave room", .leave)
+            }.background(.white.opacity(0.65), in: RoundedRectangle(cornerRadius: 18))
+        }
+    }
+    private func tool(_ art: String, _ title: String, _ detail: String, _ destination: RoomPanel) -> some View {
+        Button { select(destination) } label: {
+            HStack(spacing: 14) {
+                Art(name: art, width: 42, height: 42)
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(LocalizedStringKey(title)).font(.subheadline.weight(.semibold))
+                    Text(LocalizedStringKey(detail)).font(.caption).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "chevron", width: 9, height: 13)
+            }.padding(14).frame(minHeight: 76)
+                .background(.white, in: RoundedRectangle(cornerRadius: 18))
+                .contentShape(RoundedRectangle(cornerRadius: 18))
+        }.buttonStyle(.plain)
+    }
+    private func secondary(_ art: String, _ title: String, _ destination: RoomPanel) -> some View {
+        Button { select(destination) } label: {
+            HStack(spacing: 12) {
+                Art(name: art, width: 24, height: 24)
+                Text(LocalizedStringKey(title)).font(.subheadline.weight(.medium))
+                Spacer(minLength: 0)
+                Art(name: "chevron", width: 9, height: 13)
+            }.padding(.horizontal, 14).padding(.vertical, 10).frame(minHeight: 52)
+                .contentShape(Rectangle())
         }.buttonStyle(.plain)
     }
 }
@@ -204,59 +210,28 @@ private struct RoomPanelContentHeightKey: PreferenceKey {
     }
 }
 
-/// Lanhu's compact exit actions, sized independently of the taller room tools.
 struct RoomLeavePanel: View {
     var isVoice: Bool
     var minimize: () -> Void
     var leave: () -> Void
     var stay: () -> Void
-    @ScaledMetric(relativeTo: .subheadline) private var actionFontSize: CGFloat = 14
-    @State private var contentHeight: CGFloat = 220
-
     var body: some View {
-        ScrollView {
-            VStack(spacing: 12) {
-                HStack(spacing: 8) {
-                    Text("Leave the room?").font(.system(size: 17, weight: .bold, design: .serif))
-                    Spacer(minLength: 0)
-                    ArtButton(asset: "close-light", label: "Stay in room", size: 20, action: stay)
-                }
-                VStack(spacing: 8) {
-                    if isVoice { action("Keep listening - Minimize", primary: true, perform: minimize) }
-                    action("Leave room", primary: !isVoice, perform: leave)
-                    action("Stay here", primary: false, perform: stay)
-                }
-            }.padding(.horizontal, 16).padding(.top, 4).padding(.bottom, 12)
-                .frame(maxWidth: 520).frame(maxWidth: .infinity)
-                .background {
-                    GeometryReader { geometry in
-                        Color.clear.preference(key: RoomPanelContentHeightKey.self, value: geometry.size.height)
-                    }
-                }
+        RoomControlSheet(title: isVoice ? "Leave this voice room?" : "Leave this live room?",
+                         subtitle: isVoice ? "You can minimize the room and return later." : "Video playback stops when you leave.") {
+            VStack(spacing: 10) {
+                if isVoice { action("Minimize room", primary: false, perform: minimize) }
+                action("Leave room", primary: true, perform: leave)
+                action("Stay here", primary: false, perform: stay)
+            }
         }
-        .scrollIndicators(.hidden)
-        .foregroundStyle(Color.tatiInk)
-        .background { Color.tatiLime.ignoresSafeArea(.container) }
-        .presentationBackground(Color.tatiLime)
-        .presentationDetents([.height(contentHeight)])
-        .presentationCornerRadius(20)
-        .presentationDragIndicator(.hidden)
-        .onPreferenceChange(RoomPanelContentHeightKey.self) { height in
-            guard height > 0, abs(height - contentHeight) > 1 else { return }
-            contentHeight = height
-        }
-        .accessibilityAction(.escape) { stay() }
     }
-
     private func action(_ title: String, primary: Bool, perform: @escaping () -> Void) -> some View {
         Button(action: perform) {
-            Text(title).font(.system(size: actionFontSize, weight: .regular))
+            Text(LocalizedStringKey(title)).font(.subheadline.weight(.semibold))
                 .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 12).padding(.vertical, 10)
-                .frame(maxWidth: .infinity, minHeight: 44)
-                .foregroundStyle(.white)
-                .background(primary ? Color.tatiPink : Color.tatiOlive.opacity(0.65))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding(.horizontal, 16).padding(.vertical, 14)
+                .frame(maxWidth: .infinity, minHeight: 50)
+                .background(primary ? Color.tatiPink : .white, in: RoundedRectangle(cornerRadius: 16))
         }.buttonStyle(.plain)
     }
 }
@@ -269,7 +244,17 @@ struct RoomActivityFeed: View {
     @EnvironmentObject private var store: VisitorStore
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    private var entries: [RoomActivity] {
+    @State private var timeline: [RoomActivity] = []
+    @State private var timelineRoomID = ""
+    @State private var nextScriptIndex = 0
+    @State private var knownLocalIDs: Set<String> = []
+    @State private var readingHistory = false
+
+    // Authored room presentation never enters account messages, receipts or balances.
+    private var script: [RoomActivity] {
+        ContentLibrary.shared.curatedRoomActivity?[room.id] ?? []
+    }
+    private var localEntries: [RoomActivity] {
         var local: [(Date, RoomActivity)] = (store.account.roomMessages ?? [])
             .filter { $0.roomID == room.id }
             .map { message in
@@ -279,31 +264,92 @@ struct RoomActivityFeed: View {
             (receipt.date, RoomActivity(id: receipt.id, authorID: store.account.profile.id, text: "", giftID: receipt.giftID, quantity: receipt.quantity, isSample: false))
         }
         local.sort { $0.0 == $1.0 ? $0.1.id < $1.1.id : $0.0 < $1.0 }
-        return local.suffix(100).map { $0.1 }.filter { !store.isPersonHidden($0.authorID) && !store.isHidden("roomMessage:" + $0.id) }
+        return local.suffix(100).map { $0.1 }.filter(isAllowed)
     }
+    private var entries: [RoomActivity] {
+        let available = Set((script + localEntries).map(\.id))
+        return timeline.filter { available.contains($0.id) && isAllowed($0) }
+    }
+    private var playbackKey: String { "\(room.id)|\(isActive && scenePhase == .active && !readingHistory)" }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            ScrollViewReader { proxy in
+        ScrollViewReader { proxy in
+            VStack(alignment: .leading, spacing: 5) {
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 7) {
+                    LazyVStack(alignment: .leading, spacing: 8) {
                         ForEach(entries) { entry in
-                            UserProfileLink(userID: entry.authorID) { activityRow(entry) }.id(entry.id)
-                                .transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))
+                            UserProfileLink(userID: entry.authorID) { activityRow(entry) }
+                                .buttonStyle(.plain).id(entry.id)
+                                .transition(reduceMotion ? .identity : .move(edge: .bottom).combined(with: .opacity))
                         }
-                    }.padding(.vertical, 3)
+                    }.padding(.vertical, 3).frame(maxWidth: .infinity, alignment: .leading)
                 }.scrollIndicators(.hidden)
-                .onAppear { if let last = entries.last { proxy.scrollTo(last.id, anchor: .bottom) } }
-                .onChange(of: entries.map(\.id)) { _, _ in
-                    guard let last = entries.last else { return }
-                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) {
-                        proxy.scrollTo(last.id, anchor: .bottom)
-                    }
+                    .simultaneousGesture(DragGesture(minimumDistance: 10).onChanged { _ in readingHistory = true })
+                if readingHistory {
+                    Button {
+                        readingHistory = false
+                        scrollToLatest(proxy)
+                    } label: {
+                        Text("Latest activity").font(.caption.weight(.semibold))
+                            .padding(.horizontal, 14).frame(minHeight: 44)
+                            .background(.black.opacity(0.65), in: Capsule())
+                    }.buttonStyle(.plain)
+                }
+            }
+            .onChange(of: entries.map(\.id)) { _, _ in
+                if !readingHistory { scrollToLatest(proxy) }
+            }
+        }
+        .foregroundStyle(.white)
+        .frame(maxWidth: maximumWidth).frame(height: maximumHeight, alignment: .bottomLeading)
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
+        .task(id: playbackKey) {
+            prepareTimeline()
+            guard isActive, scenePhase == .active, !readingHistory, !script.isEmpty else { return }
+            // The view owns this task: leaving, opening a panel or backgrounding cancels it.
+            while !Task.isCancelled {
+                let entry = script[nextScriptIndex % script.count]
+                do { try await Task.sleep(for: .seconds(min(8, max(2, entry.delaySeconds ?? 4)))) }
+                catch { return }
+                guard !Task.isCancelled, isActive, scenePhase == .active else { return }
+                guard !readingHistory else { continue }
+                nextScriptIndex = (nextScriptIndex + 1) % script.count
+                if isAllowed(entry) {
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) { append(entry) }
                 }
             }
         }
-        .foregroundStyle(.white).frame(maxWidth: maximumWidth, maxHeight: maximumHeight, alignment: .leading)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
-
+        .onChange(of: localEntries.map(\.id)) { _, _ in
+            let incoming = localEntries.filter { !knownLocalIDs.contains($0.id) }
+            knownLocalIDs = Set(localEntries.map(\.id))
+            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) {
+                for entry in incoming { append(entry) }
+            }
+        }
+    }
+    private func prepareTimeline() {
+        guard timelineRoomID != room.id else { return }
+        timelineRoomID = room.id
+        readingHistory = false
+        let opening = Array(script.filter(isAllowed).prefix(4))
+        timeline = opening + localEntries.suffix(3)
+        knownLocalIDs = Set(localEntries.map(\.id))
+        nextScriptIndex = opening.last.flatMap { last in script.firstIndex(where: { $0.id == last.id }) }.map { $0 + 1 } ?? 0
+    }
+    private func append(_ entry: RoomActivity) {
+        // Replaying a script moves its stable event; it never duplicates receipt IDs.
+        timeline.removeAll { $0.id == entry.id }
+        timeline.append(entry)
+        timeline = Array(timeline.suffix(30))
+    }
+    private func isAllowed(_ entry: RoomActivity) -> Bool {
+        !store.isPersonHidden(entry.authorID) && !store.isHidden("roomMessage:" + entry.id)
+    }
+    private func scrollToLatest(_ proxy: ScrollViewProxy) {
+        guard let last = entries.last else { return }
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) {
+            proxy.scrollTo(last.id, anchor: .bottom)
+        }
     }
     @ViewBuilder private func activityRow(_ entry: RoomActivity) -> some View {
         let person = FoodCatalog.person(entry.authorID)
@@ -311,16 +357,16 @@ struct RoomActivityFeed: View {
         let name = current ? "\(store.account.profile.name) · You" : person?.name ?? "Guest"
         if let giftID = entry.giftID, let gift = FoodCatalog.gift(giftID) {
             HStack(spacing: 7) {
-                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 24, isCurrent: current)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(name).font(.system(size: 11, weight: .semibold)).foregroundStyle(Color.tatiCream).lineLimit(1)
+                Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 30, isCurrent: current)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(name).font(.system(size: 12, weight: .semibold)).foregroundStyle(Color.tatiCream).lineLimit(1)
                     Text(gift.name)
                         .font(.system(size: 10)).foregroundStyle(.white.opacity(0.85)).fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer(minLength: 0)
-                Art(name: gift.artwork, width: 32, height: 32)
+                Art(name: gift.artwork, width: 42, height: 42)
                 Text("×\(entry.quantity)").font(.system(size: 15, weight: .bold)).foregroundStyle(.white)
-            }.padding(.horizontal, 8).padding(.vertical, 6).frame(maxWidth: 260)
+            }.padding(.horizontal, 10).padding(.vertical, 7).frame(maxWidth: 280)
                 .background(.black.opacity(0.56)).clipShape(RoundedRectangle(cornerRadius: 10))
                 .overlay { RoundedRectangle(cornerRadius: 10).strokeBorder(Color.tatiPink.opacity(0.45), lineWidth: 0.7) }
                 .accessibilityElement(children: .combine)
@@ -328,59 +374,14 @@ struct RoomActivityFeed: View {
             HStack(alignment: .center, spacing: 6) {
                 Avatar(file: current ? store.account.profile.avatarFile : nil, asset: person?.portraitArtwork, size: 22, isCurrent: current)
                 (Text(name + ": ").fontWeight(.medium).foregroundColor(.tatiCream) + Text(entry.text))
-                    .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
-            }.padding(.horizontal, 8).padding(.vertical, 5)
+                    .font(.system(size: 12)).fixedSize(horizontal: false, vertical: true)
+            }.padding(.horizontal, 9).padding(.vertical, 7)
                 .background(.black.opacity(0.52)).clipShape(RoundedRectangle(cornerRadius: 8))
                 .accessibilityElement(children: .combine)
         }
     }
 }
 
-struct RoomLayoutPanel: View {
-    var current: String
-    var choose: (String) -> Void
-    @State private var mode = "Voice"
-    private let videoLayouts = [("Spotlight + voices", "1 video + 8 voice"), ("Duo video + voices", "2 video + 6 voice"), ("Three video + voices", "3 video + 6 voice")]
-    var body: some View {
-        TatiPanel(title: "Room Layout") {
-            HStack(spacing: 12) {
-                TatiButton(title: "Voice", secondary: mode != "Voice") { mode = "Voice" }
-                TatiButton(title: "Video + Voice", secondary: mode != "Video + Voice") { mode = "Video + Voice" }
-            }
-            if mode == "Voice" { layout("10-seat voice room", "10 voice seats") }
-            else { ForEach(videoLayouts.indices, id: \.self) { index in layout(videoLayouts[index].0, videoLayouts[index].1) } }
-        }.onAppear { mode = current == "10-seat voice room" ? "Voice" : "Video + Voice" }
-    }
-    private func layout(_ name: String, _ subtitle: String) -> some View {
-        Button { choose(name) } label: {
-            HStack(spacing: 14) {
-                Art(name: "layout-seat", width: 32, height: 32)
-                VStack(alignment: .leading, spacing: 5) { Text(name).font(.system(size: 14, weight: .medium)).fixedSize(horizontal: false, vertical: true); Text(subtitle).font(.system(size: 11)) }
-                Spacer()
-                if current == name { Text("Current").font(.system(size: 10)).fixedSize() }
-                else { Art(name: "chevron", width: 14) }
-            }.padding(12).foregroundStyle(current == name ? Color.tatiInk : .white)
-                .background(current == name ? Color.yellow.opacity(0.65) : Color.tatiOlive).clipShape(RoundedRectangle(cornerRadius: 8))
-        }.buttonStyle(.plain).accessibilityAddTraits(current == name ? .isSelected : [])
-    }
-}
-struct RoomInvitePanel: View {
-    var room: FoodRoom
-    @EnvironmentObject private var store: VisitorStore
-    private var following: [FoodPerson] { store.visiblePeople.filter { store.isFollowing($0.id) } }
-    var body: some View {
-        TatiPanel(title: "Invite friends") {
-            if following.isEmpty { EmptyContent(title: "No followed profiles", detail: "Follow a profile to find it here.", artwork: "tool-invite") }
-            ForEach(following) { person in
-                HStack {
-                    UserProfileLink(userID: person.id) { HStack { Avatar(asset: person.portraitArtwork); Text(person.name).font(.headline) } }.buttonStyle(.plain)
-                    Spacer()
-                    TatiButton(title: "Invite", secondary: true) { store.tell("Invitation unavailable", "Invitations are currently unavailable. No invitation was sent.") }.frame(width: 100)
-                }
-            }
-        }
-    }
-}
 struct RoomSoundButton: View {
     @ObservedObject var player: LocalRoomAudio
     var body: some View {
@@ -432,17 +433,17 @@ struct RoomViewingPanel: View {
         Button(action: action) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(title).font(.subheadline.weight(.semibold))
-                    Text(detail).font(.caption).foregroundStyle(Color.tatiOlive)
+                    Text(LocalizedStringKey(title)).font(.subheadline.weight(.semibold))
+                    Text(LocalizedStringKey(detail)).font(.caption).foregroundStyle(Color.tatiOlive)
                         .fixedSize(horizontal: false, vertical: true)
                 }.frame(maxWidth: .infinity, alignment: .leading)
-                Text(value).font(.caption.weight(.semibold))
+                Text(LocalizedStringKey(value)).font(.caption.weight(.semibold))
                     .padding(.horizontal, 12).padding(.vertical, 9)
                     .background(selected ? Color.tatiLime : Color.tatiCream, in: Capsule())
             }.padding(14).frame(minHeight: 64)
                 .background(.white, in: RoundedRectangle(cornerRadius: 16))
                 .contentShape(Rectangle())
-        }.buttonStyle(.plain).accessibilityLabel(title).accessibilityValue(value)
+        }.buttonStyle(.plain).accessibilityLabel(Text(LocalizedStringKey(title))).accessibilityValue(Text(LocalizedStringKey(value)))
             .accessibilityHint("Double tap to change")
     }
 }

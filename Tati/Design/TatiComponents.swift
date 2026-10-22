@@ -79,6 +79,7 @@ struct RoomKindBadge: View {
     private var shouldAnimate: Bool {
         animates && isVisible && !reduceMotion && scenePhase == .active
     }
+    private enum LivePhase: CaseIterable, Equatable { case rest, brighten, settle }
     var body: some View {
         Group {
             if isVoice {
@@ -89,15 +90,31 @@ struct RoomKindBadge: View {
                 .padding(.horizontal, compact ? 5 : 7).frame(height: compact ? 18 : 22)
                 .foregroundStyle(.white).background(compact ? Color.tatiPink : Color.tatiOlive)
                 .clipShape(RoundedRectangle(cornerRadius: compact ? 4 : 11))
+                .phaseAnimator(shouldAnimate ? [false, true] : [false]) { content, phase in
+                    content.scaleEffect(shouldAnimate && phase ? 1.04 : 1)
+                        .opacity(shouldAnimate && phase ? 0.82 : 1)
+                } animation: { _ in
+                    shouldAnimate ? .easeInOut(duration: 1.2) : nil
+                }
             } else {
-                Art(name: "live-pink", width: 48, height: 22)
+                // Animate the original raster, not a replacement icon. Transforms leave
+                // the badge's layout footprint fixed and do not move neighbouring text.
+                Art(name: "live-pink", width: compact ? 34 : 48, height: compact ? 16.15 : 22.8)
+                    .phaseAnimator(shouldAnimate ? LivePhase.allCases : [.rest]) { content, phase in
+                        let bright = shouldAnimate && phase == .brighten
+                        content
+                            .scaleEffect(bright ? 1.09 : 1, anchor: .center)
+                            .opacity(shouldAnimate && phase == .settle ? 0.8 : 1)
+                            // Keep the live pulse without animating a blur on every visible card.
+                    } animation: { phase in
+                        guard shouldAnimate else { return nil }
+                        switch phase {
+                        case .rest: return .easeInOut(duration: 0.9)
+                        case .brighten: return .easeOut(duration: 0.55)
+                        case .settle: return .easeInOut(duration: 0.65)
+                        }
+                    }
             }
-        }
-        .phaseAnimator(shouldAnimate ? [false, true] : [false]) { content, phase in
-            content.scaleEffect(shouldAnimate && phase ? 1.04 : 1)
-                .opacity(shouldAnimate && phase ? 0.82 : 1)
-        } animation: { _ in
-            shouldAnimate ? .easeInOut(duration: 1.2) : nil
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(isVoice ? "Voice room" : "Video room")
@@ -136,7 +153,7 @@ struct TatiButton: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text(title).font(.system(size: 15, weight: .medium)).foregroundStyle(.white)
+            Text(LocalizedStringKey(title)).font(.system(size: 15, weight: .medium)).foregroundStyle(.white)
                 .multilineTextAlignment(.center).lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 8)
                 .frame(maxWidth: .infinity, minHeight: 42)
@@ -154,7 +171,7 @@ struct ArtButton: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) { Art(name: asset, width: size, height: size).frame(minWidth: 44, minHeight: 44) }
-            .buttonStyle(.plain).accessibilityLabel(label)
+            .buttonStyle(.plain).accessibilityLabel(LocalizedStringKey(label))
     }
 }
 struct ImageAction: View {
@@ -164,7 +181,7 @@ struct ImageAction: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) { Art(name: asset, height: height).frame(maxWidth: .infinity) }
-            .buttonStyle(.plain).accessibilityLabel(label)
+            .buttonStyle(.plain).accessibilityLabel(LocalizedStringKey(label))
     }
 }
 struct TatiHeader: View {
@@ -176,7 +193,7 @@ struct TatiHeader: View {
     var body: some View {
         HStack {
             ArtButton(asset: "back", label: "Back") { dismiss() }
-            Text(title).font(.system(size: 17, weight: .medium)).lineLimit(2)
+            Text(LocalizedStringKey(title)).font(.system(size: 17, weight: .medium)).lineLimit(2)
                 .multilineTextAlignment(.center).frame(maxWidth: .infinity)
             if let trailing { ArtButton(asset: trailing, label: trailingLabel) { action?() } }
             else { Color.clear.frame(width: 44, height: 44) }
@@ -186,13 +203,19 @@ struct TatiHeader: View {
 struct TatiPage<Content: View>: View {
     var title: String
     var scrolling = true
+    var lazyContent = false
     var background: String? = nil
     @ViewBuilder var content: () -> Content
     var body: some View {
         VStack(spacing: 0) {
             TatiHeader(title: title)
             if scrolling {
-                ScrollView { VStack(alignment: .leading, spacing: 12) { content() }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity) }
+                ScrollView {
+                    Group {
+                        if lazyContent { LazyVStack(alignment: .leading, spacing: 12) { content() } }
+                        else { VStack(alignment: .leading, spacing: 12) { content() } }
+                    }.padding(.horizontal, 18).padding(.vertical, 14).frame(maxWidth: 600).frame(maxWidth: .infinity)
+                }
             } else { content() }
         }.background { if let background { GeometryReader { geo in Image(background).resizable().scaledToFill().frame(width: geo.size.width, height: geo.size.height).clipped() }.ignoresSafeArea() } else { TatiBackground() } }.foregroundStyle(Color.tatiInk).tatiScreen()
     }
@@ -203,7 +226,7 @@ struct Chip: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text(text).font(.system(size: 12, weight: .medium))
+            Text(LocalizedStringKey(text)).font(.system(size: 12, weight: .medium))
                 .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 10).padding(.vertical, 4)
                 .foregroundStyle(.white)
@@ -239,7 +262,7 @@ struct TopicStrip: View {
             HStack(spacing: 24) {
                 ForEach(items, id: \.self) { item in
                     Button { selected = item } label: {
-                        Text(item).font(.system(size: 15, weight: selected == item ? .bold : .regular))
+                        Text(LocalizedStringKey(item)).font(.system(size: 15, weight: selected == item ? .bold : .regular))
                             .foregroundStyle(selected == item ? Color.tatiOlive : Color.tatiOlive.opacity(0.55))
                             .padding(.vertical, 10)
                             .background(alignment: .bottom) { if selected == item { Color.tatiLime.frame(height: 3) } }
@@ -251,7 +274,7 @@ struct TopicStrip: View {
 }
 struct Note: View {
     var text: String
-    var body: some View { Text(text).font(.system(size: 12)).foregroundStyle(Color.tatiOlive).fixedSize(horizontal: false, vertical: true) }
+    var body: some View { Text(LocalizedStringKey(text)).font(.system(size: 12)).foregroundStyle(Color.tatiOlive).fixedSize(horizontal: false, vertical: true) }
 }
 struct EmptyContent: View {
     var title: String
@@ -260,8 +283,8 @@ struct EmptyContent: View {
     var body: some View {
         VStack(spacing: 14) {
             Art(name: artwork, width: 72, height: 72)
-            Text(title).font(.headline)
-            Text(detail).font(.subheadline).multilineTextAlignment(.center).foregroundStyle(Color.tatiOlive)
+            Text(LocalizedStringKey(title)).font(.headline)
+            Text(LocalizedStringKey(detail)).font(.subheadline).multilineTextAlignment(.center).foregroundStyle(Color.tatiOlive)
         }.frame(maxWidth: .infinity).padding(.vertical, 32).padding(.horizontal, 18)
     }
 }
@@ -271,7 +294,7 @@ struct MediaPlaceholder: View {
     var body: some View {
         VStack(spacing: 10) {
             Art(name: "media-placeholder", width: 52, height: 52)
-            Text(title).font(.system(size: 12, weight: .medium)).foregroundStyle(Color.tatiOlive)
+            Text(LocalizedStringKey(title)).font(.system(size: 12, weight: .medium)).foregroundStyle(Color.tatiOlive)
         }.frame(maxWidth: .infinity).frame(height: height).background(Color.tatiLime.opacity(0.26))
             .clipShape(RoundedRectangle(cornerRadius: 18))
     }
@@ -287,10 +310,10 @@ struct Avatar: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
         Group {
-            if let file, let ui = UIImage(contentsOfFile: store.mediaURL(file).path) {
-                Image(uiImage: ui).resizable().scaledToFill()
-            } else if let asset { Image(asset).resizable().scaledToFill() }
-            else if isCurrent { Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill() }
+            if let file {
+                PreparedPhoto(source: .file(store.mediaURL(file)), fallbackAsset: asset ?? (isCurrent ? ProfileArtwork.defaultPortrait : nil))
+            } else if let asset { PreparedPhoto(source: .asset(asset), alignment: .top) }
+            else if isCurrent { PreparedPhoto(source: .asset(ProfileArtwork.defaultPortrait)) }
             else { Image("media-placeholder").resizable().scaledToFit().padding(size * 0.15).background(Color.tatiCream) }
         }.frame(width: size, height: size, alignment: asset == nil ? .center : .top).clipShape(Circle()).overlay { if isCurrent && store.account.equippedFrame { Art(name: "host-frame", width: size * 1.3, height: size * 1.3) } }.accessibilityHidden(true)
     }
@@ -304,8 +327,8 @@ struct InputField: View {
     var characterLimit: Int? = nil
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if showsLabel { Text(title).font(.system(size: 13, weight: .regular)) }
-            TextField(title, text: $text, axis: multiline ? .vertical : .horizontal)
+            if showsLabel { Text(LocalizedStringKey(title)).font(.system(size: 13, weight: .regular)) }
+            TextField(LocalizedStringKey(title), text: $text, axis: multiline ? .vertical : .horizontal)
                 .lineLimit(multiline ? 4...7 : 1...1).textFieldStyle(.plain)
                 .frame(minHeight: minimumHeight, alignment: .topLeading)
                 .font(.system(size: 14)).padding(.horizontal, 16).padding(.top, 16)
@@ -330,9 +353,9 @@ struct SettingRow: View {
     var body: some View {
         HStack(spacing: 13) {
             if let asset { Art(name: asset, width: 22, height: 22) }
-            Text(title).font(.system(size: 14, weight: .regular))
+            Text(LocalizedStringKey(title)).font(.system(size: 14, weight: .regular))
             Spacer(minLength: 6)
-            if let detail { Text(detail).font(.caption).foregroundStyle(Color.tatiOlive) }
+            if let detail { Text(LocalizedStringKey(detail)).font(.caption).foregroundStyle(Color.tatiOlive) }
             Art(name: "chevron", width: 14, height: 14)
         }.foregroundStyle(Color.tatiInk).padding(.horizontal, 12).frame(minHeight: 50)
             .background {
@@ -343,42 +366,83 @@ struct SettingRow: View {
     }
 }
 struct NoticeLayer: View {
+    var isRoot = false
     @EnvironmentObject private var store: VisitorStore
+    @State private var hostID = UUID()
+
     var body: some View {
-        if let notice = store.notice {
-            ZStack {
-                Color.black.opacity(0.48).ignoresSafeArea()
-                GeometryReader { geometry in
-                    ViewThatFits(in: .vertical) {
-                        noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action, artwork: notice.artwork)
-                            .fixedSize(horizontal: false, vertical: true)
-                        ScrollView {
-                            noticeContent(title: notice.title, message: notice.message, actionTitle: notice.actionTitle, action: notice.action, artwork: notice.artwork)
+        ZStack {
+            if store.ownsNotice(hostID), let notice = store.notice {
+                Color.black.opacity(0.42).ignoresSafeArea()
+                MediaViewport {
+                    GeometryReader { geometry in
+                        ViewThatFits(in: .vertical) {
+                            noticeContent(notice).fixedSize(horizontal: false, vertical: true)
+                            ScrollView { noticeContent(notice) }
                         }
+                        .frame(width: min(380, max(0, geometry.size.width - 32)))
+                        .background(Color.tatiCream, in: RoundedRectangle(cornerRadius: 26))
+                        .clipShape(RoundedRectangle(cornerRadius: 26))
+                        .padding(.vertical, 16)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .frame(width: min(366, max(0, geometry.size.width - 32)))
-                    .background { Image("dialog-card").resizable() }
-                    .padding(.vertical, 16)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }.foregroundStyle(Color.tatiInk)
-            }.accessibilityAddTraits(.isModal).transition(.opacity).zIndex(100)
+                }
+                .foregroundStyle(Color.tatiInk)
+                .accessibilityAddTraits(.isModal)
+                .accessibilityAction(.escape) { resolve(notice, performingAction: false) }
+            }
         }
+        .zIndex(100)
+        // Keep registration alive even when there is no notice. A sheet becomes
+        // the sole owner before a button in that sheet creates a confirmation.
+        .onAppear { store.registerNoticeHost(hostID, isRoot: isRoot) }
+        .onDisappear { store.unregisterNoticeHost(hostID) }
     }
-    private func noticeContent(title: String, message: String, actionTitle: String, action: (() -> Void)?, artwork: String?) -> some View {
-        VStack(spacing: 18) {
-            if let artwork { Art(name: artwork, width: 64, height: 64) }
-            Text(title).font(.system(size: 18, weight: .semibold)).multilineTextAlignment(.center)
-            Text(message).font(.system(size: 13)).multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-            HStack {
-                if action != nil {
-                    Button { store.notice = nil } label: {
-                        Text("Cancel").font(.system(size: 14, weight: .medium)).foregroundStyle(.gray)
-                            .frame(maxWidth: .infinity, minHeight: 44).background(Color.gray.opacity(0.18)).clipShape(Capsule())
+
+    private func noticeContent(_ notice: TatiNotice) -> some View {
+        VStack(spacing: 20) {
+            if let id = notice.personID, let person = FoodCatalog.person(id) {
+                Avatar(asset: person.portraitArtwork, size: 68)
+                    .accessibilityLabel(person.name)
+            } else if let artwork = notice.artwork {
+                Art(name: artwork, width: 64, height: 64)
+            }
+            VStack(spacing: 10) {
+                Group {
+                    if let id = notice.personID, let person = FoodCatalog.person(id) {
+                        Text("Block \(person.name)?")
+                    } else { Text(LocalizedStringKey(notice.title)) }
+                }.font(.title3.weight(.bold)).accessibilityAddTraits(.isHeader)
+                Text(LocalizedStringKey(notice.message)).font(.subheadline).foregroundStyle(Color.tatiOlive)
+                    .lineSpacing(3)
+            }
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+
+            VStack(spacing: 8) {
+                Button { resolve(notice, performingAction: true) } label: {
+                    Text(LocalizedStringKey(notice.actionTitle)).font(.headline)
+                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                        .padding(.horizontal, 16).padding(.vertical, 14)
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .background(Color.tatiPink, in: RoundedRectangle(cornerRadius: 16))
+                }.buttonStyle(.plain)
+                if notice.action != nil {
+                    Button { resolve(notice, performingAction: false) } label: {
+                        Text("Cancel").font(.body.weight(.semibold))
+                            .padding(.horizontal, 16).padding(.vertical, 12)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(.white, in: RoundedRectangle(cornerRadius: 16))
                     }.buttonStyle(.plain)
                 }
-                TatiButton(title: actionTitle) { store.notice = nil; action?() }
             }
-        }.padding(.horizontal, 24).padding(.vertical, 28)
+        }.padding(24)
+    }
+
+    private func resolve(_ notice: TatiNotice, performingAction: Bool) {
+        guard store.ownsNotice(hostID), store.notice?.id == notice.id else { return }
+        store.notice = nil
+        if performingAction { notice.action?() }
     }
 }
 
@@ -391,7 +455,7 @@ struct TatiPanel<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             if showsHeader { HStack {
-                Text(title).font(.system(size: 19, weight: .bold, design: .serif))
+                Text(LocalizedStringKey(title)).font(.system(size: 19, weight: .bold, design: .serif))
                 Spacer()
                 ArtButton(asset: "close-light", label: "Close") { dismiss() }
             }.padding(.horizontal, 16).padding(.top, 4) }
@@ -436,15 +500,15 @@ struct TatiEditingField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(label).font(.subheadline.weight(.semibold))
+                Text(LocalizedStringKey(label)).font(.subheadline.weight(.semibold))
                 Spacer()
                 if let limit { Text("\(text.count)/\(limit)").font(.caption).monospacedDigit().foregroundStyle(Color.tatiOlive) }
             }
-            TextField(label, text: $text, prompt: Text(placeholder).foregroundColor(.tatiOlive.opacity(0.8)), axis: .vertical)
+            TextField(LocalizedStringKey(label), text: $text, prompt: Text(LocalizedStringKey(placeholder)).foregroundColor(.tatiOlive.opacity(0.8)), axis: .vertical)
                 .font(.body).lineLimit(multiline ? 4...6 : 1...3)
                 .padding(14).frame(maxWidth: .infinity, alignment: .topLeading)
                 .background(.white, in: RoundedRectangle(cornerRadius: 16))
-                .accessibilityLabel(label)
+                .accessibilityLabel(LocalizedStringKey(label))
                 .onChange(of: text) { _, value in if let limit, value.count > limit { text = String(value.prefix(limit)) } }
         }
     }
@@ -456,7 +520,7 @@ struct TatiEditingButton: View {
     var action: () -> Void
     var body: some View {
         Button(action: action) {
-            Text(title).font(.headline)
+            Text(LocalizedStringKey(title)).font(.headline)
                 .foregroundStyle(enabled ? Color.tatiInk : Color.tatiOlive)
                 .frame(maxWidth: .infinity, minHeight: 52)
                 .background(enabled ? Color.tatiPink : Color.white.opacity(0.8), in: Capsule())
@@ -492,7 +556,7 @@ struct FollowControl: View {
                         TatiButton(title: following ? "Following" : "Follow", action: action)
                     }
                 }
-                .accessibilityLabel(label)
+                .accessibilityLabel(LocalizedStringKey(label))
                 .accessibilityValue(store.mutualIDs.contains(userID) ? "Following each other" : following ? "Following" : "Not following")
                 .accessibilityAddTraits(following ? .isSelected : [])
             }

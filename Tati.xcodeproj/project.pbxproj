@@ -35,6 +35,9 @@
 		95675E02F08B89B90B33A0BE /* collection-dumplings.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 334DC0BAACFA08F1E5E49948 /* collection-dumplings.mp4 */; };
 		98FE08B076B0023474517D2E /* TatiArtwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7A36E7C1F499A5CF078308F /* TatiArtwork.xcassets */; };
 		9FB10048135D865A9422CC32 /* FoodRooms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0B5E526278857BE870D6A9 /* FoodRooms.swift */; };
+		A77100000000000000000002 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77100000000000000000001 /* AppLanguage.swift */; };
+		A77100000000000000000004 /* NotificationPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77100000000000000000003 /* NotificationPreferences.swift */; };
+		A77100000000000000000006 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A77100000000000000000005 /* Localizable.xcstrings */; };
 		AF9986D6EA370246DB773F13 /* Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A395AE1A0E27E113998A1F3 /* Discovery.swift */; };
 		B160EE19C259595B08B169B6 /* VisitorStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4255B8D2F331D7C47427520 /* VisitorStore.swift */; };
 		B45B7A6338151B8C9B4E5770 /* collection-cooking-together.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 63084AA361F44446B57F5FA5 /* collection-cooking-together.mp4 */; };
@@ -75,6 +78,9 @@
 		8CA711B5E7FE0EF54897B778 /* collection-osaka-sandwich.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-osaka-sandwich.mp4"; sourceTree = "<group>"; };
 		9346CC8EE1D760193D01EAFA /* ContentLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLibrary.swift; sourceTree = "<group>"; };
 		9B4EAA63A750F8E1AFDCFAFD /* collection-creative-mix.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-creative-mix.mp4"; sourceTree = "<group>"; };
+		A77100000000000000000001 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		A77100000000000000000003 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
+		A77100000000000000000005 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		ACA99770F46977D6677D07DE /* collection-everyday-moments.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-everyday-moments.mp4"; sourceTree = "<group>"; };
 		B3DA88B9C93E113FCBFE306E /* collection-street-food-table.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "collection-street-food-table.mp4"; sourceTree = "<group>"; };
 		B4255B8D2F331D7C47427520 /* VisitorStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorStore.swift; sourceTree = "<group>"; };
@@ -98,6 +104,8 @@
 		08E0E257DF9BC7C62200B989 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A77100000000000000000003 /* NotificationPreferences.swift */,
+				A77100000000000000000001 /* AppLanguage.swift */,
 				2682D758CA0DB0EAE418E855 /* LocalMedia.swift */,
 				F8D7A0100000000000000002 /* RoomSpeechInput.swift */,
 				C8AAC952352DCEFCC602AE92 /* RoomPreviewSession.swift */,
@@ -165,6 +173,7 @@
 		96C56BC81A5D976724248BAC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A77100000000000000000005 /* Localizable.xcstrings */,
 				EEA0E94A8EC53737DACA64E4 /* content-library.json */,
 				2A87E13CB12BF32FB1DB93AF /* LaunchScreen.storyboard */,
 				B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */,
@@ -244,7 +253,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2710;
 			};
 			buildConfigurationList = 97314D64732023B452953708 /* Build configuration list for PBXProject "Tati" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -253,6 +262,11 @@
 			knownRegions = (
 				Base,
 				en,
+				"zh-Hans",
+				es,
+				fr,
+				de,
+				ja,
 			);
 			mainGroup = 9768900894F0AEDBEA9A3D66;
 			minimizedProjectReferenceProxies = 1;
@@ -269,6 +283,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77100000000000000000006 /* Localizable.xcstrings in Resources */,
 				1AB0950F2EFF9063AD735907 /* LaunchScreen.storyboard in Resources */,
 				FA6FCE3FB58AA0EC4B0C0490 /* PrivacyInfo.xcprivacy in Resources */,
 				98FE08B076B0023474517D2E /* TatiArtwork.xcassets in Resources */,
@@ -300,6 +315,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77100000000000000000004 /* NotificationPreferences.swift in Sources */,
+				A77100000000000000000002 /* AppLanguage.swift in Sources */,
 				DBB2D71B1C93346958AD65F6 /* AccountPages.swift in Sources */,
 				383F3985E22B3564185B0903 /* ContentLibrary.swift in Sources */,
 				E229884E77C037760D678DF4 /* ContentMediaViews.swift in Sources */,
@@ -329,6 +346,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -363,6 +381,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -377,6 +396,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -413,6 +433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -447,6 +468,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -468,6 +490,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;

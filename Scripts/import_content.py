@@ -92,6 +92,7 @@ def main():
         "roomCovers": mapping["roomCovers"],
         "clips": clips,
         "roomClips": room_clips,
+        "curatedRoomActivity": mapping.get("curatedRoomActivity", {}),
         # Keep explicitly authored display interactions across media re-imports.
         "curatedEngagement": {
             entry["id"]: entry["curatedEngagement"]

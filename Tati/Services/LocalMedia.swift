@@ -82,6 +82,7 @@ struct ImportedMovie: Transferable {
         if wantsToPlay { player.play() } else { player.pause(); playing = false; loading = false }
     }
     func stop() {
+        guard player != nil || activeID != nil || failure != nil || wantsToPlay || loading else { return }
         generation = UUID()
         statusObserver = nil; playbackObserver = nil
         player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; ownerID = nil; playing = false
@@ -101,8 +102,9 @@ struct ClipSurface: UIViewRepresentable {
     var fillsContainer = false
     func makeUIView(context: Context) -> ClipLayerView { ClipLayerView() }
     func updateUIView(_ view: ClipLayerView, context: Context) {
-        view.videoLayer.player = player
-        view.videoLayer.videoGravity = fillsContainer ? .resizeAspectFill : .resizeAspect
+        if view.videoLayer.player !== player { view.videoLayer.player = player }
+        let gravity: AVLayerVideoGravity = fillsContainer ? .resizeAspectFill : .resizeAspect
+        if view.videoLayer.videoGravity != gravity { view.videoLayer.videoGravity = gravity }
     }
     static func dismantleUIView(_ view: ClipLayerView, coordinator: ()) { view.videoLayer.player = nil }
 }
@@ -152,24 +154,57 @@ struct CameraSurface: UIViewRepresentable {
     static func dismantleUIView(_ view: CameraLayerView, coordinator: ()) { view.cameraLayer.session = nil }
 }
 
+private actor VideoPosterCache {
+    static let shared = VideoPosterCache()
+    private let images: NSCache<NSURL, UIImage> = {
+        let cache = NSCache<NSURL, UIImage>()
+        cache.countLimit = 24
+        cache.totalCostLimit = 24 * 1_024 * 1_024
+        return cache
+    }()
+    func image(at url: URL) async -> UIImage? {
+        guard !Task.isCancelled else { return nil }
+        if let image = images.object(forKey: url as NSURL) { return image }
+        let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))
+        generator.appliesPreferredTrackTransform = true
+        generator.maximumSize = CGSize(width: 800, height: 800)
+        do {
+            let (frame, _) = try await withTaskCancellationHandler {
+                try await generator.image(at: .zero)
+            } onCancel: {
+                generator.cancelAllCGImageGeneration()
+            }
+            guard !Task.isCancelled else { return nil }
+            let image = UIImage(cgImage: frame)
+            images.setObject(image, forKey: url as NSURL, cost: frame.bytesPerRow * frame.height)
+            return image
+        } catch { return nil }
+    }
+}
+
 struct LocalVideoPoster: View {
     let url: URL
     var height: CGFloat = 210
+    @Environment(\.scenePhase) private var scenePhase
     @State private var image: UIImage?
+    @State private var loadedURL: URL?
+    private struct LoadKey: Hashable { let url: URL; let active: Bool }
     var body: some View {
-        Group {
-            if let image { Image(uiImage: image).resizable().scaledToFill().frame(height: height).clipped() }
-            else { MediaPlaceholder(title: "Video", height: height) }
-        }.task(id: url) {
-            image = nil
-            let generator = AVAssetImageGenerator(asset: AVURLAsset(url: url))
-            generator.appliesPreferredTrackTransform = true
-            generator.maximumSize = CGSize(width: 800, height: 800)
-            do {
-                let (frame, _) = try await generator.image(at: .zero)
-                guard !Task.isCancelled else { return }
-                image = UIImage(cgImage: frame)
-            } catch { /* Keep the explicit local-media fallback; do not invent a cover. */ }
+        GeometryReader { geometry in
+            Group {
+                if let image, loadedURL == url {
+                    Image(uiImage: image).resizable().scaledToFill()
+                } else { MediaPlaceholder(title: "Video", height: height) }
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height).clipped()
+        }
+        .frame(height: height)
+        .task(id: LoadKey(url: url, active: scenePhase == .active)) {
+            guard scenePhase == .active, loadedURL != url else { return }
+            let prepared = await VideoPosterCache.shared.image(at: url)
+            guard !Task.isCancelled else { return }
+            image = prepared
+            if prepared != nil { loadedURL = url }
         }
     }
 }

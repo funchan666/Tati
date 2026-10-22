@@ -196,23 +196,38 @@ struct BackpackView: View {
 struct BlacklistView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPage(title: "Blacklist") {
-            let blocked = FoodCatalog.people.filter { store.account.blocked.contains($0.id) }
+        TatiPage(title: "Blacklist", lazyContent: true) {
+            let blocked = store.account.blocked.sorted()
             if blocked.isEmpty { EmptyContent(title: "No blocked profiles", detail: "Profiles you block will appear here. Their rooms and videos will be hidden.", artwork: "blacklist") }
-            ForEach(blocked) { person in
-                HStack {
-                    NavigationLink(destination: PersonProfileView(person: person)) {
-                        HStack { Avatar(asset: person.portraitArtwork, size: 38); Text(person.name).font(.system(size: 14)) }
+            ForEach(blocked, id: \.self) { id in
+                let person = FoodCatalog.person(id)
+                HStack(spacing: 12) {
+                    if let person {
+                        NavigationLink(destination: PersonProfileView(person: person)) {
+                            HStack(spacing: 10) {
+                                Avatar(asset: person.portraitArtwork, size: 40)
+                                Text(person.name).font(.body).fixedSize(horizontal: false, vertical: true)
+                            }
+                        }.buttonStyle(.plain)
+                    } else {
+                        Art(name: "blacklist", width: 32, height: 32)
+                        Text("Unavailable profile").font(.body)
+                    }
+                    Spacer(minLength: 0)
+                    Button { store.unblock(id) } label: {
+                        Text("Unblock").font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 12).frame(minHeight: 44)
+                            .background(Color.tatiCream, in: RoundedRectangle(cornerRadius: 12))
                     }.buttonStyle(.plain)
-                    Spacer()
-                    ArtButton(asset: "remove", label: "Unblock \(person.name)", size: 24) { _ = store.change { $0.blocked.remove(person.id) } }
-                }.padding(.horizontal, 12).padding(.vertical, 4).background { Image("outlined-card").resizable() }
+                }.padding(12).background(.white, in: RoundedRectangle(cornerRadius: 18))
             }
         }
     }
 }
 struct SettingsView: View {
     @EnvironmentObject private var store: VisitorStore
+    @EnvironmentObject private var notifications: NotificationPreferences
+    private var reminderEnabled: Bool { store.account.notifications && notifications.authorized }
     var body: some View {
         TatiPage(title: "Settings") {
             NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", outlined: true) }
@@ -220,16 +235,35 @@ struct SettingsView: View {
             NavigationLink(destination: PolicyView(kind: .terms)) { SettingRow(title: "User agreement", outlined: true) }
             Button { store.deleteVisitor() } label: { SettingRow(title: "Delete profile", outlined: true) }
             Button { store.logout() } label: { SettingRow(title: "Log Out", outlined: true) }
-            NavigationLink(destination: LanguagePreferenceView()) { SettingRow(title: "Language", detail: store.account.preferredLanguage ?? "English", outlined: true) }
-            Button { _ = store.change { $0.notifications.toggle() } } label: {
-                HStack {
-                    Text("Notifications").font(.system(size: 14)); Spacer()
-                    if store.account.notifications { Art(name: "toggle-on", width: 32, height: 23) } else { SupplementIcon(icon: .toggleOff, size: 32) }
-                }.padding(.horizontal, 18).frame(height: 50).background { Image("outlined-card").resizable() }
-            }.buttonStyle(.plain).accessibilityValue(store.account.notifications ? "Preference on" : "Preference off")
+            NavigationLink(destination: LanguagePreferenceView()) {
+                SettingRow(title: "Language", detail: AppLanguage.preference(store.account.preferredLanguage).nativeName, outlined: true)
+            }
+            Button {
+                if reminderEnabled { Task { await notifications.toggle(store: store) } }
+                else {
+                    store.confirm("Daily reminders?", "Get a daily check-in reminder at 19:00, using your device's local time. You can turn it off here at any time.", button: "Enable") {
+                        Task { await notifications.toggle(store: store) }
+                    }
+                }
+            } label: {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Notifications").font(.body)
+                        Text("Daily check-in · 19:00").font(.caption).foregroundStyle(Color.tatiOlive)
+                    }.fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                    if reminderEnabled { Art(name: "toggle-on", width: 32, height: 23) }
+                    else { SupplementIcon(icon: .toggleOff, size: 32) }
+                }.padding(.horizontal, 18).padding(.vertical, 12)
+                    .frame(minHeight: 64).background { Image("outlined-card").resizable() }
+            }.buttonStyle(.plain).disabled(notifications.busy)
+                .accessibilityLabel("Notifications")
+                .accessibilityValue(LocalizedStringKey(reminderEnabled ? "On" : "Off"))
         }.buttonStyle(.plain)
+            .task { notifications.refresh(store: store) }
     }
 }
+
 struct ReportView: View {
     var subjectID: String
     var feedback = false
@@ -241,40 +275,98 @@ struct ReportView: View {
     @State private var details = ""
     @State private var photoData: Data?
     @State private var photoLoading = false
+    private var reasons: [String] {
+        feedback ? ["Bug", "Suggestion", "Payment", "Other"]
+            : ["Harassment", "Inappropriate content", "Spam", "Safety concern", "Other"]
+    }
+
     var body: some View {
-        TatiForm(title: feedback ? "Feedback" : "Report") {
-            Text("Type").font(.system(size: 14))
-            ChoiceGrid(items: feedback ? ["Bug", "Suggestion", "Payment", "Other"] : ["Harassment", "Inappropriate content", "Spam", "Safety concern", "Other"], selected: $reason)
-            InputField(title: "Description", text: $details, multiline: true, minimumHeight: 160).onChange(of: details) { _, value in details = String(value.prefix(1000)) }
-            Text("Upload photo").font(.system(size: 14))
-            PhotoAttachmentPicker(data: $photoData, loading: $photoLoading)
+        TatiEditingForm(title: feedback ? "Feedback" : "Report") {
+            HStack(alignment: .center, spacing: 14) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(LocalizedStringKey(feedback ? "A little better, together." : "Keep our table welcoming."))
+                        .font(.title3.weight(.bold)).fixedSize(horizontal: false, vertical: true)
+                    Text(LocalizedStringKey(feedback ? "Tell us what could work better." : "Choose the reason that best fits."))
+                        .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "support-mascot", width: 56, height: 62)
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text(LocalizedStringKey(feedback ? "Feedback type" : "Report reason")).font(.subheadline.weight(.semibold))
+                VStack(spacing: 4) {
+                    ForEach(reasons, id: \.self) { item in
+                        Button { reason = item } label: {
+                            HStack(spacing: 12) {
+                                Text(LocalizedStringKey(item)).font(.body.weight(reason == item ? .semibold : .regular))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Art(name: "check-pink", width: 22, height: 22)
+                                    .opacity(reason == item ? 1 : 0)
+                            }
+                            .padding(.horizontal, 14).padding(.vertical, 12)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(reason == item ? Color.tatiLime.opacity(0.7) : .clear,
+                                        in: RoundedRectangle(cornerRadius: 12))
+                            .contentShape(Rectangle())
+                        }.buttonStyle(.plain)
+                            .accessibilityAddTraits(reason == item ? .isSelected : [])
+                    }
+                }.padding(6).background(.white, in: RoundedRectangle(cornerRadius: 18))
+            }
+
+            TatiEditingField(label: "More details · optional", placeholder: "Tell us what happened…", text: $details, limit: 1000, multiline: true)
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text(LocalizedStringKey(feedback ? "Screenshot · optional" : "Photo evidence · optional")).font(.subheadline.weight(.semibold))
+                PhotoAttachmentPicker(data: $photoData, loading: $photoLoading)
+            }
 
             let saved = store.account.reports.filter { $0.subjectID == subjectID }
             if !saved.isEmpty {
-                Text("Report history").font(.headline)
-                ForEach(saved.reversed()) { draft in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(draft.reason).font(.subheadline.bold()); Text(draft.details).font(.subheadline)
-                        if let file = draft.imageFile, let image = UIImage(contentsOfFile: store.mediaURL(file).path) { Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 150) }
-                        Text(draft.date, style: .date).font(.caption)
-                        Button("Remove record") { store.removeReport(draft) }.font(.caption.bold()).foregroundStyle(Color.tatiOlive).buttonStyle(.plain).padding(.vertical, 10)
-                    }.padding(16).frame(maxWidth: .infinity, alignment: .leading).background(Color.white.opacity(0.5)).clipShape(RoundedRectangle(cornerRadius: 16))
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(LocalizedStringKey(feedback ? "Saved feedback" : "Report history")).font(.subheadline.weight(.semibold))
+                    ForEach(saved.reversed()) { draft in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(draft.reason).font(.subheadline.bold())
+                            if !draft.details.isEmpty { Text(draft.details).font(.subheadline) }
+                            if let file = draft.imageFile {
+                                PreparedPhoto(source: .file(store.mediaURL(file)), fills: false)
+                                    .frame(height: 150).clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
+                            Text(draft.date, style: .date).font(.caption).foregroundStyle(Color.tatiOlive)
+                            Button("Remove record") { store.removeReport(draft) }
+                                .font(.caption.bold()).foregroundStyle(Color.tatiOlive)
+                                .buttonStyle(.plain).frame(minHeight: 44)
+                        }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.white, in: RoundedRectangle(cornerRadius: 16))
+                    }
                 }
             }
         } footer: {
-            TatiButton(title: feedback ? "Save feedback" : "Report", enabled: !photoLoading && !reason.isEmpty) {
-                var file: String?
-                do {
-                    if let photoData { file = try store.importImage(photoData) }
-                    if store.saveReport(subject: subjectID, reason: reason, details: details, imageFile: file, authorID: authorID, contextID: contextID, feedback: feedback) {
-                        dismiss()
-                        store.celebrate(feedback ? "Feedback saved" : "Report saved", feedback ? "Thank you for helping improve Tati." : "This content is now hidden from your feed.", artwork: "support-mascot")
-                    } else if let file { store.removeUnusedMedia(file) }
-                } catch { store.tell("Couldn't save attachment", "Your text and photo selection are still here. Free device storage and try again.") }
+            VStack(spacing: 10) {
+                Text(LocalizedStringKey(reason.isEmpty ? "Choose a reason to continue." : (feedback ? "Your feedback will be saved on this device." : "Saved on this device. Reported content will be hidden.")))
+                    .font(.caption).foregroundStyle(Color.tatiOlive)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                TatiEditingButton(title: photoLoading ? "Loading photo…" : (feedback ? "Save feedback" : "Report content"), enabled: !photoLoading && !reason.isEmpty, action: save)
             }
         }
+        .presentationBackground(Color.tatiCream)
+    }
+
+    private func save() {
+        var file: String?
+        do {
+            if let photoData { file = try store.importImage(photoData) }
+            if store.saveReport(subject: subjectID, reason: reason, details: details, imageFile: file, authorID: authorID, contextID: contextID, feedback: feedback) {
+                dismiss()
+                store.celebrate(feedback ? "Feedback saved" : "Report saved", feedback ? "Thank you for helping improve Tati." : "This content is now hidden from your feed.", artwork: "support-mascot")
+            } else if let file { store.removeUnusedMedia(file) }
+        } catch { store.tell("Couldn't save attachment", "Your text and photo selection are still here. Free device storage and try again.") }
     }
 }
+
 struct InviteView: View {
     var body: some View {
         TatiPage(title: "Invitation code") {
@@ -309,6 +401,7 @@ struct PolicyView: View {
     @State private var loading = true
     @State private var loadFailed = false
     @State private var retryID = 0
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         TatiPage(title: kind.title, scrolling: false) {
@@ -325,6 +418,7 @@ struct PolicyView: View {
                             loading = true
                             retryID += 1
                         }
+                        TatiEditingButton(title: "Open in browser", enabled: true) { openURL(kind.url) }
                     }.padding(24).frame(maxWidth: 440)
                 }
             }
@@ -390,6 +484,14 @@ private struct PolicyWebView: UIViewRepresentable {
             activeNavigation = navigation
             parent.loading = true
             parent.loadFailed = false
+        }
+
+        func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+            if navigationResponse.isForMainFrame, let response = navigationResponse.response as? HTTPURLResponse, response.statusCode >= 400 {
+                parent.loading = false
+                parent.loadFailed = true
+                decisionHandler(.cancel)
+            } else { decisionHandler(.allow) }
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

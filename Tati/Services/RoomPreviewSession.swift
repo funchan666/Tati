@@ -9,7 +9,7 @@ final class RoomPreviewSession: ObservableObject {
         if room?.id != value.id { audio.reset() }
         room = value; minimized = false
     }
-    func minimize() { minimized = room != nil }
+    func minimize() { minimized = room?.isVoice == true }
     func leave(_ id: String? = nil) {
         guard id == nil || room?.id == id else { return }
         audio.reset(); room = nil; minimized = false

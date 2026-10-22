@@ -8,16 +8,47 @@ struct TatiNotice: Identifiable {
     var action: (() -> Void)?
     var destructive = false
     var artwork: String? = nil
+    var personID: String? = nil
 }
 
 @MainActor
 final class VisitorStore: ObservableObject {
-    @Published private(set) var account = LocalAccount()
+    @Published private(set) var account = LocalAccount() {
+        didSet { cachedMessageIndex = nil }
+    }
+    private var cachedMessageIndex: [String: [LocalMessage]]?
+    private var messageIndex: [String: [LocalMessage]] {
+        if let cachedMessageIndex { return cachedMessageIndex }
+        let index = Dictionary(grouping: account.messages, by: \.recipientID)
+            .mapValues { $0.sorted { $0.createdAt < $1.createdAt } }
+        cachedMessageIndex = index
+        return index
+    }
     @Published var notice: TatiNotice?
+    // Presentation-only ownership: one visible host across the root and nested sheets.
+    // Never persisted with the account, and scoped to this store rather than a global window.
+    @Published private var noticeHosts: [(id: UUID, isRoot: Bool)] = []
+
+    func registerNoticeHost(_ id: UUID, isRoot: Bool) {
+        guard !noticeHosts.contains(where: { $0.id == id }) else { return }
+        noticeHosts.append((id, isRoot))
+    }
+
+    func unregisterNoticeHost(_ id: UUID) {
+        noticeHosts.removeAll { $0.id == id }
+    }
+
+    func ownsNotice(_ id: UUID) -> Bool {
+        let host = noticeHosts.last(where: { !$0.isRoot }) ?? noticeHosts.last
+        return host?.id == id
+    }
     @Published var paymentInProgress = false
     @Published private(set) var storageFailure: String?
     private let fileURL: URL
     let mediaDirectory: URL
+    // Transient typing is not published to every account observer on each keystroke.
+    private var pendingDrafts: [String: (text: String, owner: String)] = [:]
+    private var draftSaves: [String: Task<Void, Never>] = [:]
 
     init() {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Tati", isDirectory: true)
@@ -109,6 +140,7 @@ final class VisitorStore: ObservableObject {
     func logout() {
         guard !paymentInProgress else { tell("Purchase in progress", "Finish the Apple purchase before signing out."); return }
         confirm("Leave Tati?", "Your profile and saved content will be kept when you log out.", button: "Log out") {
+            self.flushDrafts()
             _ = self.change { $0.signedIn = false }
         }
     }
@@ -121,16 +153,20 @@ final class VisitorStore: ObservableObject {
                 let credits = value.purchaseCredits
                 let processed = value.processedTransactions
                 let legacyOwners = value.purchaseOwnerByProduct
+                let language = value.preferredLanguage
                 value = LocalAccount()
                 // Keep transaction evidence; a new profile must never inherit an old order.
                 value.purchaseIntents = intents; value.purchaseCredits = credits
                 value.processedTransactions = processed; value.purchaseOwnerByProduct = legacyOwners
+                value.preferredLanguage = language
             }) else { return }
+            for key in Array(self.pendingDrafts.keys) { self.cancelDraftSave(key) }
             var cleanupFailed = false
             for file in files where FileManager.default.fileExists(atPath: self.mediaURL(file).path) {
                 do { try FileManager.default.removeItem(at: self.mediaURL(file)) } catch { cleanupFailed = true }
             }
             if cleanupFailed { self.tell("Profile deleted", "Some imported files could not be removed. Uninstall Tati to erase the remaining app data.") }
+            else { self.celebrate("Profile deleted", "Your profile and saved content have been removed.", artwork: "support-mascot") }
         }
     }
     // All screens derive relationship state from this persisted account, never view-local flags.
@@ -154,13 +190,23 @@ final class VisitorStore: ObservableObject {
     }
     func block(_ id: String) {
         guard id != account.profile.id else { return }
-        confirm("Block this profile?", "Their posts, comments, rooms and conversations will be hidden. You can unblock them in Settings.", button: "Block", destructive: true) {
+        let person = FoodCatalog.person(id)
+        notice = TatiNotice(title: person.map { "Block \($0.name)?" } ?? "Block this profile?",
+                            message: "Their posts, comments, rooms and conversations will be hidden. You can unblock them in Settings.",
+                            actionTitle: "Block", action: {
             if self.change({ $0.blocked.insert(id); $0.following.remove(id); $0.followers?.remove(id) }) {
                 self.celebrate("Profile blocked", "Their content and conversations are now hidden.", artwork: "blacklist")
             }
-        }
+        }, destructive: true, artwork: "blacklist", personID: person?.id)
     }
     func isHidden(_ subject: String) -> Bool { account.hiddenSubjects?.contains(subject) == true }
+    func unblock(_ id: String) {
+        confirm("Unblock this profile?", "This removes the profile from your blacklist. Previous follows will not be restored automatically.", button: "Unblock") {
+            if self.change({ $0.blocked.remove(id) }) {
+                self.celebrate("Profile unblocked", "Your blacklist has been updated.", artwork: "blacklist")
+            }
+        }
+    }
     func isPersonHidden(_ id: String) -> Bool { account.blocked.contains(id) || isHidden("person:" + id) }
     var visiblePeople: [FoodPerson] { FoodCatalog.people.filter { !isPersonHidden($0.id) } }
     var visibleRooms: [FoodRoom] { FoodCatalog.rooms.filter { !isPersonHidden($0.hostID) && !isHidden("room:" + $0.id) } }
@@ -179,7 +225,30 @@ final class VisitorStore: ObservableObject {
     }
     func messages(with id: String) -> [LocalMessage] {
         guard !isPersonHidden(id) else { return [] }
-        return account.messages.filter { $0.recipientID == id && !isHidden("message:" + $0.id) }.sorted { $0.createdAt < $1.createdAt }
+        return (messageIndex[id] ?? []).filter { !isHidden("message:" + $0.id) }
+    }
+    func latestMessage(with id: String) -> LocalMessage? {
+        guard !isPersonHidden(id) else { return nil }
+        return messageIndex[id]?.reversed().first { !isHidden("message:" + $0.id) }
+    }
+    func hasMessage(with id: String, matching text: String) -> Bool {
+        guard !isPersonHidden(id) else { return false }
+        return messageIndex[id]?.contains { !isHidden("message:" + $0.id) && $0.text.localizedCaseInsensitiveContains(text) } == true
+    }
+    func hasConversationDraft(with id: String) -> Bool {
+        !(account.drafts[id] ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            || account.draftImages?[id] != nil
+    }
+    var conversationPeople: [FoodPerson] {
+        let latest = messageIndex.compactMapValues { messages in
+            messages.reversed().first { !isHidden("message:" + $0.id) }?.createdAt
+        }
+        return visiblePeople.filter { latest[$0.id] != nil || hasConversationDraft(with: $0.id) }
+            .sorted {
+                let left = latest[$0.id] ?? .distantPast
+                let right = latest[$1.id] ?? .distantPast
+                return left == right ? $0.id < $1.id : left > right
+            }
     }
     func toggleLike(_ id: String) {
         guard visibleClips.contains(where: { $0.id == id }) else { return }
@@ -187,13 +256,20 @@ final class VisitorStore: ObservableObject {
     }
     private func curatedEngagement(for clip: FoodClip) -> CuratedClipEngagement? {
         // Imported/user-authored videos never receive editorial interactions.
-        guard clip.isSample, ContentLibrary.shared.clips.contains(where: { $0.id == clip.id }) else { return nil }
+        guard clip.isSample, FoodCatalog.sampleClipIDs.contains(clip.id) else { return nil }
         return ContentLibrary.shared.curatedEngagement?[clip.id]
     }
     func likeCount(for clip: FoodClip) -> Int {
         max(0, curatedEngagement(for: clip)?.likes ?? 0) + (account.likes.contains(clip.id) ? 1 : 0)
     }
-    func commentCount(for clip: FoodClip) -> Int { comments(for: clip).count }
+    func commentCount(for clip: FoodClip) -> Int {
+        let visible: (VideoComment) -> Bool = {
+            $0.clipID == clip.id && !self.isPersonHidden($0.authorID) && !self.isHidden("comment:" + $0.id)
+        }
+        // A badge needs a count, not a newly sorted comment timeline.
+        return (curatedEngagement(for: clip)?.comments ?? []).lazy.filter(visible).count
+            + (account.videoComments ?? []).lazy.filter(visible).count
+    }
     func comments(for clip: FoodClip) -> [VideoComment] {
         let curated = curatedEngagement(for: clip)?.comments ?? []
         return (curated + (account.videoComments ?? []))
@@ -277,7 +353,7 @@ final class VisitorStore: ObservableObject {
         guard !body.isEmpty,
               let room = FoodCatalog.rooms.first(where: { $0.id == roomID }),
               visibleRooms.contains(where: { $0.id == room.id }) else { return false }
-        return change { value in
+        let saved = change { value in
             var messages = value.roomMessages ?? []
             messages.append(LocalRoomMessage(roomID: roomID, text: body))
             let overflow = messages.filter { $0.roomID == roomID }.count - 100
@@ -288,8 +364,44 @@ final class VisitorStore: ObservableObject {
             value.roomMessages = messages
             value.drafts["room-" + roomID] = ""
         }
+        if saved { cancelDraftSave("room-" + roomID) }
+        return saved
     }
-    func saveDraft(_ key: String, text: String) -> Bool { change { $0.drafts[key] = text } }
+
+    func scheduleDraft(_ key: String, text: String) {
+        guard account.signedIn, storageFailure == nil else { return }
+        let owner = account.profile.id
+        if pendingDrafts[key]?.text == text, pendingDrafts[key]?.owner == owner { return }
+        cancelDraftSave(key)
+        guard (account.drafts[key] ?? "") != text else { return }
+        pendingDrafts[key] = (text, owner)
+        draftSaves[key] = Task { [weak self] in
+            do { try await Task.sleep(for: .milliseconds(400)) } catch { return }
+            guard !Task.isCancelled, let self else { return }
+            self.flushDraft(key)
+        }
+    }
+
+    func flushDraft(_ key: String) {
+        guard let pending = pendingDrafts[key] else { return }
+        guard pending.owner == account.profile.id, account.signedIn else { cancelDraftSave(key); return }
+        _ = saveDraft(key, text: pending.text)
+    }
+
+    func flushDrafts() {
+        for key in Array(pendingDrafts.keys) { flushDraft(key) }
+    }
+
+    private func cancelDraftSave(_ key: String) {
+        draftSaves.removeValue(forKey: key)?.cancel()
+        pendingDrafts.removeValue(forKey: key)
+    }
+
+    func saveDraft(_ key: String, text: String) -> Bool {
+        cancelDraftSave(key)
+        guard (account.drafts[key] ?? "") != text else { return storageFailure == nil }
+        return change { $0.drafts[key] = text }
+    }
     @discardableResult
     func attemptMessage(to recipient: String, text: String) -> Bool {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(2000))
@@ -351,7 +463,7 @@ final class VisitorStore: ObservableObject {
     }
     func mediaURL(_ file: String) -> URL { mediaDirectory.appendingPathComponent(URL(fileURLWithPath: file).lastPathComponent) }
     func importImage(_ data: Data) throws -> String {
-        guard UIImage(data: data) != nil, data.count <= 25 * 1024 * 1024 else { throw CocoaError(.fileReadCorruptFile) }
+        guard data.count <= 25 * 1024 * 1024, UIImage(data: data) != nil else { throw CocoaError(.fileReadCorruptFile) }
         let name = UUID().uuidString + ".image"
         try data.write(to: mediaURL(name), options: [.atomic, .completeFileProtectionUntilFirstUserAuthentication])
         return name

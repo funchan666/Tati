@@ -3,8 +3,15 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 enum RoomPanel: String, Identifiable {
-    case gifts, tools, safety, members, layout, background, microphone, music, invite, report, viewing, leave
+    case gifts, tools, safety, members, background, microphone, dictation, music, report, viewing, leave
     var id: String { rawValue }
+    func supports(voice: Bool) -> Bool {
+        switch self {
+        case .background, .microphone, .dictation, .music: return voice
+        case .viewing: return !voice
+        default: return true
+        }
+    }
 }
 struct RoomView: View {
     let room: FoodRoom
@@ -12,6 +19,7 @@ struct RoomView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @State private var panel: RoomPanel?
+    @State private var pendingVoiceInput = false
     @State private var pendingProfile: FoodPerson?
     @State private var profilePage: FoodPerson?
     @State private var message = ""
@@ -28,10 +36,8 @@ struct RoomView: View {
     @State private var showsActivity = true
     private var music: LocalRoomAudio { roomSession.audio }
     private var host: FoodPerson { FoodCatalog.person(room.hostID) ?? FoodCatalog.people[0] }
-    private var background: String { room.isVoice ? store.voiceRoomBackground(for: room).rawValue : store.account.roomBackgrounds[room.id] ?? room.background }
-    private var videoSlots: Int { layout == "Spotlight + voices" ? 1 : layout == "Duo video + voices" ? 2 : layout == "Three video + voices" ? 3 : 0 }
-    private var voiceSeats: Int { videoSlots == 0 ? 9 : videoSlots == 1 ? 8 : 6 }
-    private var layout: String { store.account.roomLayouts[room.id] ?? "10-seat voice room" }
+    private var background: String { store.voiceRoomBackground(for: room).rawValue }
+    private let voiceSeats = 9
     private var ownsPlayback: Bool { playback.ownerID == playbackOwner }
     var body: some View {
         MediaViewport {
@@ -45,7 +51,7 @@ struct RoomView: View {
                                         .overlay { Circle().strokeBorder(.white.opacity(0.75), lineWidth: 1) }
                                         .overlay(alignment: .bottom) {
                                             if !room.isVoice {
-                                                RoomKindBadge(isVoice: false, animates: ownsPlayback && playback.playing)
+                                                RoomKindBadge(isVoice: false)
                                                     .scaleEffect(0.62).frame(width: 30, height: 14).offset(y: 5)
                                             }
                                         }
@@ -113,7 +119,7 @@ struct RoomView: View {
                                 .onChange(of: message) { _, value in
                                     let limited = String(value.prefix(300))
                                     if limited != value { message = limited }
-                                    _ = store.saveDraft("room-" + room.id, text: limited)
+                                    store.scheduleDraft("room-" + room.id, text: limited)
                                 }
                             Button {
                                 speech.cancel()
@@ -138,7 +144,7 @@ struct RoomView: View {
                     if room.isVoice {
                         VoiceRoomBackgroundArtwork(background: store.voiceRoomBackground(for: room))
                     } else {
-                        Image(store.account.roomBackgrounds[room.id] ?? room.coverArtwork ?? "media-placeholder").resizable().scaledToFill()
+                        Image(room.coverArtwork ?? "media-placeholder").resizable().scaledToFill()
                             .frame(width: geo.size.width, height: geo.size.height, alignment: .top).clipped()
                     }
                     if !room.isVoice && !fillsVideo { Color.black }
@@ -174,8 +180,9 @@ struct RoomView: View {
         }
         .onDisappear {
             isVisible = false
+            pendingVoiceInput = false
             speech.cancel()
-            _ = store.saveDraft("room-" + room.id, text: message)
+            store.flushDraft("room-" + room.id)
             if ownsPlayback { playback.stop() }
             if !roomSession.minimized { roomSession.leave(room.id) }
         }
@@ -208,13 +215,19 @@ struct RoomView: View {
         .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
         .background { ProfilePageHandoff(person: $profilePage) }
         .sheet(item: $panel, onDismiss: {
+            if pendingVoiceInput {
+                pendingVoiceInput = false
+                if room.isVoice, roomSession.room?.id == room.id { toggleSpeechInput() }
+            }
             if let person = pendingProfile {
                 pendingProfile = nil
                 if !store.isPersonHidden(person.id) { profilePage = person }
             }
         }) { selected in
             Group {
-            if selected == .leave {
+            if !selected.supports(voice: room.isVoice) {
+                RoomControlSheet(title: "Room tools") { Text("This control is not available in this room.") }
+            } else if selected == .leave {
                 RoomLeavePanel(isVoice: room.isVoice,
                                minimize: { roomSession.minimize(); panel = nil; dismiss() },
                                leave: { roomSession.leave(room.id); panel = nil; dismiss() },
@@ -222,24 +235,42 @@ struct RoomView: View {
             } else if selected == .safety {
                 SafetyActionsView(subjectID: "room:" + room.id, authorID: room.hostID)
             } else if selected == .tools {
-                RoomToolsPanel(isVoice: room.isVoice) { panel = $0 }
+                RoomToolsPanel(isVoice: room.isVoice) { destination in
+                    guard destination.supports(voice: room.isVoice) else { return }
+                    panel = destination
+                }
             } else if selected == .gifts {
                 NavigationStack { GiftShopView(recipient: host, roomID: room.id, onGiftSaved: { panel = nil }) }
                     .overlay { NoticeLayer() }
 
+            } else if selected == .dictation {
+                RoomControlSheet(title: "Voice input", subtitle: "Speak to fill the message field. Review your words before sending.") {
+                    TatiEditingButton(title: "Speak a message", enabled: true) {
+                        pendingVoiceInput = true
+                        panel = nil
+                    }
+                }
             } else if selected == .viewing {
                 RoomViewingPanel(fillsVideo: $fillsVideo, muted: $videoMuted, showsActivity: $showsActivity)
             } else {
                 NavigationStack {
                     Group {
                         switch selected {
-                        case .gifts, .tools, .safety, .viewing: EmptyView() // Uses its own content-sized presentation.
+                        case .gifts, .tools, .safety, .viewing, .dictation: EmptyView() // Uses its own content-sized presentation.
                         case .members: TatiPanel(title: "In this room") { EmptyContent(title: "Member list unavailable", detail: "Member information is currently unavailable."); UserProfileLink(userID: host.id) { SettingRow(title: "View host", asset: "profile-heading") } }
-                        case .layout: layoutPanel
                         case .background: backgroundPanel
-                        case .microphone: MicrophonePanel()
-                        case .music: RoomMusicPanel(player: music)
-                        case .invite: RoomInvitePanel(room: room)
+                        case .microphone:
+                            RoomControlSheet(title: "Voice seats", subtitle: "Live microphone seats are not connected yet.") {
+                                Text("You can still use voice input to compose a room message.")
+                                    .font(.subheadline)
+                                TatiEditingButton(title: "Speak a message", enabled: true) {
+                                    pendingVoiceInput = true
+                                    panel = nil
+                                }
+                            }
+                        case .music: RoomMusicPanel(player: music, isCurrentRoom: {
+                            isVisible && room.isVoice && roomSession.room?.id == room.id && scenePhase == .active
+                        })
                         case .report: ReportView(subjectID: "room:" + room.id)
                         case .leave: EmptyView() // Presented separately at its content height.
                         }
@@ -257,7 +288,7 @@ struct RoomView: View {
     }
     private func toggleSpeechInput() {
         if speech.isBusy { speech.finish(); return }
-        guard isVisible, scenePhase == .active else { return }
+        guard room.isVoice, isVisible, roomSession.room?.id == room.id, scenePhase == .active else { return }
         guard message.count < 300 else {
             store.tell("Message is full", "Send or shorten your message before adding more words.")
             return
@@ -299,13 +330,6 @@ struct RoomView: View {
                         .overlay { Art(name: "host-frame", width: 96, height: 96) }
                         .frame(width: 104, height: 104)
                 }.buttonStyle(.plain).accessibilityLabel("Host details")
-                if videoSlots > 0 {
-                    HStack(spacing: 8) {
-                        ForEach(0..<videoSlots, id: \.self) { slot in
-                            MediaPlaceholder(title: "Camera \(slot + 1)", height: videoSlots == 1 ? 150 : 112)
-                        }
-                    }
-                }
                 VStack(spacing: 18) {
                     ForEach(0..<rowCount, id: \.self) { row in
                         HStack(spacing: 0) {
@@ -352,13 +376,8 @@ struct RoomView: View {
         switch selected {
         case .report: return [.large]
         case .gifts: return [.height(600), .large]
-        case .microphone: return [.height(220), .large]
+        case .microphone: return [.height(330), .large]
         default: return [.height(420), .large]
-        }
-    }
-    private var layoutPanel: some View {
-        RoomLayoutPanel(current: layout) { chosen in
-            if store.change({ $0.roomLayouts[room.id] = chosen }) { panel = nil }
         }
     }
     private var backgroundPanel: some View {
@@ -369,7 +388,10 @@ struct RoomView: View {
                     Spacer(minLength: 8)
                     ArtButton(asset: "close-light", label: "Close backgrounds", size: 22) { panel = nil }
                 }
+                Text("This background is visible only to you.")
+                    .font(.subheadline).foregroundStyle(Color.tatiOlive)
                 VoiceRoomBackgroundPicker(selected: background) { chosen in
+                    guard room.isVoice else { return }
                     if store.change({ $0.roomBackgrounds[room.id] = chosen.rawValue }) { panel = nil }
                 }
             }.padding(20).frame(maxWidth: 600).frame(maxWidth: .infinity)
@@ -548,73 +570,98 @@ struct GiftShopView: View {
         })
     }
 }
-struct MicrophonePanel: View {
-    @State private var status = "Microphone access has not been requested."
-    @State private var requesting = false
-    var body: some View {
-        TatiPanel(title: "Join the conversation") {
-            Text("Allow microphone access to use voice features.").font(.system(size: 12)).padding(.vertical, 8)
-            Note(text: status)
-            TatiButton(title: requesting ? "Waiting for permission…" : "Check microphone permission", enabled: !requesting) {
-                requesting = true
-                AVAudioApplication.requestRecordPermission { granted in
-                    Task { @MainActor in requesting = false; status = granted ? "Microphone access granted. Voice chat is currently unavailable; recording has not started." : "Microphone access was denied. You can allow it in iOS Settings." }
-                }
-            }
-        }
-    }
-}
 @MainActor final class LocalRoomAudio: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    @Published var playing = false
+    @Published private(set) var playing = false
     @Published private(set) var muted = false
-    @Published var title = "No audio selected"
+    @Published private(set) var title = "No audio selected"
+    @Published private(set) var revision = UUID()
     private var player: AVAudioPlayer?
+    private var ownsAudioSession = false
+    var hasSelection: Bool { player != nil }
     func load(_ url: URL) throws {
-        stop()
+        let limit = 50 * 1024 * 1024
+        let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+        guard size <= limit else { throw CocoaError(.fileReadTooLarge) }
         let bytes = try Data(contentsOf: url, options: .mappedIfSafe)
-        guard bytes.count <= 50 * 1024 * 1024 else { throw CocoaError(.fileReadTooLarge) }
-        player = try AVAudioPlayer(data: bytes)
-        player?.delegate = self
-        player?.volume = muted ? 0 : 1
+        guard bytes.count <= limit else { throw CocoaError(.fileReadTooLarge) }
+        let replacement = try AVAudioPlayer(data: bytes)
+        // Validate first: an invalid new file must not erase the previous selection.
+        stop()
+        player = replacement
+        replacement.delegate = self
+        replacement.volume = muted ? 0 : 1
         title = url.deletingPathExtension().lastPathComponent
     }
-    func reset() { stop(); player = nil; title = "No audio selected"; muted = false }
+    func reset() { stop(); player = nil; title = "No audio selected"; muted = false; revision = UUID() }
     func toggleMuted() { muted.toggle(); player?.volume = muted ? 0 : 1 }
     func toggle() throws {
         guard let player else { return }
-        if playing { stop() } else {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-            playing = player.play()
+        if playing { stop(); return }
+        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+        try AVAudioSession.sharedInstance().setActive(true)
+        ownsAudioSession = true
+        if player.currentTime >= player.duration { player.currentTime = 0 }
+        guard player.play() else {
+            stop()
+            throw CocoaError(.fileReadCorruptFile)
         }
+        playing = true
     }
     nonisolated func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         Task { @MainActor [weak self] in guard self?.player === player else { return }; self?.stop() }
     }
-    func stop() { player?.pause(); playing = false; try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation) }
+    func stop() {
+        player?.pause(); playing = false
+        // Do not deactivate video or speech sessions when this player never started.
+        if ownsAudioSession {
+            ownsAudioSession = false
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        }
+    }
 }
 struct RoomMusicPanel: View {
     @ObservedObject var player: LocalRoomAudio
+    var isCurrentRoom: () -> Bool
     @EnvironmentObject private var store: VisitorStore
     @State private var importing = false
+    @State private var sessionRevision: UUID?
     var body: some View {
-        TatiPanel(title: "Room music") {
-            ForEach(["Midnight mood", "Warm conversations", "Slow afternoon"], id: \.self) { title in
-                HStack { Art(name: "music-disc", width: 26); Text(title).font(.subheadline); Spacer(); Text("Audio pending").font(.caption2) }
-                    .padding(14).background(Color.tatiOlive.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 14))
+        RoomControlSheet(title: "Listening music", subtitle: "Selected music is for your listening only.") {
+            HStack(spacing: 14) {
+                Art(name: "music-disc", width: 48, height: 48)
+                VStack(alignment: .leading, spacing: 5) {
+                    if player.hasSelection { Text(player.title).font(.headline).lineLimit(3) }
+                    else { Text("No audio selected").font(.headline) }
+                    Text(LocalizedStringKey(player.playing ? "Playing" : "Paused"))
+                        .font(.caption).foregroundStyle(Color.tatiOlive)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            }.padding(16).background(.white, in: RoundedRectangle(cornerRadius: 18))
+            Text("Choose an audio file up to 50 MB.").font(.caption).foregroundStyle(Color.tatiOlive)
+            TatiEditingButton(title: "Choose audio", enabled: !importing) { importing = true }
+            HStack(spacing: 12) {
+                TatiEditingButton(title: player.playing ? "Pause" : "Play", enabled: player.hasSelection) {
+                    guard isCurrentRoom() else { return }
+                    do { try player.toggle() } catch { store.tell("Audio unavailable", "The audio couldn't be played. Try another file.") }
+                }
+                TatiEditingButton(title: "Clear", enabled: player.hasSelection) {
+                    guard isCurrentRoom() else { return }
+                    player.reset(); sessionRevision = player.revision
+                }
             }
-            Text(player.title).font(.headline)
-            Note(text: "Selected music is for your listening only.")
-            TatiButton(title: "Choose audio") { importing = true }
-            TatiButton(title: player.playing ? "Pause" : "Play", secondary: true, enabled: player.title != "No audio selected") {
-                do { try player.toggle() } catch { store.tell("Audio unavailable", "The audio couldn't be played. Try another file.") }
-            }
-        }.fileImporter(isPresented: $importing, allowedContentTypes: [.audio]) { result in
+        }.onAppear { sessionRevision = player.revision }
+        .fileImporter(isPresented: $importing, allowedContentTypes: [.audio]) { result in
+            // A late Files callback cannot load audio into a different room session.
+            guard isCurrentRoom(), sessionRevision == player.revision else { return }
             do {
-                let url = try result.get(); let granted = url.startAccessingSecurityScopedResource(); defer { if granted { url.stopAccessingSecurityScopedResource() } }
-                // Copy audio bytes while the security-scoped file is accessible.
+                let url = try result.get()
+                let granted = url.startAccessingSecurityScopedResource()
+                defer { if granted { url.stopAccessingSecurityScopedResource() } }
                 try player.load(url)
-            } catch { store.tell("Audio not selected", "No playable audio was loaded. You can try another file.") }
+            } catch {
+                if (error as NSError).code != NSUserCancelledError {
+                    store.tell("Audio not selected", "No playable audio was loaded. You can try another file.")
+                }
+            }
         }
     }
 }

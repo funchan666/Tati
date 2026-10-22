@@ -166,7 +166,7 @@ struct SafetyActionsView: View {
                 }
         }
         .presentationBackground(Color.tatiCream).presentationCornerRadius(22)
-        .presentationDetents(reporting || dynamicTypeSize.isAccessibilitySize ? [.large] : [.height(190), .large])
+        .presentationDetents(reporting || store.notice != nil || dynamicTypeSize.isAccessibilitySize ? [.large] : [.height(190), .large])
         .presentationDragIndicator(.hidden)
         .overlay { NoticeLayer() }
         .onChange(of: store.account.blocked) { _, blocked in if blocked.contains(authorID) { dismiss() } }

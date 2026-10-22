@@ -207,7 +207,20 @@ struct CommentDraftView: View {
                                     }
                                     Text(comment.text).font(.system(size: 13)).fixedSize(horizontal: false, vertical: true)
                                     if comment.isCurated != true {
-                                        Text(comment.createdAt, style: .relative).font(.system(size: 10)).foregroundStyle(Color.tatiOlive)
+                                        Text(comment.createdAt, style: .relative).font(.caption2).foregroundStyle(Color.tatiOlive)
+                                    }
+                                    if !current {
+                                        Button { selectedComment = comment } label: {
+                                            HStack(spacing: 6) {
+                                                Art(name: "more", width: 16, height: 16)
+                                                Text("Report / block").font(.caption.weight(.medium))
+                                                    .fixedSize(horizontal: false, vertical: true)
+                                            }
+                                            .foregroundStyle(Color.tatiOlive)
+                                            .frame(minHeight: 44, alignment: .leading)
+                                            .contentShape(Rectangle())
+                                        }.buttonStyle(.plain)
+                                            .accessibilityLabel("Report comment or block author")
                                     }
                                 }.frame(maxWidth: .infinity, alignment: .leading)
                                 if current {
@@ -215,13 +228,16 @@ struct CommentDraftView: View {
                                         store.confirm("Delete comment?", "This comment will be removed.", button: "Delete", destructive: true) { store.removeComment(comment.id) }
                                     }
                                 }
-                                ArtButton(asset: "more", label: "Report comment", size: 16) { selectedComment = comment }
                             }.id(comment.id)
                         }
                     }.frame(maxWidth: .infinity, alignment: .leading).padding(18)
                 }
-                .onChange(of: comments.map(\.id)) { _, ids in
-                    if let last = ids.last { withAnimation { proxy.scrollTo(last, anchor: .bottom) } }
+                .onChange(of: comments.map(\.id)) { previousIDs, ids in
+                    // Removing a reported comment or blocking its author must
+                    // keep the reader's position, rather than jumping to the end.
+                    if let last = ids.last, !previousIDs.contains(last) {
+                        withAnimation { proxy.scrollTo(last, anchor: .bottom) }
+                    }
                 }
             }
             HStack(spacing: 6) {
@@ -359,8 +375,8 @@ struct GoLiveView: View {
             PhotosPicker(selection: $cover, matching: .images) {
                 HStack(spacing: 16) {
                     GeometryReader { geometry in
-                        if let coverData, let ui = UIImage(data: coverData) {
-                            Image(uiImage: ui).resizable().scaledToFill()
+                        if let coverData {
+                            PreparedDataPhoto(data: coverData, maxPixels: 384)
                                 .frame(width: geometry.size.width, height: geometry.size.height).clipped()
                         } else {
                             Art(name: "add-photo", width: 40, height: 40)

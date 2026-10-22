@@ -11,76 +11,107 @@ struct PersonProfileView: View {
     var body: some View {
         GeometryReader { viewport in
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(spacing: -28) {
                     NavigationLink(destination: PortraitPhotoView(person: person)) {
                         ContentPhoto(asset: person.portraitArtwork,
-                                     height: min(300, max(180, viewport.size.height * 0.34)))
-                    }.buttonStyle(.plain).accessibilityLabel("View full photo")
-                    VStack(alignment: .leading, spacing: 22) {
-                        VStack(alignment: .leading, spacing: 16) {
-                            HStack(alignment: .center, spacing: 12) {
-                                Avatar(asset: person.portraitArtwork, size: 66)
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(person.name).font(.title2.weight(.bold))
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    Text(person.city == person.country ? person.country : "\(person.city) · \(person.country)")
-                                        .font(.subheadline).foregroundStyle(Color.tatiOlive)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }.frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            if !person.bio.isEmpty {
-                                Text(person.bio).font(.subheadline).lineSpacing(4)
-                                    .foregroundStyle(Color.tatiOlive).fixedSize(horizontal: false, vertical: true)
+                                     height: min(500, max(280, viewport.size.height * 0.52)) + viewport.safeAreaInsets.top)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("View full photo")
+
+                    VStack(alignment: .leading, spacing: 28) {
+                        VStack(alignment: .leading, spacing: 18) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text(person.name)
+                                    .font(.largeTitle.weight(.bold))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .accessibilityAddTraits(.isHeader)
+                                Text(person.city == person.country ? person.country : "\(person.city) · \(person.country)")
+                                    .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                             FilterTagLayout() {
                                 profileTag(person.interest, highlighted: true)
                                 profileTag(person.language, highlighted: false)
                             }
+                            if !person.bio.isEmpty {
+                                Text(person.bio).font(.body).lineSpacing(5)
+                                    .foregroundStyle(Color.tatiOlive)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
                             ViewThatFits(in: .horizontal) {
                                 HStack(spacing: 12) { followAction; messageAction }
-                                VStack(spacing: 10) { followAction; messageAction }
+                                VStack(spacing: 12) { followAction; messageAction }
                             }
-                        }.padding(18).background(.white, in: RoundedRectangle(cornerRadius: 24))
-                        VStack(alignment: .leading, spacing: 14) {
-                            HStack {
+                            .padding(.top, 4)
+                        }
+                        Rectangle().fill(Color.tatiInk.opacity(0.08)).frame(height: 1)
+                        VStack(alignment: .leading, spacing: 18) {
+                            HStack(alignment: .firstTextBaseline, spacing: 10) {
                                 Text("Videos").font(.title3.weight(.bold))
-                                Spacer()
-                                Text(clips.count.formatted()).font(.subheadline.weight(.semibold))
+                                    .accessibilityAddTraits(.isHeader)
+                                Text(clips.count.formatted())
+                                    .font(.subheadline.weight(.medium)).monospacedDigit()
                                     .foregroundStyle(Color.tatiOlive)
+                                Spacer()
                             }
                             if clips.isEmpty {
-                                HStack(spacing: 14) {
+                                HStack(spacing: 16) {
                                     Art(name: "support-mascot", width: 48, height: 54)
-                                    VStack(alignment: .leading, spacing: 5) {
+                                    VStack(alignment: .leading, spacing: 6) {
                                         Text("No videos yet").font(.subheadline.weight(.semibold))
-                                        Text("New videos will appear here.").font(.caption).foregroundStyle(Color.tatiOlive)
-                                    }.frame(maxWidth: .infinity, alignment: .leading)
-                                }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(.white.opacity(0.8), in: RoundedRectangle(cornerRadius: 18))
+                                        Text("New videos will appear here.")
+                                            .font(.caption).foregroundStyle(Color.tatiOlive)
+                                    }
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                .padding(20).frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color.tatiCream.opacity(0.6), in: RoundedRectangle(cornerRadius: 20))
                             } else {
                                 ForEach(clips) { clip in FeedVideoCard(clip: clip) }
                             }
                         }
-                    }.padding(.horizontal, 18).padding(.top, 16).padding(.bottom, 28)
-                }.frame(maxWidth: 680).frame(maxWidth: .infinity)
-            }.scrollIndicators(.hidden)
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    TatiHeader(title: "Profile", trailing: "more", trailingLabel: "Report or block") { more = true }
-                        .padding(.vertical, 4).background(Color.tatiCream)
+                    }
+                    .padding(.horizontal, 24).padding(.top, 28).padding(.bottom, 32)
+                    .frame(maxWidth: 680)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .background(.white, in: UnevenRoundedRectangle(topLeadingRadius: 28, topTrailingRadius: 28))
                 }
-        }.background { Color.tatiCream.ignoresSafeArea(.container) }
-            .foregroundStyle(Color.tatiInk).tatiScreen()
-            .sheet(isPresented: $more) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
-            .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
-            .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
+                .frame(maxWidth: .infinity)
+            }
+            .scrollIndicators(.hidden)
+            .ignoresSafeArea(.container, edges: .top)
+        }
+        .overlay(alignment: .top) {
+            profileNavigation.padding(.horizontal, 16).padding(.top, 4)
+        }
+        .background { Color.white.ignoresSafeArea(.container) }
+        .foregroundStyle(Color.tatiInk).tatiScreen()
+        .sheet(isPresented: $more) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
+        .onChange(of: store.account.blocked) { _, _ in closeIfHidden() }
+        .onChange(of: store.account.hiddenSubjects) { _, _ in closeIfHidden() }
+    }
+
+    // Controls remain inside the container's safe area; only the photograph extends above it.
+    private var profileNavigation: some View {
+        HStack {
+            ArtButton(asset: "back", label: "Back", size: 24) { dismiss() }
+                .background(Color.tatiCream.opacity(0.96), in: RoundedRectangle(cornerRadius: 16))
+            Spacer()
+            ArtButton(asset: "more", label: "Report or block", size: 26) { more = true }
+                .background(Color.tatiCream.opacity(0.96), in: RoundedRectangle(cornerRadius: 16))
+        }
     }
 
     private var followAction: some View {
-        FollowControl(userID: person.id, style: .artwork(height: 44)).frame(maxWidth: .infinity)
+        FollowControl(userID: person.id, style: .artwork(height: 44))
+            .frame(minWidth: 120, maxWidth: .infinity, minHeight: 44)
     }
     private var messageAction: some View {
         NavigationLink(destination: ConversationView(person: person)) {
-            Art(name: "chat-button", height: 44).frame(maxWidth: .infinity, minHeight: 44)
+            Art(name: "chat-button", height: 44)
+                .frame(minWidth: 120, maxWidth: .infinity, minHeight: 44)
         }.buttonStyle(.plain).accessibilityLabel("Chat with " + person.name)
     }
     private func profileTag(_ text: String, highlighted: Bool) -> some View {
@@ -97,7 +128,7 @@ struct MyProfileView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     ZStack(alignment: .top) {
                         GeometryReader { geometry in
-                            coverImage.resizable().scaledToFill()
+                            PreparedPhoto(source: coverSource, fallbackAsset: ProfileArtwork.defaultPortrait)
                                 .frame(width: geometry.size.width, height: geometry.size.height).clipped()
                         }.frame(height: 230 + viewport.safeAreaInsets.top)
                         HStack(spacing: 2) {
@@ -129,15 +160,8 @@ struct MyProfileView: View {
                             NavigationLink(destination: CheckInView()) { Art(name: "checkin-entry") }.accessibilityLabel("Check in")
                             NavigationLink(destination: WalletView()) { Art(name: "wallet-entry") }.accessibilityLabel("My wallet")
                         }.padding(.vertical, 3)
+                        MessagesProfileEntry().padding(.vertical, 8)
                         VStack(spacing: 0) {
-                            NavigationLink(destination: ConversationsView()) {
-                                HStack(spacing: 12) {
-                                    SupplementIcon(icon: .comment, size: 22)
-                                    Text("Messages").font(.system(size: 14))
-                                    Spacer()
-                                    Art(name: "chevron", width: 14, height: 14)
-                                }.padding(18).frame(minHeight: 50)
-                            }
                             NavigationLink(destination: BlacklistView()) { SettingRow(title: "Blacklist", asset: "blacklist") }
                             NavigationLink(destination: LevelView()) { SettingRow(title: "My level", asset: "level") }
                             NavigationLink(destination: SupportView()) { SettingRow(title: "Customer Support", asset: "support") }
@@ -152,20 +176,17 @@ struct MyProfileView: View {
         }.background { Color.tatiCream.ignoresSafeArea(.container) }
             .foregroundStyle(Color.tatiInk)
     }
-    private var coverImage: Image {
-        if let file = store.account.profile.coverFile,
-           let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
-            return Image(uiImage: image)
-        }
-        return Image(ProfileArtwork.defaultPortrait)
+    private var coverSource: PhotoSource {
+        if let file = store.account.profile.coverFile { return .file(store.mediaURL(file)) }
+        return .asset(ProfileArtwork.defaultPortrait)
     }
-    private func stat(_ value: String, _ title: String) -> some View { VStack(spacing: 4) { Text(value).font(.headline); Text(title).font(.caption) }.frame(maxWidth: .infinity) }
+    private func stat(_ value: String, _ title: String) -> some View { VStack(spacing: 4) { Text(value).font(.headline); Text(LocalizedStringKey(title)).font(.caption) }.frame(maxWidth: .infinity) }
 }
 struct RelationshipView: View {
     var kind: String
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPage(title: kind) {
+        TatiPage(title: kind, lazyContent: true) {
             let ids = kind == "Following" ? store.followingIDs : kind == "Friends" ? store.mutualIDs : store.followerIDs
             let people = store.visiblePeople.filter { ids.contains($0.id) }
             if people.isEmpty { EmptyContent(title: "No \(kind.lowercased()) yet", detail: "Connections appear here after people choose to follow.") }
@@ -183,12 +204,12 @@ struct RelationshipView: View {
 struct MyVideosView: View {
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        TatiPage(title: "My videos") {
+        TatiPage(title: "My videos", lazyContent: true) {
             NavigationLink(destination: PublishVideoView()) { SettingRow(title: "Add a video", asset: "add-video") }
             if store.account.clips.isEmpty { EmptyContent(title: "Your story starts here", detail: "Add a food video to your collection.") }
             ForEach(store.account.clips.filter { !store.isHidden("video:" + $0.id) }) { clip in
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(clip.moderationStatus == "approved" ? "Published" : "Awaiting review · Only you can see this")
+                    Text(LocalizedStringKey(clip.moderationStatus == "approved" ? "Published" : "Awaiting review · Only you can see this"))
                         .font(.caption).foregroundStyle(Color.tatiOlive)
                     FeedVideoCard(clip: clip)
                 }
@@ -253,12 +274,10 @@ struct EditProfileView: View {
                 PhotosPicker(selection: $coverItem, matching: .images) {
                     GeometryReader { geometry in
                         Group {
-                            if let image = preview(coverData, removeCover ? nil : store.account.profile.coverFile) {
-                                Image(uiImage: image).resizable().scaledToFill()
-                            } else { Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill() }
+                            photoPreview(coverData, removeCover ? nil : store.account.profile.coverFile, maxPixels: 1_200)
                         }.frame(width: geometry.size.width, height: geometry.size.height).clipped()
                             .overlay(alignment: .bottomTrailing) {
-                                Text(loadingCover ? "Loading…" : "Change cover")
+                                Text(LocalizedStringKey(loadingCover ? "Loading…" : "Change cover"))
                                     .font(.caption.weight(.semibold)).foregroundStyle(Color.tatiInk)
                                     .padding(.horizontal, 12).padding(.vertical, 8)
                                     .background(Color.white, in: Capsule()).padding(12)
@@ -269,13 +288,11 @@ struct EditProfileView: View {
                     PhotosPicker(selection: $avatarItem, matching: .images) {
                         HStack(spacing: 12) {
                             Group {
-                                if let image = preview(avatarData, removeAvatar ? nil : store.account.profile.avatarFile) {
-                                    Image(uiImage: image).resizable().scaledToFill()
-                                } else { Image(ProfileArtwork.defaultPortrait).resizable().scaledToFill() }
+                                photoPreview(avatarData, removeAvatar ? nil : store.account.profile.avatarFile, maxPixels: 256)
                             }.frame(width: 64, height: 64).clipShape(Circle())
                             VStack(alignment: .leading, spacing: 5) {
                                 Text("Profile picture").font(.subheadline.weight(.semibold))
-                                Text(loadingAvatar ? "Loading…" : "Tap to change").font(.caption).foregroundStyle(Color.tatiOlive)
+                                Text(LocalizedStringKey(loadingAvatar ? "Loading…" : "Tap to change")).font(.caption).foregroundStyle(Color.tatiOlive)
                             }.frame(maxWidth: .infinity, alignment: .leading)
                         }.contentShape(Rectangle())
                     }.buttonStyle(.plain).disabled(loadingAvatar).accessibilityLabel("Change profile picture")
@@ -290,10 +307,10 @@ struct EditProfileView: View {
         }
     }
 
-    private func preview(_ data: Data?, _ file: String?) -> UIImage? {
-        if let data { return UIImage(data: data) }
-        if let file { return UIImage(contentsOfFile: store.mediaURL(file).path) }
-        return nil
+    @ViewBuilder private func photoPreview(_ data: Data?, _ file: String?, maxPixels: Int) -> some View {
+        if let data { PreparedDataPhoto(data: data, maxPixels: maxPixels) }
+        else if let file { PreparedPhoto(source: .file(store.mediaURL(file)), fallbackAsset: ProfileArtwork.defaultPortrait) }
+        else { PreparedPhoto(source: .asset(ProfileArtwork.defaultPortrait)) }
     }
     private func save() {
         var newFiles: [String] = []
@@ -316,33 +333,185 @@ struct EditProfileView: View {
         }
     }
 }
+// Every entry uses the same destination and the same persisted conversation state.
+struct MessagesToolbarEntry: View {
+    var body: some View {
+        NavigationLink(destination: ConversationsView()) {
+            SupplementIcon(icon: .comment, size: 23, tint: .tatiInk)
+                .frame(width: 44, height: 44)
+                .background(.white.opacity(0.85), in: RoundedRectangle(cornerRadius: 15))
+        }.buttonStyle(.plain).accessibilityLabel("Messages")
+    }
+}
+
+private struct MessagesProfileEntry: View {
+    var body: some View {
+        NavigationLink(destination: ConversationsView()) {
+            HStack(spacing: 14) {
+                SupplementIcon(icon: .comment, size: 28, tint: .tatiInk)
+                    .frame(width: 54, height: 54)
+                    .background(Color.tatiLime, in: RoundedRectangle(cornerRadius: 18))
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Messages").font(.title3.weight(.bold))
+                    Text("Your conversations, all together.")
+                        .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "chevron", width: 12, height: 16)
+            }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
+                .background(.white, in: RoundedRectangle(cornerRadius: 24))
+                .contentShape(RoundedRectangle(cornerRadius: 24))
+        }.buttonStyle(.plain)
+    }
+}
+
 struct ConversationsView: View {
     @EnvironmentObject private var store: VisitorStore
+    @State private var query = ""
+    @State private var draftsOnly = false
+    @FocusState private var searching: Bool
     private var people: [FoodPerson] {
-        store.visiblePeople.filter { person in
-            !store.messages(with: person.id).isEmpty || !(store.account.drafts[person.id] ?? "").isEmpty
-                || store.account.draftImages?[person.id] != nil
+        let search = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        return store.conversationPeople.filter {
+            (!draftsOnly || store.hasConversationDraft(with: $0.id)) &&
+            (search.isEmpty || $0.name.localizedCaseInsensitiveContains(search) ||
+             (store.account.drafts[$0.id] ?? "").localizedCaseInsensitiveContains(search) ||
+             store.hasMessage(with: $0.id, matching: search))
         }
     }
     var body: some View {
-        TatiPage(title: "Messages") {
-            if people.isEmpty { EmptyContent(title: "No conversations yet", detail: "Open a profile to start a conversation.") }
-            ForEach(people) { person in
-                HStack(spacing: 12) {
-                    UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 44) }
-                    VStack(alignment: .leading, spacing: 4) {
-                        UserProfileLink(userID: person.id) { Text(person.name).font(.headline) }
-                        NavigationLink(destination: ConversationView(person: person)) {
-                            Text(store.messages(with: person.id).last?.text ?? store.account.drafts[person.id] ?? "Photo attachment")
-                                .font(.caption).lineLimit(1).frame(maxWidth: .infinity, alignment: .leading)
-                        }.buttonStyle(.plain)
+        VStack(spacing: 0) {
+            TatiHeader(title: "Messages")
+            ScrollView {
+                VStack(alignment: .leading, spacing: 22) {
+                    introduction
+                    searchField
+                    HStack(spacing: 8) {
+                        filter("All conversations", selected: !draftsOnly) { draftsOnly = false }
+                        filter("Drafts", selected: draftsOnly) { draftsOnly = true }
                     }
-                    NavigationLink(destination: ConversationView(person: person)) {
-                        Art(name: "chevron", width: 14, height: 14).frame(width: 44, height: 44)
-                    }.buttonStyle(.plain).accessibilityLabel("Open conversation")
-                }.padding(.vertical, 8)
+                    if people.isEmpty { emptyState }
+                    else {
+                        LazyVStack(spacing: 10) {
+                            ForEach(people) { person in conversationRow(person) }
+                        }
+                    }
+                }.padding(18).padding(.bottom, 16)
+                    .frame(maxWidth: 600).frame(maxWidth: .infinity)
+            }.scrollIndicators(.hidden).scrollDismissesKeyboard(.interactively)
+        }.background { Color.tatiCream.ignoresSafeArea(.container) }
+            .foregroundStyle(Color.tatiInk).tatiScreen()
+    }
+    private var introduction: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .center, spacing: 14) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("A little hello.").font(.largeTitle.weight(.bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("Good food brings us together. Keep the conversation going.")
+                        .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+                Art(name: "support-mascot", width: 62, height: 76)
             }
+            NavigationLink(destination: RelationshipView(kind: "Following")) {
+                HStack(spacing: 10) {
+                    Text("Start a conversation").font(.subheadline.weight(.semibold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                    Art(name: "chevron", width: 10, height: 14)
+                }.padding(.horizontal, 16).padding(.vertical, 13)
+                    .frame(minHeight: 48)
+                    .background(Color.tatiPink.opacity(0.22), in: RoundedRectangle(cornerRadius: 16))
+            }.buttonStyle(.plain)
+            Text("Messages and calls open when you follow each other.")
+                .font(.caption).foregroundStyle(Color.tatiOlive)
+                .fixedSize(horizontal: false, vertical: true)
         }
+    }
+    private var searchField: some View {
+        HStack(spacing: 10) {
+            Art(name: "search", width: 22, height: 26)
+            TextField("Search conversations", text: $query)
+                .font(.subheadline).focused($searching).submitLabel(.search)
+                .onSubmit { searching = false }
+            if !query.isEmpty {
+                Button { query = "" } label: {
+                    Art(name: "close-light", width: 20, height: 20).frame(width: 44, height: 44)
+                }.buttonStyle(.plain).accessibilityLabel("Clear search")
+            }
+        }.padding(.leading, 14).padding(.trailing, 6).frame(minHeight: 54)
+            .background(.white, in: RoundedRectangle(cornerRadius: 18))
+    }
+    private func filter(_ title: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(LocalizedStringKey(title)).font(.subheadline.weight(.semibold))
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 15).padding(.vertical, 12).frame(minHeight: 44)
+                .foregroundStyle(selected ? Color.tatiCream : Color.tatiOlive)
+                .background(selected ? Color.tatiInk : Color.white.opacity(0.65), in: Capsule())
+        }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
+    }
+    private var emptyState: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LocalizedStringKey(store.conversationPeople.isEmpty ? "Your next hello starts here" : "No matching conversations"))
+                .font(.title3.weight(.bold))
+            Text(LocalizedStringKey(store.conversationPeople.isEmpty
+                 ? "Open a profile to write a message. Your drafts will wait here for you."
+                 : "Try another name or switch back to all conversations."))
+                .font(.subheadline).foregroundStyle(Color.tatiOlive)
+            if !store.conversationPeople.isEmpty {
+                Button("Show all conversations") { query = ""; draftsOnly = false }
+                    .font(.subheadline.weight(.semibold)).frame(minHeight: 44).buttonStyle(.plain)
+            }
+        }.fixedSize(horizontal: false, vertical: true)
+            .padding(22).frame(maxWidth: .infinity, alignment: .leading)
+            .background(.white.opacity(0.75), in: RoundedRectangle(cornerRadius: 22))
+    }
+    private func conversationRow(_ person: FoodPerson) -> some View {
+        let draft = store.hasConversationDraft(with: person.id)
+        let latest = store.latestMessage(with: person.id)
+        return HStack(alignment: .top, spacing: 12) {
+            UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 52) }
+                .padding(.top, 4)
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    UserProfileLink(userID: person.id) {
+                        Text(person.name).font(.headline).lineLimit(2).frame(minHeight: 44, alignment: .leading)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    if draft {
+                        Text("Draft").font(.caption.weight(.semibold))
+                            .padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(Color.tatiPink.opacity(0.2), in: Capsule())
+                    } else if let latest {
+                        Text(latest.createdAt, format: .dateTime.month(.abbreviated).day())
+                            .font(.caption2).foregroundStyle(Color.tatiOlive)
+                    }
+                }
+                NavigationLink(destination: ConversationView(person: person)) {
+                    HStack(spacing: 10) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            preview(person, draft: draft, latest: latest)
+                                .font(.subheadline).foregroundStyle(Color.tatiOlive).lineLimit(2)
+                            if !draft, let latest,
+                               latest.senderID == nil || latest.senderID == store.account.profile.id {
+                                Text(LocalizedStringKey(latest.status)).font(.caption2)
+                                    .foregroundStyle(Color.tatiOlive)
+                            }
+                        }.frame(maxWidth: .infinity, alignment: .leading)
+                        Art(name: "chevron", width: 9, height: 13)
+                    }.frame(minHeight: 48).contentShape(Rectangle())
+                }.buttonStyle(.plain).accessibilityHint("Open conversation")
+            }
+        }.padding(14).background(.white, in: RoundedRectangle(cornerRadius: 22))
+    }
+    private func preview(_ person: FoodPerson, draft: Bool, latest: LocalMessage?) -> Text {
+        if draft {
+            let text = (store.account.drafts[person.id] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            return text.isEmpty ? Text("Photo attachment") : Text(verbatim: text)
+        }
+        if let latest, !latest.text.isEmpty { return Text(verbatim: latest.text) }
+        return Text("Photo attachment")
     }
 }
 
@@ -384,8 +553,10 @@ struct ConversationView: View {
                                     else { UserProfileLink(userID: person.id) { Avatar(asset: person.portraitArtwork, size: 32) } }
                                     VStack(alignment: .leading, spacing: 6) {
                                         if !mine { UserProfileLink(userID: person.id) { Text(person.name).font(.caption.bold()) } }
-                                        if let file = message.imageFile, let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
-                                            Image(uiImage: image).resizable().scaledToFit().frame(maxHeight: 180).clipShape(RoundedRectangle(cornerRadius: 10))
+                                        if let file = message.imageFile {
+                                            PreparedPhoto(source: .file(store.mediaURL(file)), fills: false)
+                                                .frame(width: min(220, geometry.size.width * 0.58), height: 180)
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                         }
                                         if !message.text.isEmpty { Text(message.text).font(.system(size: 14)).textSelection(.enabled) }
                                         HStack {
@@ -421,7 +592,7 @@ struct ConversationView: View {
                                 .onChange(of: text) { _, value in
                                     let limited = String(value.prefix(2000))
                                     if limited != value { text = limited }
-                                    _ = store.saveDraft(person.id, text: limited)
+                                    store.scheduleDraft(person.id, text: limited)
                                 }
                             Button { if store.attemptMessage(to: person.id, text: text) { text = "" } } label: {
                                 SupplementIcon(icon: .send, size: 22, tint: .white).frame(width: 44, height: 44)
@@ -436,6 +607,7 @@ struct ConversationView: View {
             }.frame(width: geometry.size.width, height: geometry.size.height)
         }.background { TatiBackground() }.foregroundStyle(Color.tatiInk).tatiScreen()
         .onAppear { text = store.account.drafts[person.id] ?? ""; if store.isPersonHidden(person.id) { dismiss() } }
+        .onDisappear { store.flushDraft(person.id) }
         .onChange(of: store.account.blocked) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
         .onChange(of: store.account.hiddenSubjects) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
         .sheet(isPresented: $showSafety) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
@@ -586,8 +758,8 @@ struct FoodExpertView: View {
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(prompt.title).font(.subheadline.weight(.semibold))
-                    Text(prompt.question).font(.caption).foregroundStyle(Color.tatiOlive)
+                    Text(LocalizedStringKey(prompt.title)).font(.subheadline.weight(.semibold))
+                    Text(LocalizedStringKey(prompt.question)).font(.caption).foregroundStyle(Color.tatiOlive)
                         .fixedSize(horizontal: false, vertical: true)
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 Art(name: "chevron", width: 8, height: 12)

@@ -7,18 +7,34 @@ struct PhotoAttachmentPicker: View {
     @Binding var loading: Bool
     @EnvironmentObject private var store: VisitorStore
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                PhotosPicker(selection: $item, matching: .images) {
+        HStack(spacing: 12) {
+            PhotosPicker(selection: $item, matching: .images) {
+                HStack(spacing: 12) {
                     Group {
-                        if let data, let image = UIImage(data: data) { Image(uiImage: image).resizable().scaledToFill().frame(width: 112, height: 112).clipped() }
-                        else { Art(name: "add-photo", width: 42, height: 42).frame(width: 112, height: 112).background(Color.tatiLime.opacity(0.6)) }
-                    }.clipShape(RoundedRectangle(cornerRadius: 18))
-                }.buttonStyle(.plain).disabled(loading).accessibilityLabel("Choose attachment photo")
-                if data != nil { ArtButton(asset: "remove", label: "Remove attachment") { data = nil; item = nil } }
+                        if let data {
+                            PreparedDataPhoto(data: data, maxPixels: 256)
+                                .frame(width: 58, height: 58).clipped()
+                        } else {
+                            Art(name: "add-photo", width: 28, height: 28)
+                                .frame(width: 58, height: 58).background(Color.tatiCream)
+                        }
+                    }.clipShape(RoundedRectangle(cornerRadius: 12))
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(LocalizedStringKey(loading ? "Loading photo…" : (data == nil ? "Add a photo" : "Photo attached")))
+                            .font(.subheadline.weight(.semibold))
+                        Text(LocalizedStringKey(data == nil ? "One image, up to 25 MB" : "Tap to replace"))
+                            .font(.caption).foregroundStyle(Color.tatiOlive)
+                    }.fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: 0)
+                }.frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+            }.buttonStyle(.plain).disabled(loading)
+                .accessibilityLabel(data == nil ? "Choose attachment photo" : "Replace attachment photo")
+            if data != nil {
+                ArtButton(asset: "remove", label: "Remove attachment") { data = nil; item = nil }
+                    .disabled(loading)
             }
-            if loading { Note(text: "Loading photo…") }
-        }.task(id: item) {
+        }.padding(12).background(.white, in: RoundedRectangle(cornerRadius: 18))
+        .task(id: item) {
             guard let item else { return }
             loading = true; defer { loading = false }
             do {
@@ -38,8 +54,9 @@ struct DraftPhotoAttachment: View {
         HStack(spacing: 12) {
             PhotosPicker(selection: $selection, matching: .images) { Art(name: "chat-photo", width: 36, height: 36).frame(width: 44, height: 44) }
                 .buttonStyle(.plain).disabled(importing).accessibilityLabel("Attach photo")
-            if !compact, let file = store.account.draftImages?[draftKey], let image = UIImage(contentsOfFile: store.mediaURL(file).path) {
-                Image(uiImage: image).resizable().scaledToFill().frame(width: compact ? 36 : 70, height: compact ? 36 : 70).clipped().clipShape(RoundedRectangle(cornerRadius: 8))
+            if !compact, let file = store.account.draftImages?[draftKey] {
+                PreparedPhoto(source: .file(store.mediaURL(file)))
+                    .frame(width: 70, height: 70).clipShape(RoundedRectangle(cornerRadius: 8))
                 if !compact { Note(text: "Attachment · not sent") }
                 ArtButton(asset: "remove", label: "Remove draft photo") { _ = store.saveDraftImage(nil, key: draftKey); selection = nil }
             } else if !compact { Note(text: importing ? "Importing photo…" : "Optional photo draft") }
@@ -59,16 +76,22 @@ struct HelpArticle: Identifiable {
     var answer: String
 }
 struct SupportView: View {
+    @EnvironmentObject private var store: VisitorStore
     @State private var query = ""
     @State private var expanded: Set<String> = []
     private let articles = [
         HelpArticle(question: "How do I recharge diamonds?", answer: "Open your wallet from Me, or tap the balance in the gift panel. Recharge is currently unavailable. You can collect free reward coins through daily check-ins."),
         HelpArticle(question: "My purchase is still processing", answer: "Purchases are currently unavailable, so no payment can be started. Check-in rewards are separate from purchased coins."),
         HelpArticle(question: "Why did my call pause?", answer: "Calls are currently unavailable. Video playback and the camera stop when you leave the page or Tati enters the background."),
-        HelpArticle(question: "How can I change my language?", answer: "Open Settings, then Language. You can save a preferred language and cancel or confirm the choice. The interface and supplied artwork currently remain in English until translations are available."),
+        HelpArticle(question: "How can I change my language?", answer: "Open Settings, then Language. Choose English, Chinese, Spanish, French, German or Japanese. Your choice updates the interface immediately and is saved for your next visit."),
         HelpArticle(question: "Where is my saved content?", answer: "Open Me for your profile, videos, rewards and gift records. Logging out keeps them. Deleting your profile removes its records and imported files from Tati.")
     ]
-    private var matches: [HelpArticle] { articles.filter { query.isEmpty || ($0.question + $0.answer).localizedCaseInsensitiveContains(query) } }
+    private var matches: [HelpArticle] {
+        let language = AppLanguage.preference(store.account.preferredLanguage)
+        return articles.filter {
+            query.isEmpty || (language.text($0.question) + language.text($0.answer) + $0.question + $0.answer).localizedCaseInsensitiveContains(query)
+        }
+    }
     var body: some View {
         TatiForm(title: "Help & Support") {
             Art(name: "support-banner")
@@ -79,9 +102,9 @@ struct SupportView: View {
                     Button {
                         if expanded.contains(article.id) { expanded.remove(article.id) } else { expanded.insert(article.id) }
                     } label: {
-                        HStack { Text(article.question).font(.system(size: 13, weight: .medium)).multilineTextAlignment(.leading); Spacer(); Art(name: expanded.contains(article.id) ? "dropdown" : "chevron", width: 13, height: 13) }.frame(minHeight: 44)
+                        HStack { Text(LocalizedStringKey(article.question)).font(.system(size: 13, weight: .medium)).multilineTextAlignment(.leading); Spacer(); Art(name: expanded.contains(article.id) ? "dropdown" : "chevron", width: 13, height: 13) }.frame(minHeight: 44)
                     }.buttonStyle(.plain).accessibilityValue(expanded.contains(article.id) ? "Expanded" : "Collapsed")
-                    if expanded.contains(article.id) { Text(article.answer).font(.system(size: 12)).foregroundStyle(Color.tatiOlive.opacity(0.7)).fixedSize(horizontal: false, vertical: true).padding(.bottom, 8) }
+                    if expanded.contains(article.id) { Text(LocalizedStringKey(article.answer)).font(.system(size: 12)).foregroundStyle(Color.tatiOlive.opacity(0.7)).fixedSize(horizontal: false, vertical: true).padding(.bottom, 8) }
                 }.padding(.horizontal, 12).padding(.vertical, 4).background(Color.tatiLime.opacity(0.55)).clipShape(RoundedRectangle(cornerRadius: 8))
             }
         } footer: {
@@ -139,22 +162,21 @@ struct SupportDraftView: View {
 }
 struct LanguagePreferenceView: View {
     @EnvironmentObject private var store: VisitorStore
-    private let languages = ["English", "Español", "ภาษาไทย", "العربية", "Tiếng Việt", "한국어"]
+    private var selected: AppLanguage { AppLanguage.preference(store.account.preferredLanguage) }
     var body: some View {
         TatiPage(title: "Language") {
-            ForEach(languages, id: \.self) { language in
-                Button {
-                    store.confirm("Save language preference?", language == "English" ? "Use English as your preferred language?" : "Save \(language) as your preferred language? The current interface and supplied artwork stay in English until its translations are available.", button: "Confirm") {
-                        _ = store.change { $0.preferredLanguage = language }
-                    }
-                } label: {
-                    HStack { Text(language).font(.system(size: 14)); Spacer(); if (store.account.preferredLanguage ?? "English") == language { Art(name: "check", width: 22) } }
-                        .padding(.horizontal, 18).frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
-                        .background {
-                            if (store.account.preferredLanguage ?? "English") == language { Color.tatiLime.opacity(0.55).clipShape(RoundedRectangle(cornerRadius: 8)) }
-                            Image("outlined-card").resizable().opacity((store.account.preferredLanguage ?? "English") == language ? 0.35 : 1)
-                        }
-                }.buttonStyle(.plain)
+            Note(text: "Changes apply immediately and are saved for your next visit.")
+            ForEach(AppLanguage.allCases) { language in
+                Button { _ = store.change { $0.preferredLanguage = language.rawValue } } label: {
+                    HStack(spacing: 12) {
+                        if language == .system { Text("System default").font(.body) }
+                        else { Text(verbatim: language.nativeName).font(.body) }
+                        Spacer(minLength: 0)
+                        if selected == language { Art(name: "check-pink", width: 22, height: 22) }
+                    }.padding(16).frame(maxWidth: .infinity, minHeight: 56)
+                        .background(selected == language ? Color.tatiLime.opacity(0.65) : .white,
+                                    in: RoundedRectangle(cornerRadius: 16))
+                }.buttonStyle(.plain).accessibilityAddTraits(selected == language ? .isSelected : [])
             }
         }
     }

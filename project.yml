@@ -29,6 +29,7 @@ targets:
     info:
       path: Tati/Info.plist
       properties:
+        CFBundleLocalizations: [en, zh-Hans, es, fr, de, ja]
         CFBundleDisplayName: Tati
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
