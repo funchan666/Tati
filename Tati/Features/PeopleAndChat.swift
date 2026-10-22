@@ -676,10 +676,23 @@ struct VideoCallView: View {
 
 struct FoodExpertView: View {
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var question = ""
     @FocusState private var questionFocused: Bool
-    private var savedQuestion: String { store.account.drafts["food-expert"] ?? "" }
-    private var canSave: Bool { !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    private var exchanges: [FoodExpertExchange] { store.account.foodExpertExchanges ?? [] }
+    private var pending: FoodExpertExchange? { exchanges.first { $0.reply == nil } }
+    private var canAsk: Bool {
+        !question.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && pending == nil && store.storageFailure == nil
+    }
+    private var replyTaskID: String {
+        "\(store.account.profile.id):\(pending?.id ?? ""):\(scenePhase == .active)"
+    }
+    private var scrollUpdate: String {
+        guard let last = exchanges.last else { return "" }
+        return last.id + (last.reply?.rawValue ?? "pending")
+    }
     private let prompts = [
         (title: "Make it crispy", question: "How to get crispy fried food?"),
         (title: "Plate it beautifully", question: "How to make food look delicious?"),
@@ -690,7 +703,7 @@ struct FoodExpertView: View {
         VStack(spacing: 0) {
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 22) {
+                    LazyVStack(alignment: .leading, spacing: 22) {
                         introduction
                         VStack(alignment: .leading, spacing: 12) {
                             HStack(spacing: 8) {
@@ -706,30 +719,37 @@ struct FoodExpertView: View {
                                 }
                             }.background(.white, in: RoundedRectangle(cornerRadius: 20))
                         }
-                        if !savedQuestion.isEmpty {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text("Your saved question").font(.headline)
-                                HStack(alignment: .top, spacing: 12) {
-                                    Avatar(file: store.account.profile.avatarFile, size: 34, isCurrent: true)
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text(savedQuestion).font(.body).fixedSize(horizontal: false, vertical: true)
-                                        Text("Draft · not sent").font(.caption).foregroundStyle(Color.tatiOlive)
-                                    }.frame(maxWidth: .infinity, alignment: .leading)
-                                }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
-                                    .background(.white, in: RoundedRectangle(cornerRadius: 20))
-                            }.id("saved-question")
+                        ForEach(exchanges) { exchange in
+                            conversation(exchange)
                         }
+                        Color.clear.frame(height: 1).id("expert-bottom")
                     }.padding(.horizontal, 18).padding(.top, 8).padding(.bottom, 20)
                         .frame(maxWidth: 680).frame(maxWidth: .infinity)
                 }.scrollDismissesKeyboard(.interactively)
-                    .onChange(of: savedQuestion) { _, value in
-                        if !value.isEmpty { proxy.scrollTo("saved-question", anchor: .bottom) }
+                    .onChange(of: scrollUpdate, initial: true) { _, value in
+                        if !value.isEmpty { proxy.scrollTo("expert-bottom", anchor: .bottom) }
                     }
             }
             composer
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .background { Color.tatiCream.ignoresSafeArea(.container) }
             .foregroundStyle(Color.tatiInk)
+            .onAppear { question = store.account.drafts["food-expert"] ?? "" }
+            .onChange(of: question) { _, text in
+                if text.count > 1200 { question = String(text.prefix(1200)); return }
+                store.scheduleDraft("food-expert", text: text)
+            }
+            .onDisappear { store.flushDraft("food-expert") }
+            .task(id: replyTaskID) { @MainActor in
+                guard scenePhase == .active, let pending, store.storageFailure == nil else { return }
+                let owner = store.account.profile.id
+                let delay = 1050 + min(500, pending.question.count * 7)
+                do { try await Task.sleep(for: .milliseconds(delay)) }
+                catch { return }
+                guard !Task.isCancelled, scenePhase == .active else { return }
+                store.finishFoodExpertReply(pending.id, owner: owner)
+            }
+
     }
 
     private var introduction: some View {
@@ -738,9 +758,11 @@ struct FoodExpertView: View {
                 Art(name: "brand-heading", width: 112, height: 38, alignment: .leading)
                 Text("What's cooking?").font(.title2.weight(.bold))
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Food & flavour with Yimeng, your AI food expert.")
+                Text("Food & flavour with Yimeng.")
                     .font(.subheadline).foregroundStyle(Color.tatiOlive)
                     .fixedSize(horizontal: false, vertical: true)
+                Text("Built-in food tips").font(.caption.weight(.medium))
+                    .foregroundStyle(Color.tatiOlive)
             }.frame(maxWidth: .infinity, alignment: .leading)
             Art(name: "chef", width: 100, height: 142, alignment: .bottom)
         }.padding(16).frame(maxWidth: .infinity, minHeight: 172)
@@ -749,7 +771,7 @@ struct FoodExpertView: View {
                     Image("page-background").resizable()
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .opacity(0.55)
-                }.accessibilityHidden(true)
+                }.accessibilityHidden(true).allowsHitTesting(false)
             }
             .clipShape(RoundedRectangle(cornerRadius: 24))
     }
@@ -757,8 +779,7 @@ struct FoodExpertView: View {
     private func promptRow(_ index: Int) -> some View {
         let prompt = prompts[index]
         return Button {
-            question = prompt.question
-            questionFocused = true
+            ask(AppLanguage.preference(store.account.preferredLanguage).text(prompt.question))
         } label: {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 5) {
@@ -769,7 +790,50 @@ struct FoodExpertView: View {
                 Art(name: "chevron", width: 8, height: 12)
             }.padding(16).frame(minHeight: 64).contentShape(Rectangle())
         }.buttonStyle(.plain).accessibilityLabel(prompt.question)
-            .accessibilityHint("Adds this question to the input field")
+            .disabled(pending != nil || store.storageFailure != nil)
+            .accessibilityHint("Ask Yimeng")
+    }
+
+    private func ask(_ text: String) {
+        guard pending == nil, store.askFoodExpert(text) else { return }
+        question = ""
+        questionFocused = false
+    }
+
+    private func conversation(_ exchange: FoodExpertExchange) -> some View {
+        VStack(spacing: 12) {
+            HStack(alignment: .top, spacing: 10) {
+                Spacer(minLength: 32)
+                Text(exchange.question).font(.body)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(14).background(Color.tatiPink, in: RoundedRectangle(cornerRadius: 18))
+                Avatar(file: store.account.profile.avatarFile, size: 32, isCurrent: true)
+            }
+            HStack(alignment: .top, spacing: 10) {
+                Art(name: "chef-avatar", width: 32, height: 38)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Yimeng").font(.caption.weight(.bold)).foregroundStyle(Color.tatiOlive)
+                    if let reply = exchange.reply {
+                        Text(LocalizedStringKey(reply.answer)).font(.body)
+                            .fixedSize(horizontal: false, vertical: true)
+                    } else if store.storageFailure != nil {
+                        Text("Your question is saved. Reopen Tati to finish the reply.")
+                            .font(.subheadline).fixedSize(horizontal: false, vertical: true)
+                    } else {
+                        HStack(spacing: 8) {
+                            Art(name: "ai-on", width: 20, height: 20)
+                                .phaseAnimator(scenePhase == .active && !reduceMotion ? [0.6, 1.0] : [1.0]) { icon, opacity in
+                                    icon.opacity(opacity)
+                                } animation: { _ in .easeInOut(duration: 0.65) }
+                            Text("Preparing a cooking tip…").font(.subheadline)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }.accessibilityElement(children: .combine)
+                    }
+                }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.white, in: RoundedRectangle(cornerRadius: 18))
+                Spacer(minLength: 12)
+            }
+        }
     }
 
     private var composer: some View {
@@ -781,18 +845,11 @@ struct FoodExpertView: View {
                 .padding(.leading, 6).padding(.vertical, 12)
                 .frame(maxWidth: .infinity)
                 .accessibilityLabel("Your food question")
-            Button {
-                guard canSave else { return }
-                if store.saveDraft("food-expert", text: question) {
-                    question = ""
-                    questionFocused = false
-                    store.tell("Question saved", "AI replies are currently unavailable. Your question is saved as a draft.")
-                }
-            } label: {
+            Button { ask(question) } label: {
                 Art(name: "ai-off", width: 26, height: 26)
                     .frame(width: 46, height: 46)
-                    .background(canSave ? Color.tatiLime : Color.tatiCream, in: RoundedRectangle(cornerRadius: 15))
-            }.buttonStyle(.plain).disabled(!canSave).accessibilityLabel("Save food question")
+                    .background(canAsk ? Color.tatiLime : Color.tatiCream, in: RoundedRectangle(cornerRadius: 15))
+            }.buttonStyle(.plain).disabled(!canAsk).accessibilityLabel("Ask Yimeng")
         }.padding(8).background(.white, in: RoundedRectangle(cornerRadius: 22))
             .overlay {
                 RoundedRectangle(cornerRadius: 22)

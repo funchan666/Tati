@@ -402,6 +402,32 @@ final class VisitorStore: ObservableObject {
         guard (account.drafts[key] ?? "") != text else { return storageFailure == nil }
         return change { $0.drafts[key] = text }
     }
+
+    @discardableResult
+    func askFoodExpert(_ question: String) -> Bool {
+        let text = String(question.trimmingCharacters(in: .whitespacesAndNewlines).prefix(1200))
+        guard account.signedIn, !text.isEmpty,
+              !(account.foodExpertExchanges ?? []).contains(where: { $0.reply == nil }) else { return false }
+        let saved = change { value in
+            var exchanges = value.foodExpertExchanges ?? []
+            exchanges.append(FoodExpertExchange(question: text))
+            value.foodExpertExchanges = Array(exchanges.suffix(40))
+            value.drafts.removeValue(forKey: "food-expert")
+        }
+        if saved { cancelDraftSave("food-expert") }
+        return saved
+    }
+
+    func finishFoodExpertReply(_ id: String, owner: String) {
+        guard account.signedIn, account.profile.id == owner, storageFailure == nil,
+              let exchange = account.foodExpertExchanges?.first(where: { $0.id == id }),
+              exchange.reply == nil else { return }
+        let tip = FoodTip.matching(exchange.question)
+        _ = change { value in
+            guard let index = value.foodExpertExchanges?.firstIndex(where: { $0.id == id }) else { return }
+            value.foodExpertExchanges?[index].reply = tip
+        }
+    }
     @discardableResult
     func attemptMessage(to recipient: String, text: String) -> Bool {
         let body = String(text.trimmingCharacters(in: .whitespacesAndNewlines).prefix(2000))

@@ -3209,6 +3209,662 @@
         }
       }
     },
+    "Explore rooms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Räume entdecken"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explore rooms"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explorar salas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explorer les salons"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルームを探す"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发现语音房"
+          }
+        }
+      }
+    },
+    "Pick a room and join the conversation." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Raum und rede mit."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a room and join the conversation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige una sala y únete a la conversación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez un salon et rejoignez la conversation."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルームを選んで会話に参加しましょう。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选个语音房，一起聊聊美食。"
+          }
+        }
+      }
+    },
+    "Hot topic. Late-night snack: sweet or savory?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktuelles Thema. Mitternachtssnack: süß oder herzhaft?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hot topic. Late-night snack: sweet or savory?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tema del momento. ¿Tentempié nocturno dulce o salado?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sujet du moment. Encas de nuit : sucré ou salé ?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "注目の話題。夜食は甘いもの？それとも塩味？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "热门话题：宵夜选甜的还是咸的？"
+          }
+        }
+      }
+    },
+    "Food & flavour with Yimeng." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essen und Geschmack mit Yimeng."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Food & flavour with Yimeng."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comida y sabores con Yimeng."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuisine et saveurs avec Yimeng."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yimengと料理や味わいのお話。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "和 Yimeng 一起聊美食与风味。"
+          }
+        }
+      }
+    },
+    "Built-in food tips" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integrierte Kochtipps"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Built-in food tips"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consejos de cocina integrados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conseils de cuisine intégrés"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内蔵の料理ヒント"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内置美食建议"
+          }
+        }
+      }
+    },
+    "Ask Yimeng" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yimeng fragen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask Yimeng"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preguntar a Yimeng"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demander à Yimeng"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yimengに質問する"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向 Yimeng 提问"
+          }
+        }
+      }
+    },
+    "Preparing a cooking tip…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Kochtipp wird vorbereitet…"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing a cooking tip…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparando un consejo de cocina…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Préparation d’un conseil de cuisine…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "料理のヒントを準備しています…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在整理美食建议…"
+          }
+        }
+      }
+    },
+    "Your question is saved. Reopen Tati to finish the reply." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Frage ist gespeichert. Öffne Tati erneut, um die Antwort zu erhalten."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your question is saved. Reopen Tati to finish the reply."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu pregunta está guardada. Vuelve a abrir Tati para completar la respuesta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre question est enregistrée. Rouvrez Tati pour terminer la réponse."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "質問は保存されました。Tatiを開き直すと回答を再開できます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "问题已保存，请重新打开 Tati 获取答复。"
+          }
+        }
+      }
+    },
+    "Pat ingredients dry and add a light coating of flour or starch. Fry in small batches so the oil stays hot, then drain on a wire rack. Add wet sauces just before serving." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tupfe die Zutaten trocken und bestäube sie dünn mit Mehl oder Stärke. Frittiere kleine Portionen, damit das Öl heiß bleibt, und lasse sie auf einem Gitter abtropfen. Feuchte Saucen erst kurz vor dem Servieren dazugeben."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pat ingredients dry and add a light coating of flour or starch. Fry in small batches so the oil stays hot, then drain on a wire rack. Add wet sauces just before serving."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seca los ingredientes y cúbrelos con una capa fina de harina o almidón. Fríe en tandas pequeñas para mantener el aceite caliente y escurre sobre una rejilla. Añade las salsas justo antes de servir."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séchez les ingrédients et enrobez-les d’une fine couche de farine ou de fécule. Faites frire par petites quantités pour garder l’huile chaude, puis égouttez sur une grille. Ajoutez les sauces juste avant de servir."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食材の水分を拭き、小麦粉や片栗粉を薄くまぶします。油の温度が下がりすぎないよう少量ずつ揚げ、網に上げて油を切りましょう。ソースは食べる直前にかけると食感が保てます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先把食材表面擦干，再薄薄裹一层面粉或淀粉。分小批炸，避免油温一下降得太多，出锅后放网架沥油。湿酱汁等上桌前再加，更容易保持酥脆。"
+          }
+        }
+      }
+    },
+    "Choose a plate that leaves a little space around the food. Build a small amount of height, add one contrasting colour, and wipe the rim. Soft light from a window makes a lovely finishing touch." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Teller, auf dem rund um das Essen etwas Platz bleibt. Richte leicht in die Höhe an, ergänze eine Kontrastfarbe und wische den Rand sauber. Weiches Fensterlicht setzt das Gericht schön in Szene."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a plate that leaves a little space around the food. Build a small amount of height, add one contrasting colour, and wipe the rim. Soft light from a window makes a lovely finishing touch."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un plato que deje algo de espacio alrededor de la comida. Da un poco de altura, añade un color de contraste y limpia el borde. La luz suave de una ventana da un bonito toque final."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez une assiette qui laisse un peu d’espace autour du plat. Donnez un peu de hauteur, ajoutez une couleur contrastante et essuyez le bord. Une douce lumière de fenêtre apporte une belle touche finale."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "料理の周りに少し余白ができるお皿を選びます。少し高さを出して盛り、差し色を一つ添え、お皿の縁をきれいに拭きましょう。窓辺の柔らかな光で撮ると、よりおいしそうに見えます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选一个能让食物四周留点空白的盘子。盛盘时稍微叠出高度，再加入一种对比色，最后擦净盘边。拍照时用窗边柔和的自然光，会更显食欲。"
+          }
+        }
+      }
+    },
+    "Taste a small spoonful first. If it is too sweet, try a little lemon juice or vinegar; if it is too salty, add more unsalted ingredients. Make one small adjustment at a time and taste again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probiere zuerst einen kleinen Löffel. Ist es zu süß, versuche etwas Zitronensaft oder Essig; ist es zu salzig, gib ungesalzene Zutaten dazu. Ändere immer nur wenig und schmecke erneut ab."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taste a small spoonful first. If it is too sweet, try a little lemon juice or vinegar; if it is too salty, add more unsalted ingredients. Make one small adjustment at a time and taste again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba primero una cucharadita. Si está demasiado dulce, añade un poco de limón o vinagre; si está demasiado salado, incorpora más ingredientes sin sal. Haz pequeños ajustes y vuelve a probar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goûtez d’abord une petite cuillerée. Si c’est trop sucré, essayez un peu de citron ou de vinaigre ; si c’est trop salé, ajoutez des ingrédients non salés. Ajustez petit à petit et goûtez à nouveau."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まず少量を味見します。甘すぎる場合はレモン汁や酢を少し、塩辛すぎる場合は味付けしていない食材を足してみましょう。一度に少しずつ調整して、その都度味見するのがコツです。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先取一小勺尝味道。太甜时可以试着加一点柠檬汁或醋；太咸时，增加一些没有调味的食材。每次只改一点点，再尝一次，比较容易找到舒服的平衡。"
+          }
+        }
+      }
+    },
+    "Cook pasta in salted water and check the texture before the packet time is up. Save a cup of the cooking water. Toss the pasta with your sauce and a splash of that water until the sauce coats it." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koche Pasta in Salzwasser und prüfe die Konsistenz vor Ablauf der Packungsangabe. Hebe eine Tasse Kochwasser auf. Schwenke die Pasta mit der Sauce und etwas Kochwasser, bis die Sauce gut daran haftet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cook pasta in salted water and check the texture before the packet time is up. Save a cup of the cooking water. Toss the pasta with your sauce and a splash of that water until the sauce coats it."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuece la pasta en agua con sal y comprueba la textura antes del tiempo indicado. Reserva una taza del agua de cocción. Mezcla la pasta con la salsa y un chorrito de esa agua hasta que quede bien cubierta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuisez les pâtes dans de l’eau salée et vérifiez leur texture avant la fin du temps indiqué. Réservez une tasse d’eau de cuisson. Mélangez les pâtes à la sauce avec un peu de cette eau pour bien les enrober."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "塩を加えた湯でパスタをゆで、表示時間より少し前から食感を確認します。ゆで汁を一杯取っておきましょう。ソースとパスタを合わせ、ゆで汁を少しずつ加えて絡めます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用加盐的水煮意面，在包装建议时间之前就开始尝口感。沥水前留一杯煮面水。把意面和酱汁一起拌，再少量加入煮面水，让酱汁均匀挂在面条上。"
+          }
+        }
+      }
+    },
+    "Try a quick bowl: rice or noodles, a protein you enjoy, and two vegetables. Use lemon, olive oil and herbs for a simple dressing. What ingredients do you have on hand?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probiere eine schnelle Bowl: Reis oder Nudeln, eine Proteinquelle deiner Wahl und zwei Gemüsesorten. Zitronensaft, Olivenöl und Kräuter ergeben ein einfaches Dressing. Welche Zutaten hast du da?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try a quick bowl: rice or noodles, a protein you enjoy, and two vegetables. Use lemon, olive oil and herbs for a simple dressing. What ingredients do you have on hand?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prueba un bol rápido: arroz o fideos, una proteína que te guste y dos verduras. Aliña con limón, aceite de oliva y hierbas. ¿Qué ingredientes tienes a mano?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Essayez un bol rapide : riz ou nouilles, une protéine que vous aimez et deux légumes. Faites une sauce simple avec du citron, de l’huile d’olive et des herbes. Quels ingrédients avez-vous sous la main ?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ご飯や麺に、好きなたんぱく質の食材と野菜二種類を合わせたボウルはいかがでしょう。レモン、オリーブオイル、ハーブで手軽なソースになります。今ある食材は何ですか？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可以试试快手碗餐：米饭或面条，加一份喜欢的蛋白质食材，再配两种蔬菜。用柠檬、橄榄油和香草调一份简单酱汁就很好吃。你手边有哪些食材？"
+          }
+        }
+      }
+    },
+    "Weigh your ingredients and preheat the oven before you begin. Once flour goes into a cake batter, mix only until combined. Let baked goods cool before decorating so the topping stays in place." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiege die Zutaten ab und heize den Ofen vor. Sobald Mehl im Kuchenteig ist, rühre nur noch, bis alles vermischt ist. Lass das Gebäck vor dem Dekorieren abkühlen, damit der Belag hält."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weigh your ingredients and preheat the oven before you begin. Once flour goes into a cake batter, mix only until combined. Let baked goods cool before decorating so the topping stays in place."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesa los ingredientes y precalienta el horno antes de empezar. Al añadir harina a una masa de bizcocho, mezcla solo hasta integrar. Deja enfriar antes de decorar para que la cobertura se mantenga firme."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesez les ingrédients et préchauffez le four avant de commencer. Une fois la farine ajoutée à la pâte à gâteau, mélangez juste assez pour l’incorporer. Laissez refroidir avant de décorer pour que la garniture tienne bien."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "材料を量り、オーブンを予熱してから始めましょう。ケーキ生地に粉を加えたら、混ざるまで軽く混ぜます。焼き上がりは冷ましてから飾ると、クリームやアイシングが崩れにくくなります。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始前先称好材料，并预热烤箱。蛋糕糊加入面粉后，拌到看不见干粉就好。烤好后等完全冷却再装饰，奶油和糖霜更容易保持形状。"
+          }
+        }
+      }
+    },
+    "Dry vegetables well, cut them into similar sizes and give them space on the tray. Roast until the edges colour, turning as needed. Finish with lemon and herbs for a brighter flavour." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trockne das Gemüse gut, schneide es in ähnlich große Stücke und lasse Platz auf dem Blech. Röste es, bis die Ränder Farbe bekommen, und wende es bei Bedarf. Zitrone und Kräuter sorgen zum Schluss für Frische."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dry vegetables well, cut them into similar sizes and give them space on the tray. Roast until the edges colour, turning as needed. Finish with lemon and herbs for a brighter flavour."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seca bien las verduras, córtalas de tamaño parecido y deja espacio en la bandeja. Ásalas hasta que se doren los bordes, girándolas cuando haga falta. Termina con limón y hierbas para dar frescura."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séchez bien les légumes, coupez-les à taille égale et espacez-les sur la plaque. Rôtissez jusqu’à coloration des bords en les retournant si nécessaire. Terminez avec du citron et des herbes pour plus de fraîcheur."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "野菜の水分をよく拭き、大きさをそろえて切り、天板に間隔を空けて並べます。必要に応じて返しながら、縁に焼き色がつくまで焼きましょう。仕上げにレモンとハーブを添えると爽やかです。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把蔬菜表面擦干，切成差不多的大小，放烤盘时留些间距。烤到边缘上色，中途按需翻面。出炉后加一点柠檬和香草，味道会更清爽。"
+          }
+        }
+      }
+    },
+    "I have built-in tips for crispy food, plating, flavour balance, pasta, quick dinners, baking and vegetables. Tell me which of these you would like help with." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich habe integrierte Tipps für knuspriges Essen, Anrichten, ausgewogenen Geschmack, Pasta, schnelle Abendessen, Backen und Gemüse. Wobei möchtest du Hilfe?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have built-in tips for crispy food, plating, flavour balance, pasta, quick dinners, baking and vegetables. Tell me which of these you would like help with."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tengo consejos integrados sobre frituras crujientes, emplatado, equilibrio de sabores, pasta, cenas rápidas, repostería y verduras. Dime con cuál te gustaría ayuda."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je propose des conseils intégrés sur le croustillant, le dressage, l’équilibre des saveurs, les pâtes, les repas rapides, la pâtisserie et les légumes. Quel sujet vous intéresse ?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サクサクにするコツ、盛り付け、味のバランス、パスタ、時短夕食、お菓子作り、野菜の内蔵ヒントがあります。どれについて知りたいですか？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我准备了酥脆做法、摆盘、风味平衡、意面、快手晚餐、烘焙和蔬菜的内置建议。你想先了解哪一项？"
+          }
+        }
+      }
+    },
     "Favourite food" : {
       "extractionState" : "manual",
       "localizations" : {

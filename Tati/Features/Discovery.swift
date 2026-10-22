@@ -7,6 +7,7 @@ struct DiscoverView: View {
     @SceneStorage("tati.discovery.home.filters") private var homeFilters = ""
     @SceneStorage("tati.discovery.voice.filters") private var voiceFilters = ""
     @State private var showFilter = false
+    @State private var showVoiceTopic = false
     @State private var showSearch = false
     @State private var showRankings = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -68,6 +69,7 @@ struct DiscoverView: View {
             FilterView(selection: $selection, sections: sections, rooms: availableRooms)
         }
         .navigationDestination(isPresented: $showSearch) { SearchView() }
+        .navigationDestination(isPresented: $showVoiceTopic) { VoiceTopicRoomsView() }
         .navigationDestination(isPresented: $showRankings) {
             RankingView(onBack: { showRankings = false })
         }
@@ -121,51 +123,85 @@ struct DiscoverView: View {
     }
 
     private var voiceTopicPrompt: some View {
-        Button { showFilter = true } label: {
-            HStack(spacing: 10) {
-                Art(name: "food-flame", width: 26, height: 30)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("Hot topic").font(.caption.weight(.bold)).foregroundStyle(Color.tatiInk)
+        Button { showVoiceTopic = true } label: {
+            HStack(spacing: 12) {
+                Art(name: "voice-topic-kitchen", width: 86, height: 94)
+                VStack(alignment: .leading, spacing: 12) {
                     Text("Late-night snack: sweet or savory?")
-                        .font(.footnote).foregroundStyle(Color.tatiOlive)
+                        .font(.system(.headline, design: .rounded))
                         .fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 6) {
+                        Text("Explore rooms").font(.caption.weight(.bold))
+                        Art(name: "chevron", width: 7, height: 10)
+                    }
+                    .padding(.horizontal, 12).padding(.vertical, 7)
+                    .background(Color.tatiPink, in: Capsule())
                 }.frame(maxWidth: .infinity, alignment: .leading)
-                Art(name: "chevron", width: 8, height: 13)
             }
-            .padding(.horizontal, 12).padding(.vertical, 10)
-            .frame(minHeight: 44)
-            .background(Color.white.opacity(0.65), in: RoundedRectangle(cornerRadius: 14))
-            .contentShape(RoundedRectangle(cornerRadius: 14))
+            .padding(.horizontal, 16).padding(.vertical, 12)
+            .frame(maxWidth: .infinity, minHeight: 118, alignment: .leading)
+            .foregroundStyle(Color.tatiInk)
+            .background(Color.tatiLime, in: RoundedRectangle(cornerRadius: 24))
+            .contentShape(RoundedRectangle(cornerRadius: 24))
         }.buttonStyle(.plain)
+            .accessibilityElement(children: .ignore)
             .accessibilityLabel("Hot topic. Late-night snack: sweet or savory?")
-            .accessibilityHint("Opens food, city and language filters")
+            .accessibilityHint("Explore rooms")
+    }
+
+    private var voiceSectionTabs: some View {
+        HStack(spacing: 4) {
+            ForEach(sections, id: \.self) { value in
+                Button { selection.section = value } label: {
+                    HStack(spacing: 6) {
+                        Art(name: value == "Party" ? "chat-mic" : "heart", width: 18, height: 20)
+                        Text(LocalizedStringKey(value))
+                            .font(.system(.headline, design: .rounded))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal, 8).padding(.vertical, 6)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .foregroundStyle(currentSection == value ? Color.tatiCream : Color.tatiInk)
+                    .background(currentSection == value ? Color.tatiInk : Color.clear,
+                                in: RoundedRectangle(cornerRadius: 14))
+                }.buttonStyle(.plain)
+                    .accessibilityAddTraits(currentSection == value ? .isSelected : [])
+            }
+        }.padding(4)
+            .background(Color.white.opacity(0.75), in: RoundedRectangle(cornerRadius: 18))
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: currentSection)
     }
 
     private var browseControls: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(sections, id: \.self) { value in
-                            Button {
-                                selection.section = value
-                            } label: {
-                                HStack(spacing: 5) {
-                                    if currentSection == value && (value == "Hot" || value == "Party") {
-                                        Art(name: "food-flame", width: 22, height: 26)
+                if voice {
+                    voiceSectionTabs
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 6) {
+                            ForEach(sections, id: \.self) { value in
+                                Button {
+                                    selection.section = value
+                                } label: {
+                                    HStack(spacing: 5) {
+                                        if currentSection == value && (value == "Hot" || value == "Party") {
+                                            Art(name: "food-flame", width: 22, height: 26)
+                                        }
+                                        Text(LocalizedStringKey(value))
+                                            .font(.system(.headline, design: .rounded))
+                                            .fixedSize(horizontal: true, vertical: false)
                                     }
-                                    Text(LocalizedStringKey(value))
-                                        .font(.system(.headline, design: .rounded))
-                                        .fixedSize(horizontal: true, vertical: false)
-                                }
-                                .foregroundStyle(currentSection == value ? Color.tatiInk : Color.tatiOlive)
-                                .padding(.horizontal, 12).frame(minHeight: 44)
-                                .background(currentSection == value ? Color.tatiPink : Color.clear,
-                                            in: RoundedRectangle(cornerRadius: 14))
-                            }.buttonStyle(.plain)
-                                .accessibilityAddTraits(currentSection == value ? .isSelected : [])
-                        }
-                    }.animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: currentSection)
+                                    .foregroundStyle(currentSection == value ? Color.tatiInk : Color.tatiOlive)
+                                    .padding(.horizontal, 12).frame(minHeight: 44)
+                                    .background(currentSection == value ? Color.tatiPink : Color.clear,
+                                                in: RoundedRectangle(cornerRadius: 14))
+                                }.buttonStyle(.plain)
+                                    .accessibilityAddTraits(currentSection == value ? .isSelected : [])
+                            }
+                        }.animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: currentSection)
+                    }
                 }
                 Button { showFilter = true } label: {
                     Art(name: "filter", width: 25, height: 25)
@@ -220,6 +256,37 @@ struct DiscoverView: View {
                 .frame(minHeight: 44)
         }.buttonStyle(.plain).foregroundStyle(Color.tatiInk)
             .accessibilityLabel("Remove \(kind) filter: \(title)")
+    }
+}
+
+private struct VoiceTopicRoomsView: View {
+    @EnvironmentObject private var store: VisitorStore
+    private var rooms: [FoodRoom] {
+        store.visibleRooms.filter {
+            $0.isVoice && ($0.topic == "Dessert" || $0.topic == "Home cooking")
+        }
+    }
+
+    var body: some View {
+        TatiPage(title: "Hot topic", lazyContent: true) {
+            HStack(spacing: 14) {
+                Art(name: "voice-topic-kitchen", width: 82, height: 90)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Late-night snack: sweet or savory?")
+                        .font(.system(.title3, design: .rounded).weight(.bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("Pick a room and join the conversation.")
+                        .font(.subheadline).foregroundStyle(Color.tatiOlive)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }.padding(.vertical, 8)
+            if rooms.isEmpty {
+                EmptyContent(title: "No rooms here yet", detail: "Check back for more rooms.")
+            }
+            ForEach(rooms) { room in
+                RoomListCard(room: room, showsHotBanner: false)
+            }
+        }
     }
 }
 
@@ -756,11 +823,19 @@ private struct RankingEntry: Identifiable {
     let interactions: Int
 }
 
+private struct RankingControlsHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat { 0 }
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct RankingView: View {
     var onBack: (() -> Void)? = nil
     @EnvironmentObject private var store: VisitorStore
     @State private var category = "Activity"
     @State private var period = "Daily"
+    @State private var controlsHeight: CGFloat = 0
     @Environment(\.dismiss) private var dismiss
 
     // The catalogue supplies real content counts. Only saved interactions enter
@@ -811,12 +886,16 @@ struct RankingView: View {
             let fullHeight = geometry.size.height + topInset + geometry.safeAreaInsets.bottom
             // The original artwork and all three portraits share one aspect-fill transform.
             let scale = max(width / 780, fullHeight / 1688)
+            // Long translations and accessibility type may increase the floating controls.
+            // Move artwork and portraits together if they need more clearance.
+            let artShift = max(0, controlsHeight + 12 - (514 * scale - topInset))
             ScrollView {
                 VStack(spacing: 12) {
                     if ranked.isEmpty {
                         EmptyContent(title: "No profiles available", detail: "Profiles and rooms will appear here when available.")
+                            .padding(.top, controlsHeight + 16)
                     } else {
-                        podiumStage(ranked, width: width, scale: scale, topInset: topInset)
+                        podiumStage(ranked, width: width, scale: scale, topInset: topInset, artShift: artShift)
                         podiumDetails(ranked)
                         LazyVStack(spacing: 0) {
                             ForEach(Array(ranked.dropFirst(3).enumerated()), id: \.element.id) { index, entry in
@@ -846,14 +925,24 @@ struct RankingView: View {
                         GeometryReader { _ in
                             Image("rank-background").resizable()
                                 .frame(width: 780 * scale, height: 1688 * scale)
-                                .offset(x: (width - 780 * scale) / 2, y: -topInset)
+                                .offset(x: (width - 780 * scale) / 2, y: -topInset + artShift)
                                 .accessibilityHidden(true)
                         }.allowsHitTesting(false)
                     }
+                    .background(Color(red: 0.99, green: 1, blue: 0.94))
                     .frame(maxWidth: .infinity)
             }.scrollIndicators(.hidden)
                 .overlay(alignment: .top) {
-                    rankingControls.frame(maxWidth: 520).frame(maxWidth: .infinity)
+                    rankingControls
+                        .background {
+                            GeometryReader { controls in
+                                Color.clear.preference(key: RankingControlsHeightKey.self, value: controls.size.height)
+                            }.allowsHitTesting(false)
+                        }
+                        .frame(maxWidth: 520).frame(maxWidth: .infinity)
+                }
+                .onPreferenceChange(RankingControlsHeightKey.self) { height in
+                    if abs(controlsHeight - height) > 0.5 { controlsHeight = height }
                 }
                 .background {
                     GeometryReader { canvas in
@@ -916,7 +1005,7 @@ struct RankingView: View {
         }.padding(.horizontal, 16).padding(.top, 4)
     }
 
-    private func podiumStage(_ ranked: [RankingEntry], width: CGFloat, scale: CGFloat, topInset: CGFloat) -> some View {
+    private func podiumStage(_ ranked: [RankingEntry], width: CGFloat, scale: CGFloat, topInset: CGFloat, artShift: CGFloat) -> some View {
         // Anchors are in the original 780 × 1688 artwork. The image lives behind
         // the whole scroll content, rather than inside this clipped foreground stage.
         let originX = (width - 780 * scale) / 2
@@ -938,10 +1027,10 @@ struct RankingView: View {
                         .frame(minWidth: 44, minHeight: 44)
                 }
                 .accessibilityLabel("\(index + 1), \(entry.title), \(entry.metric)")
-                .position(x: originX + anchor.x * scale, y: anchor.y * scale - topInset)
+                .position(x: originX + anchor.x * scale, y: anchor.y * scale - topInset + artShift)
             }
         }
-        .frame(width: width, height: max(240, 820 * scale - topInset), alignment: .topLeading)
+        .frame(width: width, height: max(240, 820 * scale - topInset + artShift), alignment: .topLeading)
     }
 
     private func podiumAnchor(_ index: Int) -> (x: CGFloat, y: CGFloat, diameter: CGFloat) {

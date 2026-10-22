@@ -143,6 +143,51 @@ struct CoinExpense: Codable, Identifiable {
     let coins: Int
     var date = Date()
 }
+struct FoodExpertExchange: Codable, Identifiable {
+    var id = UUID().uuidString
+    let question: String
+    var reply: FoodTip? = nil
+    var createdAt = Date()
+}
+
+/// Authored cooking guidance, selected on-device. No model or network request.
+enum FoodTip: String, Codable {
+    case crispy, plating, balance, pasta, dinner, baking, vegetables, clarify
+
+    var answer: String {
+        switch self {
+        case .crispy: return "Pat ingredients dry and add a light coating of flour or starch. Fry in small batches so the oil stays hot, then drain on a wire rack. Add wet sauces just before serving."
+        case .plating: return "Choose a plate that leaves a little space around the food. Build a small amount of height, add one contrasting colour, and wipe the rim. Soft light from a window makes a lovely finishing touch."
+        case .balance: return "Taste a small spoonful first. If it is too sweet, try a little lemon juice or vinegar; if it is too salty, add more unsalted ingredients. Make one small adjustment at a time and taste again."
+        case .pasta: return "Cook pasta in salted water and check the texture before the packet time is up. Save a cup of the cooking water. Toss the pasta with your sauce and a splash of that water until the sauce coats it."
+        case .dinner: return "Try a quick bowl: rice or noodles, a protein you enjoy, and two vegetables. Use lemon, olive oil and herbs for a simple dressing. What ingredients do you have on hand?"
+        case .baking: return "Weigh your ingredients and preheat the oven before you begin. Once flour goes into a cake batter, mix only until combined. Let baked goods cool before decorating so the topping stays in place."
+        case .vegetables: return "Dry vegetables well, cut them into similar sizes and give them space on the tray. Roast until the edges colour, turning as needed. Finish with lemon and herbs for a brighter flavour."
+        case .clarify: return "I have built-in tips for crispy food, plating, flavour balance, pasta, quick dinners, baking and vegetables. Tell me which of these you would like help with."
+        }
+    }
+
+    static func matching(_ question: String) -> Self {
+        let text = question.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "en_US_POSIX"))
+        let rules: [(Self, [String])] = [
+            (.crispy, ["crispy", "crunch", "fried", "frying", "酥", "脆", "油炸", "crujiente", "frit", "croustill", "knuspr", "fritt", "サク", "揚げ"]),
+            (.plating, ["plating", "plate", "look delicious", "presentation", "photo", "摆盘", "好看", "拍照", "看起来", "emplat", "presentacion", "se vea deliciosa", "appetissant", "anrichten", "anrichtet", "appetitlich", "lecker aus", "盛り付け", "おいしそう"]),
+            (.balance, ["balance", "too sweet", "too salty", "sweet and savory", "sweet and savoury", "平衡", "太甜", "太咸", "甜咸", "equilibr", "sucre et sale", "suss und herzhaft", "susse und wurze", "ausgleich", "甘味と塩味", "バランス"]),
+            (.pasta, ["pasta", "spaghetti", "意面", "意大利面", "pates", "nudeln", "パスタ"]),
+            (.dinner, ["dinner", "quick meal", "lunch", "晚餐", "午餐", "快手", "cena", "rapida", "diner", "repas rapide", "abendessen", "schnelles essen", "夕食", "時短"]),
+            (.baking, ["baking", "bake", "cake", "cookie", "烘焙", "蛋糕", "饼干", "hornear", "pastel", "gateau", "patisserie", "backen", "kuchen", "ケーキ", "クッキー"]),
+            (.vegetables, ["vegetable", "salad", "蔬菜", "沙拉", "verdura", "ensalada", "legume", "salade", "gemuse", "salat", "野菜", "サラダ"])
+        ]
+        var result: Self = .clarify
+        var bestScore = 0
+        for (tip, keywords) in rules {
+            let score = keywords.filter { text.contains($0) }.count
+            if score > bestScore { result = tip; bestScore = score }
+        }
+        return result
+    }
+}
+
 struct LocalAccount: Codable {
     var version = 1
     var profile = LocalProfile()
@@ -159,6 +204,7 @@ struct LocalAccount: Codable {
     var gifts: [GiftReceipt] = []
     var roomMessages: [LocalRoomMessage]? = nil
     var drafts: [String: String] = [:]
+    var foodExpertExchanges: [FoodExpertExchange]? = nil
     var messages: [LocalMessage] = []
     var videoComments: [VideoComment]? = nil
     var reports: [ReportDraft] = []
