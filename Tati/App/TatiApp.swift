@@ -149,6 +149,7 @@ struct WelcomeView: View {
             if route == .preparingB || route == .showingB { consent = true }
             else if route == .undecided { consent = false }
         }
+    }
 }
 
 private struct WelcomeEntryButton: View {
