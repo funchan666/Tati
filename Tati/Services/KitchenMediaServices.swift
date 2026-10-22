@@ -116,7 +116,7 @@ final class CameraPhotoJPEG: @unchecked Sendable {
             }
         }
         failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
-            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.wantsToPlay = false; self?.loading = false; self?.failure = "Playback stopped because the file could not be read." }
+            Task { @MainActor in guard self?.generation == request, self?.activeID == id, self?.ownerID == owner else { return }; self?.playing = false; self?.wantsToPlay = false; self?.loading = false; self?.failure = "This video cannot be played. Tap Retry to open it again." }
         }
         endedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: item, queue: .main) { [weak self] _ in
             Task { @MainActor in

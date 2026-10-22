@@ -47,9 +47,10 @@ def inspect():
 
 def head(entry):
     result = subprocess.run([
-        "/usr/bin/curl", "--head", "--silent", "--show-error", "--max-time", "20",
+        "/usr/bin/curl", "--head", "--silent", "--show-error", "--max-time", "15",
+        "--retry", "1", "--retry-all-errors", "--retry-delay", "1",
         "--write-out", "\n%{http_code}", entry["remoteURL"]
-    ], capture_output=True, text=True, timeout=25)
+    ], capture_output=True, text=True, timeout=40)
     headers, _, code = result.stdout.rpartition("\n")
     fields = {}
     for line in headers.splitlines():

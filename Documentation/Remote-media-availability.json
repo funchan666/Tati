@@ -197,11 +197,11 @@
     {
       "source": "ProjectMaterials/ContentImages/844394608_18634550761055018_7929487706353879535_n.jpg",
       "url": "https://pub-d00704a92e07453dbab85506699e0218.r2.dev/photo/844394608_18634550761055018_7929487706353879535_n.jpg",
-      "status": 0,
-      "contentType": null,
-      "contentLength": null,
-      "acceptRanges": null,
-      "error": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to pub-d00704a92e07453dbab85506699e0218.r2.dev:443"
+      "status": 200,
+      "contentType": "image/jpeg",
+      "contentLength": "209614",
+      "acceptRanges": "bytes",
+      "previousAttemptError": "curl: (35) LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to pub-d00704a92e07453dbab85506699e0218.r2.dev:443"
     },
     {
       "source": "ProjectMaterials/ContentImages/844417632_18635528491056541_3211862696628029101_n.jpg",
@@ -524,5 +524,6 @@
       "acceptRanges": "bytes"
     }
   ],
-  "buildTestsOrAppRunPerformed": false
+  "buildTestsOrAppRunPerformed": false,
+  "checkedAt": "2026-10-22T16:05:55.890720+08:00"
 }
