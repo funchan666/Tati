@@ -26,6 +26,9 @@ struct ImportedMovie: Transferable {
     private var failedObserver: NSObjectProtocol?
     private var endedObserver: NSObjectProtocol?
     private var generation = UUID()
+    private var audioActivation: Task<Void, Never>?
+    private var audioOwner: UUID?
+    private var audioReady = false
     func load(id: String, url: URL, owner: String, loops: Bool = false) throws {
         stop()
         guard FileManager.default.fileExists(atPath: url.path) else { throw CocoaError(.fileNoSuchFile) }
@@ -51,6 +54,7 @@ struct ImportedMovie: Transferable {
                 guard self?.generation == request else { return }
                 self?.playing = status == .playing
                 self?.loading = status == .waitingToPlayAtSpecifiedRate
+                    || (self?.audioReady == false && self?.wantsToPlay == true)
             }
         }
         failedObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemFailedToPlayToEndTime, object: item, queue: .main) { [weak self] _ in
@@ -73,20 +77,49 @@ struct ImportedMovie: Transferable {
                 }
             }
         }
-        // Start both list and detail playback; AVPlayer waits until the item is ready.
-        nextPlayer.play()
+        // Wait behind queued music/dictation cleanup before starting video audio.
+        // A stopped or replaced video must not resume from a late activation.
+        audioOwner = request
+        audioActivation = Task { [weak self] in
+            do {
+                try await MediaAudioSession.shared.activate(owner: request, recording: false)
+                guard let self, self.generation == request, !Task.isCancelled else {
+                    MediaAudioSession.shared.release(owner: request)
+                    return
+                }
+                self.audioReady = true
+                self.loading = self.wantsToPlay
+                if self.wantsToPlay { self.player?.play() }
+            } catch {
+                guard let self, self.generation == request else { return }
+                MediaAudioSession.shared.release(owner: request)
+                self.audioOwner = nil
+                self.audioReady = false
+                self.playing = false; self.wantsToPlay = false; self.loading = false
+                self.failure = "This video cannot be played. Tap Retry to open it again."
+            }
+        }
     }
     func toggle() {
         guard let player, failure == nil else { return }
         wantsToPlay.toggle()
-        if wantsToPlay { player.play() } else { player.pause(); playing = false; loading = false }
+        if wantsToPlay {
+            loading = !audioReady
+            if audioReady { player.play() }
+        } else { player.pause(); playing = false; loading = false }
     }
     func stop() {
-        guard player != nil || activeID != nil || failure != nil || wantsToPlay || loading else { return }
+        guard player != nil || activeID != nil || failure != nil || wantsToPlay || loading || audioOwner != nil else { return }
         generation = UUID()
+        audioActivation?.cancel(); audioActivation = nil
+        audioReady = false
         statusObserver = nil; playbackObserver = nil
         player?.pause(); player?.replaceCurrentItem(with: nil); player = nil; activeID = nil; ownerID = nil; playing = false
         wantsToPlay = false; loading = false
+        if let owner = audioOwner {
+            audioOwner = nil
+            MediaAudioSession.shared.release(owner: owner)
+        }
         if let endedObserver { NotificationCenter.default.removeObserver(endedObserver) }
         endedObserver = nil
         if let failedObserver { NotificationCenter.default.removeObserver(failedObserver) }
@@ -233,8 +266,8 @@ struct LocalVideoPoster: View {
 
 /// Serializes potentially blocking AVAudioSession operations off the UI thread.
 /// Mutable ownership is queue-confined. A stale release cannot stop a newer owner.
-final class RoomAudioSession: @unchecked Sendable {
-    static let shared = RoomAudioSession()
+final class MediaAudioSession: @unchecked Sendable {
+    static let shared = MediaAudioSession()
     private let queue = DispatchQueue(label: "tati.audio.session", qos: .userInitiated)
     private var owner: UUID?
     private var recording = false

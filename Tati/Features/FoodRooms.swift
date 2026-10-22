@@ -603,9 +603,9 @@ struct GiftShopView: View {
         starting = true
         defer { if audioOwner == token { starting = false } }
         do {
-            try await RoomAudioSession.shared.activate(owner: token, recording: false)
+            try await MediaAudioSession.shared.activate(owner: token, recording: false)
             guard audioOwner == token, !Task.isCancelled else {
-                RoomAudioSession.shared.release(owner: token)
+                MediaAudioSession.shared.release(owner: token)
                 if audioOwner == token { stop() }
                 return
             }
@@ -626,7 +626,7 @@ struct GiftShopView: View {
         starting = false
         if let owner = audioOwner {
             audioOwner = nil
-            RoomAudioSession.shared.release(owner: owner)
+            MediaAudioSession.shared.release(owner: owner)
         }
     }
 }

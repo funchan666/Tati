@@ -79,10 +79,10 @@ import UIKit
         self.recognizer = recognizer
         do {
             audioOwner = token
-            try await RoomAudioSession.shared.activate(owner: token, recording: true)
+            try await MediaAudioSession.shared.activate(owner: token, recording: true)
             guard generation == token, !Task.isCancelled,
                   UIApplication.shared.applicationState == .active else {
-                RoomAudioSession.shared.release(owner: token)
+                MediaAudioSession.shared.release(owner: token)
                 if generation == token { cancel() }
                 return
             }
@@ -172,7 +172,7 @@ import UIKit
         if tapInstalled { engine.inputNode.removeTap(onBus: 0); tapInstalled = false }
         if let owner = audioOwner {
             audioOwner = nil
-            RoomAudioSession.shared.release(owner: owner)
+            MediaAudioSession.shared.release(owner: owner)
         }
     }
 
