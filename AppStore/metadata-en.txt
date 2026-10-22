@@ -1,0 +1,44 @@
+Bundle ID
+Current project: com.tati.app
+Alternative candidates:
+com.tati.kitchennotes
+app.tati.foodjournal
+com.tati.tablemoments
+
+App name
+Tati Food Stories and Notes
+
+App description
+Tati brings food stories, recipe pages and a personal kitchen notebook together. Discover people through the dishes they enjoy, find an idea for your next meal and keep the small changes that make a recipe yours.
+
+Explore food and the people behind it
+Browse food videos and creator profiles, from home cooking and market finds to baking and street food. Search for people and food interests, explore room listings by topic, city or language, and follow profiles you would like to find again.
+
+Take an idea into your kitchen
+Open the kitchen notebook for ingredient lists, preparation steps and recipe-specific allergen notes. Start with the free recipes or unlock an additional recipe chapter with coins. Adjust portions from one to twelve servings and let ingredient quantities follow your plan.
+
+Shop with a clear list
+Add a recipe's ingredients to a shopping list, grouped by dish. Tick off what is already in your basket, update quantities when your serving plan changes and remove a dish when you no longer need it.
+
+Remember what worked
+Keep a personal tasting note after cooking. Record the portions you made, what you thought of the flavour and what you would change next time. Revisit earlier notes when you return to a recipe.
+
+A little help along the way
+Read practical cooking notes about crisp textures, plating, seasoning and other everyday kitchen questions. Make your profile your own with a photo, a short introduction and your food interests.
+
+Choose what you see
+Hide content and block profiles from your view. Prepare a report about a profile, video or comment, with a support email available when you need to contact Tati.
+
+Optional extras
+Coins can unlock additional recipe chapters, a profile frame and personal room effects. Costs are shown before use. Free recipes, shopping lists, tasting notes and safety controls do not require coins. Unlocks apply to your current Tati profile.
+
+The interface supports English, Simplified Chinese, Spanish, French, German and Japanese. Recipe and editorial content is presented in its original language.
+
+Review access
+No username or password is required. Launch Tati, review and accept the User Agreement and Privacy Policy, then tap Enter Tati. Keep network access enabled to load the configured content and Apple products.
+
+User Agreement
+https://sites.google.com/view/tutu-terms-of-service/foodd
+
+Privacy Policy
+https://sites.google.com/view/tati-privacypolicy/foodd

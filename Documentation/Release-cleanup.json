@@ -1,7 +1,7 @@
 {
   "scope": "Working checkout cleanup; Git history, original artwork, deployment contracts and font licenses retained",
-  "removedFiles": 97,
-  "removedBytes": 2751798,
+  "removedFiles": 99,
+  "removedBytes": 2766172,
   "categories": [
     "Finder metadata",
     "Xcode per-user workspace state",
@@ -9,5 +9,8 @@
     "Obsolete implementation notes",
     "Derived design contact sheets and review captures"
   ],
-  "releaseSizeMeaning": "Most removed files were never bundled and do not reduce the app download."
+  "releaseSizeMeaning": "Most removed files were never bundled and do not reduce the app download.",
+  "unusedBundledAssetRemoved": "checkin.imageset",
+  "unusedBundledAssetBytes": 1132999,
+  "originalCheckinArtworkRetained": true
 }

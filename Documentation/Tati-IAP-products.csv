@@ -1,10 +1,10 @@
-product_id,type,reference_currency,reference_price,coins,display_name,new_product
-eokulidmyylccexu,Consumable,USD,0.99,450,Tati 450 Coins,no
-odaldmdjpwzbtkiz,Consumable,USD,1.99,950,Tati 950 Coins,no
-nvqpshrkctazlme,Consumable,USD,2.99,1500,"Tati 1,500 Coins",yes
-ozeeyhaxgaggmtoi,Consumable,USD,4.99,2700,"Tati 2,700 Coins",no
-kqlydmhtgbargefh,Consumable,USD,9.99,5800,"Tati 5,800 Coins",no
-hoakgbrbmsuzzbyt,Consumable,USD,19.99,12400,"Tati 12,400 Coins",no
-bzrktwqmnvslhya,Consumable,USD,29.99,19200,"Tati 19,200 Coins",yes
-wdhsgsoedizvlozy,Consumable,USD,49.99,32500,"Tati 32,500 Coins",no
-enaomwjnhhidlyby,Consumable,USD,99.99,70000,"Tati 70,000 Coins",no
+product_id,type,reference_currency,reference_price,coins,display_name,description
+eokulidmyylccexu,Consumable,USD,0.99,450,Tati 450 Coins,450 coins for recipes and Tati extras
+odaldmdjpwzbtkiz,Consumable,USD,1.99,950,Tati 950 Coins,950 coins for recipes and Tati extras
+nvqpshrkctazlme,Consumable,USD,2.99,1500,Tati 1500 Coins,1500 coins for recipes and Tati extras
+ozeeyhaxgaggmtoi,Consumable,USD,4.99,2700,Tati 2700 Coins,2700 coins for recipes and Tati extras
+kqlydmhtgbargefh,Consumable,USD,9.99,5800,Tati 5800 Coins,5800 coins for recipes and Tati extras
+hoakgbrbmsuzzbyt,Consumable,USD,19.99,12400,Tati 12400 Coins,12400 coins for recipes and Tati extras
+bzrktwqmnvslhya,Consumable,USD,29.99,19200,Tati 19200 Coins,19200 coins for recipes and Tati extras
+wdhsgsoedizvlozy,Consumable,USD,49.99,32500,Tati 32500 Coins,32500 coins for recipes and Tati extras
+enaomwjnhhidlyby,Consumable,USD,99.99,70000,Tati 70000 Coins,70000 coins for recipes and Tati extras

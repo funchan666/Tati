@@ -14,7 +14,7 @@
   "fontCuts": 3,
   "fontBytes": 186516,
   "catalogEntries": {
-    "Localizable.xcstrings": 576,
+    "Localizable.xcstrings": 583,
     "InfoPlist.xcstrings": 6
   },
   "supportEmail": "hudden.serudiv22@gmail.com",
@@ -23,7 +23,7 @@
   "chapterCoins": [
     120
   ],
-  "currentAppResourceBytes": 27220020,
+  "currentAppResourceBytes": 23652947,
   "storeKitOffersUnchanged": true,
   "legacyStoredKeysRetained": true,
   "buildTestsOrAppRunPerformed": false

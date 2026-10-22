@@ -112,14 +112,8 @@ def main():
     source = '\n'.join(p.read_text() for p in swift_files)
     require('Image(systemName:' not in source and 'systemImage:' not in source, 'Unexpected system artwork')
     require('UIScreen.main' not in source, 'Global screen geometry introduced')
-    # Verify the purchase contract was not changed by the semantic source rename.
-    historical_purchase = 'Tati/Services/TatiPurchases.swift'
-    if subprocess.run(['git', 'cat-file', '-e', 'HEAD:' + historical_purchase], cwd=ROOT, capture_output=True).returncode:
-        historical_purchase = 'Tati/Services/KitchenCoinPurchases.swift'
-    old_purchase = subprocess.check_output(['git', 'show', 'HEAD:' + historical_purchase], cwd=ROOT, text=True)
-    new_purchase = (APP / 'Services/KitchenCoinPurchases.swift').read_text()
-    offers = lambda text: re.findall(r'\.init\(id: "([^"]+)", coins: (\d+), usdPrice: "([^"]+)"\)', text)
-    require(offers(old_purchase) == [(p['id'], str(p['coins']), p['usdPrice']) for p in offers_data['coinPacks']], 'StoreKit offer contract changed')
+    baseline = json.loads(subprocess.check_output(['git', 'show', 'HEAD:Docs/BackendAPI/responses/kitchen-offers.json'], cwd=ROOT, text=True))['data']['coinPacks']
+    require(baseline == offers_data['coinPacks'], 'StoreKit offer contract changed')
     community = (APP / 'Domain/TableCommunity.swift').read_text()
     for model, body in re.findall(r'struct (\w+):[^\n]+\{(.*?)\n\}', community, re.S):
         if 'private enum CodingKeys' not in body:

@@ -16,7 +16,7 @@ def add(name,path,scale='2x'):
  (dest/'Contents.json').write_text(json.dumps({'images':[{'filename':name+'.png','idiom':'universal','scale':scale}],'info':{'author':'xcode','version':1}}))
  manifest.append({'name':name,'source':str(path.relative_to(root))})
 for idx,name in names.items():add(name,source/by_id[idx]['file'])
-for name in ['brand-heading','welcome','checkin','checkin-copy','brand-icon','missing-icons']:add(name,root/'ProjectMaterials/GeneratedUI'/f'{name}.png')
+for name in ['brand-heading','welcome','checkin-copy','brand-icon','missing-icons']:add(name,root/'ProjectMaterials/GeneratedUI'/f'{name}.png')
 icon=assets/'AppIcon.appiconset';icon.mkdir(exist_ok=True)
 Image.open(root/'ProjectMaterials/GeneratedUI/brand-icon.png').convert('RGB').resize((1024,1024),Image.Resampling.LANCZOS).save(icon/'AppIcon.png')
 (icon/'Contents.json').write_text(json.dumps({'images':[{'filename':'AppIcon.png','idiom':'universal','platform':'ios','size':'1024x1024'}],'info':{'author':'xcode','version':1}}))

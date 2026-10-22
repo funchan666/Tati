@@ -4,8 +4,8 @@
   "originalArtworkModified": false,
   "resizingOrLossyReencodingPerformed": false,
   "beforeBytes": 27227986,
-  "afterBytes": 24785946,
-  "savedBytes": 2442040,
+  "afterBytes": 23652947,
+  "savedBytes": 3575039,
   "pngFilesVerified": 156,
   "buildTestsOrAppRunPerformed": false,
   "resources": [
@@ -337,7 +337,8 @@
         1100
       ],
       "decodedRGBA256": "a557b1de3ebe40368aa907ef2d41091690abc133168c34967c02606bdbdae829",
-      "pixelsAndColorMetadataUnchanged": true
+      "pixelsAndColorMetadataUnchanged": true,
+      "unusedRuntimeCopyRemovedAfterCompression": true
     },
     {
       "resource": "TableArtwork.xcassets/chef-avatar.imageset/chef-avatar.png",
@@ -1725,5 +1726,8 @@
       "decodedRGBA256": "5656e1b62e2ff5f7110beca90b6dc75f2bea495d9f0bc679d7e3b191bf0a0e9c",
       "pixelsAndColorMetadataUnchanged": true
     }
-  ]
+  ],
+  "afterCompressionBytes": 24785946,
+  "unusedBundledAssetRemoved": "TableArtwork.xcassets/checkin.imageset",
+  "currentBundledPngCount": 155
 }

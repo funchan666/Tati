@@ -564,10 +564,6 @@
     "source": "ProjectMaterials/GeneratedUI/welcome.png"
   },
   {
-    "name": "checkin",
-    "source": "ProjectMaterials/GeneratedUI/checkin.png"
-  },
-  {
     "name": "checkin-copy",
     "source": "ProjectMaterials/GeneratedUI/checkin-copy.png"
   },
