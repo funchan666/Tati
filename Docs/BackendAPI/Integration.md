@@ -21,7 +21,7 @@ Production content JSON was removed from `Tati/Resources`. Deployment JSON is ou
 For future media edits, `python3 Scripts/import_content.py` updates the deployment catalog only. Then regenerate from the frozen contract:
 
 ```sh
-python3 /Users/chengdupengyuyan/.codex/skills/prada/scripts/render_contract.py Docs/BackendAPI/contract.json --out Docs/BackendAPI/generated --replace
+python3 "$PRADA_SKILL_DIR/scripts/render_contract.py" Docs/BackendAPI/contract.json --out Docs/BackendAPI/generated --replace
 ```
 
 If the contract changes, copy both generated Swift constant files to `Tati/Integration`; preserve the project's ordinary-comment cleanup. Content-only edits do not change runtime constants.

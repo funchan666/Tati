@@ -113,8 +113,14 @@ struct WalletView: View {
             }.font(.tati(.caption)).foregroundStyle(Color.tatiOlive).padding(.horizontal, 4)
             Text("Choose your treat").font(.tati(.headline)).padding(.top, 4)
             RechargeOptions(selected: $selected)
-            Text("Reference prices in USD. Apple's purchase sheet shows your currency and final price.")
+            Text("Prices are provided by Apple. Confirm the final price on Apple's purchase sheet.")
                 .font(.tati(.caption2)).foregroundStyle(Color.tatiOlive)
+            if let issue = purchases.offerIssue {
+                Note(text: issue)
+                TatiButton(title: "Reload prices", enabled: !purchases.loadingOffers && !purchases.busy) {
+                    Task { await purchases.loadOffers() }
+                }
+            }
             if let issue = purchases.recoveryIssue { Note(text: issue) }
             if let debt = store.account.purchaseDebt, debt > 0 {
                 Note(text: "A previous refund adjustment of \(debt.formatted()) coins will be settled from your next purchase.")
@@ -133,14 +139,14 @@ struct WalletView: View {
                 }
             }
         } footer: {
-            TatiButton(title: purchases.busyProductID != nil ? "Waiting for Apple…" : "Buy \((package?.coins ?? 0).formatted()) coins", enabled: package != nil && !purchases.busy && store.storageFailure == nil) {
+            TatiButton(title: purchases.busyProductID != nil ? "Waiting for Apple…" : "Buy \((package?.coins ?? 0).formatted()) coins", enabled: package.map { purchases.prices[$0.id] != nil } == true && !purchases.loadingOffers && !purchases.busy && store.storageFailure == nil) {
                 guard let offer = package else { return }
                 Task { await purchases.buy(offer) }
             }
             Button(purchases.recovering ? "Checking purchases…" : "Purchase help") {
                 Task { await purchases.recover() }
             }.font(.tati(.caption)).buttonStyle(.plain).frame(minHeight: 44).disabled(purchases.busy)
-        }
+        }.task(id: KitchenCoinPack.all.map(\.id).joined(separator: ",")) { await purchases.loadOffers() }
     }
 }
 struct LevelView: View {

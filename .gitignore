@@ -2,4 +2,9 @@
 xcuserdata/
 DerivedData/
 *.xcuserstate
+__pycache__/
+*.pyc
+*.log
+*.xcarchive/
+*.ipa
 

@@ -30,8 +30,16 @@ targets:
       - path: Tati
         excludes:
           - Resources
+          - '**/.DS_Store'
+          - '**/xcuserdata/**'
+          - '**/*.xcuserstate'
       - path: Tati/Resources
         buildPhase: resources
+        excludes:
+          - '**/.DS_Store'
+          - '**/*.md'
+          - '**/*.log'
+          - '**/__pycache__/**'
     settings:
       base:
         TABLE_PUSH_ENVIRONMENT: development
@@ -41,6 +49,14 @@ targets:
       configs:
         Release:
           TABLE_PUSH_ENVIRONMENT: production
+          SWIFT_OPTIMIZATION_LEVEL: '-Osize'
+          SWIFT_COMPILATION_MODE: wholemodule
+          DEAD_CODE_STRIPPING: YES
+          COPY_PHASE_STRIP: YES
+          STRIP_INSTALLED_PRODUCT: YES
+          ENABLE_TESTABILITY: NO
+          DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+          OTHER_SWIFT_FLAGS: '$(inherited) -debug-prefix-map $(SRCROOT)=. -file-prefix-map $(SRCROOT)=.'
     info:
       path: Tati/Info.plist
       properties:

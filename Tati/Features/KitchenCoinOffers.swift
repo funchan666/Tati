@@ -15,12 +15,13 @@ struct RechargeOptions: View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: columns), spacing: 10) {
             ForEach(KitchenCoinPack.all) { package in
                 let isSelected = selected == package.id
+                let price = purchases.prices[package.id] ?? (purchases.loadingOffers ? "Loading prices…" : "Unavailable")
                 Button { selected = package.id } label: {
                     VStack(spacing: 7) {
                         Art(name: package.coins >= 12400 ? "coin-pile" : "coin", width: 36, height: 36)
                         Text(package.coins.formatted()).font(.tati(.headline, design: .rounded).weight(.bold)).monospacedDigit()
                             .lineLimit(1).minimumScaleFactor(0.75)
-                        Text(purchases.prices[package.id] ?? package.referencePrice)
+                        Text(LocalizedStringKey(price))
                             .font(.tati(.subheadline).weight(.semibold)).lineLimit(1).minimumScaleFactor(0.75)
                             .foregroundStyle(isSelected ? Color.white : Color.tatiInk)
                             .padding(.horizontal, 8).padding(.vertical, 6)
@@ -35,8 +36,8 @@ struct RechargeOptions: View {
                         .overlay(alignment: .topTrailing) {
                             if isSelected { Art(name: "check-pink", width: 18, height: 18).padding(5) }
                         }
-                }.buttonStyle(.plain).disabled(purchases.busy)
-                    .accessibilityLabel("\(package.coins) coins, \(purchases.prices[package.id] ?? package.referencePrice)")
+                }.buttonStyle(.plain).disabled(purchases.busy || purchases.loadingOffers || purchases.prices[package.id] == nil)
+                    .accessibilityLabel(Text("\(package.coins) coins") + Text(", ") + Text(LocalizedStringKey(price)))
                     .accessibilityAddTraits(isSelected ? .isSelected : [])
             }
         }
