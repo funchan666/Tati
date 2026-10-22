@@ -2,7 +2,7 @@
 
 原生 SwiftUI 美食社区应用，最低 iOS 17，现有五个入口为 Home、Room、Video、Cooking notes、Me。保留原创 Tati 资源、两套本地字体、已有用户编辑/草稿/钱包持久化与原生媒体所有者。
 
-2026-10-22 已接入本机最新版 Prada：App ID `48859669`，接口域名 `https://api.afterhou.top`。当前接口、路由、支付与服务边界见 [接入记录](Docs/BackendAPI/Integration.md)。
+2026-10-22 已接入 Prada：App ID `48859669`，接口域名 `https://api.afterhou.top`。当前接口、路由、支付与服务边界见 [接入记录](Docs/BackendAPI/Integration.md)。
 
 导入文件只有两份：
 
@@ -25,4 +25,4 @@ python3 Scripts/inspect_hosted_media.py
 
 一键认证、原生 WebSocket、同会话 WKWebView、APNs 回调、先结束 Apple 交易再单次确认的调用链已接到现有页面/服务。固定展示 JSON 不提供真人直播、RTC、聊天送达、举报受理、审核后台或跨设备钱包。既有房间媒体/送礼特效、待发布内容及消息草稿的真实边界仍保留，详情见接入记录。
 
-原有素材来源、设计参考与逐页说明仍在 `ProjectMaterials`。用户指定的协议页内容与链接保持原样。更早文档的本地 seed、未接 StoreKit、恢复消耗型购买等描述属于历史状态，以本次接入记录为准。
+原创素材来源与设计参考仍在 `ProjectMaterials`。过期页面改动说明、衍生预览和开发缓存已清理。用户指定的协议页内容与链接保持原样；当前接口及支付行为以接入记录为准。
