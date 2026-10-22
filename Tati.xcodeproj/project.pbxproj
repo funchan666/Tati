@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -89,7 +89,7 @@
 		66BB6B3F41478410963D8E85 /* Tati.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tati.entitlements; sourceTree = "<group>"; };
 		6B1A754610F8D74E2A903020 /* NotificationPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferences.swift; sourceTree = "<group>"; };
 		706A7DC351CE7A754173DB06 /* Fraunces-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Fraunces-SemiBold.ttf"; sourceTree = "<group>"; };
-		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		710E5BB98E81D2FD71B71E7D /* Tati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72117EC2F6B6DD18E492C4FF /* RoomDictationSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDictationSession.swift; sourceTree = "<group>"; };
 		74015A6ED906F16855D977F0 /* SupperWebContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupperWebContainer.swift; sourceTree = "<group>"; };
 		74300FD37C4CFF643F8E4BB5 /* RoomToolPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomToolPanels.swift; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		A787BFAC7195B92C6D536760 /* KitchenEditorialLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenEditorialLibrary.swift; sourceTree = "<group>"; };
 		AC33E52D30307817112BEF99 /* KitchenNotebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebook.swift; sourceTree = "<group>"; };
 		B62A9684779A3EAE8E954196 /* ReadingMediaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingMediaViews.swift; sourceTree = "<group>"; };
-		B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B66777338A14D5491B19E80C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C156986643D3A6265105F7FD /* KitchenMediaServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenMediaServices.swift; sourceTree = "<group>"; };
 		C7497D620486B3C3FCFF222C /* ConfiguredThemeEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredThemeEvents.swift; sourceTree = "<group>"; };
 		CCFB80DCB2CA6099BFD67D15 /* KitchenNotebookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenNotebookView.swift; sourceTree = "<group>"; };
@@ -321,7 +321,6 @@
 			packageReferences = (
 				8450B044F48AD13EDF896D18 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -470,9 +469,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Tati/Tati.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Tati/Info.plist;
@@ -482,12 +483,16 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -debug-prefix-map \"$(SRCROOT)=.\" -file-prefix-map \"$(SRCROOT)=.\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Osize";
 				TABLE_PUSH_ENVIRONMENT = production;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -566,6 +571,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Tati/Tati.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Tati/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -573,9 +580,13 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tati.app;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				TABLE_PUSH_ENVIRONMENT = development;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
