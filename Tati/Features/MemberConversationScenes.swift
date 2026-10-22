@@ -1272,7 +1272,7 @@ struct CookingNotesView: View {
                             .font(.tati(.subheadline)).fixedSize(horizontal: false, vertical: true)
                     } else {
                         HStack(spacing: 8) {
-                            Art(name: "ai-on", width: 20, height: 20)
+                            Art(name: "notes-on", width: 20, height: 20)
                                 .phaseAnimator(scenePhase == .active && !reduceMotion ? [0.6, 1.0] : [1.0]) { icon, opacity in
                                     icon.opacity(opacity)
                                 } animation: { _ in .easeInOut(duration: 0.65) }
@@ -1297,10 +1297,13 @@ struct CookingNotesView: View {
                 .frame(maxWidth: .infinity)
                 .accessibilityLabel("Your food question")
             Button { ask(question) } label: {
-                Art(name: "ai-off", width: 26, height: 26)
-                    .frame(width: 46, height: 46)
-                    .background(canAsk ? Color.tatiLime : Color.tatiCream, in: RoundedRectangle(cornerRadius: 15))
-            }.buttonStyle(.plain).disabled(!canAsk).accessibilityLabel("Ask Yimeng")
+                Art(name: "cooking-question-send", width: 46, height: 46)
+                    .frame(width: 48, height: 48)
+                    .contentShape(Rectangle())
+                    .opacity(canAsk ? 1 : 0.4)
+                    .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: canAsk)
+            }.buttonStyle(CookingQuestionSendStyle()).disabled(!canAsk)
+                .accessibilityLabel(LocalizedStringKey(pending == nil ? "Ask Yimeng" : "Preparing a cooking tip…"))
         }.padding(8).background(.white, in: RoundedRectangle(cornerRadius: 22))
             .overlay {
                 RoundedRectangle(cornerRadius: 22)
@@ -1309,5 +1312,16 @@ struct CookingNotesView: View {
             .padding(.horizontal, 18).padding(.top, 8).padding(.bottom, 10)
             .frame(maxWidth: 680).frame(maxWidth: .infinity)
             .background(Color.tatiCream)
+    }
+}
+
+private struct CookingQuestionSendStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.92 : 1)
+            .opacity(configuration.isPressed ? 0.8 : 1)
+            .animation(reduceMotion ? nil : .easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
