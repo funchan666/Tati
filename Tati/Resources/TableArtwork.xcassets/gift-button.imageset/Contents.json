@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "gift-button.png",
+      "idiom": "universal",
+      "scale": "2x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}

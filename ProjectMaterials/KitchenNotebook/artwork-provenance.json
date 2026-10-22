@@ -1,0 +1,14 @@
+{
+  "workflow": "Garden Image 2 skill, Host-Native built-in generation",
+  "prompts": {
+    "hero": "Use case: photorealistic-natural. Asset type: original culinary editorial header photograph for Tati Kitchen notebook native iOS screen. Create one landscape 3:2 image, close-up still life on a pale warm limestone kitchen tabletop: a shallow terracotta bowl of beautifully ripe red and golden tomatoes and fresh basil at upper left, a softly folded olive linen tea towel at lower left, an open ivory recipe notebook with blank pages at right, a small ceramic olive-oil jug just visible at upper right. Natural warm morning window light from left, sophisticated restrained cream, deep olive, terracotta palette with tiny acid lime highlight from basil. Premium food magazine photography, believable fine organic textures, tasteful imperfection, appetising ingredients, intentional diagonal composition, readable subjects at small mobile size. Full-bleed image; no borders, no UI, no phone, no lettering, no logos, no watermark, no people, no coins, no copied branded recipes.",
+    "brunch": "Original culinary cookbook artwork for Tati. A small linen-bound apricot recipe notebook closed and angled gently, with an original botanical apple branch illustration embossed into the cover. A golden French toast corner and thin apple slices nearby. Warm ivory tabletop, soft editorial natural light, muted terracotta/apricot, olive, cream. Square composition, premium food-book still-life photography with tactile linen, no lettering, no logo, no phone, no UI, no watermark, no hands. Simple clear composition readable at mobile thumbnail size. Full bleed.",
+    "market": "Original culinary cookbook artwork for Tati. A small linen-bound deep olive recipe notebook closed and angled gently, with an original botanical lemon and basil branch illustration embossed into the cover. A few white beans and a ripe lemon nearby. Warm ivory tabletop, soft editorial natural light, muted olive and pale lemon, cream. Square composition, premium food-book still-life photography with tactile linen, no lettering, no logo, no phone, no UI, no watermark, no hands. Simple clear composition readable at mobile thumbnail size. Full bleed."
+  },
+  "concept": "screen-direction.txt",
+  "deliverables": [
+    "notebook-table",
+    "notebook-brunch",
+    "notebook-market"
+  ]
+}

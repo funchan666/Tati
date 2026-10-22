@@ -12,8 +12,8 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "ProjectMaterials/content-slots.json"
 RESOURCES = ROOT / "Tati/Resources"
-CATALOG = RESOURCES / "TatiContent.xcassets"
-MOVIES = RESOURCES / "ContentVideos"
+CATALOG = RESOURCES / "KitchenMedia.xcassets"
+MOVIES = RESOURCES / "FoodFilms"
 
 
 def digest(path):
@@ -27,7 +27,7 @@ def write_json(path, value):
 def image_set(name, source):
     target = CATALOG / (name + ".imageset")
     target.mkdir(parents=True, exist_ok=True)
-    destination = target / ("content" + source.suffix.lower())
+    destination = target / (name + source.suffix.lower())
     shutil.copyfile(source, destination)
     write_json(target / "Contents.json", {
         "images": [{"filename": destination.name, "idiom": "universal"}],
@@ -62,11 +62,14 @@ def main():
     clips = []
     room_clips = {}
     for entry in mapping["videos"]:
+        # Review holds stay assigned for provenance but must not re-enter app resources.
+        if entry.get("excludedFromApp"):
+            continue
         source = ROOT / entry["source"]
         shutil.copyfile(source, MOVIES / entry["resource"])
         target = CATALOG / (entry["posterAsset"] + ".imageset")
         target.mkdir(parents=True, exist_ok=True)
-        poster = target / "poster.jpg"
+        poster = target / (entry["posterAsset"] + ".jpg")
         subprocess.run([
             "ffmpeg", "-v", "error", "-ss", str(entry["posterSeconds"]),
             "-i", str(source), "-frames:v", "1", "-q:v", "2", "-y", str(poster)
@@ -86,7 +89,7 @@ def main():
             room_clips[room_id] = clip
         else:
             clips.append(clip)
-    write_json(RESOURCES / "content-library.json", {
+    write_json(RESOURCES / "table-editorial-content.json", {
         "portraits": {p["personID"]: p["asset"] for p in mapping["portraits"]},
         "additionalPeople": [p["person"] for p in mapping["portraits"] if "person" in p],
         "roomCovers": mapping["roomCovers"],
@@ -97,7 +100,7 @@ def main():
         "curatedEngagement": {
             entry["id"]: entry["curatedEngagement"]
             for entry in mapping["videos"]
-            if not entry.get("roomID") and "curatedEngagement" in entry
+            if not entry.get("excludedFromApp") and not entry.get("roomID") and "curatedEngagement" in entry
         },
     })
     total = sum(p.stat().st_size for folder in [CATALOG, MOVIES] for p in folder.rglob("*") if p.is_file())

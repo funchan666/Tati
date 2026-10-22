@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "live-light-pink.png",
+      "idiom": "universal",
+      "scale": "2x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tati"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tati"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati nutzt die Kamera für dein Profilfoto und zeigt das Kamerabild beim Vorbereiten eines Food-Livestreams oder Videoanrufs."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati uses the camera to take your profile photo and show a camera preview when you prepare a food live room or video call."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati usa la cámara para tu foto de perfil y para mostrar la imagen al preparar una sala de comida en directo o una videollamada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati utilise la caméra pour votre photo de profil et pour afficher son image lorsque vous préparez un salon culinaire en direct ou un appel vidéo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tatiはプロフィール写真の撮影と、料理のライブ配信やビデオ通話を準備する際のカメラ映像表示にカメラを使用します。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati 使用摄像头拍摄个人头像，并在准备美食直播间或视频通话时显示摄像头画面。"
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diktiere eine Nachricht in einem Kochraum und prüfe den Text vor dem Senden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak a message in a food room and review the text before sending."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dicta un mensaje en una sala de comida y revisa el texto antes de enviarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dictez un message dans un salon culinaire et vérifiez le texte avant de l’envoyer."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "料理ルームのメッセージを音声で入力し、送信前にテキストを確認できます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将美食房间中的语音转为文字，发送前可查看和编辑。"
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati wandelt gesprochene Nachrichten im Food-Raum in bearbeitbaren Text um. Wenn die Verarbeitung auf deinem Gerät nicht möglich ist, wird das Audio zur Erkennung an Apple gesendet."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati turns spoken food-room messages into editable text. If speech cannot be processed on your device, audio is sent to Apple for recognition."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati convierte los mensajes hablados de las salas de comida en texto editable. Si no se pueden procesar en tu dispositivo, el audio se envía a Apple para reconocerlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati transforme les messages dictés des salons culinaires en texte modifiable. Si le traitement sur votre appareil est impossible, l’audio est envoyé à Apple pour reconnaissance."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tatiは料理ルームの音声メッセージを編集できる文章に変換します。端末で音声を処理できない場合、認識のために音声がAppleに送信されます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tati 将美食房间里的语音转换为可编辑文字。如果无法在设备上处理语音，音频会发送给 Apple 进行识别。"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

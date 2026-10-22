@@ -2,10 +2,10 @@ import SwiftUI
 
 @main
 struct TatiApp: App {
-    @StateObject private var store = VisitorStore()
-    @StateObject private var playback = ClipPlayback()
-    @StateObject private var purchases = TatiPurchases()
-    @StateObject private var roomSession = RoomPreviewSession()
+    @StateObject private var store = MemberKitchenStore()
+    @StateObject private var playback = FoodFilmPlayback()
+    @StateObject private var purchases = KitchenCoinPurchases()
+    @StateObject private var roomSession = CookingRoomSession()
     @StateObject private var notifications = NotificationPreferences()
     @Environment(\.scenePhase) private var scenePhase
     var body: some Scene {
@@ -22,6 +22,7 @@ struct TatiApp: App {
             .environmentObject(store).environmentObject(playback).environmentObject(purchases).environmentObject(roomSession)
             .environmentObject(notifications)
             .environment(\.locale, AppLanguage.preference(store.account.preferredLanguage).locale)
+            .font(.tati(.body))
             .tint(.tatiPink).preferredColorScheme(.light)
             .task { purchases.start(store: store); notifications.refresh(store: store) }
             .onChange(of: scenePhase) { _, phase in
@@ -46,13 +47,13 @@ struct TatiApp: App {
     }
 
 }
-enum CommunityTab: String, CaseIterable {
-    case home = "Home", room = "Room", video = "Video", ai = "AI", me = "Me"
-    var assetPrefix: String { rawValue.lowercased() }
+enum TatiSection: String, CaseIterable {
+    case home = "Home", room = "Room", video = "Video", notes = "Cooking notes", me = "Me"
+    var assetPrefix: String { self == .notes ? "notes" : rawValue.lowercased() }
 }
 struct CommunityRoot: View {
-    @EnvironmentObject private var playback: ClipPlayback
-    @State private var selected = CommunityTab.home
+    @EnvironmentObject private var playback: FoodFilmPlayback
+    @State private var selected = TatiSection.home
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -61,13 +62,13 @@ struct CommunityRoot: View {
                     case .home: DiscoverView(voice: false)
                     case .room: DiscoverView(voice: true)
                     case .video: VideoFeedView()
-                    case .ai: FoodExpertView()
+                    case .notes: CookingNotesView()
                     case .me: MyProfileView()
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 MinimizedRoomBar()
                 HStack(spacing: 0) {
-                    ForEach(CommunityTab.allCases, id: \.self) { tab in
+                    ForEach(TatiSection.allCases, id: \.self) { tab in
                         Button {
                             guard selected != tab else { return }
                             playback.stop(); selected = tab
@@ -85,7 +86,7 @@ struct CommunityRoot: View {
     }
 }
 struct WelcomeView: View {
-    @EnvironmentObject private var store: VisitorStore
+    @EnvironmentObject private var store: MemberKitchenStore
     @Environment(\.scenePhase) private var scenePhase
     @State private var consent = false
     @State private var entering = false
@@ -95,7 +96,7 @@ struct WelcomeView: View {
                 VStack(spacing: 0) {
                     Spacer(minLength: 0)
                     VStack(spacing: 14) {
-                        if let error = store.storageFailure { Text(error).font(.footnote).foregroundStyle(Color.tatiInk) }
+                        if let error = store.storageFailure { Text(error).font(.tati(.footnote)).foregroundStyle(Color.tatiInk) }
                         WelcomeEntryButton(loading: entering, enabled: consent && store.storageFailure == nil) {
                             guard !entering, consent, store.storageFailure == nil else { return }
                             entering = true
@@ -106,12 +107,12 @@ struct WelcomeView: View {
                                 else { SupplementIcon(icon: .toggleOff, size: 28) }
                             }.buttonStyle(.plain).frame(width: 44, height: 44).accessibilityLabel(consent ? "Agreement accepted" : "Accept agreement").accessibilityAddTraits(consent ? .isSelected : [])
                             VStack(alignment: .leading, spacing: 3) {
-                                Text("I agree to the").font(.caption)
+                                Text("I agree to the").font(.tati(.caption))
                                 HStack(spacing: 6) {
                                     NavigationLink("Terms", destination: PolicyView(kind: .terms))
                                     Text("and")
                                     NavigationLink("Privacy Policy", destination: PolicyView(kind: .privacy))
-                                }.font(.caption).foregroundStyle(Color.tatiOlive)
+                                }.font(.tati(.caption)).foregroundStyle(Color.tatiOlive)
                             }
                         }.foregroundStyle(Color.tatiInk).disabled(entering)
                     }.frame(maxWidth: 460).padding(.horizontal, 26).padding(.bottom, 12)
@@ -159,7 +160,7 @@ private struct WelcomeEntryButton: View {
                         .onDisappear { breathing = false }
                 }
                 Text(LocalizedStringKey(loading ? "Entering Tati…" : "Enter Tati"))
-                    .font(.headline).multilineTextAlignment(.center)
+                    .font(.tati(.headline)).multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, 20).padding(.vertical, 10)

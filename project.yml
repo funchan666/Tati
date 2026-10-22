@@ -31,6 +31,7 @@ targets:
       path: Tati/Info.plist
       properties:
         CFBundleLocalizations: [en, zh-Hans, es, fr, de, ja]
+        UIAppFonts: [DMSans-Regular.ttf, DMSans-SemiBold.ttf, Fraunces-SemiBold.ttf]
         CFBundleDisplayName: Tati
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
@@ -40,10 +41,9 @@ targets:
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UIUserInterfaceStyle: Light
         UIApplicationSupportsIndirectInputEvents: true
-        NSCameraUsageDescription: Tati uses the camera when you choose to preview yourself for a video call or prepare a live session.
-        NSMicrophoneUsageDescription: Tati uses your microphone for voice input and when you choose to start a call.
-        NSSpeechRecognitionUsageDescription: Tati turns your speech into an editable message. Audio may be sent to Apple for recognition when on-device recognition is unavailable.
-        NSPhotoLibraryUsageDescription: Choose your own profile photos and food videos for Tati.
+        NSCameraUsageDescription: Tati uses the camera to take your profile photo and show a camera preview when you prepare a food live room or video call.
+        NSMicrophoneUsageDescription: Speak a message in a food room and review the text before sending.
+        NSSpeechRecognitionUsageDescription: Tati turns spoken food-room messages into editable text. If speech cannot be processed on your device, audio is sent to Apple for recognition.
 schemes:
   Tati:
     build:

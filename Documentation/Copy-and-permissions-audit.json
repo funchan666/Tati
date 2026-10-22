@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-22",
+  "scope": "Source, configured editorial copy, localizations and purpose strings; static review only",
+  "additionalProfiles": 43,
+  "originalProfiles": 6,
+  "activeFeedVideos": 8,
+  "activeRoomVideos": 6,
+  "activeVideoComments": 65,
+  "roomSpokenLines": 80,
+  "reviewHoldIDs": [
+    "sample-clip-6",
+    "sample-clip-13"
+  ],
+  "uiCatalogEntries": 490,
+  "purposeStrings": 4,
+  "languages": [
+    "en",
+    "zh-Hans",
+    "es",
+    "fr",
+    "de",
+    "ja"
+  ],
+  "proseStringsScreened": 3209,
+  "watchedPhraseMatches": [],
+  "originalInputsHashChecked": 65,
+  "heldPostersUnmodified": true,
+  "runtimeVerificationPerformed": false
+}

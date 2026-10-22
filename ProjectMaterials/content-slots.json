@@ -6,7 +6,7 @@
       "source": "ProjectMaterials/ContentImages/828776562_18110484950019933_1274418079164789390_n.jpg",
       "sha256": "c7be9101699a7fec9469d75f4653644c3b6e58c8451b15d83b8f93d7a20ef4a9",
       "personID": "creator-luna",
-      "asset": "portrait-01",
+      "asset": "member-luna-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -20,7 +20,7 @@
       "source": "ProjectMaterials/ContentImages/829054808_18157222810512696_1511540759907490784_n.jpg",
       "sha256": "4a7983f161796f51279b6ae84a688ca54891aea236642673c9a8efb3c69fef64",
       "personID": "portrait-02",
-      "asset": "portrait-02",
+      "asset": "member-avery-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -31,18 +31,18 @@
       ],
       "person": {
         "id": "portrait-02",
-        "name": "Avery",
-        "country": "Tati collection",
+        "name": "Avery C.",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "The snack stall with the longest queue usually gets my vote."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/829310825_18627363997010758_4506985276544211277_n.jpg",
       "sha256": "2fcff461bc49fd31ec0d3cbaef619d596f00993958e6036a2cc10bfca13ba0c4",
       "personID": "portrait-03",
-      "asset": "portrait-03",
+      "asset": "member-rowan-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -53,18 +53,18 @@
       ],
       "person": {
         "id": "portrait-03",
-        "name": "Rowan",
-        "country": "Tati collection",
+        "name": "Rowan at lunch",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "Pasta water saved, parmesan grated, dinner nearly there."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/829602854_18637273639035454_7863518920919092101_n.jpg",
       "sha256": "6a4258408a0ce94660a514a0c8d3e4b20b6e324d917a825f6131d75b38cc2005",
       "personID": "creator-andre",
-      "asset": "portrait-04",
+      "asset": "member-andre-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -78,7 +78,7 @@
       "source": "ProjectMaterials/ContentImages/829711039_18587777635069401_6858970808061207273_n.jpg",
       "sha256": "0d0ad5495044cec0f128064193be559ea32411a00b683a88ad432b11f4e4a900",
       "personID": "portrait-05",
-      "asset": "portrait-05",
+      "asset": "member-picnic-notes-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -89,18 +89,18 @@
       ],
       "person": {
         "id": "portrait-05",
-        "name": "Trail Friends",
-        "country": "Tati collection",
+        "name": "Picnic Notes",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "We pack the picnic before we pick the walking route."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/829973023_18633178075060794_6462288533902213791_n.jpg",
       "sha256": "3858846b484e0b7ab2e16a95fc0c1ad0888f33debc1cf6ef5121fadf38ebf917",
       "personID": "portrait-06",
-      "asset": "portrait-06",
+      "asset": "member-ellis-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -111,18 +111,18 @@
       ],
       "person": {
         "id": "portrait-06",
-        "name": "Ellis",
-        "country": "Tati collection",
+        "name": "Ellis W.",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "A slow grill, a sharp sauce and enough for seconds."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/830272061_18655744786032706_2790915464625276229_n.jpg",
       "sha256": "6a5318de3b059ac73687adc677f96b20a22f1aeddc3f0b842b7bafaf8801d390",
       "personID": "portrait-07",
-      "asset": "portrait-07",
+      "asset": "member-jamie-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -133,18 +133,18 @@
       ],
       "person": {
         "id": "portrait-07",
-        "name": "Jamie",
-        "country": "Tati collection",
+        "name": "Jamie by the sea",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "Most weeknights start with onions in a pan."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/831424277_18490614706105805_849108897253351104_n.jpg",
       "sha256": "ab1ce3c81863c09f9a397d89d1a2c671ca39a36d62c5eed722c735c71b4bb009",
       "personID": "portrait-08",
-      "asset": "portrait-08",
+      "asset": "member-morgan-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -156,17 +156,17 @@
       "person": {
         "id": "portrait-08",
         "name": "Morgan",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "I will cross town for a properly toasted sandwich."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/834317533_18132112789784995_6704606860262801293_n.jpg",
       "sha256": "8104452c03b3239582a6a29c7a8bb8f3056e3b5cc799f00302eeb6a203dae95d",
       "personID": "portrait-09",
-      "asset": "portrait-09",
+      "asset": "member-quinn-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -177,18 +177,18 @@
       ],
       "person": {
         "id": "portrait-09",
-        "name": "Quinn",
-        "country": "Tati collection",
+        "name": "Quinn R.",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "Learning which pasta shape catches the most sauce."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/836248660_18393126976167387_8090635735672246557_n.jpg",
       "sha256": "df6af6e0551fd7287d661b7992cd180ef23ec0d45170a6afc5b85a0367dbd002",
       "personID": "portrait-10",
-      "asset": "portrait-10",
+      "asset": "member-riley-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -200,17 +200,17 @@
       "person": {
         "id": "portrait-10",
         "name": "Riley",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "Coffee first. There might be a slice of cake after."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/836787533_18033720395890693_6120712375957738863_n.jpg",
       "sha256": "20c4afd102ab2532b1fb3e65c9aed472497a01c92957aa0541da252db1b228e9",
       "personID": "portrait-11",
-      "asset": "portrait-11",
+      "asset": "member-the-lunch-table-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -221,18 +221,18 @@
       ],
       "person": {
         "id": "portrait-11",
-        "name": "Beach Table",
-        "country": "Tati collection",
+        "name": "The Lunch Table",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "Fruit in the bag, sandwiches wrapped, lunch by the water."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/837632427_18632650270011107_4403921076513325941_n.jpg",
       "sha256": "5dd38039ee9ceb867365d027fee85cd4b372684d52f8fc6e1fdaa344515738bc",
       "personID": "creator-chloe",
-      "asset": "portrait-12",
+      "asset": "member-chloe-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -246,7 +246,7 @@
       "source": "ProjectMaterials/ContentImages/838658775_18646835638060210_5169025348299645935_n.jpg",
       "sha256": "a3f39734271b6e4a84b6a9ed8781c5a2043b170c9179a73fe44042a4c3550034",
       "personID": "portrait-13",
-      "asset": "portrait-13",
+      "asset": "member-blair-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -257,18 +257,18 @@
       ],
       "person": {
         "id": "portrait-13",
-        "name": "Blair",
-        "country": "Tati collection",
+        "name": "Blair makes lunch",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "Trying to make a decent dinner from what is left in the fridge."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/838985333_18107305592192461_2116322463346817209_n.jpg",
       "sha256": "d08a2795964c6d419e7283ca36c13c163b0e6c755af114f4a80a8783175d78a9",
       "personID": "portrait-14",
-      "asset": "portrait-14",
+      "asset": "member-cameron-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -279,18 +279,18 @@
       ],
       "person": {
         "id": "portrait-14",
-        "name": "Cameron",
-        "country": "Tati collection",
+        "name": "Cam",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "Noodles from a paper bowl, preferably eaten outside."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/839179549_18641471329031914_5481253250148838365_n.jpg",
       "sha256": "d3eb7568865a55ecea8e392ad6562c99baeef7db319d8ae582c151345714f99c",
       "personID": "portrait-15",
-      "asset": "portrait-15",
+      "asset": "member-reese-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -301,18 +301,18 @@
       ],
       "person": {
         "id": "portrait-15",
-        "name": "Reese",
-        "country": "Tati collection",
+        "name": "Reese M.",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "A pot of tomato sauce rarely lasts the whole weekend here."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/839589735_18435631513194537_5962308028115092182_n.jpg",
       "sha256": "4ffbbffbe856ee495ef4c7f300e3835720406fec0c90866a7729103824c13b68",
       "personID": "portrait-16",
-      "asset": "portrait-16",
+      "asset": "member-finley-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -323,18 +323,18 @@
       ],
       "person": {
         "id": "portrait-16",
-        "name": "Finley",
-        "country": "Tati collection",
+        "name": "Finn",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "My cake slices are uneven. Nobody has complained yet."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/839617909_18636140752036257_2098987833378784333_n.jpg",
       "sha256": "e2e68b48ab62efdd52de289884e19971f7e6903b5771c1da963abc95c6dfc799",
       "personID": "portrait-17",
-      "asset": "portrait-17",
+      "asset": "member-jordan-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -346,17 +346,17 @@
       "person": {
         "id": "portrait-17",
         "name": "Jordan",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "Roasted vegetables, lemon dressing, something crunchy on top."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/840900763_18629218363016458_6769438208836358437_n.jpg",
       "sha256": "101b3ae3291258869275143767a9d6a73d62b1ff99091d13ad94c6b506047239",
       "personID": "portrait-18",
-      "asset": "portrait-18",
+      "asset": "member-alex-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -368,17 +368,17 @@
       "person": {
         "id": "portrait-18",
         "name": "Alex",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "The corn goes on the grill before anything else."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/841865648_18565415170078011_7354168267474431641_n.jpg",
       "sha256": "8007014f178f91783f8cc7c25c4335050d18fba0c56320d3819aaa5c3202fa57",
       "personID": "portrait-19",
-      "asset": "portrait-19",
+      "asset": "member-harper-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -389,18 +389,18 @@
       ],
       "person": {
         "id": "portrait-19",
-        "name": "Harper",
-        "country": "Tati collection",
+        "name": "Harper K.",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "Cooking one extra portion for tomorrow is the plan, at least."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/843116921_18637496905042936_171745215508899891_n.jpg",
       "sha256": "39c94a49c41723ba07dadb7a2afc7b32a0c2c37068cc966358ce1dd978c9ddf4",
       "personID": "portrait-20",
-      "asset": "portrait-20",
+      "asset": "member-drew-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -412,17 +412,17 @@
       "person": {
         "id": "portrait-20",
         "name": "Drew",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "I usually order the snack I have never tried before."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/843205753_18632792290036679_8602263243103834282_n.jpg",
       "sha256": "a8f3870bf2ab0e40313a1d1ef1c52a8aeba0cb1747a501779ec039175ba2b6ce",
       "personID": "portrait-21",
-      "asset": "portrait-21",
+      "asset": "member-taylor-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -433,18 +433,18 @@
       ],
       "person": {
         "id": "portrait-21",
-        "name": "Taylor",
-        "country": "Tati collection",
+        "name": "Taylor at the counter",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "Homemade gnocchi when there is time. Shop-bought when there is not."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/843838416_18120983045289691_4899054224201084247_n.jpg",
       "sha256": "23f4327b980b0dc065c03a6316379b693a10dcfb72f4bd74e6356a7a07d2cfa8",
       "personID": "portrait-22",
-      "asset": "portrait-22",
+      "asset": "member-parker-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -455,18 +455,18 @@
       ],
       "person": {
         "id": "portrait-22",
-        "name": "Parker",
-        "country": "Tati collection",
+        "name": "Parker bakes",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "Testing whether a little salt makes every chocolate bake better."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/844190190_18636426934039263_6884579072562259791_n.jpg",
       "sha256": "2c0c635a06ffab8196029a0556c63183f7cda805127b13807387936e98abefab",
       "personID": "portrait-23",
-      "asset": "portrait-23",
+      "asset": "member-skyler-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -477,18 +477,18 @@
       ],
       "person": {
         "id": "portrait-23",
-        "name": "Skyler",
-        "country": "Tati collection",
+        "name": "Sky",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "Seasonal fruit never makes it home without a taste test."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/844340780_18638813539054188_3830060607232740863_n.jpg",
       "sha256": "ab496b6e237eb3a76f95ebc12a931cbb6129a0accb2397baaea1867006e6056e",
       "personID": "portrait-24",
-      "asset": "portrait-24",
+      "asset": "member-charlie-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -500,17 +500,17 @@
       "person": {
         "id": "portrait-24",
         "name": "Charlie",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "Still working out the right balance of smoke and spice."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/844394608_18634550761055018_7929487706353879535_n.jpg",
       "sha256": "0ef210a0d8a371048afd674a7da5849c884b37d935657f0e4da97d53af3f82d4",
       "personID": "portrait-25",
-      "asset": "portrait-25",
+      "asset": "member-river-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -521,18 +521,18 @@
       ],
       "person": {
         "id": "portrait-25",
-        "name": "River",
-        "country": "Tati collection",
+        "name": "River C.",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "A fried egg has rescued more than a few dinners."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/844417632_18635528491056541_3211862696628029101_n.jpg",
       "sha256": "599489eee1a805c7821124a5cfacdde76fd06afc4065f86e3fd60ce7184b6168",
       "personID": "portrait-26",
-      "asset": "portrait-26",
+      "asset": "member-casey-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -543,18 +543,18 @@
       ],
       "person": {
         "id": "portrait-26",
-        "name": "Casey",
-        "country": "Tati collection",
+        "name": "Casey T.",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "Finding the dumpling stall is my first job at any market."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/845426207_18030181799887168_6154182754476216077_n.jpg",
       "sha256": "460301beb860528553036b09b752462578553c9d4432d847a45e5fd97b1e41e6",
       "personID": "portrait-27",
-      "asset": "portrait-27",
+      "asset": "member-robin-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -566,17 +566,17 @@
       "person": {
         "id": "portrait-27",
         "name": "Robin",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "Basil on the windowsill, a pan of sauce on the stove."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/846612204_18468348052140978_4703040474988332638_n.jpg",
       "sha256": "672ff00a287e2e2d967078b3d98e282f5b9af8f1906d3807cdbc66056f8fc4d8",
       "personID": "portrait-28",
-      "asset": "portrait-28",
+      "asset": "member-blake-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -587,18 +587,18 @@
       ],
       "person": {
         "id": "portrait-28",
-        "name": "Blake",
-        "country": "Tati collection",
+        "name": "Blake, tea first",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "I bake the biscuit edges a little darker on purpose."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/846809318_18638088085046648_7081383790175278758_n.jpg",
       "sha256": "88e15f5e512245fdc486be4bf17a0340af6376e15e8f4aeb9d94b5c6523c1d15",
       "personID": "portrait-29",
-      "asset": "portrait-29",
+      "asset": "member-hayden-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -609,18 +609,18 @@
       ],
       "person": {
         "id": "portrait-29",
-        "name": "Hayden",
-        "country": "Tati collection",
+        "name": "Hayden W.",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "Lunch is usually a big bowl with whatever greens look good."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/847939309_18497838286108045_8543151347112222288_n.jpg",
       "sha256": "aae9c18901871e38f9ae53ed7b36df64ebe4c5c84187313e2e98473bf37d5b5a",
       "personID": "portrait-30",
-      "asset": "portrait-30",
+      "asset": "member-arden-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -632,17 +632,17 @@
       "person": {
         "id": "portrait-30",
         "name": "Arden",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "Grilled mushrooms deserve more space on the plate."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848186636_18634657000034456_1849772215626504826_n.jpg",
       "sha256": "867c6c1de277628ffece94e086f1cb89e6245128aef28cb8857cd8d2b180bc2e",
       "personID": "portrait-31",
-      "asset": "portrait-31",
+      "asset": "member-marley-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -653,18 +653,18 @@
       ],
       "person": {
         "id": "portrait-31",
-        "name": "Marley",
-        "country": "Tati collection",
+        "name": "Marley at dusk",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "Soups, stews and bread for the last bit in the bowl."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848196762_18596616184067882_5040749258115402944_n.jpg",
       "sha256": "06d5e576684d0919dcc4b816f7d6087b0ea3f7fef91fa9d26bd9f4fad7e52c94",
       "personID": "portrait-32",
-      "asset": "portrait-32",
+      "asset": "member-remy-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -675,18 +675,18 @@
       ],
       "person": {
         "id": "portrait-32",
-        "name": "Remy",
-        "country": "Tati collection",
+        "name": "Remy cooks",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "The best part of a new neighbourhood is finding lunch."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848350979_18117800251966463_4246244980606132227_n.jpg",
       "sha256": "58f43037420f0a325ed471a41172a834459776233f74b8e663dc6f35b811590b",
       "personID": "creator-elowen",
-      "asset": "portrait-33",
+      "asset": "member-elowen-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -700,7 +700,7 @@
       "source": "ProjectMaterials/ContentImages/848455291_18632687518006554_3359078306032398090_n.jpg",
       "sha256": "56b53a6aa85e8f545f94f4ebb97b8e7ba6016f8cc1bbd6a29add7406f7bf32f4",
       "personID": "portrait-34",
-      "asset": "portrait-34",
+      "asset": "member-frankie-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -711,18 +711,18 @@
       ],
       "person": {
         "id": "portrait-34",
-        "name": "Frankie",
-        "country": "Tati collection",
+        "name": "Frankie on foot",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "A cup of tea buys just enough time for the cake to cool."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848570268_18640427161053528_7037236695005080667_n.jpg",
       "sha256": "af8ad5f628a988dca87db25a4e309286053f21f8499606c9adc14494cac58645",
       "personID": "portrait-35",
-      "asset": "portrait-35",
+      "asset": "member-jules-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -734,17 +734,17 @@
       "person": {
         "id": "portrait-35",
         "name": "Jules",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "Fresh herbs go in at the end. Usually a few more than planned."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848787245_18641211943061805_9184416787013129240_n.jpg",
       "sha256": "e450ba48468751df97f7d4fd026ec83e993d3731f972d7754345998e6bd69f6a",
       "personID": "portrait-36",
-      "asset": "portrait-36",
+      "asset": "member-lane-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -755,18 +755,18 @@
       ],
       "person": {
         "id": "portrait-36",
-        "name": "Lane",
-        "country": "Tati collection",
+        "name": "Lane K.",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "Making room on the barbecue for peaches this summer."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/848993977_18648226450040978_509925620388878282_n.jpeg",
       "sha256": "c85dc2ba65fb2a733510fd94c37a907e5cd4d1b7e40b95218dbee06fc58ad3c9",
       "personID": "creator-maria",
-      "asset": "portrait-37",
+      "asset": "member-maria-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -780,7 +780,7 @@
       "source": "ProjectMaterials/ContentImages/849249060_18491159053111288_3983019166277374001_n.jpg",
       "sha256": "283daf40fd99df33843d8681d9000807669f28d05692cdfb3511400b8fe1808f",
       "personID": "portrait-38",
-      "asset": "portrait-38",
+      "asset": "member-shiloh-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -791,18 +791,18 @@
       ],
       "person": {
         "id": "portrait-38",
-        "name": "Shiloh",
-        "country": "Tati collection",
+        "name": "Shiloh by the sea",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "Hot noodles, cold drink, a seat in the shade."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849379197_18634841125034320_7118850056566480884_n.jpg",
       "sha256": "1fd11cf8589237439c118955345927f0dad75222ca1a5852aa25350150b0889f",
       "personID": "portrait-39",
-      "asset": "portrait-39",
+      "asset": "member-milan-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -814,17 +814,17 @@
       "person": {
         "id": "portrait-39",
         "name": "Milan",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "The lasagne corners are spoken for before it leaves the oven."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849477563_18644804980020391_7819057180524614658_n.jpg",
       "sha256": "f27b829d342b31178e9393ae33fbe92f63d82ead9e11a2899945bd21155ff09d",
       "personID": "portrait-40",
-      "asset": "portrait-40",
+      "asset": "member-dakota-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -835,18 +835,18 @@
       ],
       "person": {
         "id": "portrait-40",
-        "name": "Dakota",
-        "country": "Tati collection",
+        "name": "Dakota J.",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "Custard, fruit and a spoon. Dessert need not be complicated."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849550952_18647420800054373_7823618734353762798_n.jpg",
       "sha256": "6ac570ed952b1267f80b234f7e7c534a6860f720c86fbd495f35664ecd8444b7",
       "personID": "portrait-41",
-      "asset": "portrait-41",
+      "asset": "member-scout-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -857,18 +857,18 @@
       ],
       "person": {
         "id": "portrait-41",
-        "name": "Scout",
-        "country": "Tati collection",
+        "name": "Scout’s kitchen",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "A good walk ends with the packed lunch coming out."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849772940_18633906298015460_6434628501364025450_n.jpg",
       "sha256": "679203307e2621af2660b48b0c7573ecfef29d8312a82d2058754e9448b27149",
       "personID": "creator-seraphina",
-      "asset": "portrait-42",
+      "asset": "member-seraphina-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -882,7 +882,7 @@
       "source": "ProjectMaterials/ContentImages/849773126_18639655996046648_3371346672247127660_n.jpg",
       "sha256": "4e011353303c51bef42c25aa4a35cfb05e66a6b49abd95faf1c0c3bf46d246fd",
       "personID": "portrait-43",
-      "asset": "portrait-43",
+      "asset": "member-kendall-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -893,18 +893,18 @@
       ],
       "person": {
         "id": "portrait-43",
-        "name": "Kendall",
-        "country": "Tati collection",
+        "name": "Kendall M.",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "Dinners from one pan, with plenty of bread for sharing."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849891055_18637263916055018_725435053853064446_n.jpg",
       "sha256": "54c6602fe0d70356d07ba8712d0dcf9307fa0db69dba64d1cc49b84b7d27eaed",
       "personID": "portrait-44",
-      "asset": "portrait-44",
+      "asset": "member-rory-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -916,17 +916,17 @@
       "person": {
         "id": "portrait-44",
         "name": "Rory",
-        "country": "Tati collection",
+        "country": "",
         "language": "English",
         "interest": "Street food",
-        "bio": "Say hello over a good meal."
+        "bio": "I keep a list of street snacks to find on the next trip."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/849951132_18645365749035248_82605801469605953_n.jpg",
       "sha256": "8fc30e21126d926d5d01f4ff3a28d706d3ed3bd8f3b41e1262156c3bb4174cd1",
       "personID": "portrait-45",
-      "asset": "portrait-45",
+      "asset": "member-two-forks-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -937,18 +937,18 @@
       ],
       "person": {
         "id": "portrait-45",
-        "name": "City Duo",
-        "country": "Tati collection",
+        "name": "Two Forks",
+        "country": "",
         "language": "English",
         "interest": "Italian food",
-        "bio": "Say hello over a good meal."
+        "bio": "Two forks, one pasta order. We always order another."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/851150067_18452401138123730_8650624205739965452_n.jpg",
       "sha256": "ba51ab2a2117e99cb6c15640cdd0485e3052bb880249bd54dc5da8f5af6b5e09",
       "personID": "portrait-46",
-      "asset": "portrait-46",
+      "asset": "member-linden-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -959,18 +959,18 @@
       ],
       "person": {
         "id": "portrait-46",
-        "name": "Linden",
-        "country": "Tati collection",
+        "name": "Linden C.",
+        "country": "",
         "language": "English",
         "interest": "Dessert",
-        "bio": "Say hello over a good meal."
+        "bio": "Lemon zest goes into more of my bakes than the recipe asks."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/851150069_18644948692026015_1961800893533170202_n.jpg",
       "sha256": "15d6f3124b02ec07b006ef62276db96dafe9e8cbb5c16854ffecca2176d61cdc",
       "personID": "portrait-47",
-      "asset": "portrait-47",
+      "asset": "member-reagan-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -981,18 +981,18 @@
       ],
       "person": {
         "id": "portrait-47",
-        "name": "Reagan",
-        "country": "Tati collection",
+        "name": "Reagan at lunch",
+        "country": "",
         "language": "English",
         "interest": "Healthy food",
-        "bio": "Say hello over a good meal."
+        "bio": "A warm grain bowl is how I use up the market haul."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/856125458_18634475317010758_476292385336594519_n.jpg",
       "sha256": "7ba01cbcb552d662eb889bbbb5e42072a34008ce8d12efb6eacff1a0ab4b149f",
       "personID": "portrait-48",
-      "asset": "portrait-48",
+      "asset": "member-oakley-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -1003,18 +1003,18 @@
       ],
       "person": {
         "id": "portrait-48",
-        "name": "Oakley",
-        "country": "Tati collection",
+        "name": "Oakley W.",
+        "country": "",
         "language": "English",
         "interest": "BBQ",
-        "bio": "Say hello over a good meal."
+        "bio": "Trying a different marinade every time the grill comes out."
       }
     },
     {
       "source": "ProjectMaterials/ContentImages/858594027_18637182445035158_2943445897430238107_n.jpg",
       "sha256": "ead03cabfcc3d67ed74c9e40cb07d72ec1cdf4ebed281358603abb9cfe780772",
       "personID": "portrait-49",
-      "asset": "portrait-49",
+      "asset": "member-wren-portrait",
       "uses": [
         "search.people",
         "profile.avatar",
@@ -1025,35 +1025,35 @@
       ],
       "person": {
         "id": "portrait-49",
-        "name": "Wren",
-        "country": "Tati collection",
+        "name": "Wren’s table",
+        "country": "",
         "language": "English",
         "interest": "Home cooking",
-        "bio": "Say hello over a good meal."
+        "bio": "A quiet kitchen, the radio on, something bubbling in a pot."
       }
     }
   ],
   "roomCovers": {
-    "pasta-table": "poster-toasted-sandwich",
-    "street-bites": "poster-street-food-table",
-    "kitchen-stories": "poster-crispy-bites",
-    "sweet-evening": "poster-bakery-dessert",
-    "dinner-conversation": "portrait-01",
-    "dessert-club": "portrait-33",
-    "market-table": "portrait-42",
-    "weekend-bbq": "portrait-04",
-    "soup-kitchen": "poster-kitchen-soup",
-    "crepe-station": "poster-crepe-making"
+    "pasta-table": "toasted-bread-story-cover",
+    "street-bites": "market-spicy-snacks-cover",
+    "kitchen-stories": "crispy-snack-pan-cover",
+    "sweet-evening": "bakery-finish-cover",
+    "dinner-conversation": "member-luna-portrait",
+    "dessert-club": "member-elowen-portrait",
+    "market-table": "member-seraphina-portrait",
+    "weekend-bbq": "member-andre-portrait",
+    "soup-kitchen": "soup-counter-cover",
+    "crepe-station": "french-toast-pan-cover"
   },
   "videos": [
     {
       "source": "ProjectMaterials/ContentVideos/AQM73a4ipCmrxlpBnWBRJ1SNQLiLaqVlF-MBchpBH2r1NCWOi8Pa5eztLFXyz7hh9oT2SG6WijaBM14veix6l00jT03UGG2dguoG8TM.mp4",
       "sha256": "801193a0d56d9b32f3efe66b361fc07dfffd15b3d4190fc740afa7cf4f3b406a",
       "id": "sample-clip-0",
-      "resource": "collection-osaka-sandwich.mp4",
-      "posterAsset": "poster-osaka-sandwich",
+      "resource": "osaka-beef-sandwich.mp4",
+      "posterAsset": "osaka-beef-sandwich-cover",
       "posterSeconds": 2.152,
-      "caption": "A generous sandwich in Osaka",
+      "caption": "That Osaka sandwich needs two hands.",
       "duration": 21.522041,
       "uses": [
         "video.feed",
@@ -1135,10 +1135,10 @@
       "source": "ProjectMaterials/ContentVideos/AQM75ugo66PIVUGOf-wdygv3IGoGIMf5vmNByl5UbfJ3c48XGzvw-Tx9jZzGucDPEQUP6l5BHrSUkJjppOjOb1iHM9uvmaMt07wzcDY.mp4",
       "sha256": "3fdf5593dadf9274fd0bdf3d688e69d86b79549523a6f1902bea48a73e973188",
       "id": "sample-clip-1",
-      "resource": "collection-bakery-dessert.mp4",
-      "posterAsset": "poster-bakery-dessert",
+      "resource": "bakery-finish.mp4",
+      "posterAsset": "bakery-finish-cover",
       "posterSeconds": 9.453,
-      "caption": "A sweet bake, from pan to plate",
+      "caption": "Watching a sweet bake come together in the tin.",
       "duration": 94.527029,
       "uses": [
         "home.room-cover",
@@ -1152,10 +1152,10 @@
       "source": "ProjectMaterials/ContentVideos/AQMIFvS7IJdcQkrMaDsg4wJ2sxgTlf6yHI2KXWL5jSfTGEMV7HcUF4288qSaopYx9J0Lrnlsh1SSiiiUSIrc0xBf7crzlhOqAafbacI.mp4",
       "sha256": "0d3152cae6fbe523386c8ce36218cccebbb060130f2256e99b8a2a0a648f4d49",
       "id": "sample-clip-2",
-      "resource": "collection-cafe-break.mp4",
-      "posterAsset": "poster-cafe-break",
+      "resource": "matcha-cafe-break.mp4",
+      "posterAsset": "matcha-cafe-break-cover",
       "posterSeconds": 0.713,
-      "caption": "A little cafe break",
+      "caption": "A matcha break by the window.",
       "duration": 7.125669,
       "uses": [
         "video.feed",
@@ -1213,10 +1213,10 @@
       "source": "ProjectMaterials/ContentVideos/AQMZUBfkTNPEugekyY0B2LUqmgrNxfgbwnbLt-0-Y1Zt41WFhThN6TEXj1yl-rZQv6yl38u5wTVAcXSK3IrkCPQu-fITowJXr7bNGtY.mp4",
       "sha256": "88e9a6258f42e80f792dd7af3826e65737ff2066a50a76fd5d12e431891a2ec9",
       "id": "sample-clip-3",
-      "resource": "collection-crispy-bites.mp4",
-      "posterAsset": "poster-crispy-bites",
+      "resource": "crispy-snack-pan.mp4",
+      "posterAsset": "crispy-snack-pan-cover",
       "posterSeconds": 1.943,
-      "caption": "Crunchy bites at the kitchen counter",
+      "caption": "A spicy snack worth keeping a drink nearby for.",
       "duration": 19.432245,
       "uses": [
         "home.room-cover",
@@ -1230,10 +1230,10 @@
       "source": "ProjectMaterials/ContentVideos/AQMlPF8UxjPl-jxYW8SGh0fC2ri8NxhX6tdVcRRapCNv8CiAs-oMI5aSF-P96c7-ZSlMHabIEUMstLhhhjw5hwyJRk-Un7eVAcSnROI.mp4",
       "sha256": "5eae27dd6afce6d499ceeeb13cab5a84a06041b4be3b77ff8b540442ef49f652",
       "id": "sample-clip-4",
-      "resource": "collection-outdoor-noodles.mp4",
-      "posterAsset": "poster-outdoor-noodles",
+      "resource": "noodles-outdoors.mp4",
+      "posterAsset": "noodles-outdoors-cover",
       "posterSeconds": 12.019,
-      "caption": "Noodles at an outdoor table",
+      "caption": "Chilli noodles taste better outside.",
       "duration": 120.185079,
       "uses": [
         "video.feed",
@@ -1248,7 +1248,7 @@
             "id": "curated-sample-clip-4-comment-01",
             "clipID": "sample-clip-4",
             "authorID": "portrait-22",
-            "text": "Noodles always taste better outside.",
+            "text": "That sauce coats every noodle.",
             "createdAt": 0,
             "isCurated": true
           },
@@ -1256,7 +1256,7 @@
             "id": "curated-sample-clip-4-comment-02",
             "clipID": "sample-clip-4",
             "authorID": "portrait-23",
-            "text": "I would definitely ask for extra broth.",
+            "text": "I would keep a cold drink within reach.",
             "createdAt": 1,
             "isCurated": true
           },
@@ -1264,7 +1264,7 @@
             "id": "curated-sample-clip-4-comment-03",
             "clipID": "sample-clip-4",
             "authorID": "portrait-24",
-            "text": "Are those wheat noodles or rice noodles?",
+            "text": "Are these wheat noodles?",
             "createdAt": 2,
             "isCurated": true
           },
@@ -1272,7 +1272,7 @@
             "id": "curated-sample-clip-4-comment-04",
             "clipID": "sample-clip-4",
             "authorID": "portrait-25",
-            "text": "This is exactly the kind of lunch I crave.",
+            "text": "The outdoor lunch setup looks so relaxed.",
             "createdAt": 3,
             "isCurated": true
           },
@@ -1280,7 +1280,7 @@
             "id": "curated-sample-clip-4-comment-05",
             "clipID": "sample-clip-4",
             "authorID": "portrait-26",
-            "text": "A little chilli oil would finish that nicely.",
+            "text": "Chilli oil is doing a lot of work here.",
             "createdAt": 4,
             "isCurated": true
           },
@@ -1288,7 +1288,7 @@
             "id": "curated-sample-clip-4-comment-06",
             "clipID": "sample-clip-4",
             "authorID": "portrait-27",
-            "text": "I love seeing the steam rise off a fresh bowl.",
+            "text": "A few spring onions would be my finishing touch.",
             "createdAt": 5,
             "isCurated": true
           },
@@ -1296,7 +1296,7 @@
             "id": "curated-sample-clip-4-comment-07",
             "clipID": "sample-clip-4",
             "authorID": "portrait-28",
-            "text": "Chopsticks ready, conversation paused.",
+            "text": "Chopsticks ready. Everything else can wait.",
             "createdAt": 6,
             "isCurated": true
           },
@@ -1304,7 +1304,7 @@
             "id": "curated-sample-clip-4-comment-08",
             "clipID": "sample-clip-4",
             "authorID": "portrait-29",
-            "text": "Do you prefer your noodles firm or soft?",
+            "text": "Do you mix the sauce through before the first bite?",
             "createdAt": 7,
             "isCurated": true
           },
@@ -1312,7 +1312,7 @@
             "id": "curated-sample-clip-4-comment-09",
             "clipID": "sample-clip-4",
             "authorID": "portrait-30",
-            "text": "That outdoor table is such a good lunch spot.",
+            "text": "I would start with the crispy pieces on the side.",
             "createdAt": 8,
             "isCurated": true
           },
@@ -1320,7 +1320,7 @@
             "id": "curated-sample-clip-4-comment-10",
             "clipID": "sample-clip-4",
             "authorID": "portrait-31",
-            "text": "Now I need to plan a noodle stop this weekend.",
+            "text": "This has put noodles firmly on the lunch plan.",
             "createdAt": 9,
             "isCurated": true
           }
@@ -1331,10 +1331,10 @@
       "source": "ProjectMaterials/ContentVideos/AQN34ElnP1Lp4AtiHvCCaApOK9ROByTRfUpLGEN3NUt1-wRAj3rPJGJr4N_5zOic9n2CtwP8LOQgeE8s9X1uxVLnWAmSh31vxzXtYjY.mp4",
       "sha256": "ee5899e38237e4573addf728c8773bbc6ca73fb1ad18d53b89d0ecb84aa8ff46",
       "id": "sample-clip-5",
-      "resource": "collection-toasted-sandwich.mp4",
-      "posterAsset": "poster-toasted-sandwich",
+      "resource": "toasted-bread-story.mp4",
+      "posterAsset": "toasted-bread-story-cover",
       "posterSeconds": 3.223,
-      "caption": "A toasted sandwich, packed with flavour",
+      "caption": "A warm toastie filled right to the edges.",
       "duration": 32.22644,
       "uses": [
         "home.room-cover",
@@ -1395,16 +1395,18 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "excludedFromApp": true,
+      "reviewNote": "Cigarette-shaped material is unsuitable for the food feed; keep the original for review."
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQNOn5YSSYKzxHnijkIr8UxCjLB4i90_nbBE8ba5NQI-H5hP9Eh4WkuqYrSFkUo7mFYAGL6ZprexCXpsVwHk0-BTDwf55RzNKcHUIQc.mp4",
       "sha256": "c704cb3849ae1587ef8546c923ae6976dc4a7c3bf9a77d6ab4c211fd90b6276f",
       "id": "sample-clip-7",
-      "resource": "collection-street-food-table.mp4",
-      "posterAsset": "poster-street-food-table",
+      "resource": "market-spicy-snacks.mp4",
+      "posterAsset": "market-spicy-snacks-cover",
       "posterSeconds": 7.718,
-      "caption": "A table full of street-food flavours",
+      "caption": "A table full of wraps, sauces and crisp greens.",
       "duration": 77.180272,
       "uses": [
         "home.room-cover",
@@ -1418,10 +1420,10 @@
       "source": "ProjectMaterials/ContentVideos/AQNTkUkrh6huEwhZNCwBuk2aWHOkkSZnuW1ia3yioUub9bzCGZ8YzgPX_UEEOLqhu_iQWFtyWvpmrpXFaG-TRKcd6Fp0CZaAEk9R5-c.mp4",
       "sha256": "87d956ae2769487ef59f64f8a40212de3942f2d72b67e82f8969ce32802eabb2",
       "id": "sample-clip-8",
-      "resource": "collection-kitchen-soup.mp4",
-      "posterAsset": "poster-kitchen-soup",
+      "resource": "soup-counter.mp4",
+      "posterAsset": "soup-counter-cover",
       "posterSeconds": 5.162,
-      "caption": "A look inside a busy kitchen",
+      "caption": "A ladle, a bowl and a very busy soup counter.",
       "duration": 51.615102,
       "uses": [
         "home.room-cover",
@@ -1435,10 +1437,10 @@
       "source": "ProjectMaterials/ContentVideos/AQN_t2C_x83gLAj9Eh-lZYUUswqb2IbWhYElewWKJSyio5rOej-UUwwDl0ciZYH2I3k7A3-jM1Cu6YMQ_Xvm2BosIs8OHVtc9l4rOSM.mp4",
       "sha256": "6a41009037b81a2eb61cfc8aaded242d6a929605c8938bfe3e491f833c34c451",
       "id": "sample-clip-9",
-      "resource": "collection-dumplings.mp4",
-      "posterAsset": "poster-dumplings",
+      "resource": "dumpling-table.mp4",
+      "posterAsset": "dumpling-table-cover",
       "posterSeconds": 4.049,
-      "caption": "Folding and cooking homemade dumplings",
+      "caption": "Folding dumplings for the next hungry crowd.",
       "duration": 40.492744,
       "uses": [
         "video.feed",
@@ -1552,10 +1554,10 @@
       "source": "ProjectMaterials/ContentVideos/AQNxWehNNbEyI7BdQU2h-R-sPfVEP-wKaYMGaMvFOSAJMQKunDECMz-TLgttffML43e7mKTmszdnii15LNkHfGPp3uaA1cKAZms-vKI.mp4",
       "sha256": "51c8326dfb8484ef5544bfa66f50d66fbdf4caba4df78246299d5c244892bf42",
       "id": "sample-clip-10",
-      "resource": "collection-dinner-friends.mp4",
-      "posterAsset": "poster-dinner-friends",
+      "resource": "coffee-with-friends.mp4",
+      "posterAsset": "coffee-with-friends-cover",
       "posterSeconds": 1.755,
-      "caption": "A lively evening around the dinner table",
+      "caption": "Coffee first. Catching up can take a while.",
       "duration": 17.551429,
       "uses": [
         "video.feed",
@@ -1570,7 +1572,7 @@
             "id": "curated-sample-clip-10-comment-01",
             "clipID": "sample-clip-10",
             "authorID": "portrait-31",
-            "text": "A full table and good company is my kind of evening.",
+            "text": "Coffee catch-ups always run longer than planned.",
             "createdAt": 0,
             "isCurated": true
           },
@@ -1578,7 +1580,7 @@
             "id": "curated-sample-clip-10-comment-02",
             "clipID": "sample-clip-10",
             "authorID": "portrait-32",
-            "text": "Everyone bringing one dish makes dinner more fun.",
+            "text": "We order drinks before deciding what to eat, too.",
             "createdAt": 1,
             "isCurated": true
           },
@@ -1586,7 +1588,7 @@
             "id": "curated-sample-clip-10-comment-03",
             "clipID": "sample-clip-10",
             "authorID": "portrait-34",
-            "text": "Which dish disappeared first?",
+            "text": "Is that Turkish coffee in the little glass?",
             "createdAt": 2,
             "isCurated": true
           },
@@ -1594,7 +1596,7 @@
             "id": "curated-sample-clip-10-comment-04",
             "clipID": "sample-clip-10",
             "authorID": "portrait-35",
-            "text": "I love meals where nobody is in a hurry.",
+            "text": "Nobody at this table looks ready to leave.",
             "createdAt": 3,
             "isCurated": true
           },
@@ -1602,7 +1604,7 @@
             "id": "curated-sample-clip-10-comment-05",
             "clipID": "sample-clip-10",
             "authorID": "portrait-36",
-            "text": "There is always room for one more chair.",
+            "text": "The second round of drinks is how an afternoon disappears.",
             "createdAt": 4,
             "isCurated": true
           },
@@ -1610,7 +1612,7 @@
             "id": "curated-sample-clip-10-comment-06",
             "clipID": "sample-clip-10",
             "authorID": "portrait-38",
-            "text": "This makes me want to host dinner this weekend.",
+            "text": "This is my reminder to arrange a cafe catch-up.",
             "createdAt": 5,
             "isCurated": true
           },
@@ -1618,7 +1620,7 @@
             "id": "curated-sample-clip-10-comment-07",
             "clipID": "sample-clip-10",
             "authorID": "portrait-39",
-            "text": "Shared plates are such a good way to try something new.",
+            "text": "A small table is enough room for a long conversation.",
             "createdAt": 6,
             "isCurated": true
           }
@@ -1629,10 +1631,10 @@
       "source": "ProjectMaterials/ContentVideos/AQOytUKQUwCsX4FC-MEM2MzFEpKXk8UJG8_nqfmvV3ZOerMIPVUoDxRMvAk1liig16rquWg_c2anrYUBekKGKrhOlfJSKJbb-yd6OFM.mp4",
       "sha256": "62c006f2997e7d2bfb8098878b905932508762947dca83388c6da555083e53a9",
       "id": "sample-clip-11",
-      "resource": "collection-crepe-making.mp4",
-      "posterAsset": "poster-crepe-making",
+      "resource": "french-toast-pan.mp4",
+      "posterAsset": "french-toast-pan-cover",
       "posterSeconds": 4.182,
-      "caption": "Fresh crepes on the griddle",
+      "caption": "Bread, batter and a golden French-toast crust.",
       "duration": 41.816281,
       "uses": [
         "home.room-cover",
@@ -1646,10 +1648,10 @@
       "source": "ProjectMaterials/ContentVideos/AQP0DRDgpo9W3rqsGsRpyPDH5lrPxvqKxLuOG6Qj5FH8_LbELChkiK4E4iYph0SMwzY_LoVq61_GaENhxGAA4morJ9Ep4gkITmXXRdQ.mp4",
       "sha256": "7d3f4aa976e4956916ce5e092dbf782014300548897f58a3f1d354ac9ad455f3",
       "id": "sample-clip-12",
-      "resource": "collection-trail-break.mp4",
-      "posterAsset": "poster-trail-break",
+      "resource": "fruit-on-the-trail.mp4",
+      "posterAsset": "fruit-on-the-trail-cover",
       "posterSeconds": 1.481,
-      "caption": "A quiet break on the trail",
+      "caption": "Snacks taste better halfway up the trail.",
       "duration": 14.811474,
       "uses": [
         "video.feed",
@@ -1664,7 +1666,7 @@
             "id": "curated-sample-clip-12-comment-01",
             "clipID": "sample-clip-12",
             "authorID": "portrait-35",
-            "text": "A quiet pause on the trail is sometimes the best part.",
+            "text": "A packed snack is the reward for that climb.",
             "createdAt": 0,
             "isCurated": true
           },
@@ -1672,7 +1674,7 @@
             "id": "curated-sample-clip-12-comment-02",
             "clipID": "sample-clip-12",
             "authorID": "portrait-36",
-            "text": "I always pack something crunchy for a walking break.",
+            "text": "I always bring something crisp for a walking break.",
             "createdAt": 1,
             "isCurated": true
           },
@@ -1680,7 +1682,7 @@
             "id": "curated-sample-clip-12-comment-03",
             "clipID": "sample-clip-12",
             "authorID": "portrait-38",
-            "text": "That looks like a wonderful place to catch your breath.",
+            "text": "The view can wait until the snack is finished.",
             "createdAt": 2,
             "isCurated": true
           }
@@ -1754,16 +1756,18 @@
             "isCurated": true
           }
         ]
-      }
+      },
+      "excludedFromApp": true,
+      "reviewNote": "The reviewed frames are unrelated to food; keep the original for review."
     },
     {
       "source": "ProjectMaterials/ContentVideos/AQPH_3ZcIe2OiwOTrJUytBkpIhu_tINeG9fuvS8nG0mNOZKGgjnfPYHTZ6LMHmDpMeSlv0qyUuUEo-bumqJZvdhLuFndm7caRflnCUA.mp4",
       "sha256": "32fa54f7d7b28a773c00467038d9fb86a06e72d4f8d5c028ef003f84a41d2034",
       "id": "sample-clip-14",
-      "resource": "collection-noodle-tasting.mp4",
-      "posterAsset": "poster-noodle-tasting",
+      "resource": "noodle-tasting-table.mp4",
+      "posterAsset": "noodle-tasting-table-cover",
       "posterSeconds": 6.861,
-      "caption": "An outdoor noodle tasting",
+      "caption": "Picking a favourite from the noodle lineup.",
       "duration": 68.61356,
       "uses": [
         "video.feed",
@@ -1853,10 +1857,10 @@
       "source": "ProjectMaterials/ContentVideos/AQPte9PZ3EkOqCSyFihd3T7mN05gdAjcV4xTBTqJWKM2BAZoXOt8OZFtjZkCoKZepUv7JLUnQekSFjrKl8t_uYWSqAlM13m2J4Fefmc.mp4",
       "sha256": "be7277907033083ec832222b27392e322ed6b0a6ae6e975c267ed415c06ef667",
       "id": "sample-clip-15",
-      "resource": "collection-cooking-together.mp4",
-      "posterAsset": "poster-cooking-together",
+      "resource": "cooking-at-home.mp4",
+      "posterAsset": "cooking-at-home-cover",
       "posterSeconds": 1.045,
-      "caption": "Cooking together in the kitchen",
+      "caption": "Dinner prep, with a little kitchen chaos.",
       "duration": 10.446122,
       "uses": [
         "video.feed",
@@ -1871,7 +1875,7 @@
             "id": "curated-sample-clip-15-comment-01",
             "clipID": "sample-clip-15",
             "authorID": "portrait-46",
-            "text": "Cooking together makes prep feel less like a chore.",
+            "text": "The pan still needs stirring, even when the kitchen gets lively.",
             "createdAt": 0,
             "isCurated": true
           },
@@ -1879,7 +1883,7 @@
             "id": "curated-sample-clip-15-comment-02",
             "clipID": "sample-clip-15",
             "authorID": "portrait-47",
-            "text": "One person chops, one person tastes. Fair deal.",
+            "text": "One person cooks, one person distracts. I know this arrangement.",
             "createdAt": 1,
             "isCurated": true
           },
@@ -1887,7 +1891,7 @@
             "id": "curated-sample-clip-15-comment-03",
             "clipID": "sample-clip-15",
             "authorID": "portrait-48",
-            "text": "I like how everyone has something to do.",
+            "text": "That is a very busy spot next to the stove.",
             "createdAt": 2,
             "isCurated": true
           },
@@ -1895,7 +1899,7 @@
             "id": "curated-sample-clip-15-comment-04",
             "clipID": "sample-clip-15",
             "authorID": "portrait-49",
-            "text": "What are you making together today?",
+            "text": "What is in the pan tonight?",
             "createdAt": 3,
             "isCurated": true
           },
@@ -1903,7 +1907,7 @@
             "id": "curated-sample-clip-15-comment-05",
             "clipID": "sample-clip-15",
             "authorID": "portrait-16",
-            "text": "This is how my favourite recipes get passed around.",
+            "text": "We never make it through dinner prep without laughing.",
             "createdAt": 4,
             "isCurated": true
           },
@@ -1911,7 +1915,7 @@
             "id": "curated-sample-clip-15-comment-06",
             "clipID": "sample-clip-15",
             "authorID": "portrait-17",
-            "text": "The kitchen always ends up being the gathering spot.",
+            "text": "The kitchen is always where everybody ends up.",
             "createdAt": 5,
             "isCurated": true
           },
@@ -1919,7 +1923,7 @@
             "id": "curated-sample-clip-15-comment-07",
             "clipID": "sample-clip-15",
             "authorID": "portrait-18",
-            "text": "I volunteer for the taste-testing job.",
+            "text": "I would volunteer to keep an eye on the pan.",
             "createdAt": 6,
             "isCurated": true
           },
@@ -1927,7 +1931,7 @@
             "id": "curated-sample-clip-15-comment-08",
             "clipID": "sample-clip-15",
             "authorID": "portrait-19",
-            "text": "A shared meal starts long before it reaches the table.",
+            "text": "A quiet recipe, a slightly less quiet kitchen.",
             "createdAt": 7,
             "isCurated": true
           },
@@ -1935,7 +1939,7 @@
             "id": "curated-sample-clip-15-comment-09",
             "clipID": "sample-clip-15",
             "authorID": "portrait-20",
-            "text": "Do you follow a recipe or adjust as you go?",
+            "text": "Do you cook together or take turns?",
             "createdAt": 8,
             "isCurated": true
           },
@@ -1943,7 +1947,7 @@
             "id": "curated-sample-clip-15-comment-10",
             "clipID": "sample-clip-15",
             "authorID": "portrait-21",
-            "text": "We always put on music when we cook together.",
+            "text": "The cook has definitely earned the first plate.",
             "createdAt": 9,
             "isCurated": true
           },
@@ -1951,12 +1955,14 @@
             "id": "curated-sample-clip-15-comment-11",
             "clipID": "sample-clip-15",
             "authorID": "portrait-22",
-            "text": "I hope somebody saved a little for tomorrow.",
+            "text": "Save some for the person doing the washing-up.",
             "createdAt": 10,
             "isCurated": true
           }
         ]
-      }
+      },
+      "excludedFromApp": true,
+      "reviewNote": "人物亲密互动占据画面主体，烹饪过程不是重点；本轮按美食主题与保守内容边界暂停展示。"
     }
   ],
   "note": "Every supplied file has an explicit runtime use. Profile names are fictional samples, not identities inferred from photos. Videos belong to the Tati collection; no photo-to-video identity relationship is inferred. Original files remain unchanged.",
@@ -1965,7 +1971,7 @@
       {
         "id": "room-script-pasta-table-01",
         "authorID": "portrait-02",
-        "text": "That pasta dough looks so silky.",
+        "text": "That toastie is filled right to the edges.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.2
@@ -1973,7 +1979,7 @@
       {
         "id": "room-script-pasta-table-02",
         "authorID": "portrait-03",
-        "text": "Do you rest it before rolling?",
+        "text": "Does the bread go into a press or a pan?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.74
@@ -1990,7 +1996,7 @@
       {
         "id": "room-script-pasta-table-04",
         "authorID": "portrait-07",
-        "text": "A little pasta water makes the sauce cling.",
+        "text": "The toasted ridges are the part I would start with.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.4
@@ -1998,7 +2004,7 @@
       {
         "id": "room-script-pasta-table-05",
         "authorID": "portrait-08",
-        "text": "I would finish that with fresh basil.",
+        "text": "A little mustard would be good in there.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.52
@@ -2015,7 +2021,7 @@
       {
         "id": "room-script-pasta-table-07",
         "authorID": "portrait-02",
-        "text": "The folded edges are so neat!",
+        "text": "How do you keep the filling from falling out?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.18
@@ -2023,7 +2029,7 @@
       {
         "id": "room-script-pasta-table-08",
         "authorID": "portrait-03",
-        "text": "Sunday lunch at this table would be lovely.",
+        "text": "I would wrap half for the walk home.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.3
@@ -2040,7 +2046,7 @@
       {
         "id": "room-script-pasta-table-10",
         "authorID": "portrait-07",
-        "text": "My favourite part is the first twirl.",
+        "text": "Crunchy bread and warm filling is a good combination.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.96
@@ -2048,7 +2054,7 @@
       {
         "id": "room-script-pasta-table-11",
         "authorID": "portrait-08",
-        "text": "Saving the ricotta idea for dinner.",
+        "text": "That looks like a very generous lunch.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.08
@@ -2169,7 +2175,7 @@
       {
         "id": "room-script-kitchen-stories-01",
         "authorID": "portrait-20",
-        "text": "Those ribs look beautifully glazed.",
+        "text": "Those snack strips look fiery.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.52
@@ -2177,7 +2183,7 @@
       {
         "id": "room-script-kitchen-stories-02",
         "authorID": "portrait-21",
-        "text": "Sweet glaze or a little heat?",
+        "text": "Is the coating sweet, spicy, or both?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.64
@@ -2194,7 +2200,7 @@
       {
         "id": "room-script-kitchen-stories-04",
         "authorID": "portrait-23",
-        "text": "The meat pulls away so easily.",
+        "text": "I would take a small first bite.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.3
@@ -2202,7 +2208,7 @@
       {
         "id": "room-script-kitchen-stories-05",
         "authorID": "portrait-18",
-        "text": "I would serve this with crunchy slaw.",
+        "text": "A cold drink belongs next to that plate.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.42
@@ -2219,7 +2225,7 @@
       {
         "id": "room-script-kitchen-stories-07",
         "authorID": "portrait-20",
-        "text": "This is my kind of sharing platter.",
+        "text": "The spice coating reaches every edge.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.08
@@ -2227,7 +2233,7 @@
       {
         "id": "room-script-kitchen-stories-08",
         "authorID": "portrait-21",
-        "text": "Can you show the spice mix again?",
+        "text": "Does anyone know what these strips are made from?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.2
@@ -2244,7 +2250,7 @@
       {
         "id": "room-script-kitchen-stories-10",
         "authorID": "portrait-23",
-        "text": "A weekend feast on a weekday!",
+        "text": "Snack breaks do not need much planning.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.86
@@ -2252,7 +2258,7 @@
       {
         "id": "room-script-kitchen-stories-11",
         "authorID": "portrait-18",
-        "text": "The caramelised corners are my favourite.",
+        "text": "Would you share the packet or keep it to yourself?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.4
@@ -2271,7 +2277,7 @@
       {
         "id": "room-script-sweet-evening-01",
         "authorID": "portrait-27",
-        "text": "That plate looks like a little celebration.",
+        "text": "The slices fit so neatly around the tin.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.18
@@ -2279,7 +2285,7 @@
       {
         "id": "room-script-sweet-evening-02",
         "authorID": "portrait-28",
-        "text": "Love the contrast between those colours.",
+        "text": "Is that mixture going to set as it bakes?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.3
@@ -2296,7 +2302,7 @@
       {
         "id": "room-script-sweet-evening-04",
         "authorID": "portrait-24",
-        "text": "Would citrus work with that sauce?",
+        "text": "I would save the golden edges for last.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.96
@@ -2304,7 +2310,7 @@
       {
         "id": "room-script-sweet-evening-05",
         "authorID": "portrait-25",
-        "text": "The finishing touch makes such a difference.",
+        "text": "How long do you leave it to cool?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.08
@@ -2321,7 +2327,7 @@
       {
         "id": "room-script-sweet-evening-07",
         "authorID": "portrait-27",
-        "text": "Dinner at home can feel this special.",
+        "text": "That middle ring makes such a tidy shape.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.74
@@ -2329,7 +2335,7 @@
       {
         "id": "room-script-sweet-evening-08",
         "authorID": "portrait-28",
-        "text": "What would you serve for the next course?",
+        "text": "A little caramel always draws me in.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.86
@@ -2346,7 +2352,7 @@
       {
         "id": "room-script-sweet-evening-10",
         "authorID": "portrait-24",
-        "text": "The small portions leave room for dessert.",
+        "text": "Would you serve this warm or chilled?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.52
@@ -2354,7 +2360,7 @@
       {
         "id": "room-script-sweet-evening-11",
         "authorID": "portrait-25",
-        "text": "I am borrowing that plating idea.",
+        "text": "I am watching to see how the first slice comes out.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.64
@@ -2475,7 +2481,7 @@
       {
         "id": "room-script-crepe-station-01",
         "authorID": "portrait-44",
-        "text": "The batter spreads into such a thin layer.",
+        "text": "That bread has soaked up plenty of batter.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.08
@@ -2483,7 +2489,7 @@
       {
         "id": "room-script-crepe-station-02",
         "authorID": "portrait-38",
-        "text": "Lemon and sugar for me, please.",
+        "text": "Cinnamon sugar would be my finishing touch.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.2
@@ -2508,7 +2514,7 @@
       {
         "id": "room-script-crepe-station-05",
         "authorID": "portrait-41",
-        "text": "Those golden edges look perfect.",
+        "text": "The golden crust is coming along nicely.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.4
@@ -2525,7 +2531,7 @@
       {
         "id": "room-script-crepe-station-07",
         "authorID": "portrait-44",
-        "text": "Strawberries and cream would be lovely.",
+        "text": "Strawberries on the side, please.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.64
@@ -2533,7 +2539,7 @@
       {
         "id": "room-script-crepe-station-08",
         "authorID": "portrait-38",
-        "text": "That flip takes a steady hand!",
+        "text": "That is a careful turn with the spatula.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 5.18
@@ -2550,7 +2556,7 @@
       {
         "id": "room-script-crepe-station-10",
         "authorID": "portrait-40",
-        "text": "Would buckwheat batter work here?",
+        "text": "Do you use bread from the day before?",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 3.42
@@ -2558,7 +2564,7 @@
       {
         "id": "room-script-crepe-station-11",
         "authorID": "portrait-41",
-        "text": "One sweet crêpe and one savoury, please.",
+        "text": "A savoury version with herbs would be worth a try.",
         "quantity": 1,
         "isSample": true,
         "delaySeconds": 4.96

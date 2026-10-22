@@ -1,0 +1,2023 @@
+{
+  "portraits": {
+    "creator-luna": "member-luna-portrait",
+    "portrait-02": "member-avery-portrait",
+    "portrait-03": "member-rowan-portrait",
+    "creator-andre": "member-andre-portrait",
+    "portrait-05": "member-picnic-notes-portrait",
+    "portrait-06": "member-ellis-portrait",
+    "portrait-07": "member-jamie-portrait",
+    "portrait-08": "member-morgan-portrait",
+    "portrait-09": "member-quinn-portrait",
+    "portrait-10": "member-riley-portrait",
+    "portrait-11": "member-the-lunch-table-portrait",
+    "creator-chloe": "member-chloe-portrait",
+    "portrait-13": "member-blair-portrait",
+    "portrait-14": "member-cameron-portrait",
+    "portrait-15": "member-reese-portrait",
+    "portrait-16": "member-finley-portrait",
+    "portrait-17": "member-jordan-portrait",
+    "portrait-18": "member-alex-portrait",
+    "portrait-19": "member-harper-portrait",
+    "portrait-20": "member-drew-portrait",
+    "portrait-21": "member-taylor-portrait",
+    "portrait-22": "member-parker-portrait",
+    "portrait-23": "member-skyler-portrait",
+    "portrait-24": "member-charlie-portrait",
+    "portrait-25": "member-river-portrait",
+    "portrait-26": "member-casey-portrait",
+    "portrait-27": "member-robin-portrait",
+    "portrait-28": "member-blake-portrait",
+    "portrait-29": "member-hayden-portrait",
+    "portrait-30": "member-arden-portrait",
+    "portrait-31": "member-marley-portrait",
+    "portrait-32": "member-remy-portrait",
+    "creator-elowen": "member-elowen-portrait",
+    "portrait-34": "member-frankie-portrait",
+    "portrait-35": "member-jules-portrait",
+    "portrait-36": "member-lane-portrait",
+    "creator-maria": "member-maria-portrait",
+    "portrait-38": "member-shiloh-portrait",
+    "portrait-39": "member-milan-portrait",
+    "portrait-40": "member-dakota-portrait",
+    "portrait-41": "member-scout-portrait",
+    "creator-seraphina": "member-seraphina-portrait",
+    "portrait-43": "member-kendall-portrait",
+    "portrait-44": "member-rory-portrait",
+    "portrait-45": "member-two-forks-portrait",
+    "portrait-46": "member-linden-portrait",
+    "portrait-47": "member-reagan-portrait",
+    "portrait-48": "member-oakley-portrait",
+    "portrait-49": "member-wren-portrait"
+  },
+  "additionalPeople": [
+    {
+      "id": "portrait-02",
+      "name": "Avery C.",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "The snack stall with the longest queue usually gets my vote."
+    },
+    {
+      "id": "portrait-03",
+      "name": "Rowan at lunch",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "Pasta water saved, parmesan grated, dinner nearly there."
+    },
+    {
+      "id": "portrait-05",
+      "name": "Picnic Notes",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "We pack the picnic before we pick the walking route."
+    },
+    {
+      "id": "portrait-06",
+      "name": "Ellis W.",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "A slow grill, a sharp sauce and enough for seconds."
+    },
+    {
+      "id": "portrait-07",
+      "name": "Jamie by the sea",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "Most weeknights start with onions in a pan."
+    },
+    {
+      "id": "portrait-08",
+      "name": "Morgan",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "I will cross town for a properly toasted sandwich."
+    },
+    {
+      "id": "portrait-09",
+      "name": "Quinn R.",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "Learning which pasta shape catches the most sauce."
+    },
+    {
+      "id": "portrait-10",
+      "name": "Riley",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "Coffee first. There might be a slice of cake after."
+    },
+    {
+      "id": "portrait-11",
+      "name": "The Lunch Table",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "Fruit in the bag, sandwiches wrapped, lunch by the water."
+    },
+    {
+      "id": "portrait-13",
+      "name": "Blair makes lunch",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "Trying to make a decent dinner from what is left in the fridge."
+    },
+    {
+      "id": "portrait-14",
+      "name": "Cam",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "Noodles from a paper bowl, preferably eaten outside."
+    },
+    {
+      "id": "portrait-15",
+      "name": "Reese M.",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "A pot of tomato sauce rarely lasts the whole weekend here."
+    },
+    {
+      "id": "portrait-16",
+      "name": "Finn",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "My cake slices are uneven. Nobody has complained yet."
+    },
+    {
+      "id": "portrait-17",
+      "name": "Jordan",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "Roasted vegetables, lemon dressing, something crunchy on top."
+    },
+    {
+      "id": "portrait-18",
+      "name": "Alex",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "The corn goes on the grill before anything else."
+    },
+    {
+      "id": "portrait-19",
+      "name": "Harper K.",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "Cooking one extra portion for tomorrow is the plan, at least."
+    },
+    {
+      "id": "portrait-20",
+      "name": "Drew",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "I usually order the snack I have never tried before."
+    },
+    {
+      "id": "portrait-21",
+      "name": "Taylor at the counter",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "Homemade gnocchi when there is time. Shop-bought when there is not."
+    },
+    {
+      "id": "portrait-22",
+      "name": "Parker bakes",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "Testing whether a little salt makes every chocolate bake better."
+    },
+    {
+      "id": "portrait-23",
+      "name": "Sky",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "Seasonal fruit never makes it home without a taste test."
+    },
+    {
+      "id": "portrait-24",
+      "name": "Charlie",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "Still working out the right balance of smoke and spice."
+    },
+    {
+      "id": "portrait-25",
+      "name": "River C.",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "A fried egg has rescued more than a few dinners."
+    },
+    {
+      "id": "portrait-26",
+      "name": "Casey T.",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "Finding the dumpling stall is my first job at any market."
+    },
+    {
+      "id": "portrait-27",
+      "name": "Robin",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "Basil on the windowsill, a pan of sauce on the stove."
+    },
+    {
+      "id": "portrait-28",
+      "name": "Blake, tea first",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "I bake the biscuit edges a little darker on purpose."
+    },
+    {
+      "id": "portrait-29",
+      "name": "Hayden W.",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "Lunch is usually a big bowl with whatever greens look good."
+    },
+    {
+      "id": "portrait-30",
+      "name": "Arden",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "Grilled mushrooms deserve more space on the plate."
+    },
+    {
+      "id": "portrait-31",
+      "name": "Marley at dusk",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "Soups, stews and bread for the last bit in the bowl."
+    },
+    {
+      "id": "portrait-32",
+      "name": "Remy cooks",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "The best part of a new neighbourhood is finding lunch."
+    },
+    {
+      "id": "portrait-34",
+      "name": "Frankie on foot",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "A cup of tea buys just enough time for the cake to cool."
+    },
+    {
+      "id": "portrait-35",
+      "name": "Jules",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "Fresh herbs go in at the end. Usually a few more than planned."
+    },
+    {
+      "id": "portrait-36",
+      "name": "Lane K.",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "Making room on the barbecue for peaches this summer."
+    },
+    {
+      "id": "portrait-38",
+      "name": "Shiloh by the sea",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "Hot noodles, cold drink, a seat in the shade."
+    },
+    {
+      "id": "portrait-39",
+      "name": "Milan",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "The lasagne corners are spoken for before it leaves the oven."
+    },
+    {
+      "id": "portrait-40",
+      "name": "Dakota J.",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "Custard, fruit and a spoon. Dessert need not be complicated."
+    },
+    {
+      "id": "portrait-41",
+      "name": "Scout’s kitchen",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "A good walk ends with the packed lunch coming out."
+    },
+    {
+      "id": "portrait-43",
+      "name": "Kendall M.",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "Dinners from one pan, with plenty of bread for sharing."
+    },
+    {
+      "id": "portrait-44",
+      "name": "Rory",
+      "country": "",
+      "language": "English",
+      "interest": "Street food",
+      "bio": "I keep a list of street snacks to find on the next trip."
+    },
+    {
+      "id": "portrait-45",
+      "name": "Two Forks",
+      "country": "",
+      "language": "English",
+      "interest": "Italian food",
+      "bio": "Two forks, one pasta order. We always order another."
+    },
+    {
+      "id": "portrait-46",
+      "name": "Linden C.",
+      "country": "",
+      "language": "English",
+      "interest": "Dessert",
+      "bio": "Lemon zest goes into more of my bakes than the recipe asks."
+    },
+    {
+      "id": "portrait-47",
+      "name": "Reagan at lunch",
+      "country": "",
+      "language": "English",
+      "interest": "Healthy food",
+      "bio": "A warm grain bowl is how I use up the market haul."
+    },
+    {
+      "id": "portrait-48",
+      "name": "Oakley W.",
+      "country": "",
+      "language": "English",
+      "interest": "BBQ",
+      "bio": "Trying a different marinade every time the grill comes out."
+    },
+    {
+      "id": "portrait-49",
+      "name": "Wren’s table",
+      "country": "",
+      "language": "English",
+      "interest": "Home cooking",
+      "bio": "A quiet kitchen, the radio on, something bubbling in a pot."
+    }
+  ],
+  "roomCovers": {
+    "pasta-table": "toasted-bread-story-cover",
+    "street-bites": "market-spicy-snacks-cover",
+    "kitchen-stories": "crispy-snack-pan-cover",
+    "sweet-evening": "bakery-finish-cover",
+    "dinner-conversation": "member-luna-portrait",
+    "dessert-club": "member-elowen-portrait",
+    "market-table": "member-seraphina-portrait",
+    "weekend-bbq": "member-andre-portrait",
+    "soup-kitchen": "soup-counter-cover",
+    "crepe-station": "french-toast-pan-cover"
+  },
+  "clips": [
+    {
+      "id": "sample-clip-0",
+      "authorID": "creator-andre",
+      "caption": "That Osaka sandwich needs two hands.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "osaka-beef-sandwich.mp4",
+      "posterArtwork": "osaka-beef-sandwich-cover"
+    },
+    {
+      "id": "sample-clip-2",
+      "authorID": "portrait-06",
+      "caption": "A matcha break by the window.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "matcha-cafe-break.mp4",
+      "posterArtwork": "matcha-cafe-break-cover"
+    },
+    {
+      "id": "sample-clip-4",
+      "authorID": "creator-maria",
+      "caption": "Chilli noodles taste better outside.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "noodles-outdoors.mp4",
+      "posterArtwork": "noodles-outdoors-cover"
+    },
+    {
+      "id": "sample-clip-9",
+      "authorID": "creator-seraphina",
+      "caption": "Folding dumplings for the next hungry crowd.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "dumpling-table.mp4",
+      "posterArtwork": "dumpling-table-cover"
+    },
+    {
+      "id": "sample-clip-10",
+      "authorID": "portrait-10",
+      "caption": "Coffee first. Catching up can take a while.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "coffee-with-friends.mp4",
+      "posterArtwork": "coffee-with-friends-cover"
+    },
+    {
+      "id": "sample-clip-12",
+      "authorID": "portrait-05",
+      "caption": "Snacks taste better halfway up the trail.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "fruit-on-the-trail.mp4",
+      "posterArtwork": "fruit-on-the-trail-cover"
+    },
+    {
+      "id": "sample-clip-14",
+      "authorID": "portrait-14",
+      "caption": "Picking a favourite from the noodle lineup.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "noodle-tasting-table.mp4",
+      "posterArtwork": "noodle-tasting-table-cover"
+    }
+  ],
+  "roomClips": {
+    "soup-kitchen": {
+      "id": "sample-clip-8",
+      "authorID": "creator-andre",
+      "caption": "A ladle, a bowl and a very busy soup counter.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "soup-counter.mp4",
+      "posterArtwork": "soup-counter-cover"
+    },
+    "crepe-station": {
+      "id": "sample-clip-11",
+      "authorID": "creator-seraphina",
+      "caption": "Bread, batter and a golden French-toast crust.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "french-toast-pan.mp4",
+      "posterArtwork": "french-toast-pan-cover"
+    },
+    "sweet-evening": {
+      "id": "sample-clip-1",
+      "authorID": "creator-elowen",
+      "caption": "Watching a sweet bake come together in the tin.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "bakery-finish.mp4",
+      "posterArtwork": "bakery-finish-cover"
+    },
+    "kitchen-stories": {
+      "id": "sample-clip-3",
+      "authorID": "creator-luna",
+      "caption": "A spicy snack worth keeping a drink nearby for.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "crispy-snack-pan.mp4",
+      "posterArtwork": "crispy-snack-pan-cover"
+    },
+    "pasta-table": {
+      "id": "sample-clip-5",
+      "authorID": "creator-maria",
+      "caption": "A warm toastie filled right to the edges.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "toasted-bread-story.mp4",
+      "posterArtwork": "toasted-bread-story-cover"
+    },
+    "street-bites": {
+      "id": "sample-clip-7",
+      "authorID": "creator-chloe",
+      "caption": "A table full of wraps, sauces and crisp greens.",
+      "createdAt": 0,
+      "isSample": true,
+      "bundledFile": "market-spicy-snacks.mp4",
+      "posterArtwork": "market-spicy-snacks-cover"
+    }
+  },
+  "curatedEngagement": {
+    "sample-clip-0": {
+      "likes": 1286,
+      "comments": [
+        {
+          "id": "curated-sample-clip-0-comment-01",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-16",
+          "text": "That sandwich needs both hands.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-02",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-17",
+          "text": "The crust looks beautifully toasted.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-03",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-18",
+          "text": "Osaka is going straight on my food list.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-04",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-19",
+          "text": "I would share this and still need a nap.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-05",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-20",
+          "text": "The bread-to-filling ratio is impressive.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-06",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-21",
+          "text": "Would you add mustard or keep it simple?",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-07",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-22",
+          "text": "That first cut through the sandwich is so satisfying.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-0-comment-08",
+          "clipID": "sample-clip-0",
+          "authorID": "portrait-23",
+          "text": "A little pickle on the side would be perfect.",
+          "createdAt": 7,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-2": {
+      "likes": 763,
+      "comments": [
+        {
+          "id": "curated-sample-clip-2-comment-01",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-19",
+          "text": "This looks like a lovely place to slow down.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-02",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-20",
+          "text": "Is that matcha? The colour is beautiful.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-03",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-21",
+          "text": "A small cafe break makes the whole afternoon better.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-04",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-22",
+          "text": "I always look for independent cafes when I travel.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-2-comment-05",
+          "clipID": "sample-clip-2",
+          "authorID": "portrait-23",
+          "text": "What would you order to go with that drink?",
+          "createdAt": 4,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-4": {
+      "likes": 2148,
+      "comments": [
+        {
+          "id": "curated-sample-clip-4-comment-01",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-22",
+          "text": "That sauce coats every noodle.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-02",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-23",
+          "text": "I would keep a cold drink within reach.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-03",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-24",
+          "text": "Are these wheat noodles?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-04",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-25",
+          "text": "The outdoor lunch setup looks so relaxed.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-05",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-26",
+          "text": "Chilli oil is doing a lot of work here.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-06",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-27",
+          "text": "A few spring onions would be my finishing touch.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-07",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-28",
+          "text": "Chopsticks ready. Everything else can wait.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-08",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-29",
+          "text": "Do you mix the sauce through before the first bite?",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-09",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-30",
+          "text": "I would start with the crispy pieces on the side.",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-4-comment-10",
+          "clipID": "sample-clip-4",
+          "authorID": "portrait-31",
+          "text": "This has put noodles firmly on the lunch plan.",
+          "createdAt": 9,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-9": {
+      "likes": 3261,
+      "comments": [
+        {
+          "id": "curated-sample-clip-9-comment-01",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-28",
+          "text": "Those folds are much neater than mine.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-02",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-29",
+          "text": "Dumpling-making is the best weekend ritual.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-03",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-30",
+          "text": "Do you seal the edges with water?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-04",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-31",
+          "text": "I always make extra and freeze a tray.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-05",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-32",
+          "text": "The little pleats take so much practice.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-06",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-34",
+          "text": "What filling are you using here?",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-07",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-35",
+          "text": "I like mine with vinegar and fresh ginger.",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-08",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-36",
+          "text": "Watching the wrappers become dumplings is so calming.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-09",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-38",
+          "text": "My family turns this into a whole afternoon together.",
+          "createdAt": 8,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-10",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-39",
+          "text": "Pan-fried bottoms are my favourite part.",
+          "createdAt": 9,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-11",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-40",
+          "text": "That dough looks really easy to work with.",
+          "createdAt": 10,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-9-comment-12",
+          "clipID": "sample-clip-9",
+          "authorID": "portrait-41",
+          "text": "I need a slow version of the folding step.",
+          "createdAt": 11,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-10": {
+      "likes": 937,
+      "comments": [
+        {
+          "id": "curated-sample-clip-10-comment-01",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-31",
+          "text": "Coffee catch-ups always run longer than planned.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-02",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-32",
+          "text": "We order drinks before deciding what to eat, too.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-03",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-34",
+          "text": "Is that Turkish coffee in the little glass?",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-04",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-35",
+          "text": "Nobody at this table looks ready to leave.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-05",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-36",
+          "text": "The second round of drinks is how an afternoon disappears.",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-06",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-38",
+          "text": "This is my reminder to arrange a cafe catch-up.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-10-comment-07",
+          "clipID": "sample-clip-10",
+          "authorID": "portrait-39",
+          "text": "A small table is enough room for a long conversation.",
+          "createdAt": 6,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-12": {
+      "likes": 184,
+      "comments": [
+        {
+          "id": "curated-sample-clip-12-comment-01",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-35",
+          "text": "A packed snack is the reward for that climb.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-12-comment-02",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-36",
+          "text": "I always bring something crisp for a walking break.",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-12-comment-03",
+          "clipID": "sample-clip-12",
+          "authorID": "portrait-38",
+          "text": "The view can wait until the snack is finished.",
+          "createdAt": 2,
+          "isCurated": true
+        }
+      ]
+    },
+    "sample-clip-14": {
+      "likes": 1673,
+      "comments": [
+        {
+          "id": "curated-sample-clip-14-comment-01",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-43",
+          "text": "I would happily join this noodle tasting.",
+          "createdAt": 0,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-02",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-44",
+          "text": "What is the first flavour you notice?",
+          "createdAt": 1,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-03",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-45",
+          "text": "Fresh air and a warm bowl is a great combination.",
+          "createdAt": 2,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-04",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-46",
+          "text": "I am curious about the sauce on these noodles.",
+          "createdAt": 3,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-05",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-47",
+          "text": "Do you mix everything first or taste the broth alone?",
+          "createdAt": 4,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-06",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-48",
+          "text": "The best food stops are often the unplanned ones.",
+          "createdAt": 5,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-07",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-49",
+          "text": "Would you choose this bowl again?",
+          "createdAt": 6,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-08",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-16",
+          "text": "A squeeze of lime would be my finishing touch.",
+          "createdAt": 7,
+          "isCurated": true
+        },
+        {
+          "id": "curated-sample-clip-14-comment-09",
+          "clipID": "sample-clip-14",
+          "authorID": "portrait-17",
+          "text": "Now I want to compare noodles from a few different places.",
+          "createdAt": 8,
+          "isCurated": true
+        }
+      ]
+    }
+  },
+  "curatedRoomActivity": {
+    "pasta-table": [
+      {
+        "id": "room-script-pasta-table-01",
+        "authorID": "portrait-02",
+        "text": "That toastie is filled right to the edges.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-pasta-table-02",
+        "authorID": "portrait-03",
+        "text": "Does the bread go into a press or a pan?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-pasta-table-03",
+        "authorID": "portrait-06",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86,
+        "giftID": "box"
+      },
+      {
+        "id": "room-script-pasta-table-04",
+        "authorID": "portrait-07",
+        "text": "The toasted ridges are the part I would start with.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-pasta-table-05",
+        "authorID": "portrait-08",
+        "text": "A little mustard would be good in there.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-pasta-table-06",
+        "authorID": "portrait-09",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 3.64,
+        "giftID": "drink"
+      },
+      {
+        "id": "room-script-pasta-table-07",
+        "authorID": "portrait-02",
+        "text": "How do you keep the filling from falling out?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-pasta-table-08",
+        "authorID": "portrait-03",
+        "text": "I would wrap half for the walk home.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-pasta-table-09",
+        "authorID": "portrait-06",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42,
+        "giftID": "crown"
+      },
+      {
+        "id": "room-script-pasta-table-10",
+        "authorID": "portrait-07",
+        "text": "Crunchy bread and warm filling is a good combination.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-pasta-table-11",
+        "authorID": "portrait-08",
+        "text": "That looks like a very generous lunch.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-pasta-table-12",
+        "authorID": "portrait-09",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 3.2,
+        "giftID": "peach"
+      }
+    ],
+    "street-bites": [
+      {
+        "id": "room-script-street-bites-01",
+        "authorID": "portrait-13",
+        "text": "The sound of that hot pan is everything.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-street-bites-02",
+        "authorID": "portrait-14",
+        "text": "Is that chilli oil on top?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-street-bites-03",
+        "authorID": "portrait-15",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 4.52,
+        "giftID": "car"
+      },
+      {
+        "id": "room-script-street-bites-04",
+        "authorID": "portrait-16",
+        "text": "I would queue for that crispy edge.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-street-bites-05",
+        "authorID": "portrait-17",
+        "text": "One portion to share? I need my own!",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-street-bites-06",
+        "authorID": "portrait-10",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 4.3,
+        "giftID": "balloons"
+      },
+      {
+        "id": "room-script-street-bites-07",
+        "authorID": "portrait-13",
+        "text": "A squeeze of lime would be perfect.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-street-bites-08",
+        "authorID": "portrait-14",
+        "text": "Which stall would you try next?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-street-bites-09",
+        "authorID": "portrait-15",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08,
+        "giftID": "headphones"
+      },
+      {
+        "id": "room-script-street-bites-10",
+        "authorID": "portrait-16",
+        "text": "That market looks like a delicious adventure.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-street-bites-11",
+        "authorID": "portrait-17",
+        "text": "The sauce is the part I want to learn.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-street-bites-12",
+        "authorID": "portrait-10",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 3.86,
+        "giftID": "box"
+      }
+    ],
+    "kitchen-stories": [
+      {
+        "id": "room-script-kitchen-stories-01",
+        "authorID": "portrait-20",
+        "text": "Those snack strips look fiery.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-kitchen-stories-02",
+        "authorID": "portrait-21",
+        "text": "Is the coating sweet, spicy, or both?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-kitchen-stories-03",
+        "authorID": "portrait-22",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 5.18,
+        "giftID": "balloons"
+      },
+      {
+        "id": "room-script-kitchen-stories-04",
+        "authorID": "portrait-23",
+        "text": "I would take a small first bite.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-kitchen-stories-05",
+        "authorID": "portrait-18",
+        "text": "A cold drink belongs next to that plate.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-kitchen-stories-06",
+        "authorID": "portrait-19",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96,
+        "giftID": "cake"
+      },
+      {
+        "id": "room-script-kitchen-stories-07",
+        "authorID": "portrait-20",
+        "text": "The spice coating reaches every edge.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-kitchen-stories-08",
+        "authorID": "portrait-21",
+        "text": "Does anyone know what these strips are made from?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-kitchen-stories-09",
+        "authorID": "portrait-22",
+        "text": "",
+        "quantity": 5,
+        "isSample": true,
+        "delaySeconds": 4.74,
+        "giftID": "peach"
+      },
+      {
+        "id": "room-script-kitchen-stories-10",
+        "authorID": "portrait-23",
+        "text": "Snack breaks do not need much planning.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-kitchen-stories-11",
+        "authorID": "portrait-18",
+        "text": "Would you share the packet or keep it to yourself?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-kitchen-stories-12",
+        "authorID": "portrait-19",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 4.52,
+        "giftID": "drink"
+      }
+    ],
+    "sweet-evening": [
+      {
+        "id": "room-script-sweet-evening-01",
+        "authorID": "portrait-27",
+        "text": "The slices fit so neatly around the tin.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-sweet-evening-02",
+        "authorID": "portrait-28",
+        "text": "Is that mixture going to set as it bakes?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-sweet-evening-03",
+        "authorID": "portrait-29",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 3.42,
+        "giftID": "crown"
+      },
+      {
+        "id": "room-script-sweet-evening-04",
+        "authorID": "portrait-24",
+        "text": "I would save the golden edges for last.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-sweet-evening-05",
+        "authorID": "portrait-25",
+        "text": "How long do you leave it to cool?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-sweet-evening-06",
+        "authorID": "portrait-26",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2,
+        "giftID": "drink"
+      },
+      {
+        "id": "room-script-sweet-evening-07",
+        "authorID": "portrait-27",
+        "text": "That middle ring makes such a tidy shape.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-sweet-evening-08",
+        "authorID": "portrait-28",
+        "text": "A little caramel always draws me in.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-sweet-evening-09",
+        "authorID": "portrait-29",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 5.4,
+        "giftID": "box"
+      },
+      {
+        "id": "room-script-sweet-evening-10",
+        "authorID": "portrait-24",
+        "text": "Would you serve this warm or chilled?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-sweet-evening-11",
+        "authorID": "portrait-25",
+        "text": "I am watching to see how the first slice comes out.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-sweet-evening-12",
+        "authorID": "portrait-26",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 5.18,
+        "giftID": "cake"
+      }
+    ],
+    "soup-kitchen": [
+      {
+        "id": "room-script-soup-kitchen-01",
+        "authorID": "portrait-35",
+        "text": "That broth looks wonderfully rich.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-soup-kitchen-02",
+        "authorID": "portrait-36",
+        "text": "Is the stock simmered overnight?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-soup-kitchen-03",
+        "authorID": "portrait-30",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 4.08,
+        "giftID": "headphones"
+      },
+      {
+        "id": "room-script-soup-kitchen-04",
+        "authorID": "portrait-31",
+        "text": "I can almost smell the ginger.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-soup-kitchen-05",
+        "authorID": "portrait-32",
+        "text": "A bowl of this would fix a rainy day.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-soup-kitchen-06",
+        "authorID": "portrait-34",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86,
+        "giftID": "box"
+      },
+      {
+        "id": "room-script-soup-kitchen-07",
+        "authorID": "portrait-35",
+        "text": "Fresh herbs right at the end, yes!",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-soup-kitchen-08",
+        "authorID": "portrait-36",
+        "text": "Do you skim the broth as it cooks?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-soup-kitchen-09",
+        "authorID": "portrait-30",
+        "text": "",
+        "quantity": 5,
+        "isSample": true,
+        "delaySeconds": 3.64,
+        "giftID": "balloons"
+      },
+      {
+        "id": "room-script-soup-kitchen-10",
+        "authorID": "portrait-31",
+        "text": "The ladle pour is so satisfying.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-soup-kitchen-11",
+        "authorID": "portrait-32",
+        "text": "I would add noodles and call it dinner.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-soup-kitchen-12",
+        "authorID": "portrait-34",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42,
+        "giftID": "car"
+      }
+    ],
+    "crepe-station": [
+      {
+        "id": "room-script-crepe-station-01",
+        "authorID": "portrait-44",
+        "text": "That bread has soaked up plenty of batter.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-crepe-station-02",
+        "authorID": "portrait-38",
+        "text": "Cinnamon sugar would be my finishing touch.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-crepe-station-03",
+        "authorID": "portrait-39",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 4.74,
+        "giftID": "cake"
+      },
+      {
+        "id": "room-script-crepe-station-04",
+        "authorID": "portrait-40",
+        "text": "How hot do you keep the griddle?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-crepe-station-05",
+        "authorID": "portrait-41",
+        "text": "The golden crust is coming along nicely.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-crepe-station-06",
+        "authorID": "portrait-43",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 4.52,
+        "giftID": "peach"
+      },
+      {
+        "id": "room-script-crepe-station-07",
+        "authorID": "portrait-44",
+        "text": "Strawberries on the side, please.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-crepe-station-08",
+        "authorID": "portrait-38",
+        "text": "That is a careful turn with the spatula.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-crepe-station-09",
+        "authorID": "portrait-39",
+        "text": "",
+        "quantity": 5,
+        "isSample": true,
+        "delaySeconds": 4.3,
+        "giftID": "drink"
+      },
+      {
+        "id": "room-script-crepe-station-10",
+        "authorID": "portrait-40",
+        "text": "Do you use bread from the day before?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-crepe-station-11",
+        "authorID": "portrait-41",
+        "text": "A savoury version with herbs would be worth a try.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-crepe-station-12",
+        "authorID": "portrait-43",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08,
+        "giftID": "crown"
+      }
+    ],
+    "dinner-conversation": [
+      {
+        "id": "room-script-dinner-conversation-01",
+        "authorID": "portrait-46",
+        "text": "What is everyone cooking tonight?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-dinner-conversation-02",
+        "authorID": "portrait-47",
+        "text": "I have tomatoes and a very empty fridge.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-dinner-conversation-03",
+        "authorID": "portrait-48",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 5.4,
+        "giftID": "drink"
+      },
+      {
+        "id": "room-script-dinner-conversation-04",
+        "authorID": "portrait-49",
+        "text": "Roasted vegetables would be my easy option.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-dinner-conversation-05",
+        "authorID": "portrait-02",
+        "text": "Does anyone have a quick lentil recipe?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-dinner-conversation-06",
+        "authorID": "portrait-06",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 5.18,
+        "giftID": "box"
+      },
+      {
+        "id": "room-script-dinner-conversation-07",
+        "authorID": "portrait-46",
+        "text": "One-pot dinners mean fewer dishes!",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-dinner-conversation-08",
+        "authorID": "portrait-47",
+        "text": "I am trying to use what is already at home.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-dinner-conversation-09",
+        "authorID": "portrait-48",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96,
+        "giftID": "headphones"
+      },
+      {
+        "id": "room-script-dinner-conversation-10",
+        "authorID": "portrait-49",
+        "text": "Breakfast for dinner is always allowed.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-dinner-conversation-11",
+        "authorID": "portrait-02",
+        "text": "A warm bowl and a good chat sounds perfect.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-dinner-conversation-12",
+        "authorID": "portrait-06",
+        "text": "",
+        "quantity": 4,
+        "isSample": true,
+        "delaySeconds": 4.74,
+        "giftID": "balloons"
+      }
+    ],
+    "dessert-club": [
+      {
+        "id": "room-script-dessert-club-01",
+        "authorID": "portrait-09",
+        "text": "What is everyone baking this weekend?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-dessert-club-02",
+        "authorID": "portrait-13",
+        "text": "My lemon cake always sinks in the middle.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-dessert-club-03",
+        "authorID": "portrait-16",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 3.64,
+        "giftID": "cake"
+      },
+      {
+        "id": "room-script-dessert-club-04",
+        "authorID": "portrait-20",
+        "text": "Try letting the oven heat a little longer.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-dessert-club-05",
+        "authorID": "portrait-22",
+        "text": "Chocolate and sea salt is my favourite pair.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-dessert-club-06",
+        "authorID": "portrait-07",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 3.42,
+        "giftID": "crown"
+      },
+      {
+        "id": "room-script-dessert-club-07",
+        "authorID": "portrait-09",
+        "text": "Does anyone make desserts that are less sweet?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-dessert-club-08",
+        "authorID": "portrait-13",
+        "text": "Fresh berries make almost anything better.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-dessert-club-09",
+        "authorID": "portrait-16",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2,
+        "giftID": "peach"
+      },
+      {
+        "id": "room-script-dessert-club-10",
+        "authorID": "portrait-20",
+        "text": "I vote for a cheesecake night next time.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-dessert-club-11",
+        "authorID": "portrait-22",
+        "text": "Now I really want a slice and a cup of tea.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-dessert-club-12",
+        "authorID": "portrait-07",
+        "text": "",
+        "quantity": 4,
+        "isSample": true,
+        "delaySeconds": 5.4,
+        "giftID": "drink"
+      }
+    ],
+    "market-table": [
+      {
+        "id": "room-script-market-table-01",
+        "authorID": "portrait-14",
+        "text": "What looked best at your market today?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-market-table-02",
+        "authorID": "portrait-17",
+        "text": "The tomatoes finally smell like summer.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-market-table-03",
+        "authorID": "portrait-23",
+        "text": "",
+        "quantity": 4,
+        "isSample": true,
+        "delaySeconds": 4.3,
+        "giftID": "peach"
+      },
+      {
+        "id": "room-script-market-table-04",
+        "authorID": "portrait-27",
+        "text": "I found purple carrots for the first time.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-market-table-05",
+        "authorID": "portrait-03",
+        "text": "How do you keep fresh herbs for longer?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.96
+      },
+      {
+        "id": "room-script-market-table-06",
+        "authorID": "portrait-08",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 4.08,
+        "giftID": "balloons"
+      },
+      {
+        "id": "room-script-market-table-07",
+        "authorID": "portrait-14",
+        "text": "Roasted beetroot with yoghurt is so good.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-market-table-08",
+        "authorID": "portrait-17",
+        "text": "Seasonal fruit is my favourite snack.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.74
+      },
+      {
+        "id": "room-script-market-table-09",
+        "authorID": "portrait-23",
+        "text": "",
+        "quantity": 5,
+        "isSample": true,
+        "delaySeconds": 3.86,
+        "giftID": "box"
+      },
+      {
+        "id": "room-script-market-table-10",
+        "authorID": "portrait-27",
+        "text": "I would turn those greens into a warm salad.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-market-table-11",
+        "authorID": "portrait-03",
+        "text": "A colourful basket makes planning dinner easier.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52
+      },
+      {
+        "id": "room-script-market-table-12",
+        "authorID": "portrait-08",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64,
+        "giftID": "car"
+      }
+    ],
+    "weekend-bbq": [
+      {
+        "id": "room-script-weekend-bbq-01",
+        "authorID": "portrait-21",
+        "text": "Charcoal or gas for the weekend grill?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.3
+      },
+      {
+        "id": "room-script-weekend-bbq-02",
+        "authorID": "portrait-25",
+        "text": "I always leave room for corn on the cob.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.42
+      },
+      {
+        "id": "room-script-weekend-bbq-03",
+        "authorID": "portrait-28",
+        "text": "",
+        "quantity": 3,
+        "isSample": true,
+        "delaySeconds": 4.96,
+        "giftID": "car"
+      },
+      {
+        "id": "room-script-weekend-bbq-04",
+        "authorID": "portrait-10",
+        "text": "What goes into your favourite dry rub?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.08
+      },
+      {
+        "id": "room-script-weekend-bbq-05",
+        "authorID": "portrait-15",
+        "text": "Resting the meat is the hardest part.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.2
+      },
+      {
+        "id": "room-script-weekend-bbq-06",
+        "authorID": "portrait-18",
+        "text": "",
+        "quantity": 2,
+        "isSample": true,
+        "delaySeconds": 4.74,
+        "giftID": "headphones"
+      },
+      {
+        "id": "room-script-weekend-bbq-07",
+        "authorID": "portrait-21",
+        "text": "Grilled mushrooms deserve their own plate.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.86
+      },
+      {
+        "id": "room-script-weekend-bbq-08",
+        "authorID": "portrait-25",
+        "text": "A tangy sauce balances the smoky flavour.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.4
+      },
+      {
+        "id": "room-script-weekend-bbq-09",
+        "authorID": "portrait-28",
+        "text": "",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 4.52,
+        "giftID": "crown"
+      },
+      {
+        "id": "room-script-weekend-bbq-10",
+        "authorID": "portrait-10",
+        "text": "Who has tried peaches on the barbecue?",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 3.64
+      },
+      {
+        "id": "room-script-weekend-bbq-11",
+        "authorID": "portrait-15",
+        "text": "Good food, an outdoor table and no hurry.",
+        "quantity": 1,
+        "isSample": true,
+        "delaySeconds": 5.18
+      },
+      {
+        "id": "room-script-weekend-bbq-12",
+        "authorID": "portrait-18",
+        "text": "",
+        "quantity": 4,
+        "isSample": true,
+        "delaySeconds": 4.3,
+        "giftID": "box"
+      }
+    ]
+  }
+}

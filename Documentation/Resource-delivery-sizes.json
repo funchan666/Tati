@@ -1,0 +1,1861 @@
+{
+  "scope": "App resource source bytes, not an IPA or App Store download estimate",
+  "beforeBytes": 188409462,
+  "afterBytes": 164828212,
+  "resources": [
+    {
+      "resource": "ContentVideos/collection-bakery-dessert.mp4",
+      "beforeBytes": 11510690,
+      "afterBytes": 10747687,
+      "deliveryResource": "FoodFilms/bakery-finish.mp4",
+      "excludedFromApp": false,
+      "sha256After": "498fdd036ba53152f63490151ad33d8886818aab3a643c1e54f068c8b6541ee7"
+    },
+    {
+      "resource": "ContentVideos/collection-cafe-break.mp4",
+      "beforeBytes": 1143728,
+      "afterBytes": 922207,
+      "deliveryResource": "FoodFilms/matcha-cafe-break.mp4",
+      "excludedFromApp": false,
+      "sha256After": "e538274babec33525db1a440ddc11f0d9fbf93d8b1a80606558c59783945948c"
+    },
+    {
+      "resource": "ContentVideos/collection-cooking-together.mp4",
+      "beforeBytes": 2100250,
+      "afterBytes": 1944264,
+      "deliveryResource": "FoodFilms/cooking-at-home.mp4",
+      "excludedFromApp": true
+    },
+    {
+      "resource": "ContentVideos/collection-creative-mix.mp4",
+      "beforeBytes": 3941141,
+      "afterBytes": 3695828,
+      "deliveryResource": "FoodFilms/collection-creative-mix.mp4",
+      "excludedFromApp": true
+    },
+    {
+      "resource": "ContentVideos/collection-crepe-making.mp4",
+      "beforeBytes": 12368779,
+      "afterBytes": 10906494,
+      "deliveryResource": "FoodFilms/french-toast-pan.mp4",
+      "excludedFromApp": false,
+      "sha256After": "c9a3b6706117e4b5b19948ca46843f1655d3be44e20d17be9ac503725eb0e7e2"
+    },
+    {
+      "resource": "ContentVideos/collection-crispy-bites.mp4",
+      "beforeBytes": 4500868,
+      "afterBytes": 3927638,
+      "deliveryResource": "FoodFilms/crispy-snack-pan.mp4",
+      "excludedFromApp": false,
+      "sha256After": "f90dc3703f343a8dddded4dd284e66f8cfeba4d4b63434da0e350f65d3e082bf"
+    },
+    {
+      "resource": "ContentVideos/collection-dinner-friends.mp4",
+      "beforeBytes": 4029548,
+      "afterBytes": 3824885,
+      "deliveryResource": "FoodFilms/coffee-with-friends.mp4",
+      "excludedFromApp": false,
+      "sha256After": "d8506594ba9b1328ba663e3ad1c306e9a92fc197e3502a10b125362d441eaec4"
+    },
+    {
+      "resource": "ContentVideos/collection-dumplings.mp4",
+      "beforeBytes": 9183928,
+      "afterBytes": 7984129,
+      "deliveryResource": "FoodFilms/dumpling-table.mp4",
+      "excludedFromApp": false,
+      "sha256After": "e9e48fccb866e0f4544502a5defedd6f359a6641bd8582fc2efe8e47ed68c2e1"
+    },
+    {
+      "resource": "ContentVideos/collection-everyday-moments.mp4",
+      "beforeBytes": 2170441,
+      "afterBytes": 2170441,
+      "deliveryResource": "FoodFilms/collection-everyday-moments.mp4",
+      "excludedFromApp": true
+    },
+    {
+      "resource": "ContentVideos/collection-kitchen-soup.mp4",
+      "beforeBytes": 13380777,
+      "afterBytes": 12721957,
+      "deliveryResource": "FoodFilms/soup-counter.mp4",
+      "excludedFromApp": false,
+      "sha256After": "a2f68fdcdecb8822155a407bd1f801f8011745b54daee432a4e5ceb36f70ebda"
+    },
+    {
+      "resource": "ContentVideos/collection-noodle-tasting.mp4",
+      "beforeBytes": 19354551,
+      "afterBytes": 15975160,
+      "deliveryResource": "FoodFilms/noodle-tasting-table.mp4",
+      "excludedFromApp": false,
+      "sha256After": "a298c4769d90447468aeb17fd935af1a30a719044ff01233655cbd5badf7dc8c"
+    },
+    {
+      "resource": "ContentVideos/collection-osaka-sandwich.mp4",
+      "beforeBytes": 5505664,
+      "afterBytes": 5151815,
+      "deliveryResource": "FoodFilms/osaka-beef-sandwich.mp4",
+      "excludedFromApp": false,
+      "sha256After": "3e2c1b02ce48f21222b1b8fafa652734fe65c353fd9e027d2af7f9746122a2f0"
+    },
+    {
+      "resource": "ContentVideos/collection-outdoor-noodles.mp4",
+      "beforeBytes": 20807799,
+      "afterBytes": 17998714,
+      "deliveryResource": "FoodFilms/noodles-outdoors.mp4",
+      "excludedFromApp": false,
+      "sha256After": "14fd37deadfa0bd9fe3cf4132a3963d4c9aa536dbf806b6a999a5765beb23506"
+    },
+    {
+      "resource": "ContentVideos/collection-street-food-table.mp4",
+      "beforeBytes": 24744981,
+      "afterBytes": 21384403,
+      "deliveryResource": "FoodFilms/market-spicy-snacks.mp4",
+      "excludedFromApp": false,
+      "sha256After": "76c4ff1cfb695181ab4449b0060b52cbfe4bf7cdb8716f16b6e3d5b2cdfb4538"
+    },
+    {
+      "resource": "ContentVideos/collection-toasted-sandwich.mp4",
+      "beforeBytes": 9205384,
+      "afterBytes": 8058762,
+      "deliveryResource": "FoodFilms/toasted-bread-story.mp4",
+      "excludedFromApp": false,
+      "sha256After": "61746481bd193c314867edff66cd94d6dc23032420948b0b364859879d9be445"
+    },
+    {
+      "resource": "ContentVideos/collection-trail-break.mp4",
+      "beforeBytes": 2672872,
+      "afterBytes": 2446826,
+      "deliveryResource": "FoodFilms/fruit-on-the-trail.mp4",
+      "excludedFromApp": false,
+      "sha256After": "9b6feeabc235ff92aa33826b1960015dc4f6249e205193f18343bc43ebfb17d7"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/AppIcon.appiconset/AppIcon.png",
+      "beforeBytes": 976020,
+      "afterBytes": 931450,
+      "deliveryResource": "TableArtwork.xcassets/AppIcon.appiconset/AppIcon.png",
+      "excludedFromApp": false,
+      "sha256After": "47b71f72464bd822a2233cf5f4740d406e546cef9aec7ee12f92c9d493a9bfba"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/add-circle.imageset/art.png",
+      "beforeBytes": 1346,
+      "afterBytes": 1047,
+      "deliveryResource": "TableArtwork.xcassets/add-circle.imageset/add-circle.png",
+      "excludedFromApp": false,
+      "sha256After": "5fa0914e89cb0ec71cf638a44f3414973179bd74d5b52eb8c7cc7da4169dc65f"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/add-photo.imageset/art.png",
+      "beforeBytes": 2185,
+      "afterBytes": 1765,
+      "deliveryResource": "TableArtwork.xcassets/add-photo.imageset/add-photo.png",
+      "excludedFromApp": false,
+      "sha256After": "d1ccf3d9f731b365af4e7db2e7cbc0353e1d5ef7e47f417d835edae27cca21bf"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/add-video.imageset/art.png",
+      "beforeBytes": 1710,
+      "afterBytes": 1345,
+      "deliveryResource": "TableArtwork.xcassets/add-video.imageset/add-video.png",
+      "excludedFromApp": false,
+      "sha256After": "5823b8d5e39a0881574fc1aa4209c3edcccd916bb926144978cbb8525801c247"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/add.imageset/art.png",
+      "beforeBytes": 482,
+      "afterBytes": 353,
+      "deliveryResource": "TableArtwork.xcassets/add.imageset/add.png",
+      "excludedFromApp": false,
+      "sha256After": "325ac76f04058d10e8164a63ecada9b0f929dcb1b4b33beb000a74ac2ac3b385"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/ai-off.imageset/art.png",
+      "beforeBytes": 1188,
+      "afterBytes": 832,
+      "deliveryResource": "TableArtwork.xcassets/notes-off.imageset/notes-off.png",
+      "excludedFromApp": false,
+      "sha256After": "2bf2abda06dedb66f2f45bcfebd6e791af8f6f622ba8f66498acea0e487bc6aa"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/ai-on.imageset/art.png",
+      "beforeBytes": 2831,
+      "afterBytes": 1827,
+      "deliveryResource": "TableArtwork.xcassets/notes-on.imageset/notes-on.png",
+      "excludedFromApp": false,
+      "sha256After": "4c4886ed791b639e319a216e77e9fa09ddc2d276418755f983011a008aca2808"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/back.imageset/art.png",
+      "beforeBytes": 537,
+      "afterBytes": 361,
+      "deliveryResource": "TableArtwork.xcassets/back.imageset/back.png",
+      "excludedFromApp": false,
+      "sha256After": "1ba29104b624b25dd5dc479480b81f992c9400813c0a629295bb187f57448807"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/backpack.imageset/art.png",
+      "beforeBytes": 1202,
+      "afterBytes": 913,
+      "deliveryResource": "TableArtwork.xcassets/backpack.imageset/backpack.png",
+      "excludedFromApp": false,
+      "sha256After": "df68954179314ed511001af7498dda06dd904bd162aff7b00fc8bdef97fd0430"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/bio.imageset/art.png",
+      "beforeBytes": 1012,
+      "afterBytes": 836,
+      "deliveryResource": "TableArtwork.xcassets/bio.imageset/bio.png",
+      "excludedFromApp": false,
+      "sha256After": "8a05a7e5721343df57c72ecceaadfff2b830f4d1570f56a51d70df4d8c36ce4e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/blacklist.imageset/art.png",
+      "beforeBytes": 1673,
+      "afterBytes": 1325,
+      "deliveryResource": "TableArtwork.xcassets/blacklist.imageset/blacklist.png",
+      "excludedFromApp": false,
+      "sha256After": "dc8b0bf73d2036b1fd6573e8d88afd436f7bc337bb0a4760ca88d4d8d642264b"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/block-button.imageset/art.png",
+      "beforeBytes": 5659,
+      "afterBytes": 4408,
+      "deliveryResource": "TableArtwork.xcassets/block-button.imageset/block-button.png",
+      "excludedFromApp": false,
+      "sha256After": "46b52faf88b6a543445b4e3bcb6de41215a56e4bbe47c55a2dd774bea1c7386e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/brand-heading.imageset/art.png",
+      "beforeBytes": 1025421,
+      "afterBytes": 884306,
+      "deliveryResource": "TableArtwork.xcassets/brand-heading.imageset/brand-heading.png",
+      "excludedFromApp": false,
+      "sha256After": "cef08585a9959de01ff2f01c724d3c3eece8386f27161ef94f131cd8e0f408f1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/brand-icon.imageset/art.png",
+      "beforeBytes": 1573328,
+      "afterBytes": 1272055,
+      "deliveryResource": "TableArtwork.xcassets/brand-icon.imageset/brand-icon.png",
+      "excludedFromApp": false,
+      "sha256After": "28a96d580a879ade94521b0425bb28fce4ab83e48e10c8a3665c1fc663573e08"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/bright-background.imageset/art.png",
+      "beforeBytes": 759363,
+      "afterBytes": 140112,
+      "deliveryResource": "TableArtwork.xcassets/bright-background.imageset/bright-background.png",
+      "excludedFromApp": false,
+      "sha256After": "fa4b36bc5f590f4fbad6e3ef33c808a46087d00db14a550400a7b4baaea51924"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-bbq.imageset/art.png",
+      "beforeBytes": 3330,
+      "afterBytes": 2764,
+      "deliveryResource": "TableArtwork.xcassets/category-bbq.imageset/category-bbq.png",
+      "excludedFromApp": false,
+      "sha256After": "f0f6a84cee058937d81311ff1e5ca654966738d6aafca97bd91abed8652d5980"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-dessert.imageset/art.png",
+      "beforeBytes": 4115,
+      "afterBytes": 3534,
+      "deliveryResource": "TableArtwork.xcassets/category-dessert.imageset/category-dessert.png",
+      "excludedFromApp": false,
+      "sha256After": "29e2d0d3cc332687f358f13dad8c2aad5d4ea7a5754ab10b5b36e5dbb6c2b479"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-healthy.imageset/art.png",
+      "beforeBytes": 5705,
+      "afterBytes": 4907,
+      "deliveryResource": "TableArtwork.xcassets/category-healthy.imageset/category-healthy.png",
+      "excludedFromApp": false,
+      "sha256After": "8452481e434d10f48ddf1363b626ae8bc47576923b3002ac225754d4de884997"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-italian.imageset/art.png",
+      "beforeBytes": 3985,
+      "afterBytes": 3204,
+      "deliveryResource": "TableArtwork.xcassets/category-italian.imageset/category-italian.png",
+      "excludedFromApp": false,
+      "sha256After": "c7b21a407b1d3da4a24441594d2e4d476a2624caf65e3da6af3ec9bed83a8e33"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-street.imageset/art.png",
+      "beforeBytes": 5014,
+      "afterBytes": 4170,
+      "deliveryResource": "TableArtwork.xcassets/category-street.imageset/category-street.png",
+      "excludedFromApp": false,
+      "sha256After": "996a1697b6f3fca9f69008f44039196ff0c1a3c0ce444cf27274ee5d11d57808"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/category-sushi.imageset/art.png",
+      "beforeBytes": 3177,
+      "afterBytes": 2609,
+      "deliveryResource": "TableArtwork.xcassets/category-sushi.imageset/category-sushi.png",
+      "excludedFromApp": false,
+      "sha256After": "027d4ac4c25313d620dc9af8c5f391b1ed822224f12e62124a02abb6b727c4f2"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/change-video.imageset/art.png",
+      "beforeBytes": 6266,
+      "afterBytes": 5700,
+      "deliveryResource": "TableArtwork.xcassets/change-video.imageset/change-video.png",
+      "excludedFromApp": false,
+      "sha256After": "219d96eeda64f590fe5fea715d2bc010e7c0d3f5d05f2c9247bac36b46a27710"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chat-button.imageset/art.png",
+      "beforeBytes": 6745,
+      "afterBytes": 5529,
+      "deliveryResource": "TableArtwork.xcassets/chat-button.imageset/chat-button.png",
+      "excludedFromApp": false,
+      "sha256After": "7bcc92a1b03b33bc4585940fe29afd6138a4bf191c37790d74509a9d59b9a6a7"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chat-heading.imageset/art.png",
+      "beforeBytes": 27212,
+      "afterBytes": 19797,
+      "deliveryResource": "TableArtwork.xcassets/chat-heading.imageset/chat-heading.png",
+      "excludedFromApp": false,
+      "sha256After": "5be1751149198cba0b2a195640e096cc6d8e151c5273b9585d4c68223df883c1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chat-mic.imageset/art.png",
+      "beforeBytes": 3440,
+      "afterBytes": 2982,
+      "deliveryResource": "TableArtwork.xcassets/chat-mic.imageset/chat-mic.png",
+      "excludedFromApp": false,
+      "sha256After": "76768b0ec394b17bcd6eb6b54f322d0e739cc1f10f0b15589f9b098c6b7d8efc"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chat-photo.imageset/art.png",
+      "beforeBytes": 3064,
+      "afterBytes": 2629,
+      "deliveryResource": "TableArtwork.xcassets/chat-photo.imageset/chat-photo.png",
+      "excludedFromApp": false,
+      "sha256After": "a4583930a5af00b983fe182f02a6514ac6014e9cffb2d64a0ad844f5101f4b42"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chat-speaker.imageset/art.png",
+      "beforeBytes": 3461,
+      "afterBytes": 2985,
+      "deliveryResource": "TableArtwork.xcassets/chat-speaker.imageset/chat-speaker.png",
+      "excludedFromApp": false,
+      "sha256After": "e118fffddf4e32a6a4e2fa28ab68523607afc84e56b005c1c4910bffc60d6c57"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/check-pink.imageset/art.png",
+      "beforeBytes": 1040,
+      "afterBytes": 908,
+      "deliveryResource": "TableArtwork.xcassets/check-pink.imageset/check-pink.png",
+      "excludedFromApp": false,
+      "sha256After": "6830c322e0b94638a50eef671a847bde3aa919e1feecf187e4f5c7103c6622ab"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/check.imageset/art.png",
+      "beforeBytes": 1158,
+      "afterBytes": 864,
+      "deliveryResource": "TableArtwork.xcassets/check.imageset/check.png",
+      "excludedFromApp": false,
+      "sha256After": "d6870309f55d91534be69ada73e1a12a5edd16aa133b9ca3e5b933718c56f7ee"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/checkin-copy.imageset/art.png",
+      "beforeBytes": 1523120,
+      "afterBytes": 1230180,
+      "deliveryResource": "TableArtwork.xcassets/checkin-copy.imageset/checkin-copy.png",
+      "excludedFromApp": false,
+      "sha256After": "1473795072752fbb1077bcdcfe586a2112c114d5f3f29e4a749333d5b2a9d4f8"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/checkin-entry.imageset/art.png",
+      "beforeBytes": 124584,
+      "afterBytes": 85057,
+      "deliveryResource": "TableArtwork.xcassets/checkin-entry.imageset/checkin-entry.png",
+      "excludedFromApp": false,
+      "sha256After": "a74ee8ec38bdd9f4853b02631abac47d29e66e1f7c354b434775e917a49644d4"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/checkin.imageset/art.png",
+      "beforeBytes": 1513588,
+      "afterBytes": 1229554,
+      "deliveryResource": "TableArtwork.xcassets/checkin.imageset/checkin.png",
+      "excludedFromApp": false,
+      "sha256After": "f9920bf4b87fa1aa764c134535124956101a4325d648b38a83a8c48b2c96947d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chef-avatar.imageset/art.png",
+      "beforeBytes": 11680,
+      "afterBytes": 10125,
+      "deliveryResource": "TableArtwork.xcassets/chef-avatar.imageset/chef-avatar.png",
+      "excludedFromApp": false,
+      "sha256After": "dd17812aa01e49977718e77e15c9a958d22d2191e420420360958407f6c4b22a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chef.imageset/art.png",
+      "beforeBytes": 95523,
+      "afterBytes": 76145,
+      "deliveryResource": "TableArtwork.xcassets/chef.imageset/chef.png",
+      "excludedFromApp": false,
+      "sha256After": "15bd17cd9992daae650928b9ae218e29b78f0606629504a55af1f7fe6d3409bf"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chevron-light.imageset/art.png",
+      "beforeBytes": 465,
+      "afterBytes": 385,
+      "deliveryResource": "TableArtwork.xcassets/chevron-light.imageset/chevron-light.png",
+      "excludedFromApp": false,
+      "sha256After": "5e8cb394273dcca452b118adfd63bc7c09feb7a543870848f3ab6c767414556f"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/chevron.imageset/art.png",
+      "beforeBytes": 492,
+      "afterBytes": 407,
+      "deliveryResource": "TableArtwork.xcassets/chevron.imageset/chevron.png",
+      "excludedFromApp": false,
+      "sha256After": "bf77d998df7ad5dd50b82a4ff051e355641b21b3e67bf510b5c9967093b8bfb9"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/close-light.imageset/art.png",
+      "beforeBytes": 1540,
+      "afterBytes": 1161,
+      "deliveryResource": "TableArtwork.xcassets/close-light.imageset/close-light.png",
+      "excludedFromApp": false,
+      "sha256After": "576f630e28095b631b0d79a3cad3e176e179fb870776ee8723f5f919d1665a0b"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/close.imageset/art.png",
+      "beforeBytes": 1660,
+      "afterBytes": 1378,
+      "deliveryResource": "TableArtwork.xcassets/close.imageset/close.png",
+      "excludedFromApp": false,
+      "sha256After": "6fc5acbd5ca967e6910598e3534adedc73b409594fbc1a2619e6b7dc4ad23c4c"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/coin-pack-card.imageset/art.png",
+      "beforeBytes": 2860,
+      "afterBytes": 1276,
+      "deliveryResource": "TableArtwork.xcassets/coin-pack-card.imageset/coin-pack-card.png",
+      "excludedFromApp": false,
+      "sha256After": "1ae15b91449bc88d9af558c4ba998d5f5d027d1f7e24f26dfe38fd535b5ad1d3"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/coin-pile.imageset/art.png",
+      "beforeBytes": 83381,
+      "afterBytes": 64421,
+      "deliveryResource": "TableArtwork.xcassets/coin-pile.imageset/coin-pile.png",
+      "excludedFromApp": false,
+      "sha256After": "7afa6aac6d1a3bb306e01a7dbfac08aed02ba2b962336b54c6701f93f0114ff6"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/coin-small.imageset/art.png",
+      "beforeBytes": 4186,
+      "afterBytes": 3516,
+      "deliveryResource": "TableArtwork.xcassets/coin-small.imageset/coin-small.png",
+      "excludedFromApp": false,
+      "sha256After": "0e9a44005047d0c9803b71b1fc7d5c147531777fb2e8ad97225ded3bdf9cfe46"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/coin.imageset/art.png",
+      "beforeBytes": 7831,
+      "afterBytes": 6351,
+      "deliveryResource": "TableArtwork.xcassets/coin.imageset/coin.png",
+      "excludedFromApp": false,
+      "sha256After": "87880635b68ea2f6610fd75598f383752f0eedd541b5290b1d895851c6db33bd"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/conversation-call-icons.imageset/art.png",
+      "beforeBytes": 828869,
+      "afterBytes": 746787,
+      "deliveryResource": "TableArtwork.xcassets/conversation-call-icons.imageset/conversation-call-icons.png",
+      "excludedFromApp": false,
+      "sha256After": "2f72952d7807491b0c215c956acd94107d1297adb1d219e6c1f26060371db482"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/day-default.imageset/art.png",
+      "beforeBytes": 2452,
+      "afterBytes": 1246,
+      "deliveryResource": "TableArtwork.xcassets/day-default.imageset/day-default.png",
+      "excludedFromApp": false,
+      "sha256After": "9a36860ace7ab79e399d865448c7ec0645c9cd6a35eb6b070f749799895ab3e1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/day-selected.imageset/art.png",
+      "beforeBytes": 30382,
+      "afterBytes": 14849,
+      "deliveryResource": "TableArtwork.xcassets/day-selected.imageset/day-selected.png",
+      "excludedFromApp": false,
+      "sha256After": "c7d391043c94355fa967306abab90f9a72ad4a434718d0cf8ea3396aa0a4d5b1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/dialog-card.imageset/art.png",
+      "beforeBytes": 44397,
+      "afterBytes": 29381,
+      "deliveryResource": "TableArtwork.xcassets/dialog-card.imageset/dialog-card.png",
+      "excludedFromApp": false,
+      "sha256After": "dc89b041299363a1b95abf256add156a97b754013fa393cfc0738eb9c09357a2"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/discovery-food-menu.imageset/art.png",
+      "beforeBytes": 2428420,
+      "afterBytes": 2296623,
+      "deliveryResource": "TableArtwork.xcassets/discovery-food-menu.imageset/discovery-food-menu.png",
+      "excludedFromApp": false,
+      "sha256After": "51c4fc9c376825dff32b155e5b313132a68f20b0c0c64bd6b6892f2c80f8169e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/discovery-live-camera.imageset/art.png",
+      "beforeBytes": 1319593,
+      "afterBytes": 1209945,
+      "deliveryResource": "TableArtwork.xcassets/discovery-live-camera.imageset/discovery-live-camera.png",
+      "excludedFromApp": false,
+      "sha256After": "01a518691b387e5a77e5879913d765990be2e333db28dc476a9d506c7617a9e8"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/discovery-messages.imageset/art.png",
+      "beforeBytes": 1179165,
+      "afterBytes": 975349,
+      "deliveryResource": "TableArtwork.xcassets/discovery-messages.imageset/discovery-messages.png",
+      "excludedFromApp": false,
+      "sha256After": "d8202765df88e0d4146b12cb07c20cbf3f0d1d436e0c33e842f731314976c72b"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/dropdown.imageset/art.png",
+      "beforeBytes": 537,
+      "afterBytes": 454,
+      "deliveryResource": "TableArtwork.xcassets/dropdown.imageset/dropdown.png",
+      "excludedFromApp": false,
+      "sha256After": "3e3345fc34a44ea296cbbddd2d2f1d6cfcd38d42918b005fd06eec07c7c44299"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/email.imageset/art.png",
+      "beforeBytes": 813,
+      "afterBytes": 616,
+      "deliveryResource": "TableArtwork.xcassets/email.imageset/email.png",
+      "excludedFromApp": false,
+      "sha256After": "773d2d079b0c9030ac21a2476577a82dcbbb73545b668d35a2ef0d713d65b91a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/feedback.imageset/art.png",
+      "beforeBytes": 1119,
+      "afterBytes": 867,
+      "deliveryResource": "TableArtwork.xcassets/feedback.imageset/feedback.png",
+      "excludedFromApp": false,
+      "sha256After": "2f0f4d9e00bdc53c4a52b7c6b7ee87b91d3d21a79dfd9cb8a74988085a198957"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/female.imageset/art.png",
+      "beforeBytes": 1186,
+      "afterBytes": 985,
+      "deliveryResource": "TableArtwork.xcassets/female.imageset/female.png",
+      "excludedFromApp": false,
+      "sha256After": "a1890c101d7e132389c5bdd59b4540aa334bd9260933c0b72eec32fae7d19a8a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/filter.imageset/art.png",
+      "beforeBytes": 1599,
+      "afterBytes": 1380,
+      "deliveryResource": "TableArtwork.xcassets/filter.imageset/filter.png",
+      "excludedFromApp": false,
+      "sha256After": "98586607f8999ee71cf5cbd070685cc814dcf8cbce41a4892afb95e704724914"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/follow-button.imageset/art.png",
+      "beforeBytes": 4350,
+      "afterBytes": 3227,
+      "deliveryResource": "TableArtwork.xcassets/follow-button.imageset/follow-button.png",
+      "excludedFromApp": false,
+      "sha256After": "6ac69935a35b8388563ed228283fd44e0d02896f38c90592a1d0d9e922897bbd"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/follow-small.imageset/art.png",
+      "beforeBytes": 1017,
+      "afterBytes": 777,
+      "deliveryResource": "TableArtwork.xcassets/follow-small.imageset/follow-small.png",
+      "excludedFromApp": false,
+      "sha256After": "24d28f4eea5c429889b2beaeabdc19d0eef07c09dc7b2903510554139a49f1ef"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/followed-button.imageset/art.png",
+      "beforeBytes": 4838,
+      "afterBytes": 3970,
+      "deliveryResource": "TableArtwork.xcassets/followed-button.imageset/followed-button.png",
+      "excludedFromApp": false,
+      "sha256After": "7b5de709b44bcea5703ba2894f64f2b06c0fe0c9f38837fde2af0862c2f58035"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/food-flame.imageset/art.png",
+      "beforeBytes": 4107,
+      "afterBytes": 3533,
+      "deliveryResource": "TableArtwork.xcassets/food-flame.imageset/food-flame.png",
+      "excludedFromApp": false,
+      "sha256After": "038e9ea58d4f2a6e147242f94d301e6007b138b95f346a47e5e63c1ad3351b59"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-balloons.imageset/art.png",
+      "beforeBytes": 27861,
+      "afterBytes": 23889,
+      "deliveryResource": "TableArtwork.xcassets/gift-balloons.imageset/gift-balloons.png",
+      "excludedFromApp": false,
+      "sha256After": "7450c41eb713ba7b01fe13e32e489d609fcc014dc25c27699d7d08915984d2f2"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-box.imageset/art.png",
+      "beforeBytes": 29582,
+      "afterBytes": 25963,
+      "deliveryResource": "TableArtwork.xcassets/gift-box.imageset/gift-box.png",
+      "excludedFromApp": false,
+      "sha256After": "5ce0d1fd1964752e09d5a0793c1d287c76af25f2ff701e69a90423f3d8fbe84b"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-button.imageset/art.png",
+      "beforeBytes": 2856,
+      "afterBytes": 2132,
+      "deliveryResource": "TableArtwork.xcassets/gift-button.imageset/gift-button.png",
+      "excludedFromApp": false,
+      "sha256After": "1c1ed95a2b828f418e0397aa88e82c4bee050e5a3d53c69c29210bbece9a9e54"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-cake.imageset/art.png",
+      "beforeBytes": 29724,
+      "afterBytes": 25030,
+      "deliveryResource": "TableArtwork.xcassets/gift-cake.imageset/gift-cake.png",
+      "excludedFromApp": false,
+      "sha256After": "5dccfca144bdb3d37c0322983afa68e14580ebb2c2c7e6c21c22b1f0b18cd8b2"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-car.imageset/art.png",
+      "beforeBytes": 41131,
+      "afterBytes": 35528,
+      "deliveryResource": "TableArtwork.xcassets/gift-car.imageset/gift-car.png",
+      "excludedFromApp": false,
+      "sha256After": "a941b15caf847cd5ee1e976cd1e454409e4b7cac58a5207212e578e458c0547c"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-chat.imageset/art.png",
+      "beforeBytes": 3387,
+      "afterBytes": 2870,
+      "deliveryResource": "TableArtwork.xcassets/gift-chat.imageset/gift-chat.png",
+      "excludedFromApp": false,
+      "sha256After": "a12a4f3593b02a8a28e1088cf46e00aa2bee58222b1572a38f9decbd48ed3765"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-crown.imageset/art.png",
+      "beforeBytes": 29643,
+      "afterBytes": 25812,
+      "deliveryResource": "TableArtwork.xcassets/gift-crown.imageset/gift-crown.png",
+      "excludedFromApp": false,
+      "sha256After": "0006db9816f4cd77b4f40e822a943c868d987991be8966cc2c69606780490a5f"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-drink.imageset/art.png",
+      "beforeBytes": 27848,
+      "afterBytes": 24599,
+      "deliveryResource": "TableArtwork.xcassets/gift-drink.imageset/gift-drink.png",
+      "excludedFromApp": false,
+      "sha256After": "22114dc9df645cdcb4f6ba8dc0691887facbb4275c271246766d4e7676fd09a2"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-headphones.imageset/art.png",
+      "beforeBytes": 31841,
+      "afterBytes": 27617,
+      "deliveryResource": "TableArtwork.xcassets/gift-headphones.imageset/gift-headphones.png",
+      "excludedFromApp": false,
+      "sha256After": "9537e61b027c56a8676b00663685e968d6b3cc9ddcc7991379fb64197495e316"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-hero.imageset/art.png",
+      "beforeBytes": 67720,
+      "afterBytes": 58412,
+      "deliveryResource": "TableArtwork.xcassets/gift-hero.imageset/gift-hero.png",
+      "excludedFromApp": false,
+      "sha256After": "5951351a18c1892ab381fdbef4d92e54076453d0c40144d63da31329bdaa7277"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-live.imageset/art.png",
+      "beforeBytes": 3382,
+      "afterBytes": 2538,
+      "deliveryResource": "TableArtwork.xcassets/gift-live.imageset/gift-live.png",
+      "excludedFromApp": false,
+      "sha256After": "18b836b50b434c8aea1f1e07dfdb4d71c828749b467a81fb3fe15fb164590ea1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/gift-peach.imageset/art.png",
+      "beforeBytes": 31630,
+      "afterBytes": 27887,
+      "deliveryResource": "TableArtwork.xcassets/gift-peach.imageset/gift-peach.png",
+      "excludedFromApp": false,
+      "sha256After": "3fd279a43bca6638b938538746d57d9c4de6d09818db8a3ccd55f3d0cf9d96c0"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/globe.imageset/art.png",
+      "beforeBytes": 2665,
+      "afterBytes": 2018,
+      "deliveryResource": "TableArtwork.xcassets/globe.imageset/globe.png",
+      "excludedFromApp": false,
+      "sha256After": "b5ca825f447bed111000e99e38c0ba9a0f75ec397a6e5c82728a28bc31ee558d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/go-live.imageset/art.png",
+      "beforeBytes": 29378,
+      "afterBytes": 21443,
+      "deliveryResource": "TableArtwork.xcassets/go-live.imageset/go-live.png",
+      "excludedFromApp": false,
+      "sha256After": "b88e447e876a920a385d339d330d080a77e16a273298fcc55db6fd0fde741f21"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/heart.imageset/art.png",
+      "beforeBytes": 920,
+      "afterBytes": 692,
+      "deliveryResource": "TableArtwork.xcassets/heart.imageset/heart.png",
+      "excludedFromApp": false,
+      "sha256After": "b53abe7b99b65843a835fa05b5b7f8ea2fd1326e0b6fd2afea5c89db14335ce9"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/home-off.imageset/art.png",
+      "beforeBytes": 1595,
+      "afterBytes": 1251,
+      "deliveryResource": "TableArtwork.xcassets/home-off.imageset/home-off.png",
+      "excludedFromApp": false,
+      "sha256After": "461ef9dcb217aa1f7e60f0b00af0cdeb85b72fd26d353d013b7c3e24eeac3de7"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/home-on.imageset/art.png",
+      "beforeBytes": 3122,
+      "afterBytes": 2106,
+      "deliveryResource": "TableArtwork.xcassets/home-on.imageset/home-on.png",
+      "excludedFromApp": false,
+      "sha256After": "a36821a2fa76a61fa07607813b1e7a9d19261b996b68adddfe2923b84d9d7a09"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/host-frame.imageset/art.png",
+      "beforeBytes": 46865,
+      "afterBytes": 39290,
+      "deliveryResource": "TableArtwork.xcassets/host-frame.imageset/host-frame.png",
+      "excludedFromApp": false,
+      "sha256After": "598d4cd07b283d0b4aec86d5944377a3a382328d45f5c8b2ab1d75d57cf37aa3"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/hot-room-blank.imageset/art.png",
+      "beforeBytes": 17611,
+      "afterBytes": 12778,
+      "deliveryResource": "TableArtwork.xcassets/hot-room-blank.imageset/hot-room-blank.png",
+      "excludedFromApp": false,
+      "sha256After": "de9fd2e01fce45cfc6d618c26eeb3ae7ddb95248c855fab386acda2a30540152"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/hot-room.imageset/art.png",
+      "beforeBytes": 18257,
+      "afterBytes": 13473,
+      "deliveryResource": "TableArtwork.xcassets/hot-room.imageset/hot-room.png",
+      "excludedFromApp": false,
+      "sha256After": "79200a833a2c6c57bc0a9fb5b3c6b90acdfbdb6e7cd957a8c82783ac1db43604"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/invite-button.imageset/art.png",
+      "beforeBytes": 2296,
+      "afterBytes": 1992,
+      "deliveryResource": "TableArtwork.xcassets/invite-button.imageset/invite-button.png",
+      "excludedFromApp": false,
+      "sha256After": "90f5b8a8f7b43dac0a98844c144bda3b9d9994070090d13541540adb6346c1cb"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/invite.imageset/art.png",
+      "beforeBytes": 1431,
+      "afterBytes": 1064,
+      "deliveryResource": "TableArtwork.xcassets/invite.imageset/invite.png",
+      "excludedFromApp": false,
+      "sha256After": "799b14f9f5cd009c07b8b25e9e2f2fd9ab8779f2cba69e17a90452cb47a32a2e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/label-gray.imageset/art.png",
+      "beforeBytes": 742,
+      "afterBytes": 546,
+      "deliveryResource": "TableArtwork.xcassets/label-gray.imageset/label-gray.png",
+      "excludedFromApp": false,
+      "sha256After": "0d1054d0a37e5b932e213d557ba2af869efc43d7770a586f672e34852cedf5c5"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/label-olive.imageset/art.png",
+      "beforeBytes": 734,
+      "afterBytes": 576,
+      "deliveryResource": "TableArtwork.xcassets/label-olive.imageset/label-olive.png",
+      "excludedFromApp": false,
+      "sha256After": "c188b1c84ca6abba90b35e575056b3cfd558f78a729b251d733cade4cb53f95e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/label-yellow.imageset/art.png",
+      "beforeBytes": 1797,
+      "afterBytes": 1054,
+      "deliveryResource": "TableArtwork.xcassets/label-yellow.imageset/label-yellow.png",
+      "excludedFromApp": false,
+      "sha256After": "3d850ab0382fa1f00445a7f6d1a03274026c0f6cb25828522f7bf233d8ecefe7"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/layout-seat.imageset/art.png",
+      "beforeBytes": 1190,
+      "afterBytes": 881,
+      "deliveryResource": "TableArtwork.xcassets/layout-seat.imageset/layout-seat.png",
+      "excludedFromApp": false,
+      "sha256After": "5bedc64533419044b7c4f8ccbce3881ce36d4aed843f2e63b090182d2f30da71"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/level-card.imageset/art.png",
+      "beforeBytes": 258139,
+      "afterBytes": 159801,
+      "deliveryResource": "TableArtwork.xcassets/level-card.imageset/level-card.png",
+      "excludedFromApp": false,
+      "sha256After": "9d26fbcb1b22bee34504cea9635b1ac958bcbe3166eb50a38fa36741fe7d7e11"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/level.imageset/art.png",
+      "beforeBytes": 1183,
+      "afterBytes": 873,
+      "deliveryResource": "TableArtwork.xcassets/level.imageset/level.png",
+      "excludedFromApp": false,
+      "sha256After": "42647aa27354770709f68ee8f24cbd0ee6830458004ee1a128ece6db9ff2d3af"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/like-video.imageset/art.png",
+      "beforeBytes": 2884,
+      "afterBytes": 2243,
+      "deliveryResource": "TableArtwork.xcassets/like-video.imageset/like-video.png",
+      "excludedFromApp": false,
+      "sha256After": "fcb250886cd51aa3e7ddfe5766184e39ae11f444c0d41dfb4506f78eee58f08d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-blue.imageset/art.png",
+      "beforeBytes": 1690,
+      "afterBytes": 1408,
+      "deliveryResource": "TableArtwork.xcassets/live-blue.imageset/live-blue.png",
+      "excludedFromApp": false,
+      "sha256After": "b3022c9f6f0e581cf42f9bd21e12ab398e8eb0099a04ebbed50c1a966849c785"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-coral.imageset/art.png",
+      "beforeBytes": 1652,
+      "afterBytes": 1349,
+      "deliveryResource": "TableArtwork.xcassets/live-coral.imageset/live-coral.png",
+      "excludedFromApp": false,
+      "sha256After": "ec4870641e594b516eb81db3d5d4e2474492d7cd67cd899833940ea7d602dcbd"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-green.imageset/art.png",
+      "beforeBytes": 1781,
+      "afterBytes": 1526,
+      "deliveryResource": "TableArtwork.xcassets/live-green.imageset/live-green.png",
+      "excludedFromApp": false,
+      "sha256After": "01531e56e0b176a9ea8661c6e8f20bfb6b6a151c8b5956f77556638559592a04"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-light-pink.imageset/art.png",
+      "beforeBytes": 1692,
+      "afterBytes": 1377,
+      "deliveryResource": "TableArtwork.xcassets/live-light-pink.imageset/live-light-pink.png",
+      "excludedFromApp": false,
+      "sha256After": "9d151f8dd5c2fa228d825d866d7c6a2f2324faccc5649f01b4935617c697b3c6"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-pink.imageset/art.png",
+      "beforeBytes": 1556,
+      "afterBytes": 1190,
+      "deliveryResource": "TableArtwork.xcassets/live-pink.imageset/live-pink.png",
+      "excludedFromApp": false,
+      "sha256After": "b3a0b526e69adedb1463509d380bde8be4ccadfe7b02de23521cef667f9f5fce"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/live-purple.imageset/art.png",
+      "beforeBytes": 1698,
+      "afterBytes": 1393,
+      "deliveryResource": "TableArtwork.xcassets/live-purple.imageset/live-purple.png",
+      "excludedFromApp": false,
+      "sha256After": "0caa66b510c7b6d08f23e86ee5172ee99572dbdbb4c91f39a7bb506273265b3d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/male.imageset/art.png",
+      "beforeBytes": 913,
+      "afterBytes": 726,
+      "deliveryResource": "TableArtwork.xcassets/male.imageset/male.png",
+      "excludedFromApp": false,
+      "sha256After": "1984264f631141d64a2d4e000ee82f9483d574d6c84ce0a8c665641f7863f243"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/me-off.imageset/art.png",
+      "beforeBytes": 1704,
+      "afterBytes": 1210,
+      "deliveryResource": "TableArtwork.xcassets/me-off.imageset/me-off.png",
+      "excludedFromApp": false,
+      "sha256After": "60aa70d3a9c73a7468d272bb505c1789650af7b9427a5aec4b77dbb6502ec4bc"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/me-on.imageset/art.png",
+      "beforeBytes": 3007,
+      "afterBytes": 2261,
+      "deliveryResource": "TableArtwork.xcassets/me-on.imageset/me-on.png",
+      "excludedFromApp": false,
+      "sha256After": "7bbdf3a36e1e260f6e16e565ba980a51e26933cd379c8940e5ad469b9dc7e3eb"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/media-placeholder.imageset/art.png",
+      "beforeBytes": 16813,
+      "afterBytes": 9588,
+      "deliveryResource": "TableArtwork.xcassets/media-placeholder.imageset/media-placeholder.png",
+      "excludedFromApp": false,
+      "sha256After": "546218ad488ea5b6ef1aaeafe656a48efec5c17a51d973723a508ccc668b036a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/mic-muted.imageset/art.png",
+      "beforeBytes": 1011,
+      "afterBytes": 909,
+      "deliveryResource": "TableArtwork.xcassets/mic-muted.imageset/mic-muted.png",
+      "excludedFromApp": false,
+      "sha256After": "076ef692a6dc971d93df35e532e99944dc7fc82fad71f0e3d8c3d6f50175cdb8"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/mic-small.imageset/art.png",
+      "beforeBytes": 993,
+      "afterBytes": 853,
+      "deliveryResource": "TableArtwork.xcassets/mic-small.imageset/mic-small.png",
+      "excludedFromApp": false,
+      "sha256After": "52752b33506cca1ccbee8baefeed491e60225cf956dd2798b033a26c560a6009"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/missing-icons.imageset/art.png",
+      "beforeBytes": 1214082,
+      "afterBytes": 1080096,
+      "deliveryResource": "TableArtwork.xcassets/missing-icons.imageset/missing-icons.png",
+      "excludedFromApp": false,
+      "sha256After": "d68a853bfb32bc5ce4c2be46923afc5ea7250a0a1ca20318261d6c88a92a5548"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/more.imageset/art.png",
+      "beforeBytes": 1656,
+      "afterBytes": 1336,
+      "deliveryResource": "TableArtwork.xcassets/more.imageset/more.png",
+      "excludedFromApp": false,
+      "sha256After": "f1e8621555869dab4f418b3304e483a65950b50e1d67cef94938f53fa5d5b6ca"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/music-disc.imageset/art.png",
+      "beforeBytes": 2486,
+      "afterBytes": 2004,
+      "deliveryResource": "TableArtwork.xcassets/music-disc.imageset/music-disc.png",
+      "excludedFromApp": false,
+      "sha256After": "de20a0a38a20f77ab8da650ced3214d77c3c6ac24470936780bd843b7c2eb914"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/outlined-card.imageset/art.png",
+      "beforeBytes": 184922,
+      "afterBytes": 129575,
+      "deliveryResource": "TableArtwork.xcassets/outlined-card.imageset/outlined-card.png",
+      "excludedFromApp": false,
+      "sha256After": "02590a86b4ff6612547465e8f6fd7b6e23e219ccc1c76d80aaa26f08b11e0539"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/page-background.imageset/art.png",
+      "beforeBytes": 292106,
+      "afterBytes": 148671,
+      "deliveryResource": "TableArtwork.xcassets/page-background.imageset/page-background.png",
+      "excludedFromApp": false,
+      "sha256After": "257208cc1748d36444b27ad17620e72c2ea3209fe064945763586cc8a66f16e4"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/paw.imageset/art.png",
+      "beforeBytes": 1168,
+      "afterBytes": 884,
+      "deliveryResource": "TableArtwork.xcassets/paw.imageset/paw.png",
+      "excludedFromApp": false,
+      "sha256After": "61c543a6f2e3fe4dc98f1989301e62a216b2418b0aa5a7084d8b6a3e828782f7"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/play-small.imageset/art.png",
+      "beforeBytes": 550,
+      "afterBytes": 433,
+      "deliveryResource": "TableArtwork.xcassets/play-small.imageset/play-small.png",
+      "excludedFromApp": false,
+      "sha256After": "a93b73622d4b765a484ba85fa7789cc77a0eea1ac072597099992d13e015b2f0"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/post-video.imageset/art.png",
+      "beforeBytes": 21802,
+      "afterBytes": 15826,
+      "deliveryResource": "TableArtwork.xcassets/post-video.imageset/post-video.png",
+      "excludedFromApp": false,
+      "sha256After": "067dc35648dfdb1d82ebde6919d1efe70426af49db3262987d979d9c250137c0"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/price-pill.imageset/art.png",
+      "beforeBytes": 1420,
+      "afterBytes": 1126,
+      "deliveryResource": "TableArtwork.xcassets/price-pill.imageset/price-pill.png",
+      "excludedFromApp": false,
+      "sha256After": "b26a4290c5abf4f7845a068536c5707a842cd11c0de27031748f3a44bd7cbc53"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/profile-button.imageset/art.png",
+      "beforeBytes": 3400,
+      "afterBytes": 2911,
+      "deliveryResource": "TableArtwork.xcassets/profile-button.imageset/profile-button.png",
+      "excludedFromApp": false,
+      "sha256After": "fe98cc5307f8d15d84678446b957f13b1f5962e2e6958b4f55ccc4c11ae8e774"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/profile-heading.imageset/art.png",
+      "beforeBytes": 31020,
+      "afterBytes": 22377,
+      "deliveryResource": "TableArtwork.xcassets/profile-heading.imageset/profile-heading.png",
+      "excludedFromApp": false,
+      "sha256After": "45d52304a36e6b80a3b7877cbb84c45ed1eae1f582ada2fa5ec7bea71cf638dd"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/profile-photo-camera.imageset/art.png",
+      "beforeBytes": 1009115,
+      "afterBytes": 895824,
+      "deliveryResource": "TableArtwork.xcassets/profile-photo-camera.imageset/profile-photo-camera.png",
+      "excludedFromApp": false,
+      "sha256After": "f10fbe3cf4fb404de47846c8adf6386dd61bc89d0f397d47ac8af7fe8c2826a1"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/profile-table-friends.imageset/art.png",
+      "beforeBytes": 1569184,
+      "afterBytes": 1522912,
+      "deliveryResource": "TableArtwork.xcassets/profile-table-friends.imageset/profile-table-friends.png",
+      "excludedFromApp": false,
+      "sha256After": "9c00f592bc552da0fa3616af2088e2db8d5a372c6d3f9d7b026001e243aa46c6"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/publish.imageset/art.png",
+      "beforeBytes": 1567,
+      "afterBytes": 1133,
+      "deliveryResource": "TableArtwork.xcassets/publish.imageset/publish.png",
+      "excludedFromApp": false,
+      "sha256After": "4f7c429286841e458ac45e4b73d840213309b7a72c756a76843384b2f7518805"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/rank-background.imageset/art.png",
+      "beforeBytes": 1614008,
+      "afterBytes": 982949,
+      "deliveryResource": "TableArtwork.xcassets/rank-background.imageset/rank-background.png",
+      "excludedFromApp": false,
+      "sha256After": "c3f0693c388fc5b2c8ff13abae8cc910b90d209d99909aa014527b3be3147249"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/rank-entry.imageset/art.png",
+      "beforeBytes": 19095,
+      "afterBytes": 14910,
+      "deliveryResource": "TableArtwork.xcassets/rank-entry.imageset/rank-entry.png",
+      "excludedFromApp": false,
+      "sha256After": "6ce6a3e8a45d9b4500041897d657b11e47ab1849f4df19d35673159d5b0d3a1a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/recharge-banner.imageset/art.png",
+      "beforeBytes": 173701,
+      "afterBytes": 113156,
+      "deliveryResource": "TableArtwork.xcassets/recharge-banner.imageset/recharge-banner.png",
+      "excludedFromApp": false,
+      "sha256After": "f2e908272a6bf6dede906c809a216ab2ff252b876563aab2c865c39347b55410"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/remove.imageset/art.png",
+      "beforeBytes": 1170,
+      "afterBytes": 842,
+      "deliveryResource": "TableArtwork.xcassets/remove.imageset/remove.png",
+      "excludedFromApp": false,
+      "sha256After": "7803256bdb324f71ce22887803997829dac8460d0ca1b39a3f4d52dc7192cda5"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/report-button.imageset/art.png",
+      "beforeBytes": 6124,
+      "afterBytes": 5023,
+      "deliveryResource": "TableArtwork.xcassets/report-button.imageset/report-button.png",
+      "excludedFromApp": false,
+      "sha256After": "2081ea949ae18493b587751522e29a089bd0e97759ca58fc5a217309a869da5a"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/room-off.imageset/art.png",
+      "beforeBytes": 1559,
+      "afterBytes": 1154,
+      "deliveryResource": "TableArtwork.xcassets/room-off.imageset/room-off.png",
+      "excludedFromApp": false,
+      "sha256After": "abcc8a486412e9bf7b749a2514cbed75a0a94c60243d96d9b8efafaf84e00979"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/room-on.imageset/art.png",
+      "beforeBytes": 3003,
+      "afterBytes": 2078,
+      "deliveryResource": "TableArtwork.xcassets/room-on.imageset/room-on.png",
+      "excludedFromApp": false,
+      "sha256After": "6400b19786cfaf6e383735492bf9539297832c985a19d2680f4b14e8cb6600c6"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/search.imageset/art.png",
+      "beforeBytes": 9846,
+      "afterBytes": 8332,
+      "deliveryResource": "TableArtwork.xcassets/search.imageset/search.png",
+      "excludedFromApp": false,
+      "sha256After": "af6c0736dcb147efed799234288631d9d3f3d7ec9d4f442db0d822d2331f35ab"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/selected.imageset/art.png",
+      "beforeBytes": 1275,
+      "afterBytes": 984,
+      "deliveryResource": "TableArtwork.xcassets/selected.imageset/selected.png",
+      "excludedFromApp": false,
+      "sha256After": "12f258a8807c422dfb45f2f623a983c5a95885c411b5e8cdef9c537670a5809b"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/settings.imageset/art.png",
+      "beforeBytes": 1841,
+      "afterBytes": 1476,
+      "deliveryResource": "TableArtwork.xcassets/settings.imageset/settings.png",
+      "excludedFromApp": false,
+      "sha256After": "04cf855f763009fbe7f5b9544095c7c8b7d41544786600c94f0e867ebbf6a52f"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/small-pill.imageset/art.png",
+      "beforeBytes": 1491,
+      "afterBytes": 1154,
+      "deliveryResource": "TableArtwork.xcassets/small-pill.imageset/small-pill.png",
+      "excludedFromApp": false,
+      "sha256After": "7585a66bd57699666ae5f796d8d80cb7836997d7d1f55bb0aceeacd9dd706dae"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-blue-thumb.imageset/art.png",
+      "beforeBytes": 107794,
+      "afterBytes": 83049,
+      "deliveryResource": "TableArtwork.xcassets/stage-blue-thumb.imageset/stage-blue-thumb.png",
+      "excludedFromApp": false,
+      "sha256After": "fb296ac13e3d79e2edcd6fb45d679d7d6b70bcd17d905194a382238ffa618329"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-blue.imageset/art.png",
+      "beforeBytes": 1526278,
+      "afterBytes": 1018711,
+      "deliveryResource": "TableArtwork.xcassets/stage-blue.imageset/stage-blue.png",
+      "excludedFromApp": false,
+      "sha256After": "8f1839b1188160c9ecb3d5d23735d2bc4ba0f504baa52d254eeafe68446e47da"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-confetti.imageset/art.png",
+      "beforeBytes": 2520346,
+      "afterBytes": 1861322,
+      "deliveryResource": "TableArtwork.xcassets/stage-confetti.imageset/stage-confetti.png",
+      "excludedFromApp": false,
+      "sha256After": "84552dce13c01aa0f539f44a97025ea4897de66814600b778699094394bef805"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-gifts-thumb.imageset/art.png",
+      "beforeBytes": 113214,
+      "afterBytes": 89405,
+      "deliveryResource": "TableArtwork.xcassets/stage-gifts-thumb.imageset/stage-gifts-thumb.png",
+      "excludedFromApp": false,
+      "sha256After": "1d958d3f63e8d2ef2ce345adaa81e6f88e527e32f9c5a334c1e51cf421aa06b6"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-gifts.imageset/art.png",
+      "beforeBytes": 1936517,
+      "afterBytes": 1308855,
+      "deliveryResource": "TableArtwork.xcassets/stage-gifts.imageset/stage-gifts.png",
+      "excludedFromApp": false,
+      "sha256After": "a643ac60af530c4039be5eb20e460eed1d60f554b51b0b8f3e64efbc9675f325"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-purple-thumb.imageset/art.png",
+      "beforeBytes": 102319,
+      "afterBytes": 64657,
+      "deliveryResource": "TableArtwork.xcassets/stage-purple-thumb.imageset/stage-purple-thumb.png",
+      "excludedFromApp": false,
+      "sha256After": "84884781b1df73d1b8a9be6271f86a219eed1e56becdbfe7623b56eb7e54d841"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/stage-purple.imageset/art.png",
+      "beforeBytes": 1900879,
+      "afterBytes": 1225880,
+      "deliveryResource": "TableArtwork.xcassets/stage-purple.imageset/stage-purple.png",
+      "excludedFromApp": false,
+      "sha256After": "529c3160daf160361d394ea8ea7fd06e2a4b12363e1da57f8c5dba6c8849b13e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/support-avatar.imageset/art.png",
+      "beforeBytes": 13456,
+      "afterBytes": 11337,
+      "deliveryResource": "TableArtwork.xcassets/support-avatar.imageset/support-avatar.png",
+      "excludedFromApp": false,
+      "sha256After": "3bc9bc78fc486fbf5e203134cc7a2ef7420815cf48f1f5ae8fe9677a30c8fc00"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/support-banner.imageset/art.png",
+      "beforeBytes": 216987,
+      "afterBytes": 152450,
+      "deliveryResource": "TableArtwork.xcassets/support-banner.imageset/support-banner.png",
+      "excludedFromApp": false,
+      "sha256After": "1bd69374dc2084449ed7f71a950f361e6cf3d801792393c463237e97adb4c810"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/support-mascot.imageset/art.png",
+      "beforeBytes": 90670,
+      "afterBytes": 69945,
+      "deliveryResource": "TableArtwork.xcassets/support-mascot.imageset/support-mascot.png",
+      "excludedFromApp": false,
+      "sha256After": "684bd97535a9aa001aa8d2085bf06eec760c97560ce8a737e9475ce96fe2fec5"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/support.imageset/art.png",
+      "beforeBytes": 2331,
+      "afterBytes": 1862,
+      "deliveryResource": "TableArtwork.xcassets/support.imageset/support.png",
+      "excludedFromApp": false,
+      "sha256After": "8f4351bc35f7e1c10e84484859b5565f0e6a5c56f11576c3754fe86deb481714"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tag.imageset/art.png",
+      "beforeBytes": 1411,
+      "afterBytes": 1077,
+      "deliveryResource": "TableArtwork.xcassets/tag.imageset/tag.png",
+      "excludedFromApp": false,
+      "sha256After": "519246a77fa1e3e7d8b53c3085189f11050c712d174fc31df10cf323fe445609"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/toggle-on.imageset/art.png",
+      "beforeBytes": 1647,
+      "afterBytes": 1226,
+      "deliveryResource": "TableArtwork.xcassets/toggle-on.imageset/toggle-on.png",
+      "excludedFromApp": false,
+      "sha256After": "2781d523f2581423c99537b0e6a3aee071e8cbe4fa5063cb3a513ae199c8eb7d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-background.imageset/art.png",
+      "beforeBytes": 3250,
+      "afterBytes": 2562,
+      "deliveryResource": "TableArtwork.xcassets/tool-background.imageset/tool-background.png",
+      "excludedFromApp": false,
+      "sha256After": "7e9b5c699838bf3b9df81d48c500188b6af6f88780ca282de11f2edc0443089d"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-invite.imageset/art.png",
+      "beforeBytes": 4052,
+      "afterBytes": 3288,
+      "deliveryResource": "TableArtwork.xcassets/tool-invite.imageset/tool-invite.png",
+      "excludedFromApp": false,
+      "sha256After": "9d424427b8929a1f156c9a4b384c355dda3fa1e20ca44394032c53d3bc57db3e"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-layout.imageset/art.png",
+      "beforeBytes": 3278,
+      "afterBytes": 2373,
+      "deliveryResource": "TableArtwork.xcassets/tool-layout.imageset/tool-layout.png",
+      "excludedFromApp": false,
+      "sha256After": "bcc6ba585a6387154ab892abefdba700a0b7f1031aac95d46b298b4b44c1c509"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-leave.imageset/art.png",
+      "beforeBytes": 2949,
+      "afterBytes": 2128,
+      "deliveryResource": "TableArtwork.xcassets/tool-leave.imageset/tool-leave.png",
+      "excludedFromApp": false,
+      "sha256After": "9915cd23c16f77cf7ab350749b8734a731f886429032ae846ffe2ede6921e1b3"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-mic.imageset/art.png",
+      "beforeBytes": 3979,
+      "afterBytes": 3176,
+      "deliveryResource": "TableArtwork.xcassets/tool-mic.imageset/tool-mic.png",
+      "excludedFromApp": false,
+      "sha256After": "6f8398a6613aea06fe187fe8057d9bd3b116722a93b2b518a8b0b6ccd604f0f3"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/tool-music.imageset/art.png",
+      "beforeBytes": 3463,
+      "afterBytes": 2445,
+      "deliveryResource": "TableArtwork.xcassets/tool-music.imageset/tool-music.png",
+      "excludedFromApp": false,
+      "sha256After": "6404c7a7d301c9b1a6ee2ad29792fea446cd51b989efb43b6f53b1326b793c91"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/topic-banner.imageset/art.png",
+      "beforeBytes": 50550,
+      "afterBytes": 39791,
+      "deliveryResource": "TableArtwork.xcassets/topic-banner.imageset/topic-banner.png",
+      "excludedFromApp": false,
+      "sha256After": "ee732e4a4c62c624a69efa99c02f3f1ee7c5e5e0b98e32459e9dfb29acd32d31"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/trophy.imageset/art.png",
+      "beforeBytes": 1256,
+      "afterBytes": 1069,
+      "deliveryResource": "TableArtwork.xcassets/trophy.imageset/trophy.png",
+      "excludedFromApp": false,
+      "sha256After": "363f1227b495e99ba68051ae655b40c384bd5eb20914cea63abd44f3bb280f25"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/versus.imageset/art.png",
+      "beforeBytes": 53521,
+      "afterBytes": 45382,
+      "deliveryResource": "TableArtwork.xcassets/versus.imageset/versus.png",
+      "excludedFromApp": false,
+      "sha256After": "b3196011c6b5e70aa7a631be14cac80c5c3d7c8ce076a362848bbab53aadde92"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/video-heading.imageset/art.png",
+      "beforeBytes": 31425,
+      "afterBytes": 23893,
+      "deliveryResource": "TableArtwork.xcassets/video-heading.imageset/video-heading.png",
+      "excludedFromApp": false,
+      "sha256After": "5fb47e09f33e3f1531c22ed2fe40a74dfd2d16f12ca44af4637cb5d58d38585f"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/video-off.imageset/art.png",
+      "beforeBytes": 1873,
+      "afterBytes": 1345,
+      "deliveryResource": "TableArtwork.xcassets/video-off.imageset/video-off.png",
+      "excludedFromApp": false,
+      "sha256After": "32fef94df5f7ff9926cd94bb5419b1182b7af54c1004791f8e398f69e44f4a28"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/video-on.imageset/art.png",
+      "beforeBytes": 3234,
+      "afterBytes": 2187,
+      "deliveryResource": "TableArtwork.xcassets/video-on.imageset/video-on.png",
+      "excludedFromApp": false,
+      "sha256After": "f205b7589ed0f0bec6765c8a85acddea45d872797a2999e906cb3d6ce39175a4"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/voice-topic-kitchen.imageset/art.png",
+      "beforeBytes": 1534528,
+      "afterBytes": 1501291,
+      "deliveryResource": "TableArtwork.xcassets/voice-topic-kitchen.imageset/voice-topic-kitchen.png",
+      "excludedFromApp": false,
+      "sha256After": "10c163b0c91bcb61e7b9c5a80eda56828c6f21c78372eab4272d8105dfefc435"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/wallet-card.imageset/art.png",
+      "beforeBytes": 6345,
+      "afterBytes": 3395,
+      "deliveryResource": "TableArtwork.xcassets/wallet-card.imageset/wallet-card.png",
+      "excludedFromApp": false,
+      "sha256After": "8ec764be39ec7d79b6196c5970c223e006836b02e29296500500cbc4285b1ae3"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/wallet-entry.imageset/art.png",
+      "beforeBytes": 126002,
+      "afterBytes": 87288,
+      "deliveryResource": "TableArtwork.xcassets/wallet-entry.imageset/wallet-entry.png",
+      "excludedFromApp": false,
+      "sha256After": "c2a2e51d507c6eb3a248b0b3134a217f4883803cab6f64fb58697c1c27d0dd29"
+    },
+    {
+      "resource": "TatiArtwork.xcassets/welcome.imageset/art.png",
+      "beforeBytes": 1470108,
+      "afterBytes": 1180625,
+      "deliveryResource": "TableArtwork.xcassets/welcome.imageset/welcome.png",
+      "excludedFromApp": false,
+      "sha256After": "2dd7b0d987cec140f1e28104bbac372cce1eef41d03ad55a84672ca6024fb17c"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-01.imageset/content.jpg",
+      "beforeBytes": 261985,
+      "afterBytes": 261985,
+      "deliveryResource": "KitchenMedia.xcassets/member-luna-portrait.imageset/member-luna-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "c7be9101699a7fec9469d75f4653644c3b6e58c8451b15d83b8f93d7a20ef4a9"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-02.imageset/content.jpg",
+      "beforeBytes": 89405,
+      "afterBytes": 89405,
+      "deliveryResource": "KitchenMedia.xcassets/member-avery-portrait.imageset/member-avery-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "4a7983f161796f51279b6ae84a688ca54891aea236642673c9a8efb3c69fef64"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-03.imageset/content.jpg",
+      "beforeBytes": 73736,
+      "afterBytes": 73736,
+      "deliveryResource": "KitchenMedia.xcassets/member-rowan-portrait.imageset/member-rowan-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "2fcff461bc49fd31ec0d3cbaef619d596f00993958e6036a2cc10bfca13ba0c4"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-04.imageset/content.jpg",
+      "beforeBytes": 115368,
+      "afterBytes": 115368,
+      "deliveryResource": "KitchenMedia.xcassets/member-andre-portrait.imageset/member-andre-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "6a4258408a0ce94660a514a0c8d3e4b20b6e324d917a825f6131d75b38cc2005"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-05.imageset/content.jpg",
+      "beforeBytes": 265569,
+      "afterBytes": 265569,
+      "deliveryResource": "KitchenMedia.xcassets/member-picnic-notes-portrait.imageset/member-picnic-notes-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "0d0ad5495044cec0f128064193be559ea32411a00b683a88ad432b11f4e4a900"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-06.imageset/content.jpg",
+      "beforeBytes": 178303,
+      "afterBytes": 178303,
+      "deliveryResource": "KitchenMedia.xcassets/member-ellis-portrait.imageset/member-ellis-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "3858846b484e0b7ab2e16a95fc0c1ad0888f33debc1cf6ef5121fadf38ebf917"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-07.imageset/content.jpg",
+      "beforeBytes": 168921,
+      "afterBytes": 168921,
+      "deliveryResource": "KitchenMedia.xcassets/member-jamie-portrait.imageset/member-jamie-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "6a5318de3b059ac73687adc677f96b20a22f1aeddc3f0b842b7bafaf8801d390"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-08.imageset/content.jpg",
+      "beforeBytes": 124544,
+      "afterBytes": 124544,
+      "deliveryResource": "KitchenMedia.xcassets/member-morgan-portrait.imageset/member-morgan-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "ab1ce3c81863c09f9a397d89d1a2c671ca39a36d62c5eed722c735c71b4bb009"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-09.imageset/content.jpg",
+      "beforeBytes": 149089,
+      "afterBytes": 149089,
+      "deliveryResource": "KitchenMedia.xcassets/member-quinn-portrait.imageset/member-quinn-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "8104452c03b3239582a6a29c7a8bb8f3056e3b5cc799f00302eeb6a203dae95d"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-10.imageset/content.jpg",
+      "beforeBytes": 148048,
+      "afterBytes": 148048,
+      "deliveryResource": "KitchenMedia.xcassets/member-riley-portrait.imageset/member-riley-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "df6af6e0551fd7287d661b7992cd180ef23ec0d45170a6afc5b85a0367dbd002"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-11.imageset/content.jpg",
+      "beforeBytes": 104932,
+      "afterBytes": 104932,
+      "deliveryResource": "KitchenMedia.xcassets/member-the-lunch-table-portrait.imageset/member-the-lunch-table-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "20c4afd102ab2532b1fb3e65c9aed472497a01c92957aa0541da252db1b228e9"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-12.imageset/content.jpg",
+      "beforeBytes": 47330,
+      "afterBytes": 47330,
+      "deliveryResource": "KitchenMedia.xcassets/member-chloe-portrait.imageset/member-chloe-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "5dd38039ee9ceb867365d027fee85cd4b372684d52f8fc6e1fdaa344515738bc"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-13.imageset/content.jpg",
+      "beforeBytes": 178522,
+      "afterBytes": 178522,
+      "deliveryResource": "KitchenMedia.xcassets/member-blair-portrait.imageset/member-blair-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "a3f39734271b6e4a84b6a9ed8781c5a2043b170c9179a73fe44042a4c3550034"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-14.imageset/content.jpg",
+      "beforeBytes": 113698,
+      "afterBytes": 113698,
+      "deliveryResource": "KitchenMedia.xcassets/member-cameron-portrait.imageset/member-cameron-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "d08a2795964c6d419e7283ca36c13c163b0e6c755af114f4a80a8783175d78a9"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-15.imageset/content.jpg",
+      "beforeBytes": 178495,
+      "afterBytes": 178495,
+      "deliveryResource": "KitchenMedia.xcassets/member-reese-portrait.imageset/member-reese-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "d3eb7568865a55ecea8e392ad6562c99baeef7db319d8ae582c151345714f99c"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-16.imageset/content.jpg",
+      "beforeBytes": 74122,
+      "afterBytes": 74122,
+      "deliveryResource": "KitchenMedia.xcassets/member-finley-portrait.imageset/member-finley-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "4ffbbffbe856ee495ef4c7f300e3835720406fec0c90866a7729103824c13b68"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-17.imageset/content.jpg",
+      "beforeBytes": 133452,
+      "afterBytes": 133452,
+      "deliveryResource": "KitchenMedia.xcassets/member-jordan-portrait.imageset/member-jordan-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "e2e68b48ab62efdd52de289884e19971f7e6903b5771c1da963abc95c6dfc799"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-18.imageset/content.jpg",
+      "beforeBytes": 142619,
+      "afterBytes": 142619,
+      "deliveryResource": "KitchenMedia.xcassets/member-alex-portrait.imageset/member-alex-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "101b3ae3291258869275143767a9d6a73d62b1ff99091d13ad94c6b506047239"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-19.imageset/content.jpg",
+      "beforeBytes": 76419,
+      "afterBytes": 76419,
+      "deliveryResource": "KitchenMedia.xcassets/member-harper-portrait.imageset/member-harper-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "8007014f178f91783f8cc7c25c4335050d18fba0c56320d3819aaa5c3202fa57"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-20.imageset/content.jpg",
+      "beforeBytes": 64672,
+      "afterBytes": 64672,
+      "deliveryResource": "KitchenMedia.xcassets/member-drew-portrait.imageset/member-drew-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "39c94a49c41723ba07dadb7a2afc7b32a0c2c37068cc966358ce1dd978c9ddf4"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-21.imageset/content.jpg",
+      "beforeBytes": 142002,
+      "afterBytes": 142002,
+      "deliveryResource": "KitchenMedia.xcassets/member-taylor-portrait.imageset/member-taylor-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "a8f3870bf2ab0e40313a1d1ef1c52a8aeba0cb1747a501779ec039175ba2b6ce"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-22.imageset/content.jpg",
+      "beforeBytes": 196561,
+      "afterBytes": 196561,
+      "deliveryResource": "KitchenMedia.xcassets/member-parker-portrait.imageset/member-parker-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "23f4327b980b0dc065c03a6316379b693a10dcfb72f4bd74e6356a7a07d2cfa8"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-23.imageset/content.jpg",
+      "beforeBytes": 305528,
+      "afterBytes": 305528,
+      "deliveryResource": "KitchenMedia.xcassets/member-skyler-portrait.imageset/member-skyler-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "2c0c635a06ffab8196029a0556c63183f7cda805127b13807387936e98abefab"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-24.imageset/content.jpg",
+      "beforeBytes": 166809,
+      "afterBytes": 166809,
+      "deliveryResource": "KitchenMedia.xcassets/member-charlie-portrait.imageset/member-charlie-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "ab496b6e237eb3a76f95ebc12a931cbb6129a0accb2397baaea1867006e6056e"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-25.imageset/content.jpg",
+      "beforeBytes": 209614,
+      "afterBytes": 209614,
+      "deliveryResource": "KitchenMedia.xcassets/member-river-portrait.imageset/member-river-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "0ef210a0d8a371048afd674a7da5849c884b37d935657f0e4da97d53af3f82d4"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-26.imageset/content.jpg",
+      "beforeBytes": 123291,
+      "afterBytes": 123291,
+      "deliveryResource": "KitchenMedia.xcassets/member-casey-portrait.imageset/member-casey-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "599489eee1a805c7821124a5cfacdde76fd06afc4065f86e3fd60ce7184b6168"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-27.imageset/content.jpg",
+      "beforeBytes": 198641,
+      "afterBytes": 163392,
+      "deliveryResource": "KitchenMedia.xcassets/member-robin-portrait.imageset/member-robin-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "4b49dc67b205c8cb3f3249a17e577b696b1c1abdb5ceab5cac9fc5868bfc6e7e"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-28.imageset/content.jpg",
+      "beforeBytes": 219514,
+      "afterBytes": 219514,
+      "deliveryResource": "KitchenMedia.xcassets/member-blake-portrait.imageset/member-blake-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "672ff00a287e2e2d967078b3d98e282f5b9af8f1906d3807cdbc66056f8fc4d8"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-29.imageset/content.jpg",
+      "beforeBytes": 82037,
+      "afterBytes": 82037,
+      "deliveryResource": "KitchenMedia.xcassets/member-hayden-portrait.imageset/member-hayden-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "88e15f5e512245fdc486be4bf17a0340af6376e15e8f4aeb9d94b5c6523c1d15"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-30.imageset/content.jpg",
+      "beforeBytes": 167016,
+      "afterBytes": 167016,
+      "deliveryResource": "KitchenMedia.xcassets/member-arden-portrait.imageset/member-arden-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "aae9c18901871e38f9ae53ed7b36df64ebe4c5c84187313e2e98473bf37d5b5a"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-31.imageset/content.jpg",
+      "beforeBytes": 125336,
+      "afterBytes": 125336,
+      "deliveryResource": "KitchenMedia.xcassets/member-marley-portrait.imageset/member-marley-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "867c6c1de277628ffece94e086f1cb89e6245128aef28cb8857cd8d2b180bc2e"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-32.imageset/content.jpg",
+      "beforeBytes": 308621,
+      "afterBytes": 308621,
+      "deliveryResource": "KitchenMedia.xcassets/member-remy-portrait.imageset/member-remy-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "06d5e576684d0919dcc4b816f7d6087b0ea3f7fef91fa9d26bd9f4fad7e52c94"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-33.imageset/content.jpg",
+      "beforeBytes": 164198,
+      "afterBytes": 164198,
+      "deliveryResource": "KitchenMedia.xcassets/member-elowen-portrait.imageset/member-elowen-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "58f43037420f0a325ed471a41172a834459776233f74b8e663dc6f35b811590b"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-34.imageset/content.jpg",
+      "beforeBytes": 111585,
+      "afterBytes": 111585,
+      "deliveryResource": "KitchenMedia.xcassets/member-frankie-portrait.imageset/member-frankie-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "56b53a6aa85e8f545f94f4ebb97b8e7ba6016f8cc1bbd6a29add7406f7bf32f4"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-35.imageset/content.jpg",
+      "beforeBytes": 129116,
+      "afterBytes": 129116,
+      "deliveryResource": "KitchenMedia.xcassets/member-jules-portrait.imageset/member-jules-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "af8ad5f628a988dca87db25a4e309286053f21f8499606c9adc14494cac58645"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-36.imageset/content.jpg",
+      "beforeBytes": 124458,
+      "afterBytes": 124458,
+      "deliveryResource": "KitchenMedia.xcassets/member-lane-portrait.imageset/member-lane-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "e450ba48468751df97f7d4fd026ec83e993d3731f972d7754345998e6bd69f6a"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-37.imageset/content.jpeg",
+      "beforeBytes": 133678,
+      "afterBytes": 133678,
+      "deliveryResource": "KitchenMedia.xcassets/member-maria-portrait.imageset/member-maria-portrait.jpeg",
+      "excludedFromApp": false,
+      "sha256After": "c85dc2ba65fb2a733510fd94c37a907e5cd4d1b7e40b95218dbee06fc58ad3c9"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-38.imageset/content.jpg",
+      "beforeBytes": 139184,
+      "afterBytes": 139184,
+      "deliveryResource": "KitchenMedia.xcassets/member-shiloh-portrait.imageset/member-shiloh-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "283daf40fd99df33843d8681d9000807669f28d05692cdfb3511400b8fe1808f"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-39.imageset/content.jpg",
+      "beforeBytes": 108147,
+      "afterBytes": 108147,
+      "deliveryResource": "KitchenMedia.xcassets/member-milan-portrait.imageset/member-milan-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "1fd11cf8589237439c118955345927f0dad75222ca1a5852aa25350150b0889f"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-40.imageset/content.jpg",
+      "beforeBytes": 177003,
+      "afterBytes": 177003,
+      "deliveryResource": "KitchenMedia.xcassets/member-dakota-portrait.imageset/member-dakota-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "f27b829d342b31178e9393ae33fbe92f63d82ead9e11a2899945bd21155ff09d"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-41.imageset/content.jpg",
+      "beforeBytes": 162425,
+      "afterBytes": 162425,
+      "deliveryResource": "KitchenMedia.xcassets/member-scout-portrait.imageset/member-scout-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "6ac570ed952b1267f80b234f7e7c534a6860f720c86fbd495f35664ecd8444b7"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-42.imageset/content.jpg",
+      "beforeBytes": 298418,
+      "afterBytes": 298418,
+      "deliveryResource": "KitchenMedia.xcassets/member-seraphina-portrait.imageset/member-seraphina-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "679203307e2621af2660b48b0c7573ecfef29d8312a82d2058754e9448b27149"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-43.imageset/content.jpg",
+      "beforeBytes": 244248,
+      "afterBytes": 244248,
+      "deliveryResource": "KitchenMedia.xcassets/member-kendall-portrait.imageset/member-kendall-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "4e011353303c51bef42c25aa4a35cfb05e66a6b49abd95faf1c0c3bf46d246fd"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-44.imageset/content.jpg",
+      "beforeBytes": 58691,
+      "afterBytes": 58691,
+      "deliveryResource": "KitchenMedia.xcassets/member-rory-portrait.imageset/member-rory-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "54c6602fe0d70356d07ba8712d0dcf9307fa0db69dba64d1cc49b84b7d27eaed"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-45.imageset/content.jpg",
+      "beforeBytes": 105299,
+      "afterBytes": 105299,
+      "deliveryResource": "KitchenMedia.xcassets/member-two-forks-portrait.imageset/member-two-forks-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "8fc30e21126d926d5d01f4ff3a28d706d3ed3bd8f3b41e1262156c3bb4174cd1"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-46.imageset/content.jpg",
+      "beforeBytes": 161971,
+      "afterBytes": 161971,
+      "deliveryResource": "KitchenMedia.xcassets/member-linden-portrait.imageset/member-linden-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "ba51ab2a2117e99cb6c15640cdd0485e3052bb880249bd54dc5da8f5af6b5e09"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-47.imageset/content.jpg",
+      "beforeBytes": 356216,
+      "afterBytes": 356216,
+      "deliveryResource": "KitchenMedia.xcassets/member-reagan-portrait.imageset/member-reagan-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "15d6f3124b02ec07b006ef62276db96dafe9e8cbb5c16854ffecca2176d61cdc"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-48.imageset/content.jpg",
+      "beforeBytes": 96285,
+      "afterBytes": 96285,
+      "deliveryResource": "KitchenMedia.xcassets/member-oakley-portrait.imageset/member-oakley-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "7ba01cbcb552d662eb889bbbb5e42072a34008ce8d12efb6eacff1a0ab4b149f"
+    },
+    {
+      "resource": "TatiContent.xcassets/portrait-49.imageset/content.jpg",
+      "beforeBytes": 191594,
+      "afterBytes": 191594,
+      "deliveryResource": "KitchenMedia.xcassets/member-wren-portrait.imageset/member-wren-portrait.jpg",
+      "excludedFromApp": false,
+      "sha256After": "ead03cabfcc3d67ed74c9e40cb07d72ec1cdf4ebed281358603abb9cfe780772"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-bakery-dessert.imageset/poster.jpg",
+      "beforeBytes": 96165,
+      "afterBytes": 96165,
+      "deliveryResource": "KitchenMedia.xcassets/bakery-finish-cover.imageset/bakery-finish-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "1d8e1e81f297930af43fb3f7a9884c416fe5431d75b5435307c8d52b41ba375b"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-cafe-break.imageset/poster.jpg",
+      "beforeBytes": 128676,
+      "afterBytes": 128676,
+      "deliveryResource": "KitchenMedia.xcassets/matcha-cafe-break-cover.imageset/matcha-cafe-break-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "da15108008db5a8720df32eba7f6f5caef70143de0db80830da5b0181cc6e922"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-cooking-together.imageset/poster.jpg",
+      "beforeBytes": 118901,
+      "afterBytes": 118901,
+      "deliveryResource": "KitchenMedia.xcassets/cooking-at-home-cover.imageset/cooking-at-home-cover.jpg",
+      "excludedFromApp": true
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-crepe-making.imageset/poster.jpg",
+      "beforeBytes": 103233,
+      "afterBytes": 103233,
+      "deliveryResource": "KitchenMedia.xcassets/french-toast-pan-cover.imageset/french-toast-pan-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "de1eb75b05491e6e32e1f15a0d6fc365bdf932cf97b95b4caf8de515adb00277"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-crispy-bites.imageset/poster.jpg",
+      "beforeBytes": 136571,
+      "afterBytes": 136571,
+      "deliveryResource": "KitchenMedia.xcassets/crispy-snack-pan-cover.imageset/crispy-snack-pan-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "4c1098340f32fc037d27f2d562a70dbebaa77531fa9276d3b46a97868a3de25f"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-dinner-friends.imageset/poster.jpg",
+      "beforeBytes": 126636,
+      "afterBytes": 126636,
+      "deliveryResource": "KitchenMedia.xcassets/coffee-with-friends-cover.imageset/coffee-with-friends-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "08fe13a81f747eea88026d27e919e5bc16583e482a2226b640210585fec34691"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-dumplings.imageset/poster.jpg",
+      "beforeBytes": 124335,
+      "afterBytes": 124335,
+      "deliveryResource": "KitchenMedia.xcassets/dumpling-table-cover.imageset/dumpling-table-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "84199b6933f63d2d1376690ad18feb7eee5ba773eb1d035c4de3c6949c2cd7ce"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-kitchen-soup.imageset/poster.jpg",
+      "beforeBytes": 71844,
+      "afterBytes": 71844,
+      "deliveryResource": "KitchenMedia.xcassets/soup-counter-cover.imageset/soup-counter-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "c7f2f52c26a55927333d107ce6582105461a20097ccee6cedd2045b07bd34b76"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-noodle-tasting.imageset/poster.jpg",
+      "beforeBytes": 173096,
+      "afterBytes": 173096,
+      "deliveryResource": "KitchenMedia.xcassets/noodle-tasting-table-cover.imageset/noodle-tasting-table-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "fda880efcbf6e7c4012be4c6d94881f8c3911f9bc1860d8a9ffd16a3544a3a29"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-osaka-sandwich.imageset/poster.jpg",
+      "beforeBytes": 106855,
+      "afterBytes": 106855,
+      "deliveryResource": "KitchenMedia.xcassets/osaka-beef-sandwich-cover.imageset/osaka-beef-sandwich-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "33a73fde0ed0a805e54d322a43dfe0e953fae7f23dbd68dcfe1b62d8a114b842"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-outdoor-noodles.imageset/poster.jpg",
+      "beforeBytes": 110883,
+      "afterBytes": 110883,
+      "deliveryResource": "KitchenMedia.xcassets/noodles-outdoors-cover.imageset/noodles-outdoors-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "de6197a749bd9c17fcf2e84e3d2b3391521802822df60c089d01f396bd8da0af"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-street-food-table.imageset/poster.jpg",
+      "beforeBytes": 204879,
+      "afterBytes": 204879,
+      "deliveryResource": "KitchenMedia.xcassets/market-spicy-snacks-cover.imageset/market-spicy-snacks-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "6a7c1b483921b42b64311d228bfcb2ddc776c4fab55e3b2217fd2714bee7cbb9"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-toasted-sandwich.imageset/poster.jpg",
+      "beforeBytes": 126160,
+      "afterBytes": 126160,
+      "deliveryResource": "KitchenMedia.xcassets/toasted-bread-story-cover.imageset/toasted-bread-story-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "e5826188b238e280423dbf010d3566f250d5d91d814da554829623aa0f9cce7b"
+    },
+    {
+      "resource": "TatiContent.xcassets/poster-trail-break.imageset/poster.jpg",
+      "beforeBytes": 54512,
+      "afterBytes": 54512,
+      "deliveryResource": "KitchenMedia.xcassets/fruit-on-the-trail-cover.imageset/fruit-on-the-trail-cover.jpg",
+      "excludedFromApp": false,
+      "sha256After": "c4346d77939a42742937cb19d658a5275a349cd10293eba059c4c1f130f56a6c"
+    }
+  ],
+  "currentAppResourceBytes": 158434745,
+  "note": "Original comparison covers resources present at the start of compression; new notebook assets and fonts are included in currentAppResourceBytes. Held media is outside the app target."
+}
