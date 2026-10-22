@@ -830,7 +830,7 @@ struct ConversationsView: View {
     }
 }
 
-private enum ConversationCallKind: String, Identifiable {
+enum ConversationCallKind: String, Identifiable {
     case voice, video
     var id: String { rawValue }
     var title: String { self == .voice ? "Voice call" : "Video call" }
@@ -859,7 +859,7 @@ struct ConversationView: View {
     @State private var reportedMessage: ConversationOutboxItem?
     @FocusState private var inputFocused: Bool
     private var messages: [ConversationOutboxItem] { store.messages(with: person.id) }
-    private var canSend: Bool { store.account.signedIn && !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && store.storageFailure == nil }
+    private var canSend: Bool { store.canCommunicate(with: person.id) && !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && store.storageFailure == nil }
     private let paper = Color(red: 1, green: 0.96, blue: 0.90)
 
     var body: some View {
@@ -895,6 +895,9 @@ struct ConversationView: View {
         .onChange(of: store.account.hiddenSubjects) { _, _ in if store.isPersonHidden(person.id) { dismiss() } }
         .onChange(of: store.account.profile.id) { _, _ in dismiss() }
         .onChange(of: store.account.signedIn) { _, signedIn in if !signedIn { dismiss() } }
+        .onChange(of: store.mutualIDs) { _, _ in
+            if !store.canCommunicate(with: person.id) { call = nil }
+        }
         .sheet(isPresented: $showSafety) { SafetyActionsView(subjectID: "person:" + person.id, authorID: person.id) }
         .sheet(item: $reportedMessage) { message in
             SafetyActionsView(subjectID: "message:" + message.id, authorID: person.id, contextID: person.id)
@@ -932,6 +935,11 @@ struct ConversationView: View {
                     }
                 }
             }
+            if !store.canCommunicate(with: person.id) {
+                Text("Messages and calls open when you follow each other.")
+                    .font(.tati(.caption)).foregroundStyle(Color.tatiOlive)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(.horizontal, 14).padding(.top, 6).padding(.bottom, 18)
         .frame(maxWidth: 680).frame(maxWidth: .infinity)
@@ -954,6 +962,8 @@ struct ConversationView: View {
             .foregroundStyle(kind == .voice ? Color.tatiCream : Color.tatiInk)
             .background(kind == .voice ? Color.tatiInk : Color.tatiPink, in: RoundedRectangle(cornerRadius: 18))
         }.buttonStyle(.plain).accessibilityLabel(LocalizedStringKey(kind.title))
+            .disabled(!store.canCommunicate(with: person.id))
+            .opacity(store.canCommunicate(with: person.id) ? 1 : 0.45)
     }
 
     private var invitation: some View {

@@ -224,7 +224,7 @@ final class MemberKitchenStore: ObservableObject {
     var visibleRooms: [CookingRoom] { TableCommunity.rooms.filter { room in !isPersonHidden(room.hostID) && !isHidden("room:" + room.id) && (room.videoClip.map { account.tableSyncState?.hiddenFilmIDs.contains($0.id) != true } ?? true) } }
     var mutualIDs: Set<String> { followingIDs.intersection(followerIDs) }
     func canCommunicate(with id: String) -> Bool {
-        account.signedIn && id != account.profile.id && mutualIDs.contains(id)
+        account.signedIn && id != account.profile.id && !isPersonHidden(id) && mutualIDs.contains(id)
     }
     @discardableResult
     func requireMutualFollow(_ id: String) -> Bool {

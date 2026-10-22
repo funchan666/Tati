@@ -200,17 +200,19 @@ private final class CameraCaptureWorker: @unchecked Sendable {
     let session = AVCaptureSession()
     private let queue = DispatchQueue(label: "tati.camera.preview", qos: .userInitiated)
 
-    func start() async -> Bool {
+    func start(position: AVCaptureDevice.Position) async -> Bool {
         await withCheckedContinuation { continuation in
             queue.async { [self] in
-                guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+                guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: position),
                       let input = try? AVCaptureDeviceInput(device: device) else {
                     continuation.resume(returning: false)
                     return
                 }
                 session.beginConfiguration()
+                let previousInputs = session.inputs
                 session.inputs.forEach { session.removeInput($0) }
                 guard session.canAddInput(input) else {
+                    previousInputs.filter { session.canAddInput($0) }.forEach { session.addInput($0) }
                     session.commitConfiguration()
                     continuation.resume(returning: false)
                     return
@@ -233,10 +235,12 @@ private final class CameraCaptureWorker: @unchecked Sendable {
     @Published var status = "Camera is off"
     @Published var ready = false
     @Published private(set) var starting = false
+    @Published private(set) var frontFacing = true
     private var generation = UUID()
-    @discardableResult func start() async -> StartOutcome {
+    @discardableResult func start(front: Bool? = nil) async -> StartOutcome {
         guard !starting else { return .cancelled }
         starting = true; defer { starting = false }
+        ready = false
         let requestID = UUID(); generation = requestID
         let authorization = AVCaptureDevice.authorizationStatus(for: .video)
         if authorization == .denied { return .settingsRequired }
@@ -244,9 +248,12 @@ private final class CameraCaptureWorker: @unchecked Sendable {
         let authorized = await AVCaptureDevice.requestAccess(for: .video)
         guard generation == requestID, !Task.isCancelled else { return .cancelled }
         guard authorized else { status = "Camera is off"; return .declined }
-        let configured = await capture.start()
+        let nextFront = front ?? frontFacing
+        let configured = await capture.start(position: nextFront ? .front : .back)
         guard generation == requestID, !Task.isCancelled else { stop(); return .cancelled }
-        ready = configured; status = configured ? "Camera is on · not broadcasting" : "The camera couldn't be started. Try again."
+        ready = configured
+        if configured { frontFacing = nextFront }
+        status = configured ? "Camera is on · not broadcasting" : "The camera couldn't be started. Try again."
         return configured ? .ready : .unavailable
     }
     func stop() { generation = UUID(); ready = false; status = "Camera is off"; capture.stop() }
@@ -254,11 +261,23 @@ private final class CameraCaptureWorker: @unchecked Sendable {
 final class CameraLayerView: UIView {
     override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
     var cameraLayer: AVCaptureVideoPreviewLayer { layer as! AVCaptureVideoPreviewLayer }
+    var mirrored: Bool?
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let mirrored, let connection = cameraLayer.connection, connection.isVideoMirroringSupported {
+            connection.automaticallyAdjustsVideoMirroring = false
+            connection.isVideoMirrored = mirrored
+        }
+    }
 }
 struct CameraSurface: UIViewRepresentable {
     var session: AVCaptureSession
+    var mirrored: Bool? = nil
     func makeUIView(context: Context) -> CameraLayerView { let view = CameraLayerView(); view.cameraLayer.videoGravity = .resizeAspectFill; view.cameraLayer.session = session; return view }
-    func updateUIView(_ view: CameraLayerView, context: Context) {}
+    func updateUIView(_ view: CameraLayerView, context: Context) {
+        if view.cameraLayer.session !== session { view.cameraLayer.session = session }
+        view.mirrored = mirrored; view.setNeedsLayout()
+    }
     static func dismantleUIView(_ view: CameraLayerView, coordinator: ()) { view.cameraLayer.session = nil }
 }
 
