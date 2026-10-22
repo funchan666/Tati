@@ -260,7 +260,10 @@ struct EditProfileView: View {
         .task(id: coverItem) { guard let coverItem else { return }; loadingCover = true; defer { loadingCover = false }; do { let data = try await coverItem.loadTransferable(type: Data.self); guard !Task.isCancelled else { return }; coverData = data; removeCover = false } catch { store.tell("Photo unavailable", "Please choose another cover. Your other edits are still here.") } }
     }
     private var profilePhotos: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        // Snapshot actor-owned state before entering PhotosPicker label builders.
+        let savedCover = store.account.profile.coverFile
+        let savedAvatar = store.account.profile.avatarFile
+        return VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Profile photos").font(.subheadline.weight(.semibold)).accessibilityAddTraits(.isHeader)
                 Spacer()
@@ -274,7 +277,7 @@ struct EditProfileView: View {
                 PhotosPicker(selection: $coverItem, matching: .images) {
                     GeometryReader { geometry in
                         Group {
-                            photoPreview(coverData, removeCover ? nil : store.account.profile.coverFile, maxPixels: 1_200)
+                            photoPreview(coverData, removeCover ? nil : savedCover, maxPixels: 1_200)
                         }.frame(width: geometry.size.width, height: geometry.size.height).clipped()
                             .overlay(alignment: .bottomTrailing) {
                                 Text(LocalizedStringKey(loadingCover ? "Loading…" : "Change cover"))
@@ -288,7 +291,7 @@ struct EditProfileView: View {
                     PhotosPicker(selection: $avatarItem, matching: .images) {
                         HStack(spacing: 12) {
                             Group {
-                                photoPreview(avatarData, removeAvatar ? nil : store.account.profile.avatarFile, maxPixels: 256)
+                                photoPreview(avatarData, removeAvatar ? nil : savedAvatar, maxPixels: 256)
                             }.frame(width: 64, height: 64).clipShape(Circle())
                             VStack(alignment: .leading, spacing: 5) {
                                 Text("Profile picture").font(.subheadline.weight(.semibold))

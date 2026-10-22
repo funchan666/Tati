@@ -1,5 +1,5 @@
 import SwiftUI
-import AVFoundation
+@preconcurrency import AVFoundation
 import PhotosUI
 import UniformTypeIdentifiers
 
@@ -108,12 +108,44 @@ struct ClipSurface: UIViewRepresentable {
     }
     static func dismantleUIView(_ view: ClipLayerView, coordinator: ()) { view.videoLayer.player = nil }
 }
-@MainActor final class CameraPreviewController: ObservableObject {
+/// All capture configuration and start/stop calls are confined to this queue.
+/// The immutable session reference is exposed only for the UIKit preview layer.
+private final class CameraCaptureWorker: @unchecked Sendable {
     let session = AVCaptureSession()
+    private let queue = DispatchQueue(label: "tati.camera.preview", qos: .userInitiated)
+
+    func start() async -> Bool {
+        await withCheckedContinuation { continuation in
+            queue.async { [self] in
+                guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),
+                      let input = try? AVCaptureDeviceInput(device: device) else {
+                    continuation.resume(returning: false)
+                    return
+                }
+                session.beginConfiguration()
+                session.inputs.forEach { session.removeInput($0) }
+                guard session.canAddInput(input) else {
+                    session.commitConfiguration()
+                    continuation.resume(returning: false)
+                    return
+                }
+                session.addInput(input)
+                session.commitConfiguration()
+                session.startRunning()
+                continuation.resume(returning: session.isRunning)
+            }
+        }
+    }
+
+    func stop() { queue.async { [self] in session.stopRunning() } }
+}
+
+@MainActor final class CameraPreviewController: ObservableObject {
+    private let capture = CameraCaptureWorker()
+    var session: AVCaptureSession { capture.session }
     @Published var status = "Camera is off"
     @Published var ready = false
     @Published private(set) var starting = false
-    private let queue = DispatchQueue(label: "tati.camera.preview")
     private var generation = UUID()
     func start(requiresMicrophone: Bool = false) async {
         guard !starting else { return }
@@ -127,21 +159,11 @@ struct ClipSurface: UIViewRepresentable {
             guard generation == requestID, !Task.isCancelled else { return }
             guard microphoneAllowed else { status = "Microphone access was denied. Allow it in iOS Settings before continuing."; return }
         }
-        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front), let input = try? AVCaptureDeviceInput(device: device) else { status = "No camera is available."; return }
-        let capture = session
-        let configured = await withCheckedContinuation { continuation in
-            queue.async {
-                capture.beginConfiguration()
-                capture.inputs.forEach { capture.removeInput($0) }
-                guard capture.canAddInput(input) else { capture.commitConfiguration(); continuation.resume(returning: false); return }
-                capture.addInput(input); capture.commitConfiguration(); capture.startRunning()
-                continuation.resume(returning: true)
-            }
-        }
+        let configured = await capture.start()
         guard generation == requestID, !Task.isCancelled else { stop(); return }
         ready = configured; status = configured ? "Camera is on · not broadcasting" : "The camera couldn't be started. Try again."
     }
-    func stop() { generation = UUID(); ready = false; status = "Camera is off"; let capture = session; queue.async { capture.stopRunning() } }
+    func stop() { generation = UUID(); ready = false; status = "Camera is off"; capture.stop() }
 }
 final class CameraLayerView: UIView {
     override class var layerClass: AnyClass { AVCaptureVideoPreviewLayer.self }
@@ -205,6 +227,52 @@ struct LocalVideoPoster: View {
             guard !Task.isCancelled else { return }
             image = prepared
             if prepared != nil { loadedURL = url }
+        }
+    }
+}
+
+/// Serializes potentially blocking AVAudioSession operations off the UI thread.
+/// Mutable ownership is queue-confined. A stale release cannot stop a newer owner.
+final class RoomAudioSession: @unchecked Sendable {
+    static let shared = RoomAudioSession()
+    private let queue = DispatchQueue(label: "tati.audio.session", qos: .userInitiated)
+    private var owner: UUID?
+    private var recording = false
+    private init() {}
+
+    @MainActor
+    func activate(owner token: UUID, recording: Bool) async throws {
+        try Task.checkCancellation()
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            queue.async { [self] in
+                let session = AVAudioSession.sharedInstance()
+                do {
+                    try session.setCategory(recording ? .record : .playback,
+                                            mode: recording ? .measurement : .default, options: [])
+                    try session.setActive(true)
+                    owner = token
+                    self.recording = recording
+                    continuation.resume()
+                } catch {
+                    // Failed activation must not leave the app configured to record.
+                    try? session.setActive(false, options: .notifyOthersOnDeactivation)
+                    try? session.setCategory(.playback, mode: .default)
+                    owner = nil
+                    self.recording = false
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func release(owner token: UUID) {
+        queue.async { [self] in
+            guard owner == token else { return }
+            let session = AVAudioSession.sharedInstance()
+            try? session.setActive(false, options: .notifyOthersOnDeactivation)
+            if recording { try? session.setCategory(.playback, mode: .default) }
+            owner = nil
+            recording = false
         }
     }
 }

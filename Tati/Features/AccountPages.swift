@@ -465,7 +465,7 @@ private struct PolicyWebView: UIViewRepresentable {
         webView.stopLoading()
     }
 
-    final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
+    @MainActor final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: PolicyWebView
         private var loadedURL: URL?
         private var loadedRetryID: Int?
@@ -484,14 +484,6 @@ private struct PolicyWebView: UIViewRepresentable {
             activeNavigation = navigation
             parent.loading = true
             parent.loadFailed = false
-        }
-
-        func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-            if navigationResponse.isForMainFrame, let response = navigationResponse.response as? HTTPURLResponse, response.statusCode >= 400 {
-                parent.loading = false
-                parent.loadFailed = true
-                decisionHandler(.cancel)
-            } else { decisionHandler(.allow) }
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -515,7 +507,7 @@ private struct PolicyWebView: UIViewRepresentable {
             parent.loadFailed = true
         }
 
-        func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping @MainActor @Sendable (WKNavigationResponsePolicy) -> Void) {
             if navigationResponse.isForMainFrame,
                let response = navigationResponse.response as? HTTPURLResponse,
                response.statusCode >= 400 {

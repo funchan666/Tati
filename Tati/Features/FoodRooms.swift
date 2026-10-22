@@ -576,7 +576,8 @@ struct GiftShopView: View {
     @Published private(set) var title = "No audio selected"
     @Published private(set) var revision = UUID()
     private var player: AVAudioPlayer?
-    private var ownsAudioSession = false
+    private var audioOwner: UUID?
+    @Published private(set) var starting = false
     var hasSelection: Bool { player != nil }
     func load(_ url: URL) throws {
         let limit = 50 * 1024 * 1024
@@ -594,28 +595,38 @@ struct GiftShopView: View {
     }
     func reset() { stop(); player = nil; title = "No audio selected"; muted = false; revision = UUID() }
     func toggleMuted() { muted.toggle(); player?.volume = muted ? 0 : 1 }
-    func toggle() throws {
-        guard let player else { return }
+    func toggle() async throws {
+        guard let player, !starting else { return }
         if playing { stop(); return }
-        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-        try AVAudioSession.sharedInstance().setActive(true)
-        ownsAudioSession = true
-        if player.currentTime >= player.duration { player.currentTime = 0 }
-        guard player.play() else {
+        let token = UUID()
+        audioOwner = token
+        starting = true
+        defer { if audioOwner == token { starting = false } }
+        do {
+            try await RoomAudioSession.shared.activate(owner: token, recording: false)
+            guard audioOwner == token, !Task.isCancelled else {
+                RoomAudioSession.shared.release(owner: token)
+                if audioOwner == token { stop() }
+                return
+            }
+            if player.currentTime >= player.duration { player.currentTime = 0 }
+            guard player.play() else { throw CocoaError(.fileReadCorruptFile) }
+            playing = true
+        } catch {
+            guard audioOwner == token else { return }
             stop()
-            throw CocoaError(.fileReadCorruptFile)
+            throw error
         }
-        playing = true
     }
     nonisolated func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         Task { @MainActor [weak self] in guard self?.player === player else { return }; self?.stop() }
     }
     func stop() {
         player?.pause(); playing = false
-        // Do not deactivate video or speech sessions when this player never started.
-        if ownsAudioSession {
-            ownsAudioSession = false
-            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        starting = false
+        if let owner = audioOwner {
+            audioOwner = nil
+            RoomAudioSession.shared.release(owner: owner)
         }
     }
 }
@@ -639,9 +650,12 @@ struct RoomMusicPanel: View {
             Text("Choose an audio file up to 50 MB.").font(.caption).foregroundStyle(Color.tatiOlive)
             TatiEditingButton(title: "Choose audio", enabled: !importing) { importing = true }
             HStack(spacing: 12) {
-                TatiEditingButton(title: player.playing ? "Pause" : "Play", enabled: player.hasSelection) {
-                    guard isCurrentRoom() else { return }
-                    do { try player.toggle() } catch { store.tell("Audio unavailable", "The audio couldn't be played. Try another file.") }
+                TatiEditingButton(title: player.playing ? "Pause" : "Play", enabled: player.hasSelection && !player.starting) {
+                    Task { @MainActor in
+                        guard isCurrentRoom() else { return }
+                        do { try await player.toggle() }
+                        catch { if isCurrentRoom() { store.tell("Audio unavailable", "The audio couldn't be played. Try another file.") } }
+                    }
                 }
                 TatiEditingButton(title: "Clear", enabled: player.hasSelection) {
                     guard isCurrentRoom() else { return }

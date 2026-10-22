@@ -25,7 +25,7 @@ import UIKit
     private var timeout: Task<Void, Never>?
     private var observers: [NSObjectProtocol] = []
     private var tapInstalled = false
-    private var ownsAudioSession = false
+    private var audioOwner: UUID?
     private var generation = UUID()
     private var updateText: ((String) -> Void)?
     private var reportError: ((String, Bool) -> Void)?
@@ -67,22 +67,25 @@ import UIKit
             }
             guard self.generation == token, !Task.isCancelled else { return }
             guard UIApplication.shared.applicationState == .active else { self.cancel(); return }
-            self.beginRecognition(token: token)
+            await self.beginRecognition(token: token)
         }
     }
 
-    private func beginRecognition(token: UUID) {
+    private func beginRecognition(token: UUID) async {
         guard let recognizer = SFSpeechRecognizer(locale: Locale.current), recognizer.isAvailable else {
             fail("Speech recognition is unavailable for your device language right now. Please try again or type your message.")
             return
         }
         self.recognizer = recognizer
         do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.record, mode: .measurement, options: [])
-            // Track activation even if it fails so cleanup can restore playback.
-            ownsAudioSession = true
-            try session.setActive(true)
+            audioOwner = token
+            try await RoomAudioSession.shared.activate(owner: token, recording: true)
+            guard generation == token, !Task.isCancelled,
+                  UIApplication.shared.applicationState == .active else {
+                RoomAudioSession.shared.release(owner: token)
+                if generation == token { cancel() }
+                return
+            }
             let input = engine.inputNode
             let format = input.outputFormat(forBus: 0)
             guard format.sampleRate > 0, format.channelCount > 0 else {
@@ -129,6 +132,7 @@ import UIKit
                 self.finish()
             }
         } catch {
+            guard generation == token else { return }
             fail("The microphone couldn't start. Close other recording apps and try again.")
         }
     }
@@ -166,11 +170,9 @@ import UIKit
     private func stopCapture() {
         engine.stop()
         if tapInstalled { engine.inputNode.removeTap(onBus: 0); tapInstalled = false }
-        if ownsAudioSession {
-            let session = AVAudioSession.sharedInstance()
-            try? session.setActive(false, options: .notifyOthersOnDeactivation)
-            try? session.setCategory(.playback, mode: .default)
-            ownsAudioSession = false
+        if let owner = audioOwner {
+            audioOwner = nil
+            RoomAudioSession.shared.release(owner: owner)
         }
     }
 

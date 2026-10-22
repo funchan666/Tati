@@ -310,12 +310,15 @@ struct PublishVideoView: View {
     @State private var importing = false
     @State private var committed = false
     var body: some View {
+        // PhotosPicker's label may be evaluated outside the main actor.
+        let movieURL = localFile.map { store.mediaURL($0) }
+
         TatiEditingForm(title: "Post a video") {
             PhotosPicker(selection: $selection, matching: .videos) {
                 HStack(spacing: 16) {
                     Group {
-                        if let localFile {
-                            LocalVideoPoster(url: store.mediaURL(localFile), height: 150)
+                        if let movieURL {
+                            LocalVideoPoster(url: movieURL, height: 150)
                         } else {
                             Art(name: "add-video", width: 42, height: 42)
                                 .frame(maxWidth: .infinity).frame(height: 112)
