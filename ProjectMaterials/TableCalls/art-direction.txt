@@ -1,0 +1,9 @@
+Tati call preparation
+Native SwiftUI. Deep olive background, warm porcelain type, pink call exit.
+Fraunces for the member name; DM Sans for controls and status.
+Voice: large member portrait and quiet tactile table artwork.
+Video: actual front camera preview takes precedence; member remains identified above.
+Always show Not connected until a real transport confirms a connection.
+Original UI artwork: built-in image generation using Garden Image 2 Host-Native guidance.
+Background prompt: An original portrait 2:3 app background for a food community call preparation screen. Rich dark olive textile surface and subtle ceramic-table mood. Almost entirely flat deep warm olive around #283415, with very subtle linen texture. Very restrained pale sage and blush ceramic cutlery/plate fragments only along the bottom corners and extreme edges. Center and top 80 percent must remain visually quiet for native text, portraits and video. No people, no text, no typography, no UI controls, no symbols, no phone frame, no gradients, no watermark. Elegant tactile food-editorial art, warm low lighting, crisp image.
+Control atlas prompt: Original six-icon 3D porcelain control atlas on transparent background, exactly three columns and two rows with equal 512px square cells in a 1536 by 1024 canvas. Each centered icon fits inside central 65 percent of its cell with ample transparent padding. Soft ivory porcelain with dark olive details and muted pink accents, simple readable silhouettes matching Tati's playful food-themed ceramic objects. Row one: microphone, microphone with a diagonal slash, camera. Row two: camera with diagonal slash, two curved arrows around a camera for flip-camera, pink downward-facing telephone handset for end-call. No text, no labels, no tiles, no circular button backgrounds, no shadow outside each object, no emoji, no stock symbols, consistent front-facing view and lighting.
