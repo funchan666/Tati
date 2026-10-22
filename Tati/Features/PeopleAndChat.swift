@@ -341,9 +341,9 @@ struct EditProfileView: View {
 struct MessagesToolbarEntry: View {
     var body: some View {
         NavigationLink(destination: ConversationsView()) {
-            SupplementIcon(icon: .comment, size: 23, tint: .tatiInk)
+            Art(name: "discovery-messages", width: 37, height: 37)
                 .frame(width: 44, height: 44)
-                .background(.white.opacity(0.85), in: RoundedRectangle(cornerRadius: 15))
+                .contentShape(Rectangle())
         }.buttonStyle(.plain).accessibilityLabel("Messages")
     }
 }

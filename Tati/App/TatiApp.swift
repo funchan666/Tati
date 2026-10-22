@@ -86,7 +86,9 @@ struct CommunityRoot: View {
 }
 struct WelcomeView: View {
     @EnvironmentObject private var store: VisitorStore
+    @Environment(\.scenePhase) private var scenePhase
     @State private var consent = false
+    @State private var entering = false
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
@@ -94,7 +96,10 @@ struct WelcomeView: View {
                     Spacer(minLength: 0)
                     VStack(spacing: 14) {
                         if let error = store.storageFailure { Text(error).font(.footnote).foregroundStyle(Color.tatiInk) }
-                        TatiButton(title: "Enter Tati", enabled: consent && store.storageFailure == nil) { store.signIn() }
+                        WelcomeEntryButton(loading: entering, enabled: consent && store.storageFailure == nil) {
+                            guard !entering, consent, store.storageFailure == nil else { return }
+                            entering = true
+                        }
                         HStack(alignment: .center, spacing: 8) {
                             Button { consent.toggle() } label: {
                                 if consent { Art(name: "check-pink", width: 24, height: 24) }
@@ -108,8 +113,8 @@ struct WelcomeView: View {
                                     NavigationLink("Privacy Policy", destination: PolicyView(kind: .privacy))
                                 }.font(.caption).foregroundStyle(Color.tatiOlive)
                             }
-                        }.foregroundStyle(Color.tatiInk)
-                    }.padding(.horizontal, 26).padding(.bottom, 12)
+                        }.foregroundStyle(Color.tatiInk).disabled(entering)
+                    }.frame(maxWidth: 460).padding(.horizontal, 26).padding(.bottom, 12)
                 }.frame(width: geo.size.width, height: geo.size.height)
                     .background {
                         GeometryReader { backdrop in
@@ -119,5 +124,52 @@ struct WelcomeView: View {
                     }
             }.tatiScreen()
         }
+        .task(id: entering) {
+            guard entering else { return }
+            // A brief acknowledgment lets the loading state render before the existing
+            // synchronous local sign-in transaction. This is not a network progress meter.
+            do { try await Task.sleep(for: .milliseconds(350)) }
+            catch { return }
+            guard !Task.isCancelled, entering, consent, scenePhase == .active else { return }
+            store.signIn()
+            entering = false
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase != .active { entering = false }
+        }
+        .onDisappear { entering = false }
+    }
+}
+
+private struct WelcomeEntryButton: View {
+    let loading: Bool
+    let enabled: Bool
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var breathing = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                if loading {
+                    Art(name: "chef-avatar", width: 32, height: 32)
+                        .scaleEffect(reduceMotion ? 1 : breathing ? 1.08 : 0.94)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.55).repeatForever(autoreverses: true), value: breathing)
+                        .onAppear { breathing = !reduceMotion }
+                        .onDisappear { breathing = false }
+                }
+                Text(LocalizedStringKey(loading ? "Entering Tati…" : "Enter Tati"))
+                    .font(.headline).multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.horizontal, 20).padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 52)
+            .foregroundStyle(Color.tatiInk)
+            .background(Color.tatiPink, in: Capsule())
+            .opacity(enabled || loading ? 1 : 0.48)
+        }
+        .buttonStyle(.plain).disabled(!enabled || loading)
+        .accessibilityLabel(loading ? Text("Entering Tati…") : Text("Enter Tati"))
+        .onChange(of: reduceMotion) { _, reduced in breathing = loading && !reduced }
     }
 }

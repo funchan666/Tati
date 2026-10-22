@@ -18,10 +18,11 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
     static func preference(_ saved: String?) -> Self {
-        guard let saved else { return .system }
+        // English is the app default; following the device language is opt-in.
+        guard let saved else { return .english }
         if let language = Self(rawValue: saved) { return language }
         // Migrate the former display-name preference without changing account data.
-        return allCases.first { $0.nativeName == saved } ?? .system
+        return allCases.first { $0.nativeName == saved } ?? .english
     }
     var resolved: Self {
         guard self == .system else { return self }
