@@ -52,7 +52,7 @@ workflows:
           xcodebuild -resolvePackageDependencies \
             -project "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
-            -clonedSourcePackagesDir "$CM_BUILD_DIR/build/SourcePackages" \
+            -clonedSourcePackagesDirPath "$CM_BUILD_DIR/build/SourcePackages" \
             -onlyUsePackageVersionsFromResolvedFile
 
       - name: Set up App Store signing
@@ -102,7 +102,7 @@ workflows:
             --project "$XCODE_PROJECT" \
             --scheme "$XCODE_SCHEME" \
             --config Release \
-            --archive-flags="-xcconfig \"$CM_BUILD_DIR/build/tati-release.xcconfig\" -clonedSourcePackagesDir \"$CM_BUILD_DIR/build/SourcePackages\"" \
+            --archive-flags="-xcconfig \"$CM_BUILD_DIR/build/tati-release.xcconfig\" -clonedSourcePackagesDirPath \"$CM_BUILD_DIR/build/SourcePackages\"" \
             --ipa-directory "$CM_BUILD_DIR/build/ios/ipa"
 
       - name: Verify exported IPA identity
