@@ -277,6 +277,7 @@ struct MediaViewport<Content: View>: View {
 
     private func availableFrame(in geometry: GeometryProxy) -> CGRect {
         let bounds = CGRect(origin: .zero, size: geometry.size)
+        #if TATI_DUO_SDK
         if #available(iOS 27.1, *) {
             let obstacles = (
                 geometry.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
@@ -297,6 +298,7 @@ struct MediaViewport<Content: View>: View {
             }
             return candidates.max(by: { $0.width * $0.height < $1.width * $1.height }) ?? .zero
         }
+        #endif
         return bounds
     }
 }

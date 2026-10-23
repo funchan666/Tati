@@ -1,0 +1,145 @@
+workflows:
+  tati-ios-app-store:
+    name: Tati iOS App Store
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    integrations:
+      app_store_connect: Tati
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.tatifood.kitchennotes
+      vars:
+        BUNDLE_ID: "com.tatifood.kitchennotes"
+        XCODE_PROJECT: "Tati.xcodeproj"
+        XCODE_SCHEME: "Tati"
+        APP_STORE_APPLE_ID: "6826045294"
+      xcode: "26.5"
+
+    scripts:
+      - name: Verify native project and SDK
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          test -d "$XCODE_PROJECT"
+          test -f "$XCODE_PROJECT/xcshareddata/xcschemes/$XCODE_SCHEME.xcscheme"
+          TATI_IOS_SDK="$(xcrun --sdk iphoneos --show-sdk-version)"
+          export TATI_IOS_SDK
+          python3 - <<'PY'
+          import json, os, plistlib, subprocess, xml.etree.ElementTree as ET
+          from pathlib import Path
+          project = Path(os.environ['XCODE_PROJECT'])
+          data = json.loads(subprocess.check_output(['plutil', '-convert', 'json', '-o', '-', str(project / 'project.pbxproj')]))
+          targets = [v for v in data['objects'].values() if v.get('isa') == 'PBXNativeTarget' and v.get('name') == os.environ['XCODE_SCHEME']]
+          assert len(targets) == 1, 'Expected the Tati app target'
+          configs = data['objects'][targets[0]['buildConfigurationList']]['buildConfigurations']
+          for key in configs:
+              assert data['objects'][key]['buildSettings']['PRODUCT_BUNDLE_IDENTIFIER'] == os.environ['BUNDLE_ID'], 'Bundle ID mismatch'
+          info = plistlib.loads(Path('Tati/Info.plist').read_bytes())
+          assert info['CFBundleVersion'] == '$(CURRENT_PROJECT_VERSION)', 'Build number must use CURRENT_PROJECT_VERSION'
+          scheme = ET.parse(project / 'xcshareddata/xcschemes' / (os.environ['XCODE_SCHEME'] + '.xcscheme'))
+          assert scheme.find('ArchiveAction').get('buildConfiguration') == 'Release'
+          assert not list(scheme.iter('StoreKitConfigurationFileReference')), 'A local StoreKit test configuration must not be used'
+          print('Verified Tati identity, Release scheme and SDK', os.environ['TATI_IOS_SDK'])
+          PY
+
+      - name: Resolve pinned Swift packages
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          xcodebuild -resolvePackageDependencies \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -clonedSourcePackagesDir "$CM_BUILD_DIR/build/SourcePackages" \
+            -onlyUsePackageVersionsFromResolvedFile
+
+      - name: Set up App Store signing
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          xcode-project use-profiles --project "$XCODE_PROJECT" --archive-method app-store
+
+      - name: Allocate App Store build number
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          # API failures stop this build instead of silently reusing a build number.
+          TATI_LATEST_BUILD="$(app-store-connect get-latest-build-number "$APP_STORE_APPLE_ID" --all-versions --platform IOS)"
+          export TATI_LATEST_BUILD
+          TATI_IOS_SDK="$(xcrun --sdk iphoneos --show-sdk-version)"
+          export TATI_IOS_SDK
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          from pathlib import Path
+          latest = os.environ['TATI_LATEST_BUILD'].strip()
+          if latest in ('', 'None', 'null'):
+              latest = '0'
+          assert re.fullmatch(r'[0-9]+', latest), 'App Store returned a non-integer build number; check it before retrying'
+          project = Path(os.environ['XCODE_PROJECT']) / 'project.pbxproj'
+          data = json.loads(subprocess.check_output(['plutil', '-convert', 'json', '-o', '-', str(project)]))
+          local = [int(v['buildSettings']['CURRENT_PROJECT_VERSION']) for v in data['objects'].values()
+                   if v.get('isa') == 'XCBuildConfiguration' and str(v.get('buildSettings', {}).get('CURRENT_PROJECT_VERSION', '')).isdigit()]
+          counters = [int(os.environ.get(key, '0') or '0') for key in ('PROJECT_BUILD_NUMBER', 'BUILD_NUMBER')]
+          number = max([int(latest), 0] + local + counters) + 1
+          sdk = tuple(int(part) for part in os.environ['TATI_IOS_SDK'].split('.')[:2])
+          duo = 'TATI_DUO_SDK' if sdk >= (27, 1) else ''
+          Path('build').mkdir(exist_ok=True)
+          # Compile newer Duo APIs only when the selected SDK contains them.
+          Path('build/tati-release.xcconfig').write_text(
+              f'CURRENT_PROJECT_VERSION = {number}\nSWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited) {duo}\n')
+          with open(os.environ['CM_ENV'], 'a') as environment:
+              environment.write(f'TATI_BUILD_NUMBER={number}\n')
+          print(f'Using build number {number}; iOS SDK {os.environ["TATI_IOS_SDK"]}; Duo SDK extension {bool(duo)}')
+          PY
+
+      - name: Build signed Release IPA
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          xcode-project build-ipa \
+            --project "$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME" \
+            --config Release \
+            --archive-flags="-xcconfig \"$CM_BUILD_DIR/build/tati-release.xcconfig\" -clonedSourcePackagesDir \"$CM_BUILD_DIR/build/SourcePackages\"" \
+            --ipa-directory "$CM_BUILD_DIR/build/ios/ipa"
+
+      - name: Verify exported IPA identity
+        script: |
+          set -euo pipefail
+          cd "$CM_BUILD_DIR"
+          python3 - <<'PY'
+          import json, os, plistlib, re, zipfile
+          from pathlib import Path
+          packages = list(Path('build/ios/ipa').glob('*.ipa'))
+          assert len(packages) == 1, 'Expected exactly one exported Tati IPA'
+          with zipfile.ZipFile(packages[0]) as package:
+              manifests = [name for name in package.namelist() if re.fullmatch(r'Payload/[^/]+\.app/Info\.plist', name)]
+              assert len(manifests) == 1, 'Expected one application manifest'
+              info = plistlib.loads(package.read(manifests[0]))
+          assert info['CFBundleIdentifier'] == os.environ['BUNDLE_ID'], 'IPA Bundle ID mismatch'
+          assert str(info['CFBundleVersion']) == os.environ['TATI_BUILD_NUMBER'], 'IPA build number mismatch'
+          report = {'bundleIdentifier': info['CFBundleIdentifier'], 'version': info['CFBundleShortVersionString'],
+                    'build': info['CFBundleVersion'], 'appleID': os.environ['APP_STORE_APPLE_ID'], 'ipaBytes': packages[0].stat().st_size}
+          Path('build/tati-ipa-summary.json').write_text(json.dumps(report, indent=2) + '\n')
+          print(json.dumps(report, indent=2))
+          PY
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/xcarchive/**/*.dSYM
+      - /tmp/xcodebuild_logs/*.log
+      - build/tati-ipa-summary.json
+
+    publishing:
+      email:
+        recipients:
+          - funchan@126.com
+        notify:
+          success: true
+          failure: true
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
+        submit_to_app_store: false
